@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TimeControlls;
 
 public class PhysicsObject : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class PhysicsObject : MonoBehaviour
 
     public float minGroundNormalY = 0.9f;   //Considered grounded and dampening accours. 0 vertical, 1 horizontal
     public float minJumpNormalY = 0.3f;     //Maximum incline for jumps. 0 vertical, 1 horizontal
-    public float gravityModifier = 1f;      //Gravity multiplication factor
+    public float gravityModifier = 1f;      //Gravity multiplication factor: Only change it for kinematic objects. Gravity of dynamic objects should be changed in Rigitbody 2D.
     public float dampening = 0.85f;         //Accours while grounded
     public float maxSpeed = 40;             //Maximum movement speed
 
@@ -23,22 +24,26 @@ public class PhysicsObject : MonoBehaviour
     protected ContactFilter2D contactFilter;
     protected RaycastHit2D[] hitbuffer = new RaycastHit2D[16];
 
-    protected const float minMoveDistance = 0.00001f;   //Movement less than this gets ignored
+    protected const float minMoveDistance = 0.0000001f;   //Movement less than this gets ignored
     protected const float shellRadius = 0.005f;         //Prevents objects from falling thru colliders if they have to hight velocity
     protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
+    protected TimeController timeController;
 
     private void OnEnable()
     {
         rb2d = GetComponent<Rigidbody2D>();
     }
 
+    //Author: Marvin Winkler
     void Start()
     {
         //Used for collision detection
         contactFilter.useTriggers = false;
         contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+
+        timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
     }
-    
+
     //Applied velocity gets updated e.g. player movement
     void Update()
     {
@@ -53,10 +58,12 @@ public class PhysicsObject : MonoBehaviour
     //Author: Marvin Winkler
     private void FixedUpdate()
     {
+        float deltaTime = timeController.getSpeedAdjustedDeltaTime();
+        Debug.Log(deltaTime);
         Vector2 deltaPosition;
 
-        velocity += gravityModifier * Physics2D.gravity * Time.deltaTime;
-        deltaPosition = velocity * Time.deltaTime;
+        velocity += gravityModifier * Physics2D.gravity * Time.fixedDeltaTime;
+        deltaPosition = velocity * deltaTime;
 
         grounded = false;
         jumpable = false;
@@ -72,7 +79,13 @@ public class PhysicsObject : MonoBehaviour
 
         if (grounded)
         {
-            velocity = velocity * dampening;
+            if (timeController.getTimeSpeed() < 1) {
+                velocity *= (dampening + (1-dampening) * timeController.getTimeSpeed()); //This is not perfect, currently there is too much dampening when time is slowed down. But this could also be a feature if we like it :)
+            }
+            else
+            {
+                velocity *= dampening;
+            }
         }
 
         if (velocity.magnitude > maxSpeed)
@@ -129,6 +142,6 @@ public class PhysicsObject : MonoBehaviour
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
             }
         }
-        rb2d.position = rb2d.position + move.normalized * distance;
+        rb2d.position += move.normalized * distance;
     }
 }

@@ -17,7 +17,7 @@ public class PlayerInput : MonoBehaviour
     public delegate void playerAttack();                //Player wants to perform a basic attack
     public static event playerAttack onPlayerAttack;    //uses "Attack" button
 
-    public delegate void tilt(float direction);         //Player wants to tilt the wolrd: returns negative float for left or positive float for right
+    public delegate void tilt(float direction);         //Player wants to tilt the wolrd: returns -1 for left or 1 for right
     public static event tilt onTilt;                    //uses "Tilt" axis
 
     public delegate void slowMo();                      //Player wants to slow down Time
@@ -30,37 +30,41 @@ public class PlayerInput : MonoBehaviour
     //checks for Player Inputs
     void Update()
     {
-        if(Input.GetButton("Horizontal"))
+        //horizontal movement: A/D, left/right arrows, x-axis on joysticks
+        if(Input.GetAxisRaw("Horizontal") != 0)
         {
             onMove?.Invoke(Input.GetAxis("Horizontal"));
             Debug.Log("horizontal: " + Input.GetAxis("Horizontal"));
         }
+        //stomp-attack if player presses downwards-movement AND (Attack OR Tilt)
+        else if (Input.GetAxisRaw("Vertical") < 0 && (Input.GetButtonDown("Attack") || Input.GetButtonDown("Tilt")))
+        {
+            onStomp?.Invoke();
+            Debug.Log("stomp");
+        }
+        //jumping
         else if (Input.GetButton("Jump"))
         {
             onJump?.Invoke();
             Debug.Log("jump");
         }
+        //basic attack
         else if (Input.GetButtonDown("Attack"))
         {
             onPlayerAttack?.Invoke();
             Debug.Log("attack");
         }
+        //Tilt
         else if (Input.GetButtonDown("Tilt"))
         {
             onTilt?.Invoke(Input.GetAxisRaw("Tilt"));
             Debug.Log("tilt: " + Input.GetAxis("Tilt"));
         }
+        //Slow Down Time
         else if (Input.GetButton("SlowMo"))
         {
             onSlowMo?.Invoke();
             Debug.Log("slowmo");
-        }
-        else if(Input.GetAxisRaw("Vertical") < 0 && ( Input.GetButtonDown("Attack") || Input.GetButtonDown("Tilt") ))  //stomp-attack if player presses downwards-movement AND (Attack OR Tilt)
-        {
-            onStomp?.Invoke();
-            Debug.Log("stomp");
-        }
-
-
+        }        
     }
 }

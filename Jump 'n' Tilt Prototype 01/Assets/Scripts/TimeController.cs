@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameActions;
 
 namespace TimeControlls //To access the TimeController add: "using TimeControlls;" at the top
 {
@@ -13,13 +14,20 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
 
         private float timeSpeed;    //1 is normal speed, < 1 is slower speed, > 1 faster speed
         private float speedAdjustedDeltaTime;
+        private bool isSlow;
 
         public delegate void timeSpeedChange();
         public static event timeSpeedChange onTimeSpeedChange;  //Classes can subscribe to this event. It gets called when a time speed change accurs. Don't forget to unsubscribe on disable!
 
         private void Start()
         {
+            PlayerInput.onSlowMo += switchSloMo;
             timeSpeed = 1;
+        }
+
+        private void OnDisable()
+        {
+            PlayerInput.onSlowMo -= switchSloMo;
         }
 
         //Author: Marvin Winkler
@@ -37,7 +45,25 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
             }
             //++
 
+            isSlow = false;
+            timeSpeed = 1;
+        }
+
+        //Author: Marvin Winkler
+        private void LateUpdate()
+        {
+            if (isSlow)
+                timeSpeed = 0.02f;
+
             timeAdjustments();
+        }
+
+        //Is subscribed to onSloMo
+        //Author: Marvin Winkler
+
+        private void switchSloMo()
+        {
+            isSlow = true;
         }
 
         //Author: Marvin Winkler

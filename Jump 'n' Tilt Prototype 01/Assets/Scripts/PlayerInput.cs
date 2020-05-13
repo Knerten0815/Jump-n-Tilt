@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Author: Kevin Zielke
 namespace GameActions //To access the PlayerInput add: "using GameActions;" at the top
 {
     public class PlayerInput : MonoBehaviour
     {
-        //Author: Kevin Zielke
         //This class throws events for all in-game-actions the player wants to perform. It DOES NOT check if the player is able to perform the action.
         //Buttons and Axes can be set in Unity via the Input Manager (Edit / Project Settings / Input Manager)
-        //Please remember to write alterations in the Input Manager into the comments here. 
+        //Please remember to write control-alterations in the Input Manager into the Controls.docx in Goggle Drive and into the comments here. 
 
         public delegate void move(float horizontal);        //Player wants to move horizontally: negative float for left or positive float for right
         public static event move onMove;                    //uses "Horizontal" axis

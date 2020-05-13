@@ -43,26 +43,30 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
             {
                 onJump?.Invoke();
             }
-            //basic attack: left mouse-button; B on gamepad
-            if (Input.GetButtonDown("Attack"))
+            //stomp-attack: S, down-arrow on keyboard; left joystick on gamepad AND ("Attack" button OR "Tilt" axis)
+            if (Input.GetAxisRaw("Vertical") < 0 && (Input.GetButtonDown("Attack") || Input.GetButtonDown("Tilt")))
             {
-                onPlayerAttack?.Invoke();
+                onStomp?.Invoke();
             }
-            //Tilt: Q/E on keyboard; LB/RB on Gamepad
-            if (Input.GetButtonDown("Tilt"))
+            else    //important not to throw stomp events and attack or tilt events at the same time
             {
-                onTilt?.Invoke(Input.GetAxisRaw("Tilt"));
+                //basic attack: left mouse-button; B on gamepad
+                if (Input.GetButtonDown("Attack"))
+                {
+                    onPlayerAttack?.Invoke();
+                }
+                //Tilt: Q/E on keyboard; LB/RB on Gamepad
+                if (Input.GetButtonDown("Tilt"))
+                {
+                    onTilt?.Invoke(Input.GetAxisRaw("Tilt"));
+                }
             }
             //Slow Down Time: LeftShift on keyboard; Y on Gamepad
             if (Input.GetButton("SlowMo"))
             {
                 onSlowMo?.Invoke();
             }
-            //stomp-attack: S, down-arrow on keyboard; left joystick on gamepad AND ("Attack" button OR "Tilt" axis)
-            if (Input.GetAxisRaw("Vertical") < 0 && (Input.GetButtonDown("Attack") || Input.GetButtonDown("Tilt")))
-            {
-                onStomp?.Invoke();
-            }
+            
         }
     }
 }

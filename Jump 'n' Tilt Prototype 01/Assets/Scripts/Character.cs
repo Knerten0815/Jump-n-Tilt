@@ -43,6 +43,7 @@ public class Character : PhysicsObject
     {
         if (jumpable)
         {
+            // Gravity Modifier of PhysicsObject.class needs to be adjusted according to jumpHeight for good game feeling
             velocity = new Vector2(velocity.x, jumpHeight);
         }
     }

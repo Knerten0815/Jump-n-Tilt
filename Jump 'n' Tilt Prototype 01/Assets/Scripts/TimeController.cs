@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameActions;
 
 namespace TimeControlls //To access the TimeController add: "using TimeControlls;" at the top
 {
@@ -19,7 +20,13 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
 
         private void Start()
         {
+            PlayerInput.onSlowMo += switchSloMo;
             timeSpeed = 1;
+        }
+
+        private void OnDisable()
+        {
+            PlayerInput.onSlowMo -= switchSloMo;
         }
 
         //Author: Marvin Winkler
@@ -38,6 +45,21 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
             //++
 
             timeAdjustments();
+        }
+
+        //Is subscribed to onSloMo (should be called onButtonDown)
+        //Author: Marvin Winkler
+
+        private void switchSloMo()
+        {
+            if (timeSpeed == 1)
+            {
+                setTimeSpeed(0.02f);
+            }
+            else if (timeSpeed == 0.02f)
+            {
+                setTimeSpeed(1);
+            }
         }
 
         //Author: Marvin Winkler

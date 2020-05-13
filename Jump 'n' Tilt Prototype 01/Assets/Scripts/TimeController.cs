@@ -14,6 +14,7 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
 
         private float timeSpeed;    //1 is normal speed, < 1 is slower speed, > 1 faster speed
         private float speedAdjustedDeltaTime;
+        private bool isSlow;
 
         public delegate void timeSpeedChange();
         public static event timeSpeedChange onTimeSpeedChange;  //Classes can subscribe to this event. It gets called when a time speed change accurs. Don't forget to unsubscribe on disable!
@@ -44,22 +45,25 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
             }
             //++
 
+            isSlow = false;
+            timeSpeed = 1;
+        }
+
+        //Author: Marvin Winkler
+        private void LateUpdate()
+        {
+            if (isSlow)
+                timeSpeed = 0.02f;
+
             timeAdjustments();
         }
 
-        //Is subscribed to onSloMo (should be called onButtonDown)
+        //Is subscribed to onSloMo
         //Author: Marvin Winkler
 
         private void switchSloMo()
         {
-            if (timeSpeed == 1)
-            {
-                setTimeSpeed(0.02f);
-            }
-            else if (timeSpeed == 0.02f)
-            {
-                setTimeSpeed(1);
-            }
+            isSlow = true;
         }
 
         //Author: Marvin Winkler

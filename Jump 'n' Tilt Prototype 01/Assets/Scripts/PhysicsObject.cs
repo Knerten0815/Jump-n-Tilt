@@ -61,7 +61,7 @@ public class PhysicsObject : MonoBehaviour
         float deltaTime = timeController.getSpeedAdjustedDeltaTime();
         Vector2 deltaPosition;
 
-        velocity += gravityModifier * Physics2D.gravity * Time.fixedDeltaTime;
+        velocity += gravityModifier * Physics2D.gravity * deltaTime;
         deltaPosition = velocity * deltaTime;
 
         grounded = false;

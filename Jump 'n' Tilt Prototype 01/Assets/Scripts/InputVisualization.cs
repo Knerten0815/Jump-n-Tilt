@@ -36,7 +36,7 @@ public class InputVisualization : MonoBehaviour
 
         //Subscribe methods to events in the Start-method
         PlayerInput.onHorizontal += Arrows;
-        PlayerInput.onJump += A_Button;
+        //PlayerInput.onJump += A_Button;
         PlayerInput.onPlayerAttack += B_Button;
         PlayerInput.onSlowMo += Y_Button;
         PlayerInput.onTilt += Schultertasten;
@@ -51,7 +51,7 @@ public class InputVisualization : MonoBehaviour
         //Unsubscribing methods from events, when this component is disabled or destroyed.
         //This is important, otherwise the event will try to call methods, that are eventually not accessable anymore and throw NullExceptions
         PlayerInput.onHorizontal -= Arrows;
-        PlayerInput.onJump -= A_Button;
+        //PlayerInput.onJump -= A_Button;
         PlayerInput.onPlayerAttack -= B_Button;
         PlayerInput.onSlowMo -= Y_Button;
         PlayerInput.onTilt -= Schultertasten;

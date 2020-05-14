@@ -15,7 +15,7 @@ public class InputTest : MonoBehaviour
     {
         //subscribing methods to events in the Start-method
         PlayerInput.onHorizontal += Move;
-        PlayerInput.onJump += Jump;
+        //PlayerInput.onJump += Jump;
         PlayerInput.onPlayerAttack += Attack;
         PlayerInput.onTilt += Tilt;
         PlayerInput.onSlowMo += SlowMo;
@@ -27,7 +27,7 @@ public class InputTest : MonoBehaviour
         //unsubscribing methods from events, when this component is disabled or destroyed.
         //This is important, otherwise the event will try to call methods, that are eventually not accessable anymore and throw NullExceptions
         PlayerInput.onHorizontal -= Move;
-        PlayerInput.onJump -= Jump;
+        //PlayerInput.onJump -= Jump;
         PlayerInput.onPlayerAttack -= Attack;
         PlayerInput.onTilt -= Tilt;
         PlayerInput.onSlowMo -= SlowMo;

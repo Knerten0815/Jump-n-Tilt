@@ -21,8 +21,11 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
 
         ///////////////////////////////////////////////////////////Game Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public delegate void jump();                        //Player wants to jump
-        public static event jump onJump;                    //uses "Jump" button
+        public delegate void jumpButtonDown();              //Player presses jump Button
+        public static event jumpButtonDown onJumpButtonDown;//uses "Jump" button
+
+        public delegate void jumpButtonUp();                //Player releases jump Button
+        public static event jumpButtonUp onJumpButtonUp;    //uses "Jump" button
 
         public delegate void playerAttack();                //Player wants to perform a basic attack
         public static event playerAttack onPlayerAttack;    //uses "Attack" button
@@ -53,13 +56,13 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
         {
             ////////////////////////////////////////////////Navigation Input for Game and Menus\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
             
-            //horizontal movement: A/D, left/right arrows on keyboard; left joystick on gamepad
+            //horizontal navigation and movement: A/D, left/right arrows on keyboard; left joystick on gamepad
             if (Input.GetAxisRaw("Horizontal") != 0)
             {
                 onHorizontal?.Invoke(Input.GetAxis("Horizontal"));
             }
 
-            //horizontal movement: A/D, left/right arrows on keyboard; left joystick on gamepad
+            //vertical navigation and movement: W/S, up/down arrows on keyboard; left joystick on gamepad
             if (Input.GetAxisRaw("Vertical") != 0)
             {
                 onVertical?.Invoke(Input.GetAxis("Vertical"));
@@ -67,10 +70,14 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
 
             ///////////////////////////////////////////////////////////Game Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
             
-            //jumping: space on keyboard; A on gamepad
-            if (Input.GetButton("Jump"))
+            //jump: space on keyboard; A on gamepad
+            if (Input.GetButtonDown("Jump"))
             {
-                onJump?.Invoke();
+                onJumpButtonDown?.Invoke();
+            }
+            else if (Input.GetButtonUp("Jump"))
+            {
+                onJumpButtonUp?.Invoke();
             }
 
             //stomp-attack: S, down-arrow on keyboard; left joystick on gamepad AND ("Attack" button OR "Tilt" axis)

@@ -35,7 +35,7 @@ public class InputVisualization : MonoBehaviour
         Button_R = GameObject.Find("Button_R");
 
         //Subscribe methods to events in the Start-method
-        PlayerInput.onMove += Arrows;
+        PlayerInput.onHorizontal += Arrows;
         PlayerInput.onJump += A_Button;
         PlayerInput.onPlayerAttack += B_Button;
         PlayerInput.onSlowMo += Y_Button;
@@ -50,7 +50,7 @@ public class InputVisualization : MonoBehaviour
     {
         //Unsubscribing methods from events, when this component is disabled or destroyed.
         //This is important, otherwise the event will try to call methods, that are eventually not accessable anymore and throw NullExceptions
-        PlayerInput.onMove -= Arrows;
+        PlayerInput.onHorizontal -= Arrows;
         PlayerInput.onJump -= A_Button;
         PlayerInput.onPlayerAttack -= B_Button;
         PlayerInput.onSlowMo -= Y_Button;

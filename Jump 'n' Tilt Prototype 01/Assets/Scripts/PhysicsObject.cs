@@ -64,7 +64,7 @@ public class PhysicsObject : MonoBehaviour
 
         velocity += gravityModifier * Physics2D.gravity * Time.fixedDeltaTime;
         deltaPosition = velocity * deltaTime;
-
+        
         grounded = false;
         jumpable = false;
 

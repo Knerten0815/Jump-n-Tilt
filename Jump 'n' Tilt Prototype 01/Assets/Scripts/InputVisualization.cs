@@ -18,13 +18,14 @@ public class InputVisualization : MonoBehaviour
     private GameObject Button_Y;
     private GameObject Button_L;
     private GameObject Button_R;
+ 
 
     private Color highlighted = new Color(255, 255, 255); //Color for the highlighted Buttons
     private Color dark = new Color(203, 203, 203); //Color if the Buttons are not pressed anymore
     // Start is called before the first frame update
     void Start()
     {
-        //Initialize all Buttons, Y is currently without function
+        //Initialize all Buttons, X is currently without function and not used
         Button_Left = GameObject.Find("Button_Left");
         Button_Right = GameObject.Find("Button_Right");
         Button_A = GameObject.Find("Button_A");
@@ -35,8 +36,8 @@ public class InputVisualization : MonoBehaviour
         Button_R = GameObject.Find("Button_R");
 
         //Subscribe methods to events in the Start-method
-        PlayerInput.onMove += Arrows;
-        PlayerInput.onJump += A_Button;
+        PlayerInput.onHorizontal += Arrows;
+        PlayerInput.onJumpButtonDown += A_Button;
         PlayerInput.onPlayerAttack += B_Button;
         PlayerInput.onSlowMo += Y_Button;
         PlayerInput.onTilt += Schultertasten;
@@ -50,8 +51,8 @@ public class InputVisualization : MonoBehaviour
     {
         //Unsubscribing methods from events, when this component is disabled or destroyed.
         //This is important, otherwise the event will try to call methods, that are eventually not accessable anymore and throw NullExceptions
-        PlayerInput.onMove -= Arrows;
-        PlayerInput.onJump -= A_Button;
+        PlayerInput.onHorizontal -= Arrows;
+        PlayerInput.onJumpButtonDown -= A_Button;
         PlayerInput.onPlayerAttack -= B_Button;
         PlayerInput.onSlowMo -= Y_Button;
         PlayerInput.onTilt -= Schultertasten;

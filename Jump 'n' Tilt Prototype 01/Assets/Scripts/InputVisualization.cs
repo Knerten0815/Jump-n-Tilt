@@ -20,8 +20,8 @@ public class InputVisualization : MonoBehaviour
     private GameObject Button_R;
  
 
-    private Color highlighted = new Color(255, 255, 255); //Color for the highlighted Buttons
-    private Color dark = new Color(203, 203, 203); //Color if the Buttons are not pressed anymore
+    private Color highlighted = new Color(1f, 1f, 1f); //Color for the highlighted Buttons
+    private Color dark = new Color(0.79f, 0.79f, 0.79f); //Color if the Buttons are not pressed anymore
     // Start is called before the first frame update
     void Start()
     {
@@ -36,14 +36,30 @@ public class InputVisualization : MonoBehaviour
         Button_R = GameObject.Find("Button_R");
 
         //Subscribe methods to events in the Start-method
-        PlayerInput.onHorizontal += Arrows;
+        PlayerInput.onHorizontalDown += Arrows;
         PlayerInput.onJumpButtonDown += A_Button;
-        PlayerInput.onPlayerAttack += B_Button;
-        PlayerInput.onSlowMo += Y_Button;
-        PlayerInput.onTilt += Schultertasten;
-        
+        PlayerInput.onPlayerAttackDown += B_Button;
+        PlayerInput.onSlowMoDown += Y_Button;
+        PlayerInput.onTiltDown += SchultertastenDown;
+  
+       
 
 
+        PlayerInput.onJumpButtonUp += A_ButtonUp;
+        PlayerInput.onPlayerAttackUp += B_ButtonUp;
+        PlayerInput.onSlowMoUp += Y_ButtonUp;
+        PlayerInput.onHorizontalUp += ArrowsUp;
+        PlayerInput.onTiltUp += SchultertastenUp;
+     
+
+
+
+
+
+    }
+    private void Update()
+    {
+       
 
     }
 
@@ -51,11 +67,20 @@ public class InputVisualization : MonoBehaviour
     {
         //Unsubscribing methods from events, when this component is disabled or destroyed.
         //This is important, otherwise the event will try to call methods, that are eventually not accessable anymore and throw NullExceptions
-        PlayerInput.onHorizontal -= Arrows;
+        PlayerInput.onHorizontalDown -= Arrows;
         PlayerInput.onJumpButtonDown -= A_Button;
-        PlayerInput.onPlayerAttack -= B_Button;
-        PlayerInput.onSlowMo -= Y_Button;
-        PlayerInput.onTilt -= Schultertasten;
+        PlayerInput.onPlayerAttackDown -= B_Button;
+        PlayerInput.onSlowMoDown -= Y_Button;
+        PlayerInput.onTiltDown -= SchultertastenDown;
+        
+
+        PlayerInput.onJumpButtonUp -= A_ButtonUp;
+        PlayerInput.onPlayerAttackUp -= B_ButtonUp;
+        PlayerInput.onSlowMoUp -= Y_ButtonUp;
+        PlayerInput.onHorizontalUp -= ArrowsUp;
+        PlayerInput.onTiltUp -= SchultertastenUp;
+       
+
 
     }
 
@@ -66,11 +91,17 @@ public class InputVisualization : MonoBehaviour
         {
             Button_Left.GetComponent<Image>().color = highlighted;
         }
-        if (horizontal > 0)
+        else if (horizontal > 0)
         {
             Button_Right.GetComponent<Image>().color = highlighted;
         }
         
+    }
+
+    private void ArrowsUp(float horizontal)
+    {
+        Button_Left.GetComponent<Image>().color = dark;
+        Button_Right.GetComponent<Image>().color = dark;
     }
 
     private void A_Button()
@@ -78,9 +109,19 @@ public class InputVisualization : MonoBehaviour
         Button_A.GetComponent<Image>().color = highlighted;
     }
 
+    private void A_ButtonUp()
+    {
+        Button_A.GetComponent<Image>().color = dark;
+    }
+
+
     private void B_Button()
     {
         Button_B.GetComponent<Image>().color = highlighted;
+    }
+    private void B_ButtonUp()
+    {
+        Button_B.GetComponent<Image>().color = dark;
     }
 
     private void Y_Button()
@@ -88,7 +129,12 @@ public class InputVisualization : MonoBehaviour
         Button_Y.GetComponent<Image>().color = highlighted;
     }
 
-    private void Schultertasten(float direction)
+    private void Y_ButtonUp()
+    {
+        Button_Y.GetComponent<Image>().color = dark;
+    }
+
+    private void SchultertastenDown(float direction)
     {
         if (direction < 0)
         {
@@ -99,4 +145,12 @@ public class InputVisualization : MonoBehaviour
             Button_R.GetComponent<Image>().color = highlighted;
         }
     }
+
+    private void SchultertastenUp(float direction)
+    {
+        Button_L.GetComponent<Image>().color = dark;
+        Button_R.GetComponent<Image>().color = dark;
+    }
+
+    
 }

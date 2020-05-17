@@ -19,8 +19,11 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
         public delegate void horizontalUp(float horizontal);  
         public static event horizontalUp onHorizontalUp;        
 
-        public delegate void vertical (float horizontal);   //Player wants to navigate or navigate vertically: negative float for left or 
-        public static event vertical onVertical;            //positive float for right. Uses "Vertical" axis
+        public delegate void verticalDown (float vertical);   //Player wants to navigate or navigate vertically: negative float for left or 
+        public static event verticalDown onVerticalDown;            //positive float for right. Uses "Vertical" axis
+
+        public delegate void verticalUp(float vertical);   //Player wants to navigate or navigate vertically: negative float for left or 
+        public static event verticalUp onVerticalUp;            //positive float for right. Uses "Vertical" axis
 
         ///////////////////////////////////////////////////////////Game Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -83,11 +86,15 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
             //vertical navigation and movement: W/S, up/down arrows on keyboard; left joystick on gamepad
             if (Input.GetAxisRaw("Vertical") != 0)
             {
-                onVertical?.Invoke(Input.GetAxis("Vertical"));
+                onVerticalDown?.Invoke(Input.GetAxis("Vertical"));
+            }
+            else if (Input.GetAxisRaw("Vertical") == 0)
+            {
+                onVerticalUp?.Invoke(Input.GetAxis("Vertical"));
             }
 
             ///////////////////////////////////////////////////////////Game Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-            
+
             //jump: space on keyboard; A on gamepad
             if (Input.GetButtonDown("Jump"))
             {

@@ -1839,7 +1839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5035e571502f534dbd3d0d457804641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minGroundNormalY: 0.9
+  minGroundNormalY: 0.5
   minJumpNormalY: 0.3
   gravityModifier: 4
   dampening: 0.85
@@ -1847,7 +1847,9 @@ MonoBehaviour:
   moveSpeed: 5
   jumpHeight: 16
   jumpHeightReducer: 0.5
-  isFacingRight: 1
+  slideSpeed: 2
+  slideReducer: 0.5
+  isFacingRight: 0
   isSliding: 0
   jumpCount: 2
   jumpCountLeft: 0

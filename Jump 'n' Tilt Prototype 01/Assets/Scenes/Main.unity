@@ -150,8 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b57e51e8a8ecd44a46e64cfd9bc814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAngle: 11.25
-  rotationStep: 0.35
+  tiltAngle: 10
+  maxTilt: 0.35
+  tiltStep: 1
+  tiltSpeed: 10
+  tiltBackSpeed: 0.1
 --- !u!4 &13874681
 Transform:
   m_ObjectHideFlags: 0
@@ -251,7 +254,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &128655613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,7 +310,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 0.33639997
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -2016,7 +2019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &1103180455
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2208,7 +2211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1869670403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2264,7 +2267,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 0.043565918
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1

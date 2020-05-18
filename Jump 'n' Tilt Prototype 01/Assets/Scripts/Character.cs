@@ -38,8 +38,8 @@ public class Character : PhysicsObject
         moveDirection = 0;
         slideDirection = new Vector2(0f, 0f);
 
-        Debug.Log("Velocity: " + velocity);
-        Debug.Log("Groundnormal: " + groundNormal);
+       // Debug.Log("Velocity: " + velocity);
+       // Debug.Log("Groundnormal: " + groundNormal);
     }
 
     // Author: Nicole Mynarek, Michelle Limbach

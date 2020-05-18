@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Author: Kevin Zielke
+//Author: Kevin Zielke, Michelle Limbach
 namespace GameActions //To access the PlayerInput add: "using GameActions;" at the top
 {
     public class PlayerInput : MonoBehaviour
@@ -13,11 +13,17 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
 
         ////////////////////////////////////////////////Navigation Input for Game and Menus\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public delegate void horizontal(float horizontal);  //Player wants to navigate or navigate horizontally: negative float for left or
-        public static event horizontal onHorizontal;        //positive float for right. Uses "Horizontal" axis
+        public delegate void horizontalDown(float horizontal);  //Player wants to navigate or navigate horizontally: negative float for left or
+        public static event horizontalDown onHorizontalDown;        //positive float for right. Uses "Horizontal" axis
 
-        public delegate void vertical (float horizontal);   //Player wants to navigate or navigate vertically: negative float for left or 
-        public static event vertical onVertical;            //positive float for right. Uses "Vertical" axis
+        public delegate void horizontalUp(float horizontal);  
+        public static event horizontalUp onHorizontalUp;        
+
+        public delegate void verticalDown (float vertical);   //Player wants to navigate or navigate vertically: negative float for left or 
+        public static event verticalDown onVerticalDown;            //positive float for right. Uses "Vertical" axis
+
+        public delegate void verticalUp(float vertical);   //Player wants to navigate or navigate vertically: negative float for left or 
+        public static event verticalUp onVerticalUp;            //positive float for right. Uses "Vertical" axis
 
         ///////////////////////////////////////////////////////////Game Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -27,17 +33,28 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
         public delegate void jumpButtonUp();                //Player releases jump Button
         public static event jumpButtonUp onJumpButtonUp;    //uses "Jump" button
 
-        public delegate void playerAttack();                //Player wants to perform a basic attack
-        public static event playerAttack onPlayerAttack;    //uses "Attack" button
+        public delegate void playerAttackDown();                //Player wants to perform a basic attack
+        public static event playerAttackDown onPlayerAttackDown;    //uses "Attack" button
 
-        public delegate void tilt(float direction);         //Player wants to tilt the wolrd: -1 for left or 1 for right
-        public static event tilt onTilt;                    //uses "Tilt" axis
+        public delegate void playerAttackUp();                //Player releases basic attack button
+        public static event playerAttackUp onPlayerAttackUp;    //uses "Attack" button
 
-        public delegate void slowMo();                      //Player wants to slow down Time
-        public static event slowMo onSlowMo;                //uses "SlowMo" button
+        public delegate void tiltDown(float direction);         //Player wants to tilt the wolrd: -1 for left or 1 for right
+        public static event tiltDown onTiltDown;                    //uses "Tilt" axis
+
+        public delegate void tiltUp(float direction);         //Player releases "Tilt" Button
+        public static event tiltUp onTiltUp;                    //uses "Tilt" axis
+
+        public delegate void slowMoDown();                      //Player wants to slow down Time
+        public static event slowMoDown onSlowMoDown;                //uses "SlowMo" button
+
+        public delegate void slowMoUp();                      //Player releases "SlowMo" button
+        public static event slowMoUp onSlowMoUp;                //uses "SlowMo" button
 
         public delegate void stomp();                       //Player wants to perform a stomp-attack
         public static event stomp onStomp;                  //uses "Vertical" axis and "Attack" or "Tilt" buttons
+
+    
 
         //////////////////////////////////////////////////////////Menu Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -59,17 +76,25 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
             //horizontal navigation and movement: A/D, left/right arrows on keyboard; left joystick on gamepad
             if (Input.GetAxisRaw("Horizontal") != 0)
             {
-                onHorizontal?.Invoke(Input.GetAxis("Horizontal"));
+                onHorizontalDown?.Invoke(Input.GetAxis("Horizontal"));
+            }
+            else if(Input.GetAxisRaw("Horizontal") == 0)
+            {
+                onHorizontalUp?.Invoke(Input.GetAxis("Horizontal"));
             }
 
             //vertical navigation and movement: W/S, up/down arrows on keyboard; left joystick on gamepad
             if (Input.GetAxisRaw("Vertical") != 0)
             {
-                onVertical?.Invoke(Input.GetAxis("Vertical"));
+                onVerticalDown?.Invoke(Input.GetAxis("Vertical"));
+            }
+            else if (Input.GetAxisRaw("Vertical") == 0)
+            {
+                onVerticalUp?.Invoke(Input.GetAxis("Vertical"));
             }
 
             ///////////////////////////////////////////////////////////Game Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-            
+
             //jump: space on keyboard; A on gamepad
             if (Input.GetButtonDown("Jump"))
             {
@@ -85,25 +110,38 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
             {
                 onStomp?.Invoke();
             }
+           
             else    //important not to throw stomp events and attack or tilt events at the same time
             {
                 //basic attack: left mouse-button; B on gamepad
                 if (Input.GetButtonDown("Attack"))
                 {
-                    onPlayerAttack?.Invoke();
+                    onPlayerAttackDown?.Invoke();
+                }
+                else if (Input.GetButtonUp("Attack"))
+                {
+                    onPlayerAttackUp?.Invoke();
                 }
 
                 //Tilt: Q/E on keyboard; LB/RB on Gamepad
                 if (Input.GetButtonDown("Tilt"))
                 {
-                    onTilt?.Invoke(Input.GetAxisRaw("Tilt"));
+                    onTiltDown?.Invoke(Input.GetAxisRaw("Tilt"));
+                }
+                else if (Input.GetButtonUp("Tilt"))
+                {
+                    onTiltUp?.Invoke(Input.GetAxisRaw("Tilt"));
                 }
             }
 
             //Slow Down Time: LeftShift on keyboard; Y on Gamepad
-            if (Input.GetButton("SlowMo"))
+            if (Input.GetButtonDown("SlowMo"))
             {
-                onSlowMo?.Invoke();
+                onSlowMoDown?.Invoke();
+            }
+            else if (Input.GetButtonUp("SlowMo"))
+            {
+                onSlowMoUp?.Invoke();
             }
 
             //////////////////////////////////////////////////////////Menu Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

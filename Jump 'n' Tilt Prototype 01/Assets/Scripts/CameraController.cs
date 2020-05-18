@@ -20,14 +20,14 @@ public class CameraController : MonoBehaviour
         cam = Camera.main;
 
         //only for testing. Needs to be subscribed to the actual Tilt/Stomp event, not just the PlayerInput
-        PlayerInput.onTilt += CameraShake;
+        PlayerInput.onTiltDown += CameraShake;
         PlayerInput.onStomp += CameraShake;
     }
 
     //unsubscribing events
     private void OnDisable()
     {
-        PlayerInput.onTilt -= CameraShake;
+        PlayerInput.onTiltDown -= CameraShake;
         PlayerInput.onStomp -= CameraShake;
     }
 

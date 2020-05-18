@@ -150,11 +150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b57e51e8a8ecd44a46e64cfd9bc814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiltAngle: 10
+  tiltAngle: 11.25
   maxTilt: 0.35
-  tiltStep: 1
-  tiltSpeed: 10
-  tiltBackSpeed: 0.1
+  tiltSpeed: 0.05
+  tiltBackSpeed: 0.015
 --- !u!4 &13874681
 Transform:
   m_ObjectHideFlags: 0
@@ -254,7 +253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &128655613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,7 +309,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 1
+  m_Mass: 0.33639997
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -1768,7 +1767,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 1.03, y: -2.46, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2019,7 +2018,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &1103180455
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2211,7 +2210,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1869670403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2267,7 +2266,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 1
+  m_Mass: 0.043565918
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1

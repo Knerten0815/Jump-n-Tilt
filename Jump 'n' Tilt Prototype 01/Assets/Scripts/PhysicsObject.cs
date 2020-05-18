@@ -24,8 +24,8 @@ public class PhysicsObject : MonoBehaviour
     protected ContactFilter2D contactFilter;
     protected RaycastHit2D[] hitbuffer = new RaycastHit2D[16];
 
-    protected const float minMoveDistance = 0.0000001f;   //Movement less than this gets ignored
-    protected const float shellRadius = 0.005f;         //Prevents objects from falling thru colliders if they have to hight velocity
+    protected const float minMoveDistance = 0.0000001f;     //Movement less than this gets ignored
+    protected const float shellRadius = 0.005f;             //Prevents objects from falling thru colliders if they have to hight velocity
     protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
     protected TimeController timeController;
 
@@ -61,7 +61,7 @@ public class PhysicsObject : MonoBehaviour
         float deltaTime = timeController.getSpeedAdjustedDeltaTime();
         Vector2 deltaPosition;
 
-        velocity += gravityModifier * Physics2D.gravity * Time.fixedDeltaTime;
+        velocity += gravityModifier * Physics2D.gravity * deltaTime;
         deltaPosition = velocity * deltaTime;
         
         grounded = false;
@@ -79,7 +79,7 @@ public class PhysicsObject : MonoBehaviour
         if (grounded)
         {
             if (timeController.getTimeSpeed() < 1) {
-                velocity *= (dampening + (1-dampening) * timeController.getTimeSpeed()); //This is not perfect, currently there is too much dampening when time is slowed down. But this could also be a feature if we like it :)
+                velocity *= (dampening + (1-dampening) * timeController.getTimeSpeed());
             }
             else
             {

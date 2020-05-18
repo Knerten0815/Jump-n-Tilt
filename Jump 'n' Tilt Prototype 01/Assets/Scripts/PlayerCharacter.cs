@@ -61,4 +61,23 @@ public class PlayerCharacter : Character
         base.Jump();
         jumpCountLeft--;
     }
-}
+    /*
+    *
+    * Checks for collision with a pickup object.
+    * 
+    * @Katja
+    *
+    */
+    protected void OnTriggerEnter2D(Collider2D other)
+    {
+        //Check the provided Collider2D parameter other to see if it is tagged "PickUp", if it is...
+        //Doing it like this can be costly if the function returns null, if we ever have trouble performance here it could be optimized
+        PickUp pickUpComponent = other.gameObject.GetComponent<PickUp>();
+        if (pickUpComponent != null)
+        {
+            other.gameObject.SetActive(false);
+            pickUpComponent.hit();
+        }
+    }
+
+    }

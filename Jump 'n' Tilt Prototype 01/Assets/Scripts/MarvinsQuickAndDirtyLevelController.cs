@@ -52,7 +52,7 @@ public class MarvinsQuickAndDirtyLevelController : MonoBehaviour
         {
             tiltDirection = Input.GetAxis("Tilt");
         }
-        if (Mathf.Abs(currentRotation) < 0.01f)
+        if (Mathf.Abs(currentRotation) < 0.5f)
         {
             currentRotation = 0;
             lastTiltDirection = 0;

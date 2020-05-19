@@ -28,7 +28,7 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
         {
             PlayerInput.onSlowMoDown -= switchSloMo;
         }
-
+        /*
         //Author: Marvin Winkler
         void Update()
         {
@@ -38,7 +38,7 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
                 switchSloMo();
             //++
         }
-
+        */
         //Author: Marvin Winkler
         private void LateUpdate()
         {

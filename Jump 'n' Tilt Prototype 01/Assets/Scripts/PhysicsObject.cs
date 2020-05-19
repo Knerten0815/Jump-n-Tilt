@@ -24,8 +24,8 @@ public class PhysicsObject : MonoBehaviour
     protected ContactFilter2D contactFilter;
     protected RaycastHit2D[] hitbuffer = new RaycastHit2D[16];
 
-    protected const float minMoveDistance = 0.0000001f;     //Movement less than this gets ignored
-    protected const float shellRadius = 0.005f;             //Prevents objects from falling thru colliders if they have to hight velocity
+    protected const float minMoveDistance = 0.001f;     //Movement less than this gets ignored
+    protected const float shellRadius = 0.01f;             //Prevents objects from falling thru colliders if they have to hight velocity
     protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
     protected TimeController timeController;
 

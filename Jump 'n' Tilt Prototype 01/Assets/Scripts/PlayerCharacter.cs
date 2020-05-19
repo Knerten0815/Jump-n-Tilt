@@ -50,12 +50,10 @@ public class PlayerCharacter : Character
         if (jumpCountLeft <= 0)
         {
             jumpable = false;
-            //Debug.Log("Boden springbar? " + jumpable);
         }
         else
         {
             jumpable = true;
-            //Debug.Log("Boden springbar? " + jumpable);
         }
 
         base.Jump();

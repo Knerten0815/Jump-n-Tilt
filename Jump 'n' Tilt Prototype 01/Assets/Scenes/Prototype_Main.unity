@@ -12631,6 +12631,8 @@ MonoBehaviour:
   minGroundNormalY: 0.5
   minJumpNormalY: 0.3
   gravityModifier: 4
+  dampening: 0.85
+  maxSpeed: 40
   dampening: 0.67
   maxSpeed: 20
   moveSpeed: 10

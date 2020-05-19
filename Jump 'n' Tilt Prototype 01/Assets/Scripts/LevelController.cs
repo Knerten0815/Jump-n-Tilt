@@ -80,7 +80,7 @@ public class LevelController : MonoBehaviour
             
             if (currentTilt >= 0 && currentTilt < maxTilt)  //rotate the world to the right when the current rotation equals or is bigger than 0 and the limit to maxTilt is not reached yet
             {
-                TiltRight(targetRight);
+                TiltRight();
             }
             
             else if (currentTilt < 0)       //if the world is rotated to the left and the button for right rotation is pressed, the world immediately rotates to default
@@ -147,7 +147,7 @@ public class LevelController : MonoBehaviour
 
     //Author: Melanie Jäger
     //tilts world to the right
-    public void TiltRight(Quaternion target)
+    private void TiltRight()
     {
         setWorldPosition();     //empty Gameobject gets the same position as the player so that the world can rotate around the player
         setWorldParent();       //grid and background are set as children from the empty gameobject worldRotation so that they can rotate with the empty gameobject
@@ -162,7 +162,7 @@ public class LevelController : MonoBehaviour
 
     //Author: Melanie Jäger
     //tilts world to the left
-    public void TiltLeft()
+    private void TiltLeft()
     {
         setWorldPosition();     //empty Gameobject gets the same position as the player so that the world can rotate around the player
         setWorldParent();       //grid and background are set as children from the empty gameobject worldRotation so that they can rotate with the empty gameobject
@@ -177,7 +177,7 @@ public class LevelController : MonoBehaviour
 
     //Author: Melanie Jäger
     //Tilts world back to deafultRotation when the opposite button is pressed
-    public void TiltBack()
+    private void TiltBack()
     {
         setWorldPosition();     //empty Gameobject gets the same position as the player so that the world can rotate around the player
         setWorldParent();       //grid and background are set as children from the empty gameobject worldRotation so that they can rotate with the empty gameobject
@@ -193,7 +193,7 @@ public class LevelController : MonoBehaviour
 
     //Author: Melanie Jäger
     //tilts the world back automatically when tilt was activated
-    public void TiltBackDefault()
+    private void TiltBackDefault()
     {
         setWorldParent();
 

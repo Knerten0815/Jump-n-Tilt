@@ -24,8 +24,8 @@ public class CameraController : MonoBehaviour
         playerTrans = GameObject.Find("Player").transform;        
 
         //only for testing. Needs to be subscribed to the actual Tilt/Stomp event, not just the PlayerInput
-        PlayerInput.onTiltDown += CameraShake;
-        PlayerInput.onStomp += CameraShake;
+        //PlayerInput.onTiltDown += CameraShake;
+        //PlayerInput.onStomp += CameraShake;
     }
 
     private void Update()
@@ -39,8 +39,8 @@ public class CameraController : MonoBehaviour
     //unsubscribing events
     private void OnDisable()
     {
-        PlayerInput.onTiltDown -= CameraShake;
-        PlayerInput.onStomp -= CameraShake;
+        //PlayerInput.onTiltDown -= CameraShake;
+        //PlayerInput.onStomp -= CameraShake;
     }
 
     //general CameraShake

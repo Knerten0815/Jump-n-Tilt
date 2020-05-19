@@ -8,6 +8,8 @@ using GameActions;
 public class CameraController : MonoBehaviour
 {
     private Camera cam;                                 //The main camera
+    private Transform playerTrans;                          //The current position of the Player Character
+    private bool isShaking;                     //tells if the Camera is in Shaking-Mode
 
     [SerializeField] float shakeDuration = 1.2f;        //how long the camera will shake
     [SerializeField] float shakeRate = 0.05f;           //how fast the camera will shake (lower is faster)
@@ -18,10 +20,20 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
+        isShaking = false;
+        playerTrans = GameObject.Find("Player").transform;        
 
         //only for testing. Needs to be subscribed to the actual Tilt/Stomp event, not just the PlayerInput
         PlayerInput.onTiltDown += CameraShake;
         PlayerInput.onStomp += CameraShake;
+    }
+
+    private void Update()
+    {
+        if (!isShaking)
+        {
+            cam.transform.position = new Vector3(playerTrans.position.x, playerTrans.position.y, -10);
+        }
     }
 
     //unsubscribing events
@@ -49,17 +61,19 @@ public class CameraController : MonoBehaviour
     IEnumerator DoShake(float duration, float amount, float rate, float release)
     {
         //save camera position before shake
-        Vector3 camReset = cam.transform.position;
+        //Vector3 camReset = cam.transform.position;
 
         //start shaking
         Coroutine shake = StartCoroutine(Shake(amount, rate, release));
+        isShaking = true;
         
         //wait for duration seconds and stop shake
         yield return new WaitForSeconds(duration);
         StopCoroutine(shake);
+        isShaking = false;
 
         //reset camera
-        cam.transform.position = camReset; //only works with static camera for now, will need followPlayer function to work properly
+        cam.transform.position = new Vector3(playerTrans.position.x, playerTrans.position.y, -10); ; //only works with static camera for now, will need followPlayer function to work properly
     }
 
     //shakes the camera
@@ -67,7 +81,7 @@ public class CameraController : MonoBehaviour
     {
         while (true)
         {
-            Vector3 camPos = cam.transform.position;
+            Vector3 camPos = new Vector3(playerTrans.position.x, playerTrans.position.y, -10);
 
             float rmdX = Random.value;
             float rmdY = Random.value;

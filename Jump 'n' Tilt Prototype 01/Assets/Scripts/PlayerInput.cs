@@ -58,14 +58,14 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
 
         //////////////////////////////////////////////////////////Menu Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public delegate void submit();                      //Player wants to submit a selection
-        public static event submit onSubmit;                //uses "Submit" button
+        public delegate void submitDown();                      //Player wants to submit a selection
+        public static event submitDown onSubmitDown;                //uses "Submit" button
 
-        public delegate void cancel();                      //Player wants to cancel
-        public static event cancel onCancel;                //uses "Cancel" button
+        public delegate void cancelDown();                      //Player wants to cancel
+        public static event cancelDown onCancelDown;                //uses "Cancel" button
 
-        public delegate void menu();                        //Player wants to open the Menu or get one step higher in Menu Hierarchy
-        public static event menu onMenu;                    //uses "Menu" button
+        public delegate void menuDown();                        //Player wants to open the Menu or get one step higher in Menu Hierarchy
+        public static event menuDown onMenuDown;                    //uses "Menu" button
 
 
         //checks for Player Inputs
@@ -147,21 +147,21 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
             //////////////////////////////////////////////////////////Menu Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
             //Submit a selection: enter, return on keyboard; A on gamepad
-            if (Input.GetButton("Submit"))
+            if (Input.GetButtonDown("Submit"))
             {
-                onSubmit?.Invoke();
+                onSubmitDown?.Invoke();
             }
 
             //Cancel a menu: backspace on keyboard, B on gamepad
-            if (Input.GetButton("Cancel"))
+            if (Input.GetButtonDown("Cancel"))
             {
-                onCancel?.Invoke();
+                onCancelDown?.Invoke();
             }
 
             //open up Menu or move one menu higher: esc on keyboard, Start on gamepad
-            if (Input.GetButton("Menu"))
+            if (Input.GetButtonDown("Menu"))
             {
-                onMenu?.Invoke();
+                onMenuDown?.Invoke();
             }
         }
     }

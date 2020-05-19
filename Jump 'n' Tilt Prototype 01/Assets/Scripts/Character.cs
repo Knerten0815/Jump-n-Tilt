@@ -10,9 +10,10 @@ public class Character : PhysicsObject
     protected float moveDirection;              // Gets value between -1 and 1 for direction left or right if Input.GetAxisRaw is used
 
     // Values can be adjusted in inspector
-    public float moveSpeed = 5f;                // Movement Speed
+    public float moveSpeed = 10f;                // Movement Speed
     public float jumpHeight = 16f;
     public float jumpHeightReducer = 0.5f;      // Reduces jump height, if button is pressed shortly
+    public float moveWhileJumping = 5f;         // Movement value while jumping
 
     public float slideSpeed = 2f;
     public float slideReducer = 0.5f;
@@ -37,9 +38,6 @@ public class Character : PhysicsObject
         }
         moveDirection = 0;
         slideDirection = new Vector2(0f, 0f);
-
-       // Debug.Log("Velocity: " + velocity);
-       // Debug.Log("Groundnormal: " + groundNormal);
     }
 
     // Author: Nicole Mynarek, Michelle Limbach
@@ -63,7 +61,11 @@ public class Character : PhysicsObject
                 velocity = new Vector2(moveDirection * moveSpeed, velocity.y);
             }
         }
-
+        // if player is in the air and gives input, the player can move left or right
+        else if (!grounded && moveDirection != 0)
+        {
+            velocity = new Vector2(moveWhileJumping * moveDirection, velocity.y);
+        }
     }
 
     // Author: Nicole Mynarek
@@ -95,7 +97,7 @@ public class Character : PhysicsObject
 
     // Author: Nicole Mynarek, Michelle Limbach
     // Method for sliding. Player always looks in direction of the tilt. 
-    // Variable 
+    // Variable 'minGroundNormalY' from PhysicsObject.class can be adjusted for different results
     // Sliding speed still has to be adjusted
     protected virtual void Slide()
     {

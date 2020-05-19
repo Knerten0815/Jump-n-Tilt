@@ -11583,6 +11583,7 @@ MonoBehaviour:
   moveSpeed: 10
   jumpHeight: 16
   jumpHeightReducer: 0.5
+  moveWhileJumping: 5
   slideSpeed: 2
   slideReducer: 0.5
   isFacingRight: 0

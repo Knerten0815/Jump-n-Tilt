@@ -116,11 +116,15 @@ public class Character : PhysicsObject
                     if (normal.x < 0)
                     {
                         slideDirection = Vector2.Perpendicular(normal);
+                        float temp = 1f + slideDirection.x;
+                        slideDirection.x = -1 - temp*2;
                         CharacterFacingDirection(slideDirection.x);
                     }
                     else
                     {
                         slideDirection = Vector2.Perpendicular(-normal);
+                        float temp = 1f - slideDirection.x;
+                        slideDirection.x = 1 + temp*2;
                         CharacterFacingDirection(slideDirection.x);
                     }
 

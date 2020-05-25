@@ -10,11 +10,13 @@ public class LevelController : MonoBehaviour
 
     //public values can be changed in the editor
     
-    public float tiltAngle = 10f;        //orientationvalue for incremental rotation, on avarage exact value is slightly bigger
-    public float maxTilt = 0.35f;           //value für the number of Steps, 0.35 equals four steps in every direction with an angle of 11.25 degree
-                                            //with 0.35 the angle is not going to be bigger than 45 degree
+    public float tiltAngle = 10f;         //orientationvalue for incremental rotation, on avarage exact value is slightly bigger
+    public float maxTilt = 0.35f;         //value für the number of Steps, 0.35 equals four steps in every direction with an angle of 11.25 degree
+                                          //with 0.35 the angle is not going to be bigger than 45 degree
     public float tiltSpeed = 10f;         //speedvalue for the tilt
-    public float tiltBackSpeed = 2f;    //speedvalue for the automatic backtilt
+    public float tiltBackSpeed = 2f;      //speedvalue for the automatic backtilt
+
+    public float resetAngle = 0.003f;
 
     private GameObject player;            //player object for the rotation center
     private float currentTilt;            //value that holds the current tilt
@@ -221,6 +223,11 @@ public class LevelController : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, 0)), tiltBackTime);
         //transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, 0, 0), tiltBackTime);
         currentTilt = transform.rotation.z;
+
+        if(currentTilt < resetAngle && currentTilt > 0 || currentTilt > -resetAngle && currentTilt < 0)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        }
         
         unsetWorldParent();
     }

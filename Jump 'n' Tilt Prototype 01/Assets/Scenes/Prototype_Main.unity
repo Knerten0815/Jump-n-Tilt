@@ -155,6 +155,7 @@ MonoBehaviour:
   maxTilt: 0.35
   tiltSpeed: 10
   tiltBackSpeed: 2
+  resetAngle: 0.003
 --- !u!4 &13874681
 Transform:
   m_ObjectHideFlags: 0

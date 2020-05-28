@@ -7,46 +7,47 @@ using GameActions;
 //This class controls all camera movement, such as following the player through the level and shaking effects on certain events
 public class CameraController : MonoBehaviour
 {
-    private Camera cam;                                 //The main camera
-    private Transform playerTrans;                          //The current position of the Player Character
-    private bool isShaking;                     //tells if the Camera is in Shaking-Mode
-
+    // variables for experimenting with the shake animation
     [SerializeField] float shakeDuration = 1.2f;        //how long the camera will shake
-    [SerializeField] float shakeRate = 0.05f;           //how fast the camera will shake (lower is faster)
-    [SerializeField] float shakeAmount = 0.2f;          //how much the camera will shake
-    [SerializeField] float shakeRelease = 1.2f;         //how much the shakeRate slows down
+    [SerializeField] float shakeStartRate = 0.05f;      //how fast the camera will shake (lower is faster)
+    [SerializeField] float shakeAmount = 0.2f;          //how heavy the camera will shake
+    [SerializeField] float shakeRelease = 1.2f;         //how much the shakeRate slows down (should be >1. Speeds up the Shake Rate if <1)
 
-    //initializing main camera and subscribing to events
+    private Camera cam;                                 //The main camera
+    private Transform parentTrans;                      //The parent of the main camera
+    private Transform playerTrans;                      //The current position of the Player Character
+
+    private Vector2 startLerpPos, endLerpPos;            //help variables for interpolating between shake positions
+    private float lerpStartTime, currentShakeRate;
+
+    // initializing the main camera and its parent, as well as the transform of the player character
+    // also subscribing to events
     void Start()
     {
         cam = Camera.main;
-        isShaking = false;
-        playerTrans = GameObject.Find("Player").transform;        
+
+        playerTrans = GameObject.Find("Player").transform;
+        parentTrans = cam.transform.parent;
 
         //only for testing. Needs to be subscribed to the actual Tilt/Stomp event, not just the PlayerInput
-        //PlayerInput.onTiltDown += CameraShake;
-        //PlayerInput.onStomp += CameraShake;
+        PlayerInput.onTiltDown += CameraShake;
+        PlayerInput.onStomp += CameraShake;
     }
 
     private void Update()
     {
-        if (!isShaking)
-        {
-            cam.transform.position = new Vector3(playerTrans.position.x, playerTrans.position.y, -10);
-        }
-    }
+        //follow the player through the level
+        parentTrans.position = followPlayer();
 
-    //unsubscribing events
-    private void OnDisable()
-    {
-        //PlayerInput.onTiltDown -= CameraShake;
-        //PlayerInput.onStomp -= CameraShake;
+        //shake the camera
+        if (startLerpPos != null && endLerpPos != null && lerpStartTime != 0)
+            cam.transform.localPosition = smoothShake();        
     }
 
     //general CameraShake
     private void CameraShake()
     {
-        StartCoroutine(DoShake(shakeDuration, shakeAmount, shakeRate, shakeRelease));
+        StartCoroutine(DoShake(shakeDuration));        
     }
 
     ///does anybody know how to make this cleaner? PlayerInput.onTilt übergibt ein float Argument direction, was es auch muss um zu
@@ -57,51 +58,61 @@ public class CameraController : MonoBehaviour
         CameraShake();
     }
 
-    //iterating the CameraShake for duration seconds and passing through amount, rate and release to the actual shake
-    IEnumerator DoShake(float duration, float amount, float rate, float release)
+    //iterates the CameraShake for duration seconds and resets the camera afterwards
+    IEnumerator DoShake(float duration)
     {
-        //save camera position before shake
-        //Vector3 camReset = cam.transform.position;
-
         //start shaking
-        Coroutine shake = StartCoroutine(Shake(amount, rate, release));
-        isShaking = true;
+        Coroutine setShakePos = StartCoroutine(Shake());
         
         //wait for duration seconds and stop shake
         yield return new WaitForSeconds(duration);
-        StopCoroutine(shake);
-        isShaking = false;
+        StopCoroutine(setShakePos);
 
         //reset camera
-        cam.transform.position = new Vector3(playerTrans.position.x, playerTrans.position.y, -10); ; //only works with static camera for now, will need followPlayer function to work properly
+        endLerpPos = new Vector3(0, 0, -10);  //only works with static camera for now, will need followPlayer function to work properly
     }
 
-    //shakes the camera
-    IEnumerator Shake(float amount, float rate, float release)
+    //sets random positions for camera shaking and slows down the shake rate over time
+    IEnumerator Shake()
     {
+        currentShakeRate = shakeStartRate;
         while (true)
         {
-            Vector3 camPos = new Vector3(playerTrans.position.x, playerTrans.position.y, -10);
+            Vector2 camPos = new Vector3(0, 0);
 
-            float rmdX = Random.value;
-            float rmdY = Random.value;
             //some random quotation for random position
-            camPos.x += rmdX * amount * 2 - amount;
-            camPos.y += rmdY * amount * 2 - amount;
+            camPos.x += Random.value * shakeAmount * 2 - shakeAmount;
+            camPos.y += Random.value * shakeAmount * 2 - shakeAmount;
 
             //set new camera position
-            cam.transform.position = camPos;
+            lerpStartTime = Time.time;
+            endLerpPos = camPos;
 
-            //wait for rate seconds and increase waittime
-            yield return new WaitForSeconds(rate);
-            rate *= release;            
+            //wait and increase waittime for next iteration
+            yield return new WaitForSeconds(currentShakeRate);
+            startLerpPos = endLerpPos;
+            currentShakeRate *= shakeRelease;
         }
     }
 
-    //shake needs to be smoothend. No idea how to do that right now.
-    private Vector3 smoothShaking()
+    //interpolates between the shake positions for smoother shaking
+    private Vector3 smoothShake()
     {
-        return new Vector3();
+        float t = ((Time.time - lerpStartTime) / currentShakeRate);
+        Vector2 lerp = Vector2.Lerp(startLerpPos, endLerpPos, t);
+
+        return new Vector3(lerp.x, lerp.y, 0);
     }
 
+    private Vector3 followPlayer()
+    {
+        return new Vector3(playerTrans.position.x, playerTrans.position.y, -10);
+    }
+
+    //unsubscribing events
+    private void OnDisable()
+    {
+        PlayerInput.onTiltDown -= CameraShake;
+        PlayerInput.onStomp -= CameraShake;
+    }
 }

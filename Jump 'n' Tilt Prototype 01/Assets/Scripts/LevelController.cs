@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameActions;
+using TimeControlls;
 
 public class LevelController : MonoBehaviour
 {
@@ -9,16 +10,19 @@ public class LevelController : MonoBehaviour
 
     //public values can be changed in the editor
     
-    public float tiltAngle = 11.25f;        //orientationvalue for incremental rotation, on avarage exact value is slightly bigger
-    public float maxTilt = 0.35f;           //value für the number of Steps, 0.35 equals four steps in every direction with an angle of 11.25 degree
-                                            //with 0.35 the angle is not going to be bigger than 45 degree
-    public float tiltSpeed = 0.05f;         //speedvalue for the tilt
-    public float tiltBackSpeed = 0.015f;    //speedvalue for the automatic backtilt
+    public float tiltAngle = 10f;         //orientationvalue for incremental rotation, on avarage exact value is slightly bigger
+    public float maxTilt = 0.35f;         //value für the number of Steps, 0.35 equals four steps in every direction with an angle of 11.25 degree
+                                          //with 0.35 the angle is not going to be bigger than 45 degree
+    public float tiltSpeed = 10f;         //speedvalue for the tilt
+    public float tiltBackSpeed = 2f;      //speedvalue for the automatic backtilt
 
-    protected GameObject player;            //player object for the rotation center
-    protected float currentTilt;            //value that holds the current tilt
-    protected GameObject grid;              //Gameobject that holds the grid, so that the grid can be rotated
-    protected GameObject background;        //Gameobject that holds the backgroung, so that the background can be rotated
+    public float resetAngle = 0.003f;
+
+    private GameObject player;            //player object for the rotation center
+    private float currentTilt;            //value that holds the current tilt
+
+    private Transform level;
+    private TimeController timeController;
 
     private bool isAxisInUse = false;
     private float tiltTime;                 
@@ -26,20 +30,30 @@ public class LevelController : MonoBehaviour
     private bool tiltRight = false;
     private bool tiltLeft = false;
 
-    private Quaternion targetRight;     
+    private Quaternion targetRight;
     private Quaternion targetLeft;
+
+    //private Vector3 targetRight;
+    //private Vector3 targetLeft;
+
+    private void OnEnable()
+    {
+        level = GameObject.Find("Level").transform;
+        timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
+        player = GameObject.Find("Player");                  
+
+    }
 
     //Author: Melanie Jäger
     void Start()
     {
-        currentTilt = transform.rotation.z;   
+        currentTilt = transform.rotation.z;
 
-        grid = GameObject.Find("Grid");                         //find grid in the scene
-        background = GameObject.Find("Background");             //find background in the scene
-        player = GameObject.Find("Player");                     //Gameobject for the player
-                                                                //if these objects get different names these need to be changed
         targetRight = new Quaternion();
         targetLeft = new Quaternion();
+
+        //targetLeft = new Vector3();
+        //targetRight = new Vector3();
 
         PlayerInput.onTiltDown += TiltMechanic;
         PlayerInput.onTiltUp += TiltBackMechanic;
@@ -57,6 +71,8 @@ public class LevelController : MonoBehaviour
         float playerInput = Input.GetAxisRaw("Tilt");
         TiltMechanic(playerInput);
         TiltBackMechanic(playerInput);
+
+        Debug.Log(currentTilt);
     }
 
     //Author: Melanie Jäger
@@ -72,6 +88,7 @@ public class LevelController : MonoBehaviour
                 tiltTime = 0;
                 isAxisInUse = true;
                 targetRight = transform.rotation * Quaternion.Euler(new Vector3(0, 0, tiltAngle));
+                //targetRight = transform.eulerAngles + new Vector3(0, 0, tiltAngle);
             }
         }
 
@@ -103,6 +120,7 @@ public class LevelController : MonoBehaviour
                 tiltTime = 0;
                 isAxisInUse = true;
                 targetLeft = transform.rotation * Quaternion.Euler(new Vector3(0, 0, -tiltAngle));
+                //targetLeft = transform.eulerAngles + new Vector3(0, 0, -tiltAngle);
             }
         }
 
@@ -152,10 +170,11 @@ public class LevelController : MonoBehaviour
         setWorldPosition();     //empty Gameobject gets the same position as the player so that the world can rotate around the player
         setWorldParent();       //grid and background are set as children from the empty gameobject worldRotation so that they can rotate with the empty gameobject
 
-        tiltTime += tiltSpeed;
+        tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
 
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRight, tiltTime);
-        currentTilt = transform.rotation.z;  
+        //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, targetRight, tiltTime);
+        currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently
     }
@@ -167,9 +186,10 @@ public class LevelController : MonoBehaviour
         setWorldPosition();     //empty Gameobject gets the same position as the player so that the world can rotate around the player
         setWorldParent();       //grid and background are set as children from the empty gameobject worldRotation so that they can rotate with the empty gameobject
 
-        tiltTime += tiltSpeed;
+        tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
 
         transform.rotation = Quaternion.Lerp(transform.rotation, targetLeft, tiltTime);
+        //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, targetLeft, tiltTime);
         currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently
@@ -182,9 +202,10 @@ public class LevelController : MonoBehaviour
         setWorldPosition();     //empty Gameobject gets the same position as the player so that the world can rotate around the player
         setWorldParent();       //grid and background are set as children from the empty gameobject worldRotation so that they can rotate with the empty gameobject
 
-        tiltTime += tiltSpeed;
+        tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
 
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, 0)), tiltTime);
+        //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, new Vector3(0, 0, 0), tiltTime);
         currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently
@@ -197,10 +218,16 @@ public class LevelController : MonoBehaviour
     {
         setWorldParent();
 
-        tiltBackTime += tiltBackSpeed;
+        tiltBackTime += tiltBackSpeed * timeController.getSpeedAdjustedDeltaTime();
 
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, 0)), tiltBackTime);
+        //transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, 0, 0), tiltBackTime);
         currentTilt = transform.rotation.z;
+
+        if(currentTilt < resetAngle && currentTilt > 0 || currentTilt > -resetAngle && currentTilt < 0)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        }
         
         unsetWorldParent();
     }
@@ -216,15 +243,13 @@ public class LevelController : MonoBehaviour
     //sets worldRotation as parent to grid and background
     private void setWorldParent()
     {
-        grid.transform.SetParent(transform);
-        background.transform.SetParent(transform);
+        level.transform.SetParent(transform);
     }
 
     //Author: Melanie Jäger
     //unsets worldRotation as parent for grid and background
     private void unsetWorldParent()
     {
-        grid.transform.SetParent(null);
-        background.transform.SetParent(null);
+        level.transform.SetParent(null);
     }
 }

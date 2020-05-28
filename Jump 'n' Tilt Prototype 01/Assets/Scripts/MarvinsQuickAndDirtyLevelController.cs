@@ -58,6 +58,7 @@ public class MarvinsQuickAndDirtyLevelController : MonoBehaviour
             lastTiltDirection = 0;
         }
         rotateLevel();
+
     }
 
     //Author: Marvin Winkler

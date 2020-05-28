@@ -68,7 +68,7 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
         //Author: Marvin Winkler
         private void timeAdjustments()
         {
-            speedAdjustedDeltaTime = Time.fixedDeltaTime * timeSpeed;
+            speedAdjustedDeltaTime = Time.deltaTime * timeSpeed;
         }
 
         //This should be called each time you would normally use deltaTime

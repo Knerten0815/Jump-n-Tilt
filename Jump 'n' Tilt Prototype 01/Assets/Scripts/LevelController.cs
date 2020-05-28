@@ -21,6 +21,8 @@ public class LevelController : MonoBehaviour
     private GameObject player;            //player object for the rotation center
     private float currentTilt;            //value that holds the current tilt
 
+    float playerInput;
+
     private Transform level;
     private TimeController timeController;
 
@@ -68,11 +70,18 @@ public class LevelController : MonoBehaviour
     //Author: Melanie Jäger
     void Update()
     {
-        float playerInput = Input.GetAxisRaw("Tilt");
+        playerInput = Input.GetAxisRaw("Tilt");
         TiltMechanic(playerInput);
-        TiltBackMechanic(playerInput);
+        //TiltBackMechanic(playerInput);
+        
+        
 
         Debug.Log(currentTilt);
+    }
+
+    private void FixedUpdate()
+    {  
+        
     }
 
     //Author: Melanie Jäger
@@ -172,8 +181,9 @@ public class LevelController : MonoBehaviour
 
         tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRight, tiltTime);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, targetRight, tiltTime);
         //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, targetRight, tiltTime);
+        transform.rotation = targetRight;
         currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently
@@ -188,8 +198,9 @@ public class LevelController : MonoBehaviour
 
         tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetLeft, tiltTime);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, targetLeft, tiltTime);
         //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, targetLeft, tiltTime);
+        transform.rotation = targetLeft;
         currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently
@@ -204,8 +215,9 @@ public class LevelController : MonoBehaviour
 
         tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, 0)), tiltTime);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, 0)), tiltTime);
         //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, new Vector3(0, 0, 0), tiltTime);
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently

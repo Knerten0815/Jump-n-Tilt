@@ -184,6 +184,7 @@ public class LevelController : MonoBehaviour
         //transform.rotation = Quaternion.Lerp(transform.rotation, targetRight, tiltTime);
         //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, targetRight, tiltTime);
         transform.rotation = targetRight;
+        transform.localEulerAngles = new Vector3();
         currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently

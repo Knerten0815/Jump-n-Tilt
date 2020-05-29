@@ -13108,8 +13108,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1300804323}
-  - component: {fileID: 1300804325}
   - component: {fileID: 1300804324}
+  - component: {fileID: 1300804326}
   m_Layer: 0
   m_Name: LevelController
   m_TagString: Untagged
@@ -13147,7 +13147,7 @@ MonoBehaviour:
   rotationSpeed: 100
   backRotationSpeed: 60
   delay: 2
---- !u!114 &1300804325
+--- !u!114 &1300804326
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13156,14 +13156,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1300804322}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69b57e51e8a8ecd44a46e64cfd9bc814, type: 3}
+  m_Script: {fileID: 11500000, guid: af45332c251b70242b21e31a789307a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiltAngle: 10
-  maxTilt: 0.35
+  tiltAngle: 22.5
   tiltSpeed: 10
   tiltBackSpeed: 2
-  resetAngle: 0.003
 --- !u!1 &1317412921
 GameObject:
   m_ObjectHideFlags: 0

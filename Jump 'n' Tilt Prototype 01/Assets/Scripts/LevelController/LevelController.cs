@@ -35,6 +35,9 @@ public class LevelController : MonoBehaviour
     private Quaternion targetRight;
     private Quaternion targetLeft;
 
+    //private float targetRight;
+    //private float targetLeft;
+
     //private Vector3 targetRight;
     //private Vector3 targetLeft;
 
@@ -51,7 +54,7 @@ public class LevelController : MonoBehaviour
     {
         currentTilt = transform.rotation.z;
 
-        targetRight = new Quaternion();
+        //targetRight = new Quaternion();
         targetLeft = new Quaternion();
 
         //targetLeft = new Vector3();
@@ -70,19 +73,12 @@ public class LevelController : MonoBehaviour
     //Author: Melanie Jäger
     void Update()
     {
-        playerInput = Input.GetAxisRaw("Tilt");
+        playerInput = Input.GetAxis("Tilt");
         TiltMechanic(playerInput);
         //TiltBackMechanic(playerInput);
         
-        
-
-        Debug.Log(currentTilt);
     }
 
-    private void FixedUpdate()
-    {  
-        
-    }
 
     //Author: Melanie Jäger
     //Method that is called when teh event is triggered
@@ -97,6 +93,7 @@ public class LevelController : MonoBehaviour
                 tiltTime = 0;
                 isAxisInUse = true;
                 targetRight = transform.rotation * Quaternion.Euler(new Vector3(0, 0, tiltAngle));
+                //targetRight = transform.eulerAngles.z + tiltAngle;
                 //targetRight = transform.eulerAngles + new Vector3(0, 0, tiltAngle);
             }
         }
@@ -128,7 +125,8 @@ public class LevelController : MonoBehaviour
                 tiltLeft = true;
                 tiltTime = 0;
                 isAxisInUse = true;
-                targetLeft = transform.rotation * Quaternion.Euler(new Vector3(0, 0, -tiltAngle));
+                targetLeft = transform.rotation * Quaternion.Euler(new Vector3(0, 0, (-tiltAngle)));
+                //targetLeft = transform.eulerAngles.z + (-tiltAngle);
                 //targetLeft = transform.eulerAngles + new Vector3(0, 0, -tiltAngle);
             }
         }
@@ -136,7 +134,7 @@ public class LevelController : MonoBehaviour
         if (tiltLeft == true)
         {
             
-            if (currentTilt <= 0 && currentTilt > -maxTilt)   //rotate the world to the left when the current rotation equals or is smaller than 0 and the limit to -maxTilt is not reached yet
+            if (currentTilt <= 0 /*&& currentTilt > -maxTilt*/)   //rotate the world to the left when the current rotation equals or is smaller than 0 and the limit to -maxTilt is not reached yet
             {
                 TiltLeft();
             }
@@ -180,11 +178,12 @@ public class LevelController : MonoBehaviour
         setWorldParent();       //grid and background are set as children from the empty gameobject worldRotation so that they can rotate with the empty gameobject
 
         tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
+        //float rightInter = Mathf.LerpAngle(transform.eulerAngles.z, targetRight, tiltTime);
 
         //transform.rotation = Quaternion.Lerp(transform.rotation, targetRight, tiltTime);
         //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, targetRight, tiltTime);
         transform.rotation = targetRight;
-        transform.localEulerAngles = new Vector3();
+        //transform.localEulerAngles = new Vector3(0,0,rightInter);
         currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently
@@ -198,10 +197,12 @@ public class LevelController : MonoBehaviour
         setWorldParent();       //grid and background are set as children from the empty gameobject worldRotation so that they can rotate with the empty gameobject
 
         tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
+        //float leftInter = Mathf.LerpAngle(transform.eulerAngles.z, targetLeft, tiltTime);
 
         //transform.rotation = Quaternion.Lerp(transform.rotation, targetLeft, tiltTime);
         //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, targetLeft, tiltTime);
         transform.rotation = targetLeft;
+        //transform.localEulerAngles = new Vector3(0, 0, leftInter);
         currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently
@@ -215,10 +216,12 @@ public class LevelController : MonoBehaviour
         setWorldParent();       //grid and background are set as children from the empty gameobject worldRotation so that they can rotate with the empty gameobject
 
         tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
+        //float backInter = Mathf.LerpAngle(transform.eulerAngles.z, 0, tiltTime);
 
         //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, 0)), tiltTime);
         //transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, new Vector3(0, 0, 0), tiltTime);
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        //transform.localEulerAngles = new Vector3(0, 0, backInter);
         currentTilt = transform.rotation.z;
 
         unsetWorldParent();     //unsets the parent for grid and background so that they act independently
@@ -232,9 +235,11 @@ public class LevelController : MonoBehaviour
         setWorldParent();
 
         tiltBackTime += tiltBackSpeed * timeController.getSpeedAdjustedDeltaTime();
+        float defaultInter = Mathf.LerpAngle(transform.eulerAngles.z, 0, tiltBackTime);
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, 0)), tiltBackTime);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, 0)), tiltBackTime);
         //transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, 0, 0), tiltBackTime);
+        transform.localEulerAngles = new Vector3(0, 0, defaultInter);
         currentTilt = transform.rotation.z;
 
         if(currentTilt < resetAngle && currentTilt > 0 || currentTilt > -resetAngle && currentTilt < 0)

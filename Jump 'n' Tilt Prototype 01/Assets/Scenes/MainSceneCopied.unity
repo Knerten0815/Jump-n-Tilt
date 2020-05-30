@@ -13160,8 +13160,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiltAngle: 22.5
+  numTiltStep: 1
+  defaultTilt: 0
   tiltSpeed: 10
-  tiltBackSpeed: 2
+  tiltBackSpeed: 8
+  delayTime: 0.5
 --- !u!1 &1317412921
 GameObject:
   m_ObjectHideFlags: 0

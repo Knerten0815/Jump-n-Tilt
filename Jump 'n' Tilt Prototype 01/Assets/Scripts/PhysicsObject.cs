@@ -29,13 +29,18 @@ public class PhysicsObject : MonoBehaviour
     protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
     protected TimeController timeController;
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         rb2d = GetComponent<Rigidbody2D>();
     }
 
+    protected virtual void OnDisable()
+    {
+
+    }
+
     //Author: Marvin Winkler
-    void Start()
+    protected virtual void Start()
     {
         //Used for collision detection
         contactFilter.useTriggers = false;
@@ -130,6 +135,8 @@ public class PhysicsObject : MonoBehaviour
                         currentNormal.x = 0;    //Prevents sliding
                     }
                 }
+
+                Debug.Log("NORMALE " + currentNormal);
 
                 float projection = Vector2.Dot(velocity, currentNormal);
 

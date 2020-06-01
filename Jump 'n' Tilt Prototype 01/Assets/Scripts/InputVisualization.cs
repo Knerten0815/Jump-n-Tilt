@@ -191,14 +191,10 @@ public class InputVisualization : MonoBehaviour
     //Function to dark the Up and Down Arrow
     private void VerticalArrowsUp(float vertical)
     {
-        if (vertical < 0)
-        {
+        
             Button_Up.GetComponent<Image>().color = dark;
-        }
-        if (vertical > 0)
-        {
             Button_Down.GetComponent<Image>().color = dark;
-        }
+      
     }
 
 }

@@ -86,24 +86,24 @@ public class LevelControllerNew : MonoBehaviour
         }
 
         //called when E/RB is pressed, max step to the right is not reached, not tilt is currently activ and BackTilt() not activ
-        if (playerInput == 1 && tiltStep != numTiltStep && isAxisInUse == false && canTilt == true)
+        if (playerInput == -1 && tiltStep != -numTiltStep && isAxisInUse == false && canTilt == true)
         {
             tiltTime = 0;
             tiltRight = true;
             isAxisInUse = true;
-            tiltStep++;
+            tiltStep--;
 
             targetRight = transform.eulerAngles.z + tiltAngle;
             startRight = transform.eulerAngles.z;
         }
 
         //called when Q/LB is pressed, max step to the right is not reached, not tilt is currently activ and BackTilt() not activ
-        if (playerInput == -1 && tiltStep != -numTiltStep && isAxisInUse == false && canTilt == true)
+        if (playerInput == 1 && tiltStep != numTiltStep && isAxisInUse == false && canTilt == true)
         {
             tiltTime = 0;
             tiltLeft = true;
             isAxisInUse = true;
-            tiltStep--;
+            tiltStep++;
 
             targetLeft = transform.eulerAngles.z + (-tiltAngle);
             startLeft = transform.eulerAngles.z;

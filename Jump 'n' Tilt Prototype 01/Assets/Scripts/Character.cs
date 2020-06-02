@@ -5,15 +5,13 @@ using UnityEngine;
 public class Character : PhysicsObject
 {
 
-    //Author: Nicole Mynarek
-
     protected float moveDirection;              // Gets value between -1 and 1 for direction left or right if Input.GetAxisRaw is used
 
     // Values can be adjusted in inspector
     public float moveSpeed = 10f;                // Movement Speed
     public float jumpHeight = 16f;
     public float jumpHeightReducer = 0.5f;      // Reduces jump height, if button is pressed shortly
-    public float moveWhileJumping = 5f;         // Movement value while jumping
+    public float moveWhileJumping = 7f;         // Movement value while jumping
 
     public float slideSpeed = 2f;
     public float slideReducer = 0.5f;
@@ -23,7 +21,18 @@ public class Character : PhysicsObject
     public bool isFacingRight = true;
     public bool isSliding;
 
-    // Author: Michelle Limbach
+    // for Attack method
+    public Transform attackPos;
+    public float attackRadius;
+    public LayerMask whatIsEnemy;
+    public int health;
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
+    // Author: Michelle Limbach, Nicole Mynarek
     protected override void ComputeVelocity()
     {
         // Player only slides when there is no input
@@ -37,13 +46,18 @@ public class Character : PhysicsObject
             Slide();
         }
         moveDirection = 0;
-        slideDirection = new Vector2(0f, 0f);
+
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Author: Nicole Mynarek, Michelle Limbach
     // Method for basic horizontal movement 
-    protected virtual void Movement()
+    protected virtual void Movement(float direction)
     {
+        moveDirection = direction;
         if (grounded)
         {
             // if slideDirection and moveDirection are both negativ or positiv, then the playere moves faster
@@ -52,7 +66,7 @@ public class Character : PhysicsObject
                 velocity = new Vector2(moveDirection * moveSpeed * slideSpeed, velocity.y);
             }
             // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
-            else if (slideDirection.x < 0 && moveDirection > 0 || slideDirection.x < 0 && moveDirection > 0)
+            else if (slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0)
             {
                 velocity = new Vector2(moveDirection * moveSpeed * slideReducer, velocity.y);
             }
@@ -127,15 +141,30 @@ public class Character : PhysicsObject
                         slideDirection.x = 1 + temp*2;
                         CharacterFacingDirection(slideDirection.x);
                     }
-
-                    Debug.Log("SlideDirection: " + slideDirection);
                 }
                 velocity += slideDirection;
             }
             else
             {
                 isSliding = false;
+                slideDirection = new Vector2(0f, 0f);
             }
         }
+    }
+
+    protected virtual void Attack()
+    {
+        //  Debug.Log("Nicole ---------- ATTACK!!!!!!!");
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].GetComponent<Enemy>().TakeDamage(1);
+        }
+    }
+
+    protected virtual void TakeDamage(int damage)
+    {
+
     }
 }

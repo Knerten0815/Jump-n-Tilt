@@ -1839,8 +1839,8 @@ MonoBehaviour:
   jumpHeight: 16
   jumpHeightReducer: 0.5
   moveWhileJumping: 7
-  slideSpeed: 0.81
-  slideReducer: 0.51
+  slideSpeed: 2
+  slideReducer: 0.5
   isFacingRight: 1
   isSliding: 0
   attackPos: {fileID: 1703643106}
@@ -1851,7 +1851,7 @@ MonoBehaviour:
   health: 10
   jumpCount: 2
   jumpCountLeft: 0
-  cooldown: 0
+  cooldown: 0.8
   wallJumpCounter: 2
   touchesWall: 0
   wallCheckDistance: 0.5

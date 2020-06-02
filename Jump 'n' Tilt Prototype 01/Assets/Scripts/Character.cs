@@ -58,21 +58,25 @@ public class Character : PhysicsObject
     protected virtual void Movement(float direction)
     {
         moveDirection = direction;
+        
         if (grounded)
         {
             // if slideDirection and moveDirection are both negativ or positiv, then the playere moves faster
             if (slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0)
             {
                 velocity = new Vector2(moveDirection * moveSpeed * slideSpeed, velocity.y);
+        
             }
             // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
             else if (slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0)
             {
                 velocity = new Vector2(moveDirection * moveSpeed * slideReducer, velocity.y);
+         
             }
             else
             {
                 velocity = new Vector2(moveDirection * moveSpeed, velocity.y);
+            
             }
         }
         // if player is in the air and gives input, the player can move left or right
@@ -126,7 +130,7 @@ public class Character : PhysicsObject
                 for (int i = 0; i < hitBufferList.Count; i++)
                 {
                     normal = hitBufferList[i].normal;
-
+                   
                     if (normal.x < 0)
                     {
                         slideDirection = Vector2.Perpendicular(normal);
@@ -136,6 +140,7 @@ public class Character : PhysicsObject
                     }
                     else
                     {
+                        
                         slideDirection = Vector2.Perpendicular(-normal);
                         float temp = 1f - slideDirection.x;
                         slideDirection.x = 1 + temp*2;
@@ -143,6 +148,7 @@ public class Character : PhysicsObject
                     }
                 }
                 velocity += slideDirection;
+                
             }
             else
             {

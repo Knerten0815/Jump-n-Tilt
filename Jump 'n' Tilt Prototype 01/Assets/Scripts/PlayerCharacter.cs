@@ -11,7 +11,7 @@ public class PlayerCharacter : Character
     // variables for jumping
     public int jumpCount = 2;           // Possible amount of jumps
     public int jumpCountLeft;           // Amount of jumps that are left
-    public float cooldown = 0;
+    public float cooldown = 0.8f;
     private bool canJump = true; //Is Player allowed to jump
 
     // variables for crouching
@@ -119,7 +119,7 @@ public class PlayerCharacter : Character
                 {
                     jumpCountLeft = jumpCount;
                     // Nicole: ------------- for coding cooldown is set to 0 --------------
-                    cooldown = 0;
+                    cooldown = 0.8f;
                     //---------------------------------------------------------------------
                     base.Jump();
                     jumpCountLeft--;
@@ -138,7 +138,7 @@ public class PlayerCharacter : Character
             {
                 jumpable = true;
                 // Nicole: ----------- for coding cooldown set to 0 ----------------------
-                cooldown = 0;
+                cooldown = 0.8f;
                 //------------------------------------------------------------------------
                 base.Jump();
                 jumpCountLeft--;

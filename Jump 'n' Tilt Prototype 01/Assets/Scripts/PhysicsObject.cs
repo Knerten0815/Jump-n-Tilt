@@ -150,4 +150,10 @@ public class PhysicsObject : MonoBehaviour
         }
         rb2d.position += move.normalized * distance;
     }
+
+    //Author: Kevin Zielke
+    public Vector2 getVelocity()
+    {
+        return velocity;
+    }
 }

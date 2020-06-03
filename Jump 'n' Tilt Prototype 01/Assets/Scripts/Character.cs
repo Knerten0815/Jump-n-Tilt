@@ -58,14 +58,17 @@ public class Character : PhysicsObject
     protected virtual void Movement(float direction)
     {
         moveDirection = direction;
-        
+   
+
         if (grounded)
         {
             // if slideDirection and moveDirection are both negativ or positiv, then the playere moves faster
             if (slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0)
             {
                 velocity = new Vector2(moveDirection * moveSpeed * slideSpeed, velocity.y);
-        
+               
+
+
             }
             // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
             else if (slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0)
@@ -134,8 +137,8 @@ public class Character : PhysicsObject
                     if (normal.x < 0)
                     {
                         slideDirection = Vector2.Perpendicular(normal);
-                        float temp = 1f + slideDirection.x;
-                        slideDirection.x = -1 - temp*2;
+                        float temp = 1f + slideDirection.x; 
+                        slideDirection.x = -1 - temp; 
                         CharacterFacingDirection(slideDirection.x);
                     }
                     else
@@ -143,11 +146,16 @@ public class Character : PhysicsObject
                         
                         slideDirection = Vector2.Perpendicular(-normal);
                         float temp = 1f - slideDirection.x;
-                        slideDirection.x = 1 + temp*2;
+                        slideDirection.x = 1 + temp;
                         CharacterFacingDirection(slideDirection.x);
                     }
                 }
-                velocity += slideDirection;
+                if((velocity.x <= 10 && velocity.x > 0) || (velocity.x >= -10 && velocity.x < 0))
+                {
+                    velocity += slideDirection;
+                }
+                
+                
                 
             }
             else

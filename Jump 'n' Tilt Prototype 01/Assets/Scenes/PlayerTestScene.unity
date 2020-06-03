@@ -1301,6 +1301,10 @@ MonoBehaviour:
   shakeStartRate: 0.05
   shakeAmount: 0.5
   shakeRelease: 1.2
+  yOffset: 1
+  xOffset: 4
+  xSmoothTime: 0.4
+  ySmoothTime: 0.2
 --- !u!81 &716115053
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1839,7 +1843,7 @@ MonoBehaviour:
   jumpHeight: 16
   jumpHeightReducer: 0.5
   moveWhileJumping: 7
-  slideSpeed: 2
+  slideSpeed: 4
   slideReducer: 0.5
   isFacingRight: 1
   isSliding: 0

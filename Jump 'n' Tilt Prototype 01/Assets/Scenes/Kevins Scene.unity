@@ -17096,9 +17096,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 088e2117064892e47a26f94c35f11bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack: {fileID: 8300000, guid: 3aedfab429f80cb4f8cb2d848a24d2fa, type: 3}
-  earthquake: {fileID: 8300000, guid: a05d5e25ae6889544a0dd68b56046f14, type: 3}
-  music: {fileID: 8300000, guid: d37c4a05ead2e97498baa5fa872c1c36, type: 3}
+  music:
+    clip: {fileID: 8300000, guid: 133e8f153d9b8c746bb07930fb0f0cae, type: 3}
+    volume: 1
+  attack:
+    clip: {fileID: 8300000, guid: 3aedfab429f80cb4f8cb2d848a24d2fa, type: 3}
+    volume: 1
+  earthquake:
+    clip: {fileID: 8300000, guid: a05d5e25ae6889544a0dd68b56046f14, type: 3}
+    volume: 1
 --- !u!82 &1838226926
 AudioSource:
   m_ObjectHideFlags: 0

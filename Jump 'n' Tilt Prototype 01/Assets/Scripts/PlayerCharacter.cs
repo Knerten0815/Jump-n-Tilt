@@ -149,7 +149,7 @@ public class PlayerCharacter : Character
 
     private void WallJump()
     {
-        if ((moveDirection != 0) && canJump && (lastWallcontact.point.x != hit.point.x || (wallJumpCounter > 0))) //Player springt ab
+        if (canJump && (lastWallcontact.point.x != hit.point.x || (wallJumpCounter > 0))) //Player springt ab
         {
             if (lastWallcontact.point.x != hit.point.x)
             {

@@ -5,12 +5,13 @@ using UnityEngine;
 //Author: Kevin Zielke, Michelle Limbach
 namespace GameActions //To access the PlayerInput add: "using GameActions;" at the top
 {
+    /// <summary>
+    /// This class throws events for all actions the player wants to perform. It DOES NOT check if the player is able to perform the action.
+    /// Virtual buttons and axes can be set in Unity via the Input Manager (Edit / Project Settings / Input Manager)
+    /// Please remember to write control-alterations in the Input Manager into the Controls.docx in Goggle Drive and into the comments here. 
+    /// </summary>
     public class PlayerInput : MonoBehaviour
     {
-        //This class throws events for all actions the player wants to perform. It DOES NOT check if the player is able to perform the action.
-        //Virtual buttons and axes can be set in Unity via the Input Manager (Edit / Project Settings / Input Manager)
-        //Please remember to write control-alterations in the Input Manager into the Controls.docx in Goggle Drive and into the comments here. 
-
         ////////////////////////////////////////////////Navigation Input for Game and Menus\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         public delegate void horizontalDown(float horizontal);  //Player wants to navigate or navigate horizontally: negative float for left or

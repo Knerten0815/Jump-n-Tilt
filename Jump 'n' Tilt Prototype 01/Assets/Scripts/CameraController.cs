@@ -3,11 +3,11 @@
 using System.Collections;
 using UnityEngine;
 using GameActions;
-using UnityEngine.Assertions.Must;
 using UnityEngine.Tilemaps;
-using System;
 
-//This class controls all camera movement, such as following the player through the level and shaking effects on certain events
+/// <summary>
+/// This class controls all camera movement, such as following the player through the level and shaking effects on certain events
+/// </summary>
 public class CameraController : MonoBehaviour
 {
     // variables for experimenting with the shake animation
@@ -25,8 +25,8 @@ public class CameraController : MonoBehaviour
     private Transform parentTrans;                      //The parent of the main camera, that is following the player
     private GameObject player;                          //The current position of the Player Character
     private PlayerCharacter playerCtrl;                 //Player Controller for velocity
+        private Vector2 offset;                             //current offset of the camera to the player
     private TilemapCollider2D lvlBounds;                //The TilemapCollider of the level: Needed for getting boundaries of the level
-    private Vector2 offset;                             //current offset of the camera to the player
 
     ///Once the angle of the tilt is settled, the tilemap needs to be adjusted to show enough ground and walls, so that no empty background is seen.
     ///Once the tilemap is adjusted, these lvlBounds need to be scaled down accordingly, so that the camera won't clamp to the outer bounds of the

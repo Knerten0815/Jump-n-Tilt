@@ -9,7 +9,7 @@ public class Character : PhysicsObject
 
     // Values can be adjusted in inspector
     public float moveSpeed = 10f;                // Movement Speed
-    public float jumpHeight = 16f;
+    public float jumpHeight = 16f;               //Gravity Modifier in inspector is set to 4 to get a non floaty feeling
     public float jumpHeightReducer = 0.5f;      // Reduces jump height, if button is pressed shortly
     public float moveWhileJumping = 7f;         // Movement value while jumping
 
@@ -22,11 +22,12 @@ public class Character : PhysicsObject
     public bool isSliding;
 
     // for Attack method
-    public Transform attackPos;
+    public Transform attackPos;                 // is set in Unity window
     public float attackRadius;
     public LayerMask whatIsEnemy;
     public int health;
 
+    // inherited from PhysicsObject.cs
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -38,8 +39,8 @@ public class Character : PhysicsObject
         // Player only slides when there is no input
         if (moveDirection != 0)
         {
+            // character looks in the direction he is moving
             CharacterFacingDirection(moveDirection);
-
         }
         else
         {
@@ -47,6 +48,7 @@ public class Character : PhysicsObject
         }
         moveDirection = 0;
 
+        // death of character
         if (health <= 0)
         {
             Destroy(gameObject);
@@ -58,28 +60,22 @@ public class Character : PhysicsObject
     protected virtual void Movement(float direction)
     {
         moveDirection = direction;
-   
 
         if (grounded)
         {
-            // if slideDirection and moveDirection are both negativ or positiv, then the playere moves faster
+            // if slideDirection and moveDirection are both negativ or positiv, then the player moves faster
             if (slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0)
             {
                 velocity = new Vector2(moveDirection * moveSpeed * slideSpeed, velocity.y);
-               
-
-
             }
             // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
             else if (slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0)
             {
                 velocity = new Vector2(moveDirection * moveSpeed * slideReducer, velocity.y);
-         
             }
             else
             {
                 velocity = new Vector2(moveDirection * moveSpeed, velocity.y);
-            
             }
         }
         // if player is in the air and gives input, the player can move left or right
@@ -134,6 +130,7 @@ public class Character : PhysicsObject
                 {
                     normal = hitBufferList[i].normal;
                    
+                    // left tilt direction
                     if (normal.x < 0)
                     {
                         slideDirection = Vector2.Perpendicular(normal);
@@ -141,9 +138,9 @@ public class Character : PhysicsObject
                         slideDirection.x = -1 - temp; 
                         CharacterFacingDirection(slideDirection.x);
                     }
+                    // right tilt direction
                     else
                     {
-                        
                         slideDirection = Vector2.Perpendicular(-normal);
                         float temp = 1f - slideDirection.x;
                         slideDirection.x = 1 + temp;
@@ -153,10 +150,7 @@ public class Character : PhysicsObject
                 if((velocity.x <= 10 && velocity.x > 0) || (velocity.x >= -10 && velocity.x < 0))
                 {
                     velocity += slideDirection;
-                }
-                
-                
-                
+                } 
             }
             else
             {

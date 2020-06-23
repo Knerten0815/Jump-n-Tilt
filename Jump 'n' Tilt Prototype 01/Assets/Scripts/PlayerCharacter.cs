@@ -6,30 +6,30 @@ using GameActions;
 public class PlayerCharacter : Character
 {
 
-    // Author: Nicole Mynarek
+    // Author: Nicole Mynarek, Michelle Limbach
 
     // variables for jumping
-    public int jumpCount = 2;           // Possible amount of jumps
-    public int jumpCountLeft;           // Amount of jumps that are left
+    public int jumpCount = 2;                   // Possible amount of jumps
+    public int jumpCountLeft;                   // Amount of jumps that are left
     public float cooldown = 0.8f;
-    private bool canJump = true; //Is Player allowed to jump
+    private bool canJump = true;                //Is Player allowed to jump
 
     // variables for crouching
-    private bool crouching = false; //Is player crouching
-    private bool underPlattform; //Checks if there is a plattform over the head of the player
-    private float plattformCheckDistance = 1f; //Distance for Raycast is set to 15, because it is the half of the Player size
+    private bool crouching = false;             //Is player crouching
+    private bool underPlattform;                //Checks if there is a plattform over the head of the player
+    private float plattformCheckDistance = 1f;  //Distance for Raycast is set to 15, because it is the half of the Player size
     private bool inFrontOfPlayer;
     private bool behindPlayer;
 
     // variables for wall jump, wall sliding and detection
     private RaycastHit2D lastWallcontact;
     public int wallJumpCounter = 2;
-    public bool touchesWall;    // for wall detection
-    public float wallCheckDistance = 0.5f;  //public Vector2 offsetRight = new Vector2(0.5f, 0);
-    public LayerMask whatIsLevel;    //public Transform test;
+    public bool touchesWall;                    // for wall detection
+    public float wallCheckDistance = 0.5f;      //public Vector2 offsetRight = new Vector2(0.5f, 0);
+    public LayerMask whatIsLevel;               //public Transform test;
     public bool wallSliding;
-    public float wallSlidingSpeed = 0.1f;
-    public int facingDirection = 1; // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
+    public float wallSlidingSpeed = 0.1f;       // can be adjusted in inspector for finding better setting
+    public int facingDirection = 1;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
 
     protected override void OnEnable()
@@ -70,23 +70,26 @@ public class PlayerCharacter : Character
     {
         base.ComputeVelocity();
 
+        // jump cooldown
         if (cooldown > 0)
         {
             cooldown -= Time.deltaTime;
         }
 
         WallSliding();
-
     }
 
     protected override void Movement(float direction)
     {
+        // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
         touchesWall = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel);
+
         base.Movement(direction);
     }
 
     private void WallSliding()
     {
+        // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)
         {
             wallSliding = true;
@@ -96,16 +99,18 @@ public class PlayerCharacter : Character
             wallSliding = false;
         }
 
+        // if wallSliding is true, player slides down
         if (wallSliding)
         {
             velocity = new Vector2(velocity.x, -wallSlidingSpeed);
         }
     }
 
-    // Author: Nicole Mynarek
+    // Author: Nicole Mynarek, Michelle Limbach
     // Method overridden, double jump is possible now
     protected override void Jump()
     {
+        // if touchesWall is true, player can do a wallJump
         if (touchesWall)
         {
             hit = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel);
@@ -113,23 +118,29 @@ public class PlayerCharacter : Character
         }
         else
         {
+            // if player is on the ground
             if (grounded && velocity.y <= 0 && canJump)
             {
+                // and cooldown lower or equal to 0
                 if (cooldown <= 0)
                 {
+                    // jumpCountLeft will be reset
                     jumpCountLeft = jumpCount;
-                    // Nicole: ------------- for coding cooldown is set to 0 --------------
+
+                    // cooldown will be set again to 0.8
                     cooldown = 0.8f;
-                    //---------------------------------------------------------------------
+                    
                     base.Jump();
+
                     jumpCountLeft--;
 
                 }
 
-                //Wenn Player am Boden, dann reset vom WallJump
+                // reset of wallJumpCounter
                 wallJumpCounter = 2;
                 lastWallcontact = new RaycastHit2D();
             }
+            // if jumpCountLeft is lower than or equal to 0, player can not jump anymore
             else if (jumpCountLeft <= 0)
             {
                 jumpable = false;
@@ -137,9 +148,9 @@ public class PlayerCharacter : Character
             else
             {
                 jumpable = true;
-                // Nicole: ----------- for coding cooldown set to 0 ----------------------
+
+                // cooldown is set again to 0.8
                 cooldown = 0.8f;
-                //------------------------------------------------------------------------
                 base.Jump();
                 jumpCountLeft--;
 
@@ -149,18 +160,22 @@ public class PlayerCharacter : Character
 
     private void WallJump()
     {
+        // player can jump if canJump is true and the location of the lastWallContact is different to the new contact location 'hit' 
+        // or if the wallJumpCounter is higher than 0
         if (canJump && (lastWallcontact.point.x != hit.point.x || (wallJumpCounter > 0))) //Player springt ab
         {
+            // if he location of the lastWallContact is different to the new contact location 'hit' 
             if (lastWallcontact.point.x != hit.point.x)
             {
+                // wallJumpCounter is reset
                 wallJumpCounter = 2;
             }
+            
             wallSliding = false;
             jumpCountLeft--;
             velocity = new Vector2(moveSpeed * moveDirection, jumpHeight);
             lastWallcontact = hit;
             wallJumpCounter--;
-
         }
         else
         {
@@ -169,9 +184,10 @@ public class PlayerCharacter : Character
         }
     }
 
+    // Author: Nicole Mynarek
     private void ShortJump()
     {
-        //If von Michelle hinzugefügt
+        // Michelle added: if condition
         if (canJump)
         {
             velocity = new Vector2(velocity.x, velocity.y * jumpHeightReducer);
@@ -191,7 +207,7 @@ public class PlayerCharacter : Character
             GetComponent<CapsuleCollider2D>().size = new Vector2(GetComponent<CapsuleCollider2D>().size.x, 15.44461f);
             GetComponent<CapsuleCollider2D>().offset = new Vector2(1.019688f, -0.01133485f);
 
-            //Set crouching to true, so Script news player is already crouching
+            //Set crouching to true, so Script knows player is already crouching
             crouching = true;
 
             //Decrease movement speed
@@ -217,10 +233,8 @@ public class PlayerCharacter : Character
             if (!underPlattform)
             {
                 //Make a new Raycast behind the Player to ensure that the Player is far enough out of the cave
-
                 inFrontOfPlayer = Physics2D.Raycast((Vector2)transform.position + new Vector2(0.3f, 0f), transform.up, plattformCheckDistance, whatIsLevel);
                 behindPlayer = Physics2D.Raycast((Vector2)transform.position + new Vector2(-0.3f, 0f), transform.up, plattformCheckDistance, whatIsLevel);
-
 
                 // If there is no Plattfrom over or right behind the Player, the Player can stand up
                 if (!inFrontOfPlayer && !behindPlayer)

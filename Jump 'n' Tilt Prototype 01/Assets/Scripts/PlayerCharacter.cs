@@ -9,9 +9,10 @@ public class PlayerCharacter : Character
     // Author: Nicole Mynarek, Michelle Limbach
 
     // variables for jumping
-    public int jumpCount = 2;                   // Possible amount of jumps
+    public int jumpCount;                   // Possible amount of jumps
     public int jumpCountLeft;                   // Amount of jumps that are left
-    public float cooldown = 0.8f;
+    private float cooldown;
+    public float jumpCooldownTime;
     private bool canJump = true;                //Is Player allowed to jump
 
     // variables for crouching
@@ -23,14 +24,15 @@ public class PlayerCharacter : Character
 
     // variables for wall jump, wall sliding and detection
     private RaycastHit2D lastWallcontact;
-    public int wallJumpCounter = 2;
+    public int wallJumpCounter;
     public bool touchesWall;                    // for wall detection
-    public float wallCheckDistance = 0.5f;      //public Vector2 offsetRight = new Vector2(0.5f, 0);
+    public float wallCheckDistance;      //public Vector2 offsetRight = new Vector2(0.5f, 0);
     public LayerMask whatIsLevel;               //public Transform test;
     public bool wallSliding;
-    public float wallSlidingSpeed = 0.1f;       // can be adjusted in inspector for finding better setting
-    public int facingDirection = 1;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
+    public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
+    public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
+    public float wallJumpTimer;             //By Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
 
     protected override void OnEnable()
     {
@@ -81,14 +83,14 @@ public class PlayerCharacter : Character
 
     protected override void Movement(float direction)
     {
-        // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
-        touchesWall = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel);
-
         base.Movement(direction);
     }
 
+    // Author: Nicole Mynarek, Marvin Winkler
     private void WallSliding()
     {
+        // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
+        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsLevel));  
         // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)
         {
@@ -106,14 +108,19 @@ public class PlayerCharacter : Character
         }
     }
 
-    // Author: Nicole Mynarek, Michelle Limbach
+    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables
     // Method overridden, double jump is possible now
     protected override void Jump()
     {
         // if touchesWall is true, player can do a wallJump
-        if (touchesWall)
+        if (wallSliding)
         {
             hit = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel);
+            lastWallcontact = Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsLevel);
+            if (hit.distance < lastWallcontact.distance)
+            {
+                hit = lastWallcontact;
+            }
             WallJump();
         }
         else
@@ -127,8 +134,8 @@ public class PlayerCharacter : Character
                     // jumpCountLeft will be reset
                     jumpCountLeft = jumpCount;
 
-                    // cooldown will be set again to 0.8
-                    cooldown = 0.8f;
+                    // cooldown will be set
+                    cooldown = jumpCooldownTime;
                     
                     base.Jump();
 
@@ -149,8 +156,8 @@ public class PlayerCharacter : Character
             {
                 jumpable = true;
 
-                // cooldown is set again to 0.8
-                cooldown = 0.8f;
+                // cooldown is set
+                cooldown = jumpCooldownTime;
                 base.Jump();
                 jumpCountLeft--;
 
@@ -173,9 +180,12 @@ public class PlayerCharacter : Character
             
             wallSliding = false;
             jumpCountLeft--;
-            velocity = new Vector2(moveSpeed * moveDirection, jumpHeight);
+            velocity = new Vector2(moveSpeed * hit.normal.x*0.5f, jumpHeight); //moveSpeed * (moveDirection), jumpHeight);
+            CharacterFacingDirection(hit.normal.x);
+            jumpable = false;
             lastWallcontact = hit;
             wallJumpCounter--;
+            wallJumpTime = wallJumpTimer;
         }
         else
         {

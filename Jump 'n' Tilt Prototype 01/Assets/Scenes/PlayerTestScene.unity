@@ -1834,17 +1834,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5035e571502f534dbd3d0d457804641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minGroundNormalY: 0.5
+  minGroundNormalY: 0.2
   minJumpNormalY: 0.3
   gravityModifier: 4
-  dampening: 0.85
+  dampening: 0.9
   maxSpeed: 40
   moveSpeed: 10
   jumpHeight: 16
   jumpHeightReducer: 0.5
-  moveWhileJumping: 7
-  slideSpeed: 4
-  slideReducer: 0.5
+  moveWhileJumping: 2
+  airResistance: 0.97
+  slideSpeed: 3
+  slideReducer: -6
   isFacingRight: 1
   isSliding: 0
   attackPos: {fileID: 1703643106}
@@ -1855,7 +1856,7 @@ MonoBehaviour:
   health: 10
   jumpCount: 2
   jumpCountLeft: 0
-  cooldown: 0.8
+  jumpCooldownTime: 0.5
   wallJumpCounter: 2
   touchesWall: 0
   wallCheckDistance: 0.5
@@ -1863,8 +1864,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   wallSliding: 0
-  wallSlidingSpeed: 0.1
+  wallSlidingSpeed: 0.3
   facingDirection: 1
+  wallJumpTimer: 0.5
 --- !u!70 &1002723188
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -14040,6 +14042,7 @@ MonoBehaviour:
   jumpHeight: 16
   jumpHeightReducer: 0.5
   moveWhileJumping: 7
+  airResistance: 0
   slideSpeed: 2
   slideReducer: 0.5
   isFacingRight: 0

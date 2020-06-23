@@ -8,17 +8,19 @@ public class Character : PhysicsObject
     protected float moveDirection;              // Gets value between -1 and 1 for direction left or right if Input.GetAxisRaw is used
 
     // Values can be adjusted in inspector
-    public float moveSpeed = 10f;                // Movement Speed
-    public float jumpHeight = 16f;               //Gravity Modifier in inspector is set to 4 to get a non floaty feeling
-    public float jumpHeightReducer = 0.5f;      // Reduces jump height, if button is pressed shortly
-    public float moveWhileJumping = 7f;         // Movement value while jumping
+    public float moveSpeed;                // Movement Speed
+    public float jumpHeight;               //Gravity Modifier in inspector is set to 4 to get a non floaty feeling
+    public float jumpHeightReducer;      // Reduces jump height, if button is pressed shortly
+    public float moveWhileJumping;         // Movement value while jumping
+    public float airResistance;              //1 no resistance, 0 no movement possible
+    protected float wallJumpTime;             //by Marvin Winkler, used so that midAir movement does not overreide the wall jump
 
-    public float slideSpeed = 2f;
-    public float slideReducer = 0.5f;
+    public float slideSpeed;
+    public float slideReducer;
 
     private Vector2 slideDirection;
 
-    public bool isFacingRight = true;
+    public bool isFacingRight;
     public bool isSliding;
 
     // for Attack method
@@ -31,9 +33,10 @@ public class Character : PhysicsObject
     protected override void OnEnable()
     {
         base.OnEnable();
+        wallJumpTime = 0;
     }
 
-    // Author: Michelle Limbach, Nicole Mynarek
+    // Author: Michelle Limbach, Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
         // Player only slides when there is no input
@@ -53,9 +56,18 @@ public class Character : PhysicsObject
         {
             Destroy(gameObject);
         }
+
+        if(wallJumpTime < 0)
+        {
+            wallJumpTime = 0;
+        }
+        else if(wallJumpTime > 0)
+        {
+            wallJumpTime -= Time.deltaTime;
+        }
     }
 
-    // Author: Nicole Mynarek, Michelle Limbach
+    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
     // Method for basic horizontal movement 
     protected virtual void Movement(float direction)
     {
@@ -66,12 +78,12 @@ public class Character : PhysicsObject
             // if slideDirection and moveDirection are both negativ or positiv, then the player moves faster
             if (slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0)
             {
-                velocity = new Vector2(moveDirection * moveSpeed * slideSpeed, velocity.y);
+                velocity = new Vector2(moveDirection * (moveSpeed + slideSpeed), velocity.y);
             }
             // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
             else if (slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0)
             {
-                velocity = new Vector2(moveDirection * moveSpeed * slideReducer, velocity.y);
+                velocity = new Vector2(moveDirection * (moveSpeed + slideReducer), velocity.y);
             }
             else
             {
@@ -79,9 +91,9 @@ public class Character : PhysicsObject
             }
         }
         // if player is in the air and gives input, the player can move left or right
-        else if (!grounded && moveDirection != 0)
+        else if (!grounded && moveDirection != 0 && wallJumpTime == 0)
         {
-            velocity = new Vector2(moveWhileJumping * moveDirection, velocity.y);
+            velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude), velocity.y);
         }
     }
 
@@ -96,23 +108,24 @@ public class Character : PhysicsObject
         }
     }
 
-    // Author: Nicole Mynarek
+    // Author: Nicole Mynarek, Rewritten for debugging by Marvin Winkler
     // Method for flipping character sprites according to moving direction
-    void CharacterFacingDirection(float direction)
+    protected void CharacterFacingDirection(float direction)
     {
-        if (isFacingRight && direction < 0)
+        if(direction < 0)
         {
-            isFacingRight = !isFacingRight;
-            transform.Rotate(0f, 180f, 0f);
+            isFacingRight = false;
+            gameObject.GetComponent<SpriteRenderer>().flipX = true;
         }
-        else if (!isFacingRight && direction > 0)
+        else if(direction > 0)
         {
-            isFacingRight = !isFacingRight;
-            transform.Rotate(0f, 180f, 0f);
+            isFacingRight = true;
+            gameObject.GetComponent<SpriteRenderer>().flipX = false;
         }
+
     }
 
-    // Author: Nicole Mynarek, Michelle Limbach
+    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
     // Method for sliding. Player always looks in direction of the tilt. 
     // Variable 'minGroundNormalY' from PhysicsObject.class can be adjusted for different results
     // Sliding speed still has to be adjusted
@@ -147,7 +160,7 @@ public class Character : PhysicsObject
                         CharacterFacingDirection(slideDirection.x);
                     }
                 }
-                if((velocity.x <= 10 && velocity.x > 0) || (velocity.x >= -10 && velocity.x < 0))
+                if(velocity.x <= 10 && velocity.x >= -10)
                 {
                     velocity += slideDirection;
                 } 

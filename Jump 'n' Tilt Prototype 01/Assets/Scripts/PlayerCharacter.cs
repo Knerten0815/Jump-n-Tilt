@@ -32,7 +32,8 @@ public class PlayerCharacter : Character
     public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
     public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
-    public float wallJumpTimer;             //By Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
+    private static float wallJumpTimer = 1;             //By Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
+    public float wallJumpSpeed;             //By Marvin Winkler, speed given to the player when jumping of a wall
 
     protected override void OnEnable()
     {
@@ -180,7 +181,7 @@ public class PlayerCharacter : Character
             
             wallSliding = false;
             jumpCountLeft--;
-            velocity = new Vector2(moveSpeed * hit.normal.x*0.5f, jumpHeight); //moveSpeed * (moveDirection), jumpHeight);
+            velocity = new Vector2(hit.normal.x * wallJumpSpeed, jumpHeight); //moveSpeed * (moveDirection), jumpHeight);
             CharacterFacingDirection(hit.normal.x);
             jumpable = false;
             lastWallcontact = hit;

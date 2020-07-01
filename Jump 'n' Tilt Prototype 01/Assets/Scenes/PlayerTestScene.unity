@@ -1837,15 +1837,17 @@ MonoBehaviour:
   minGroundNormalY: 0.2
   minJumpNormalY: 0.3
   gravityModifier: 4
-  dampening: 0.9
-  maxSpeed: 40
+  dampening: 0.83
+  maxSpeed: 15
   moveSpeed: 10
   jumpHeight: 16
   jumpHeightReducer: 0.5
-  moveWhileJumping: 2
-  airResistance: 0.97
-  slideSpeed: 3
+  moveWhileJumping: 0.5
+  airResistance: 0.003
+  wallJumpTimeSpeed: 1
+  slideSpeed: 1
   slideReducer: -6
+  slideBackwardsMaxSpeed: 3
   isFacingRight: 1
   isSliding: 0
   attackPos: {fileID: 1703643106}
@@ -1857,7 +1859,7 @@ MonoBehaviour:
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
-  wallJumpCounter: 2
+  wallJumpCounter: 0
   touchesWall: 0
   wallCheckDistance: 0.5
   whatIsLevel:
@@ -1866,7 +1868,7 @@ MonoBehaviour:
   wallSliding: 0
   wallSlidingSpeed: 0.3
   facingDirection: 1
-  wallJumpTimer: 0.5
+  wallJumpSpeed: 15
 --- !u!70 &1002723188
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -14043,8 +14045,10 @@ MonoBehaviour:
   jumpHeightReducer: 0.5
   moveWhileJumping: 7
   airResistance: 0
+  wallJumpTimeSpeed: 0
   slideSpeed: 2
   slideReducer: 0.5
+  slideBackwardsMaxSpeed: 0
   isFacingRight: 0
   isSliding: 0
   attackPos: {fileID: 0}

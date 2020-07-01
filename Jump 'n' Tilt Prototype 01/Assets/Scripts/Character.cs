@@ -14,9 +14,13 @@ public class Character : PhysicsObject
     public float moveWhileJumping;         // Movement value while jumping
     public float airResistance;              //1 no resistance, 0 no movement possible
     protected float wallJumpTime;             //by Marvin Winkler, used so that midAir movement does not overreide the wall jump
+    public float wallJumpTimeSpeed;           //by Marvin Winkler, used to adjust the time less midair movement is possible after a wall jump
+
 
     public float slideSpeed;
     public float slideReducer;
+
+    public float slideBackwardsMaxSpeed;    //by Marvin Winkler, max speed while pressing against the tilt
 
     private Vector2 slideDirection;
 
@@ -63,8 +67,10 @@ public class Character : PhysicsObject
         }
         else if(wallJumpTime > 0)
         {
-            wallJumpTime -= Time.deltaTime;
+            wallJumpTime -= (1 - wallJumpTime * 0.99f) * timeController.getSpeedAdjustedDeltaTime() * wallJumpTimeSpeed;
         }
+
+        velocity.x -= velocity.x * airResistance;
     }
 
     // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
@@ -75,15 +81,18 @@ public class Character : PhysicsObject
 
         if (grounded)
         {
-            // if slideDirection and moveDirection are both negativ or positiv, then the player moves faster
-            if (slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0)
+            if (isSliding)
             {
-                velocity = new Vector2(moveDirection * (moveSpeed + slideSpeed), velocity.y);
-            }
-            // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
-            else if (slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0)
-            {
-                velocity = new Vector2(moveDirection * (moveSpeed + slideReducer), velocity.y);
+                // if slideDirection and moveDirection are both negativ or positiv, then the player moves faster
+                if ((slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0) && velocity.magnitude < maxSpeed)
+                {
+                    velocity += moveDirection * slideSpeed * Vector2.right; //velocity = new Vector2(moveDirection * (moveSpeed + slideSpeed), velocity.y);
+                }
+                // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
+                else if ((slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0) && velocity.magnitude < slideBackwardsMaxSpeed)
+                {
+                    velocity += moveDirection * slideSpeed * Vector2.right; //velocity = new Vector2(moveDirection * (moveSpeed + slideReducer), velocity.y);
+                }
             }
             else
             {
@@ -91,19 +100,20 @@ public class Character : PhysicsObject
             }
         }
         // if player is in the air and gives input, the player can move left or right
-        else if (!grounded && moveDirection != 0 && wallJumpTime == 0)
+        else if (!grounded && moveDirection != 0)
         {
-            velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude), velocity.y);
+            velocity += (moveDirection * moveWhileJumping) * Vector2.right * (1 - wallJumpTime) * (1 / ((0.1f + Mathf.Abs(velocity.x) * 0.5f))); //velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude) * (1 - wallJumpTime), velocity.y);
         }
     }
 
-    // Author: Nicole Mynarek
+    // Author: Nicole Mynarek, Marvin Winkler
     // Method for basic jump
     protected virtual void Jump()
     {
         if (jumpable)
         {
             // Gravity Modifier of PhysicsObject.class needs to be adjusted according to jumpHeight for good game feeling
+            //velocity += jumpHeight * Vector2.up;
             velocity = new Vector2(velocity.x, jumpHeight);
         }
     }
@@ -135,7 +145,8 @@ public class Character : PhysicsObject
 
         if (grounded)
         {
-            if (groundNormal != new Vector2(0f, 1f))
+            Debug.Log(groundNormal);
+            if (groundNormal.y < 1) //!= new Vector2(0f, 1f))
             {
                 isSliding = true;
 
@@ -147,20 +158,20 @@ public class Character : PhysicsObject
                     if (normal.x < 0)
                     {
                         slideDirection = Vector2.Perpendicular(normal);
-                        float temp = 1f + slideDirection.x; 
-                        slideDirection.x = -1 - temp; 
+
+                        slideDirection.x = -1;
                         CharacterFacingDirection(slideDirection.x);
                     }
                     // right tilt direction
                     else
                     {
                         slideDirection = Vector2.Perpendicular(-normal);
-                        float temp = 1f - slideDirection.x;
-                        slideDirection.x = 1 + temp;
+
+                        slideDirection.x = 1;
                         CharacterFacingDirection(slideDirection.x);
                     }
                 }
-                if(velocity.x <= 10 && velocity.x >= -10)
+                if(velocity.x <= maxSpeed && velocity.x >= -maxSpeed)
                 {
                     velocity += slideDirection;
                 } 

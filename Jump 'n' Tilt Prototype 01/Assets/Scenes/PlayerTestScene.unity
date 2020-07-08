@@ -1834,7 +1834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5035e571502f534dbd3d0d457804641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minGroundNormalY: 0.2
+  minGroundNormalY: 0.6
   minJumpNormalY: 0.3
   gravityModifier: 4
   dampening: 0.83
@@ -1843,7 +1843,7 @@ MonoBehaviour:
   jumpHeight: 16
   jumpHeightReducer: 0.5
   moveWhileJumping: 0.5
-  airResistance: 0.003
+  airResistance: 0.005
   wallJumpTimeSpeed: 1
   slideSpeed: 1
   slideReducer: -6
@@ -1861,7 +1861,7 @@ MonoBehaviour:
   jumpCooldownTime: 0.5
   wallJumpCounter: 0
   touchesWall: 0
-  wallCheckDistance: 0.5
+  wallCheckDistance: 0.4
   whatIsLevel:
     serializedVersion: 2
     m_Bits: 0

@@ -116,6 +116,8 @@ public class PhysicsObject : MonoBehaviour
             for (int i = 0; i < hitBufferList.Count; i++)
             {
                 Vector2 currentNormal = hitBufferList[i].normal;
+
+                //Debug.Log(currentNormal);
                 //Checks if ground is jumpable
                 if (currentNormal.y > minJumpNormalY)
                 {

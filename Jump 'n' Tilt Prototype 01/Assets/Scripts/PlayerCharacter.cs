@@ -32,8 +32,8 @@ public class PlayerCharacter : Character
     public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
     public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
-    private static float wallJumpTimer = 1;             //By Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
-    public float wallJumpSpeed;             //By Marvin Winkler, speed given to the player when jumping of a wall
+    private static float wallJumpTimer = 1;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
+    public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
 
     protected override void OnEnable()
     {
@@ -84,7 +84,14 @@ public class PlayerCharacter : Character
 
     protected override void Movement(float direction)
     {
-        base.Movement(direction);
+        //if (touchesWall && Mathf.Abs(groundNormal.y) < minGroundNormalY)      //This tries to fix a bug where the player can move up walls while the level is tilted. It fixes it to an extend, but introduces some new issues.
+        //{
+        //    base.Movement(0);
+        //}
+        //else
+        //{
+            base.Movement(direction);
+        //}
     }
 
     // Author: Nicole Mynarek, Marvin Winkler

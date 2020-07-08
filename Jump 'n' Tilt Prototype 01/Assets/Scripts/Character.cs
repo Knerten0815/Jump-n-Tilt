@@ -12,7 +12,7 @@ public class Character : PhysicsObject
     public float jumpHeight;               //Gravity Modifier in inspector is set to 4 to get a non floaty feeling
     public float jumpHeightReducer;      // Reduces jump height, if button is pressed shortly
     public float moveWhileJumping;         // Movement value while jumping
-    public float airResistance;              //1 no resistance, 0 no movement possible
+    public float airResistance;              //by Marvin Winkler, 1 no resistance, 0 no movement possible (x-axis dampening wile in the air)
     protected float wallJumpTime;             //by Marvin Winkler, used so that midAir movement does not overreide the wall jump
     public float wallJumpTimeSpeed;           //by Marvin Winkler, used to adjust the time less midair movement is possible after a wall jump
 
@@ -86,17 +86,17 @@ public class Character : PhysicsObject
                 // if slideDirection and moveDirection are both negativ or positiv, then the player moves faster
                 if ((slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0) && velocity.magnitude < maxSpeed)
                 {
-                    velocity += moveDirection * slideSpeed * Vector2.right; //velocity = new Vector2(moveDirection * (moveSpeed + slideSpeed), velocity.y);
+                    velocity += moveDirection * slideSpeed * Vector2.right; //Because the velocity is changed and not replaced Speed changes don't happen instantly but have an excelleration time
                 }
                 // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
                 else if ((slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0) && velocity.magnitude < slideBackwardsMaxSpeed)
                 {
-                    velocity += moveDirection * slideSpeed * Vector2.right; //velocity = new Vector2(moveDirection * (moveSpeed + slideReducer), velocity.y);
+                    velocity += moveDirection * slideSpeed * Vector2.right;
                 }
             }
             else
             {
-                velocity = new Vector2(moveDirection * moveSpeed, velocity.y);
+                velocity = new Vector2(moveDirection * moveSpeed, velocity.y);  //Here velocity gets a new vector, therefore the speed/direction change happens instantly, there is no excelleration time
             }
         }
         // if player is in the air and gives input, the player can move left or right
@@ -145,7 +145,7 @@ public class Character : PhysicsObject
 
         if (grounded)
         {
-            Debug.Log(groundNormal);
+            //Debug.Log(groundNormal);
             if (groundNormal.y < 1) //!= new Vector2(0f, 1f))
             {
                 isSliding = true;

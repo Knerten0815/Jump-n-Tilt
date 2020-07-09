@@ -9,11 +9,11 @@ public class PhysicsObject : MonoBehaviour
 
     //The values can be changed for every item indivdually in the editor. The value set in the editor will override the public variables in this script!
 
-    public float minGroundNormalY = 0.9f;   //Considered grounded and dampening accours. 0 vertical, 1 horizontal
-    public float minJumpNormalY = 0.3f;     //Maximum incline for jumps. 0 vertical, 1 horizontal
-    public float gravityModifier = 1f;      //Gravity multiplication factor: Only change it for kinematic objects. Gravity of dynamic objects should be changed in Rigitbody 2D.
-    public float dampening = 0.85f;         //Accours while grounded
-    public float maxSpeed = 40;             //Maximum movement speed
+    public float minGroundNormalY;   //Considered grounded and dampening accours. 0 vertical, 1 horizontal
+    public float minJumpNormalY;     //Maximum incline for jumps. 0 vertical, 1 horizontal
+    public float gravityModifier;      //Gravity multiplication factor: Only change it for kinematic objects. Gravity of dynamic objects should be changed in Rigitbody 2D.
+    public float dampening;         //Accours while grounded
+    public float maxSpeed;             //Maximum movement speed
 
     protected bool grounded;                //Dampening accours
     protected bool jumpable;                //true if surface is jumpable
@@ -25,7 +25,7 @@ public class PhysicsObject : MonoBehaviour
     protected RaycastHit2D[] hitbuffer = new RaycastHit2D[16];
 
     protected const float minMoveDistance = 0.001f;     //Movement less than this gets ignored
-    protected const float shellRadius = 0.01f;             //Prevents objects from falling thru colliders if they have to hight velocity
+    protected const float shellRadius = 0.02f;             //Prevents objects from falling thru colliders if they have to hight velocity
     protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
     protected TimeController timeController;
 
@@ -136,7 +136,7 @@ public class PhysicsObject : MonoBehaviour
                     }
                 }
 
-                Debug.Log("NORMALE " + currentNormal);
+                //Debug.Log("NORMALE " + currentNormal);
 
                 float projection = Vector2.Dot(velocity, currentNormal);
 
@@ -149,5 +149,11 @@ public class PhysicsObject : MonoBehaviour
             }
         }
         rb2d.position += move.normalized * distance;
+    }
+
+    //Author: Kevin Zielke
+    public Vector2 getVelocity()
+    {
+        return velocity;
     }
 }

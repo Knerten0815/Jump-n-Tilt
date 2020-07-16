@@ -1,10 +1,12 @@
 ﻿//Author: Kevin Zielke
 
 using GameActions;
+using UnityEditor;
 using UnityEngine;
+using TimeControlls;
 
 /// <summary>
-/// controlls audio in a scene
+/// controls audio in a scene
 /// </summary>
 public class AudioController : MonoBehaviour
 {
@@ -23,15 +25,21 @@ public class AudioController : MonoBehaviour
         source.Play();
         PlayerInput.onPlayerAttackDown += playAttack;
         PlayerInput.onTiltDown += playEarthquake;
+        TimeController.onTimeSpeedChange += slowDownAudio;
+        PlayerInput.onSlowMoDown += slowDownAudio;
     }
     private void Update()
     {
-        source.volume = music.volume;
+        source.volume = music.volume;        
     }
+
     // unsubscribing events
     private void OnDisable()
     {
         PlayerInput.onPlayerAttackDown -= playAttack;
+        PlayerInput.onTiltDown -= playEarthquake;
+        TimeController.onTimeSpeedChange -= slowDownAudio;
+        PlayerInput.onSlowMoDown -= slowDownAudio;
     }
     private void playEarthquake(float direction)
     {
@@ -41,5 +49,13 @@ public class AudioController : MonoBehaviour
     void playAttack()
     {
         source.PlayOneShot(attack.clip, attack.volume);
+    }
+
+    void slowDownAudio()
+    {
+        if (source.pitch == 1f)
+            source.pitch = 0.8f;
+        else
+            source.pitch = 1f;
     }
 }

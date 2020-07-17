@@ -4,6 +4,7 @@ using GameActions;
 using UnityEditor;
 using UnityEngine;
 using TimeControlls;
+using UnityEngine.UI;
 
 namespace AudioControlling
 {
@@ -13,12 +14,16 @@ namespace AudioControlling
     public class AudioController : MonoBehaviour
     {
         private float musicVol, fxVol;
+        private AudioSource source;
+
+        [SerializeField] Slider musicSlider;
+        [SerializeField] Slider fxSlider;
 
         [SerializeField] Audio music;
         [SerializeField] Audio attack;
         [SerializeField] Audio earthquake;
 
-        private AudioSource source;
+
 
         // initalizing and subscribing to events
         void Awake()
@@ -27,6 +32,7 @@ namespace AudioControlling
             source.clip = music.clip;
             source.volume = music.volume;
             source.Play();
+
             PlayerInput.onPlayerAttackDown += playAttack;
             PlayerInput.onTiltDown += playEarthquake;
             TimeController.onTimeSpeedChange += slowDownAudio;
@@ -63,13 +69,13 @@ namespace AudioControlling
                 source.pitch = 1f;
         }
 
-        void setMusicVolume(float volume)
+        void setMusicVolume()
         {
-            musicVol = volume;
+            musicVol = musicSlider.value;
         }
-        void setFXVolume(float volume)
+        void setFXVolume()
         {
-            fxVol = volume;
+            fxVol = fxSlider.value;
         }
     }
 }

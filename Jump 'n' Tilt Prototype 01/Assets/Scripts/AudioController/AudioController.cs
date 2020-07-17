@@ -23,8 +23,6 @@ namespace AudioControlling
         [SerializeField] Audio attack;
         [SerializeField] Audio earthquake;
 
-
-
         // initalizing and subscribing to events
         void Awake()
         {
@@ -69,11 +67,11 @@ namespace AudioControlling
                 source.pitch = 1f;
         }
 
-        void setMusicVolume()
+        public void setMusicVolume()
         {
             musicVol = musicSlider.value;
         }
-        void setFXVolume()
+        public void setFXVolume()
         {
             fxVol = fxSlider.value;
         }

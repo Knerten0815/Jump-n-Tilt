@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-//using AudioControlling;
+using AudioControlling;
 public class AudioManager : MonoBehaviour
 {
-    public Slider backgroundSlider, soundEffectsSlider;
     /*private static readonly string FirstPlay = "firstPlay";
     private static readonly string BackgroundPref = "BackgroundPref";
     private static readonly string SoundEffectsPref = "SoundEffectsPref";
@@ -56,6 +55,10 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    
     */
-
+    /*public void changeVolume()
+    {
+        AudioController.setMusicVolume(backgroundSlider.value);
+    }*/
 }

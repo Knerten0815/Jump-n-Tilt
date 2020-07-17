@@ -63,11 +63,11 @@ namespace AudioControlling
                 source.pitch = 1f;
         }
 
-        void setMusicVolume(float volume)
+        public void setMusicVolume(float volume)
         {
             musicVol = volume;
         }
-        void setFXVolume(float volume)
+        public void setFXVolume(float volume)
         {
             fxVol = volume;
         }

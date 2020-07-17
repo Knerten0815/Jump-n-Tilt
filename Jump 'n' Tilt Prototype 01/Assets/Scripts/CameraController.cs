@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
     private Transform parentTrans;                      //The parent of the main camera, that is following the player
     private GameObject player;                          //The current position of the Player Character
     private PlayerCharacter playerCtrl;                 //Player Controller for velocity
-        private Vector2 offset;                             //current offset of the camera to the player
+    private Vector2 offset;                             //current offset of the camera to the player
     private TilemapCollider2D lvlBounds;                //The TilemapCollider of the level: Needed for getting boundaries of the level
 
     ///Once the angle of the tilt is settled, the tilemap needs to be adjusted to show enough ground and walls, so that no empty background is seen.

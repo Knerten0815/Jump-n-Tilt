@@ -4,7 +4,24 @@ using UnityEngine;
 
 public class Onryo : Character
 {
+    private enum State
+    {
+        Walking,
+        ChaseTarget,
+    }
+
+    private Vector2 startPos;
+    public Vector2 roamPos;
+    private State state;
+    private GameObject player;
+
     public bool movesRight = true;
+
+    /*private void Awake()
+    {
+        state = State.Walking;
+    }*/
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -14,18 +31,75 @@ public class Onryo : Character
     protected override void Start()
     {
         base.Start();
+        startPos = transform.position;
+        Debug.Log("Start: " + startPos);
+        player = GameObject.Find("Player");
     }
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
 
-        if (movesRight)
+        switch (state)
         {
-            Movement(1);
+            default:
+            case State.Walking:
+                if (movesRight)
+                {
+                    Movement(1);
+                    Vector2 goal = startPos + roamPos;
+                    Debug.Log("Goal positiv: " + goal);
+                    Debug.Log("aktuelle Position: " + transform.position);
+                    if (transform.position.x >= goal.x /*&& transform.position.y == goal.y*/)
+                    {
+                        movesRight = false;
+                        startPos = transform.position;
+                    }
+                }
+                else
+                {
+                    Movement(-1);
+                    Vector2 goal = startPos - roamPos;
+                    Debug.Log("Goal negativ: " + goal);
+                    if (transform.position.x <= goal.x /*&& transform.position.y == goal.y*/)
+                    {
+                        movesRight = true;
+                        startPos = transform.position;
+                    }
+                }
+
+                FindTarget();
+                break;
+
+            case State.ChaseTarget:
+                Debug.Log("Player in der Nähe");
+
+                if(transform.position.x > player.transform.position.x)
+                {
+                    movesRight = false;
+                    Movement(-1);
+                }
+                else
+                {
+                    movesRight = true;
+                    Movement(1);
+                }
+
+                float targetRange = 5f;
+                if (Vector3.Distance(transform.position, player.transform.position) > targetRange)
+                {
+                    state = State.Walking;
+                }
+                break;
         }
-        else
+
+    }
+
+    private void FindTarget()
+    {
+        float targetRange = 5f;
+        if(Vector3.Distance(transform.position, player.transform.position) < targetRange)
         {
-            Movement(-1);
+            state = State.ChaseTarget;
         }
     }
     protected override void TakeDamage(int damage)

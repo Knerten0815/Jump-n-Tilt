@@ -183,6 +183,36 @@ Transform:
   m_Father: {fileID: 2064198626}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &165643245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 165643246}
+  m_Layer: 0
+  m_Name: AttackArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &165643246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165643245}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.66000366, y: 0, z: -297.6175}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1340653731}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &168622972
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,7 +1903,7 @@ GameObject:
   - component: {fileID: 1002723188}
   - component: {fileID: 1002723187}
   - component: {fileID: 1002723191}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1888,7 +1918,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002723185}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 123.27, y: 0.1, z: 0}
+  m_LocalPosition: {x: 128.92, y: 0.1, z: 0}
   m_LocalScale: {x: 0.05066718, y: 0.05066718, z: 0.05066718}
   m_Children:
   - {fileID: 1703643106}
@@ -13593,7 +13623,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 135, y: -0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 165643246}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13660,8 +13691,8 @@ MonoBehaviour:
   slideReducer: -6
   isFacingRight: 0
   isSliding: 0
-  attackPos: {fileID: 0}
-  attackRadius: 0
+  attackPos: {fileID: 165643246}
+  attackRadius: 1
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2048
@@ -14118,7 +14149,7 @@ GameObject:
   m_Layer: 0
   m_Name: Fish
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -14214,7 +14245,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1863658277}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.26, y: -0.84, z: 0}
+  m_LocalPosition: {x: 122.1, y: -0.84, z: 0}
   m_LocalScale: {x: 0.16942, y: 0.16942, z: 0.16942}
   m_Children: []
   m_Father: {fileID: 0}

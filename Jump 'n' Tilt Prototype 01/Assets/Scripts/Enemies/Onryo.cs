@@ -17,10 +17,10 @@ public class Onryo : Character
 
     public bool movesRight = true;
 
-    /*private void Awake()
+    private void Awake()
     {
         state = State.Walking;
-    }*/
+    }
 
     protected override void OnEnable()
     {
@@ -32,7 +32,7 @@ public class Onryo : Character
     {
         base.Start();
         startPos = transform.position;
-        Debug.Log("Start: " + startPos);
+        //Debug.Log("Start: " + startPos);
         player = GameObject.Find("Player");
     }
     protected override void ComputeVelocity()
@@ -47,8 +47,8 @@ public class Onryo : Character
                 {
                     Movement(1);
                     Vector2 goal = startPos + roamPos;
-                    Debug.Log("Goal positiv: " + goal);
-                    Debug.Log("aktuelle Position: " + transform.position);
+                    //Debug.Log("Goal positiv: " + goal);
+                    //Debug.Log("aktuelle Position: " + transform.position);
                     if (transform.position.x >= goal.x /*&& transform.position.y == goal.y*/)
                     {
                         movesRight = false;
@@ -59,7 +59,7 @@ public class Onryo : Character
                 {
                     Movement(-1);
                     Vector2 goal = startPos - roamPos;
-                    Debug.Log("Goal negativ: " + goal);
+                    //Debug.Log("Goal negativ: " + goal);
                     if (transform.position.x <= goal.x /*&& transform.position.y == goal.y*/)
                     {
                         movesRight = true;
@@ -71,7 +71,7 @@ public class Onryo : Character
                 break;
 
             case State.ChaseTarget:
-                Debug.Log("Player in der Nähe");
+                //Debug.Log("Player in der Nähe");
 
                 if(transform.position.x > player.transform.position.x)
                 {
@@ -82,6 +82,12 @@ public class Onryo : Character
                 {
                     movesRight = true;
                     Movement(1);
+                }
+
+                float attackRange = 1f;
+                if(Vector3.Distance(transform.position, player.transform.position) < attackRange)
+                {
+                    Attack();
                 }
 
                 float targetRange = 5f;
@@ -101,6 +107,12 @@ public class Onryo : Character
         {
             state = State.ChaseTarget;
         }
+    }
+
+    protected override void Attack()
+    {
+        //base.Attack();
+        Debug.Log("Attacke!!!");
     }
     protected override void TakeDamage(int damage)
     {

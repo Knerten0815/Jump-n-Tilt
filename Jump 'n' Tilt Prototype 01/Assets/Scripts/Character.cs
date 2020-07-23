@@ -184,8 +184,10 @@ public class Character : PhysicsObject
         }
     }
 
-    protected virtual void TakeDamage(int damage)
+    // Author: Nicole Mynarek
+    // changed protected to public to access it in Onryo script
+    public virtual void TakeDamage(int damage)
     {
-
+        health -= damage;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Author: Nicole Mynarek
 public class Onryo : Character
 {
     private enum State
@@ -113,8 +114,15 @@ public class Onryo : Character
     {
         //base.Attack();
         Debug.Log("Attacke!!!");
+
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].GetComponent<Character>().TakeDamage(1);
+        }
     }
-    protected override void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
         health -= damage;
     }

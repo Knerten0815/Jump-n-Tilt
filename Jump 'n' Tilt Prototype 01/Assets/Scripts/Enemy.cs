@@ -40,7 +40,7 @@ public class Enemy : Character
         }
 
     }
-    protected override void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
         health -= damage;
     }

@@ -12,6 +12,11 @@ public class Onryo : Character
     }
 
     private Vector2 startPos;
+    private Vector2 range;
+    private Vector2 goal;
+
+    public float gravitySwitchCounter;
+
     public Vector2 roamPos;
     private State state;
     private GameObject player;
@@ -35,15 +40,36 @@ public class Onryo : Character
         startPos = transform.position;
         //Debug.Log("Start: " + startPos);
         player = GameObject.Find("Player");
+        //range = new Vector2(Random.Range(-7f, 7f), Random.Range(-7f, 7f));
+        //goal = startPos + range;
     }
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
 
+        if (gravitySwitchCounter >= 0)
+        {
+            gravitySwitchCounter -= Time.deltaTime;
+        }
+        else
+        {
+            gravitySwitchCounter = 4f;
+        }
+
+        if (gravitySwitchCounter < 2s)
+        {
+            gravityModifier = -3f;
+        }
+        else
+        {
+            gravityModifier = 3f;
+        }
+
         switch (state)
         {
             default:
             case State.Walking:
+
                 if (movesRight)
                 {
                     Movement(1);
@@ -68,7 +94,6 @@ public class Onryo : Character
                     }
                 }
 
-                FindTarget();
                 break;
 
             case State.ChaseTarget:
@@ -99,6 +124,12 @@ public class Onryo : Character
                 break;
         }
 
+    }
+
+    protected override void Movement(float direction)
+    {
+        moveDirection = direction;
+        velocity = new Vector2(moveDirection * moveSpeed, 0f);
     }
 
     private void FindTarget()

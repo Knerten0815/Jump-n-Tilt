@@ -34,10 +34,14 @@ public class PlayerCharacter : Character
     private RaycastHit2D hit;
     private static float wallJumpTimer = 1;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
     public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
+    private LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
 
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        //Marvin
+        levelController = GameObject.Find("LevelController").GetComponent<LevelControllerNew>();
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;
@@ -68,7 +72,7 @@ public class PlayerCharacter : Character
         PlayerInput.onVerticalUp -= CrouchUp;
     }
 
-    // Author: Nicole Mynarek
+    // Author: Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
@@ -80,18 +84,19 @@ public class PlayerCharacter : Character
         }
 
         WallSliding();
+
+        onWall = false;
+
+        if (touchesWall && levelController.getTiltStep() != 0)
+        {
+            onWall = true;
+        }
+        Debug.Log(onWall);
     }
 
     protected override void Movement(float direction)
     {
-        //if (touchesWall && Mathf.Abs(groundNormal.y) < minGroundNormalY)      //This tries to fix a bug where the player can move up walls while the level is tilted. It fixes it to an extend, but introduces some new issues.
-        //{
-        //    base.Movement(0);
-        //}
-        //else
-        //{
             base.Movement(direction);
-        //}
     }
 
     // Author: Nicole Mynarek, Marvin Winkler

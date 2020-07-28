@@ -16,6 +16,7 @@ public class Character : PhysicsObject
     protected float wallJumpTime;             //by Marvin Winkler, used so that midAir movement does not overreide the wall jump
     public float wallJumpTimeSpeed;           //by Marvin Winkler, used to adjust the time less midair movement is possible after a wall jump
 
+    public bool onWall;                 //by Marvin Winkler, used to fix wall climbing while level is tilted
 
     public float slideSpeed;
     public float slideReducer;
@@ -78,6 +79,11 @@ public class Character : PhysicsObject
     protected virtual void Movement(float direction)
     {
         moveDirection = direction;
+
+        if (onWall)
+        {
+            return; // this disables manual movement if the player is on a wall while the level is tilted, thus disabling wall climbing
+        }
 
         if (grounded)
         {

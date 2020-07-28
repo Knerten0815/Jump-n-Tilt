@@ -221,5 +221,11 @@ public class LevelControllerNew : MonoBehaviour
         level.transform.SetParent(null);
     }
 
+    //Author: Marvin Winkler
+    //Needed to fix wall climbing bug in player Character
+    public int getTiltStep()
+    {
+        return tiltStep;
+    }
 
 }

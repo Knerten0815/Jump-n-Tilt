@@ -164,6 +164,7 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
             {
                 onMenuDown?.Invoke();
             }
+
         }
     }
 }

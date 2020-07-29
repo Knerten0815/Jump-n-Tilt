@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0f7aff0d25decf24e8424361ba2e10d8
+guid: 070e58f926bc57a4186cb14b91ba968c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - dispenser: {fileID: 5058012736927666542, guid: 824f27a9e8836e34f89ffd265777821e,
+  - arrowPrefab: {fileID: 6549967435999221565, guid: cd5790881da82e0428531dc707968eba,
       type: 3}
   executionOrder: 0
   icon: {instanceID: 0}

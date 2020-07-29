@@ -210,12 +210,21 @@ namespace LevelControlls
             //transform.position = new Vector3(player.transform.position.x, -5f, player.transform.position.z);
         }
 
+<<<<<<< HEAD
         //Author: Melanie Jäger
         //sets LevelController as parent for Level
         private void setWorldParent()
         {
             level.transform.SetParent(transform);
         }
+=======
+    //Author: Marvin Winkler
+    //Needed to fix wall climbing bug in player Character
+    public int getTiltStep()
+    {
+        return tiltStep;
+    }
+>>>>>>> 7955c02c6b98f7bcc91106948eb3b247edc37024
 
         //Author: Melanie Jäger
         //unsets LevelController as parent for Level

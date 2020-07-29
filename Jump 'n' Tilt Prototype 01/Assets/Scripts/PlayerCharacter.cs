@@ -32,11 +32,16 @@ public class PlayerCharacter : Character
     public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
     public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
-    public float wallJumpTimer;             //By Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
+    private static float wallJumpTimer = 1;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
+    public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
+    private LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
 
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        //Marvin
+        levelController = GameObject.Find("LevelController").GetComponent<LevelControllerNew>();
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;
@@ -67,7 +72,7 @@ public class PlayerCharacter : Character
         PlayerInput.onVerticalUp -= CrouchUp;
     }
 
-    // Author: Nicole Mynarek
+    // Author: Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
@@ -79,11 +84,19 @@ public class PlayerCharacter : Character
         }
 
         WallSliding();
+
+        onWall = false;
+
+        if (touchesWall && levelController.getTiltStep() != 0)
+        {
+            onWall = true;
+        }
+        Debug.Log(onWall);
     }
 
     protected override void Movement(float direction)
     {
-        base.Movement(direction);
+            base.Movement(direction);
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
@@ -180,7 +193,7 @@ public class PlayerCharacter : Character
             
             wallSliding = false;
             jumpCountLeft--;
-            velocity = new Vector2(moveSpeed * hit.normal.x*0.5f, jumpHeight); //moveSpeed * (moveDirection), jumpHeight);
+            velocity = new Vector2(hit.normal.x * wallJumpSpeed, jumpHeight); //moveSpeed * (moveDirection), jumpHeight);
             CharacterFacingDirection(hit.normal.x);
             jumpable = false;
             lastWallcontact = hit;

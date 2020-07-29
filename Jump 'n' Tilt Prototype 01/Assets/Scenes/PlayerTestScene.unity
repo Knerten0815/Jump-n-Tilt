@@ -1271,6 +1271,7 @@ GameObject:
   - component: {fileID: 716115053}
   - component: {fileID: 716115052}
   - component: {fileID: 716115051}
+  - component: {fileID: 716115055}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1375,6 +1376,37 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &716115055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716115049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &717581653
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,7 +1849,7 @@ GameObject:
   - component: {fileID: 1002723186}
   - component: {fileID: 1002723190}
   - component: {fileID: 1002723189}
-  - component: {fileID: 1002723188}
+  - component: {fileID: 1002723191}
   - component: {fileID: 1002723187}
   m_Layer: 0
   m_Name: Player
@@ -1853,18 +1885,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5035e571502f534dbd3d0d457804641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minGroundNormalY: 0.2
+  minGroundNormalY: 0.6
   minJumpNormalY: 0.3
   gravityModifier: 4
-  dampening: 0.9
-  maxSpeed: 40
+  dampening: 0.83
+  maxSpeed: 15
   moveSpeed: 10
   jumpHeight: 16
   jumpHeightReducer: 0.5
-  moveWhileJumping: 2
-  airResistance: 0.97
-  slideSpeed: 3
+  moveWhileJumping: 0.5
+  airResistance: 0.005
+  wallJumpTimeSpeed: 1
+  onWall: 0
+  slideSpeed: 1
   slideReducer: -6
+  slideBackwardsMaxSpeed: 3
   isFacingRight: 1
   isSliding: 0
   attackPos: {fileID: 1703643106}
@@ -1876,32 +1911,16 @@ MonoBehaviour:
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
-  wallJumpCounter: 2
+  wallJumpCounter: 0
   touchesWall: 0
-  wallCheckDistance: 0.5
+  wallCheckDistance: 0.4
   whatIsLevel:
     serializedVersion: 2
     m_Bits: 0
   wallSliding: 0
   wallSlidingSpeed: 0.3
   facingDirection: 1
-  wallJumpTimer: 0.5
---- !u!70 &1002723188
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1002723185}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 1.019688, y: 0.2658937}
-  m_Size: {x: 9.348783, y: 27.17294}
-  m_Direction: 0
+  wallJumpSpeed: 15
 --- !u!50 &1002723189
 Rigidbody2D:
   serializedVersion: 4
@@ -1974,6 +1993,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &1002723191
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002723185}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.58708787, y: -0.38956642}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 14.75, y: 30.25}
+    newSize: {x: 14.75, y: 30.25}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 1
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 7.926233, y: 23.543964}
+  m_EdgeRadius: 0.02
 --- !u!1 &1007569834
 GameObject:
   m_ObjectHideFlags: 0
@@ -14074,8 +14119,11 @@ MonoBehaviour:
   jumpHeightReducer: 0.5
   moveWhileJumping: 7
   airResistance: 0
+  wallJumpTimeSpeed: 0
+  onWall: 0
   slideSpeed: 2
   slideReducer: 0.5
+  slideBackwardsMaxSpeed: 0
   isFacingRight: 0
   isSliding: 0
   attackPos: {fileID: 0}

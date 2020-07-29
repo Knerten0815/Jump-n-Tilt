@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Menu.unity
     guid: 3862af1601b204e479b3c182aca40455
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Prototype_Main.unity
     guid: 2ff7bebb47f9a8e4e9d5ffacb5b1565d
   - enabled: 0
@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MainSceneCopied.unity
     guid: dcbaee8e77a44034d8ddf6dd1f645949
+  - enabled: 0
+    path: Assets/Scenes/Kevins Scene.unity
+    guid: 63716f96dad53e8408f4206a7b1c94bb
   m_configObjects: {}

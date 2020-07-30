@@ -32,7 +32,6 @@ namespace AudioControlling
         [SerializeField] Slider fxSlider;
 
         [SerializeField] Audio music;
-        [SerializeField] Audio earthquake;
 
         void Awake()
         {

@@ -56,7 +56,7 @@ public class Onryo : Character
             gravitySwitchCounter = 4f;
         }
 
-        if (gravitySwitchCounter < 2s)
+        if (gravitySwitchCounter < 2)
         {
             gravityModifier = -3f;
         }

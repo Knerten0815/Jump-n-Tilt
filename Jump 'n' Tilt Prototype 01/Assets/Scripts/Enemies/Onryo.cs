@@ -47,6 +47,11 @@ public class Onryo : Character
     {
         base.ComputeVelocity();
 
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            GetComponent<CapsuleCollider2D>().isTrigger = true;
+        }
+
         if (gravitySwitchCounter >= 0)
         {
             gravitySwitchCounter -= Time.deltaTime;
@@ -56,7 +61,7 @@ public class Onryo : Character
             gravitySwitchCounter = 4f;
         }
 
-        if (gravitySwitchCounter < 2)
+        if (gravitySwitchCounter < 2f)
         {
             gravityModifier = -3f;
         }
@@ -94,20 +99,25 @@ public class Onryo : Character
                     }
                 }
 
+                FindTarget();
                 break;
 
             case State.ChaseTarget:
-                //Debug.Log("Player in der Nähe");
+                Debug.Log("Player in der Nähe");
 
                 if(transform.position.x > player.transform.position.x)
                 {
                     movesRight = false;
-                    Movement(-1);
+                    //Movement(-1);
+                    gravityModifier = 0f;
+                    transform.position = Vector2.MoveTowards(transform.position, player.transform.position, 0.05f);
                 }
                 else
                 {
                     movesRight = true;
-                    Movement(1);
+                    //Movement(1);
+                    gravityModifier = 0f;
+                    transform.position = Vector2.MoveTowards(transform.position, player.transform.position, 0.01f);
                 }
 
                 float attackRange = 1f;
@@ -146,13 +156,13 @@ public class Onryo : Character
         //base.Attack();
         Debug.Log("Attacke!!!");
 
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+        /*Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
 
         for (int i = 0; i < enemies.Length; i++)
         {
             enemies[i].GetComponent<Character>().TakeDamage(1);
+        }*/
         }
-    }
     public override void TakeDamage(int damage)
     {
         health -= damage;

@@ -33,7 +33,7 @@ public class Arrow : PhysicsObject
     void Update()
     {
         Movement();
-        Debug.Log(level.rotation.z);
+        //Debug.Log(level.rotation.z);
     }
 
     //Object is moving non stop

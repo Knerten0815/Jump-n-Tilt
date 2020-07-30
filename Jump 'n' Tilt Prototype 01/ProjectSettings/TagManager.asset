@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PickUp
   - UIElement
+  - PlatformsAndWalls
   layers:
   - Default
   - TransparentFX

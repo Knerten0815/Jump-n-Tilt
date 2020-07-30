@@ -358,6 +358,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d6d190d3a59a94284d85d2baa6d489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  earthquake:
+    clip: {fileID: 8300000, guid: a05d5e25ae6889544a0dd68b56046f14, type: 3}
+    volume: 1
 --- !u!114 &31672148
 MonoBehaviour:
   m_ObjectHideFlags: 0

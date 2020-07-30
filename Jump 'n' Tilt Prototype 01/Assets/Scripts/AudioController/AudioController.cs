@@ -1,6 +1,6 @@
 ﻿//Author: Kevin Zielke
 
-using GameActions;  //will be deleted
+using GameActions;  //will be deleted, once TimeControls is fixed
 using UnityEngine;
 using TimeControlls;
 using UnityEngine.UI;
@@ -8,10 +8,19 @@ using UnityEngine.UI;
 namespace AudioControlling
 {
     /// <summary>
-    /// controls audio in a scene
+    /// Singleton class, that plays audio and alters audio playback speed.
+    /// If your class needs to play FX Sound, add the namespace AudioControlling and an Audio object as a SerializeField to your variables
+    /// and assign it a sound in the inspector. Then play the sound with "AudioController.Instance.playFXSound(Audio sound);"
+    /// If you think that the FX Sound is to loud (relative to other FX Sounds) you can turn down the volume in the inspector.
+    /// You should not adjust FX volume relative to music volume. That is done in the menu.
+    /// See PlayerInput class for example of implementation.
     /// </summary>
     public class AudioController : MonoBehaviour
     {
+        private static AudioController _instance;
+
+        public static AudioController Instance { get { return _instance; } }
+
         private AudioSource source;
         private float musicVol, fxVol;
         private static readonly string firstPlay = "firstPlay";
@@ -27,6 +36,16 @@ namespace AudioControlling
 
         void Awake()
         {
+
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                _instance = this;
+            }
+
             //initalizing variables
             gameObject.AddComponent<AudioSource>();
             source = GetComponent<AudioSource>();
@@ -64,7 +83,6 @@ namespace AudioControlling
             source.volume = music.volume * musicVol;
 
             //subscribing to events
-            PlayerInput.onTiltDown += playEarthquake;
             TimeController.onTimeSpeedChange += slowDownAudio;
             PlayerInput.onSlowMoDown += slowDownAudio;
         }
@@ -87,7 +105,6 @@ namespace AudioControlling
         // unsubscribing events
         private void OnDisable()
         {
-            PlayerInput.onTiltDown -= playEarthquake;
             TimeController.onTimeSpeedChange -= slowDownAudio;
             PlayerInput.onSlowMoDown -= slowDownAudio;
         }
@@ -122,12 +139,6 @@ namespace AudioControlling
         public void playMusic(Audio music)
         {
             source.PlayOneShot(music.clip, music.volume * musicVol);
-        }
-
-        //will be deleted later
-        private void playEarthquake(float direction)
-        {
-            source.PlayOneShot(earthquake.clip, earthquake.volume * fxVol);
         }
     }
 }

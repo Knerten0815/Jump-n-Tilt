@@ -36,12 +36,16 @@ public class PlayerCharacter : Character
     public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
 
+    private BoxCollider2D collider;
+
     protected override void OnEnable()
     {
         base.OnEnable();
 
         //Marvin
         levelController = GameObject.Find("LevelController").GetComponent<LevelControlls.LevelControllerNew>();
+
+        collider = GetComponent<BoxCollider2D>();
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;
@@ -91,7 +95,7 @@ public class PlayerCharacter : Character
         {
             onWall = true;
         }
-        Debug.Log(onWall);
+        //Debug.Log(onWall);
     }
 
     protected override void Movement(float direction)
@@ -218,6 +222,7 @@ public class PlayerCharacter : Character
     }
 
     //Author: Michelle Limbach
+    //Edited: Marvin Winkler
     private void CrouchDown(float direction)
     {
         //Player is not crouching yet, is grounded and the Arrow down Button is pressed
@@ -227,8 +232,8 @@ public class PlayerCharacter : Character
             GetComponent<SpriteRenderer>().size = GetComponent<SpriteRenderer>().size * new Vector2(1f, 0.5f);
 
             //Scale the CapsuleCollider and set with offset to new position, so player does not get stuck in ground
-            GetComponent<CapsuleCollider2D>().size = new Vector2(GetComponent<CapsuleCollider2D>().size.x, 15.44461f);
-            GetComponent<CapsuleCollider2D>().offset = new Vector2(1.019688f, -0.01133485f);
+            collider.size = new Vector2(collider.size.x, 15.44461f);
+            collider.offset = new Vector2(1.019688f, -0.01133485f);
 
             //Set crouching to true, so Script knows player is already crouching
             crouching = true;
@@ -267,8 +272,8 @@ public class PlayerCharacter : Character
 
                     //Rescale the CapsuleCollider size and offset and put the player in a higher y position, so the player does not get stuck in ground 
                     transform.position += new Vector3(0f, 0.3f, 0f);
-                    GetComponent<CapsuleCollider2D>().size = new Vector2(GetComponent<CapsuleCollider2D>().size.x, 27.17294f);
-                    GetComponent<CapsuleCollider2D>().offset = new Vector2(1.019688f, 0.2658937f);
+                    collider.size = new Vector2(collider.size.x, 27.17294f);
+                    collider.offset = new Vector2(1.019688f, 0.2658937f);
 
                     //Set crouching to false, because the player does not crouch anymore
                     crouching = false;

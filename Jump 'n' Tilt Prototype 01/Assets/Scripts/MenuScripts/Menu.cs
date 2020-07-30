@@ -42,6 +42,17 @@ namespace menuHandling
             Application.Quit();
         }
 
+        public void SetFullscreen(Slider slider)
+        {
+            if(slider.value == 0)
+            {
+                Screen.fullScreen = false;
+            }
+            else
+            {
+                Screen.fullScreen = true;
+            }
+        }
 
     }
 }

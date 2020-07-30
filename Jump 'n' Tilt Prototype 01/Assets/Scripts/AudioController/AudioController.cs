@@ -1,7 +1,6 @@
 ﻿//Author: Kevin Zielke
 
-using GameActions;
-using UnityEditor;
+using GameActions;  //will be deleted, once TimeControls is fixed
 using UnityEngine;
 using TimeControlls;
 using UnityEngine.UI;
@@ -9,60 +8,107 @@ using UnityEngine.UI;
 namespace AudioControlling
 {
     /// <summary>
-    /// controls audio in a scene
+    /// Singleton class, that plays audio and alters audio playback speed.
+    /// If your class needs to play FX Sound, add the namespace AudioControlling and an Audio object as a SerializeField to your variables
+    /// and assign it a sound in the inspector. Then play the sound with "AudioController.Instance.playFXSound(Audio sound);"
+    /// If you think that the FX Sound is to loud (relative to other FX Sounds) you can turn down the volume in the inspector.
+    /// You should not adjust FX volume relative to music volume. That is done in the menu.
+    /// See PlayerInput class for example of implementation.
     /// </summary>
     public class AudioController : MonoBehaviour
     {
-        private float musicVol, fxVol;
+        private static AudioController _instance;
+
+        public static AudioController Instance { get { return _instance; } }
+
         private AudioSource source;
+        private float musicVol, fxVol;
+        private static readonly string firstPlay = "firstPlay";
+        private static readonly string musicPref = "musicPref";
+        private static readonly string fxPref = "fxPref";
+        private int firstPlayInt;
 
         [SerializeField] Slider musicSlider;
         [SerializeField] Slider fxSlider;
 
         [SerializeField] Audio music;
-        [SerializeField] Audio attack;
-        [SerializeField] Audio earthquake;
 
-
-
-        // initalizing and subscribing to events
         void Awake()
         {
+
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                _instance = this;
+            }
+
+            //initalizing variables
+            gameObject.AddComponent<AudioSource>();
             source = GetComponent<AudioSource>();
             source.clip = music.clip;
             source.volume = music.volume;
             source.Play();
-            musicVol = 1f;
-            fxVol = 1f;
+            firstPlayInt = PlayerPrefs.GetInt(firstPlay);
 
-            PlayerInput.onPlayerAttackDown += playAttack;
-            PlayerInput.onTiltDown += playEarthquake;
+            //loading audio preferences, checking for first time playing
+            if (firstPlayInt == 0)
+            {
+                //Default values for first play
+                musicVol = 0.9f;
+                fxVol = 0.7f;
+
+                //Set the sliders to the default values
+                musicSlider.value = musicVol;
+                fxSlider.value = fxVol;
+
+                //Save the default values for later
+                PlayerPrefs.SetFloat(musicPref, musicVol);
+                PlayerPrefs.SetFloat(fxPref, fxVol);
+
+                PlayerPrefs.SetInt(firstPlay, -1);
+            }
+            else
+            {
+                //Load saved Values from previous games
+                musicVol = PlayerPrefs.GetFloat(musicPref);
+                musicSlider.value = musicVol;
+
+                fxVol = PlayerPrefs.GetFloat(fxPref);
+                fxSlider.value = fxVol;
+            }
+            source.volume = music.volume * musicVol;
+
+            //subscribing to events
             TimeController.onTimeSpeedChange += slowDownAudio;
             PlayerInput.onSlowMoDown += slowDownAudio;
         }
-        private void Update()
+
+        public void SaveSoundSettings()
         {
-            source.volume = music.volume * musicVol;
+            Debug.Log("saved sound settings");
+            PlayerPrefs.SetFloat(musicPref, musicSlider.value);
+            PlayerPrefs.SetFloat(fxPref, fxSlider.value);
+        }
+
+        private void OnApplicationFocus(bool inFocus)
+        {
+            if (!inFocus)
+            {
+                SaveSoundSettings();
+            }
         }
 
         // unsubscribing events
         private void OnDisable()
         {
-            PlayerInput.onPlayerAttackDown -= playAttack;
-            PlayerInput.onTiltDown -= playEarthquake;
             TimeController.onTimeSpeedChange -= slowDownAudio;
             PlayerInput.onSlowMoDown -= slowDownAudio;
         }
-        private void playEarthquake(float direction)
-        {
-            source.PlayOneShot(earthquake.clip, earthquake.volume * fxVol);
-        }
 
-        void playAttack()
-        {
-            source.PlayOneShot(attack.clip, attack.volume * fxVol);
-        }
-
+        //Audio slow down for bullet time
         void slowDownAudio()
         {
             if (source.pitch == 1f)
@@ -71,73 +117,27 @@ namespace AudioControlling
                 source.pitch = 1f;
         }
 
-        public void setMusicVolume()
-
+        //set-methods for menu-sliders
+        public void updateMusicVolume()
         {
             musicVol = musicSlider.value;
+            source.volume = music.volume * musicVol;
         }
-
-  
-
         public void setFXVolume()
-
         {
             fxVol = fxSlider.value;
         }
-    }
 
-    /*https://www.youtube.com/watch?v=9ROolmPSC70&t=257s
-
-        private static readonly string FirstPlay = "firstPlay";
-    private static readonly string BackgroundPref = "BackgroundPref";
-    private static readonly string SoundEffectsPref = "SoundEffectsPref";
-    private int firstPlayInt;
-    public Slider backgroundSlider, soundEffectsSlider;
-    private float backgroundFloat, soundEffectsFloat;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        firstPlayInt = PlayerPrefs.GetInt(FirstPlay);
-
-        if (firstPlayInt == 0)
+        //classes can call this method, to play a sound effect
+        public void playFXSound(Audio sound)
         {
-            //Default values for first play
-            backgroundFloat = 0.5f;
-            soundEffectsFloat = 0.5f;
-
-            //Set the sliders to the default values
-            backgroundSlider.value = backgroundFloat;
-            soundEffectsSlider.value = soundEffectsFloat;
-
-            //Save the default values for later
-            PlayerPrefs.SetFloat(BackgroundPref, backgroundFloat);
-            PlayerPrefs.SetFloat(SoundEffectsPref, soundEffectsFloat);
-
-            PlayerPrefs.SetInt(FirstPlay, -1);
+            source.PlayOneShot(sound.clip, sound.volume * fxVol);
         }
-        else
-        {
-            backgroundFloat = PlayerPrefs.GetFloat(BackgroundPref);
-            backgroundSlider.value = backgroundFloat;
 
-            soundEffectsFloat = PlayerPrefs.GetFloat(SoundEffectsPref);
-            soundEffectsSlider.value = soundEffectsFloat;
+        //classes can call this method, to set the background music
+        public void playMusic(Audio music)
+        {
+            source.PlayOneShot(music.clip, music.volume * musicVol);
         }
     }
-
-    public void SaveSoundSettings()
-    {
-        PlayerPrefs.SetFloat(BackgroundPref, backgroundSlider.value);
-        PlayerPrefs.SetFloat(SoundEffectsPref, soundEffectsSlider.value);
-    }
-
-    private void OnApplicationFocus(bool inFocus)
-    {
-        if (!inFocus)
-        {
-            SaveSoundSettings();
-        }
-    } */
 }
-

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using AudioControlling;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
     /// </summary>
     public class PlayerInput : MonoBehaviour
     {
+        [SerializeField] Audio earthquake;                           //example how to use AudioController. Add a soundclip in the inspector and adjust the volume. See onTiltDown for implementation.
+
         ////////////////////////////////////////////////Navigation Input for Game and Menus\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         public delegate void horizontalDown(float horizontal);  //Player wants to navigate or navigate horizontally: negative float for left or
@@ -128,6 +131,7 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
                 if (Input.GetButtonDown("Tilt"))
                 {
                     onTiltDown?.Invoke(Input.GetAxisRaw("Tilt"));
+                    AudioController.Instance.playFXSound(earthquake);           //example of playing a sound with, the AudioController
                 }
                 else if (Input.GetButtonUp("Tilt"))
                 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TimeControlls;
-
+using LevelControlls;
 public class PhysicsObject : MonoBehaviour
 {
     //Author: Marvin Winkler
@@ -28,6 +28,7 @@ public class PhysicsObject : MonoBehaviour
     protected const float shellRadius = 0.02f;             //Prevents objects from falling thru colliders if they have to hight velocity
     protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
     protected TimeController timeController;
+    protected LevelControllerNew levelController;
 
     protected virtual void OnEnable()
     {
@@ -47,6 +48,8 @@ public class PhysicsObject : MonoBehaviour
         contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
 
         timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
+        levelController = GameObject.Find("LevelController").GetComponent<LevelControllerNew>(); // needed for the arrows
+
     }
 
     //Applied velocity gets updated e.g. player movement

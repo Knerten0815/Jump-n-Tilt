@@ -34,14 +34,14 @@ public class PlayerCharacter : Character
     private RaycastHit2D hit;
     private static float wallJumpTimer = 1;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
     public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
-    private LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
+    private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
         //Marvin
-        levelController = GameObject.Find("LevelController").GetComponent<LevelControllerNew>();
+        levelController = GameObject.Find("LevelController").GetComponent<LevelControlls.LevelControllerNew>();
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;

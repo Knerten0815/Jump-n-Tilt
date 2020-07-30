@@ -7,7 +7,7 @@ using UnityEngine;
 *
 * @Katja
 */
-public class Rare : MonoBehaviour, PickUpDescriptor
+public class Rare: MonoBehaviour, PickUpDescriptor
 {
     /*
      * Unique ID for a Collectibel to identify it for save and loading purposes
@@ -17,6 +17,8 @@ public class Rare : MonoBehaviour, PickUpDescriptor
 
     [SerializeField]
     private int numberID;
+
+
 
     /*
     * Calls for the Collectible ID to be added to the current List of Collectibles and also to save that current List by calling
@@ -40,9 +42,18 @@ public class Rare : MonoBehaviour, PickUpDescriptor
     {
         
             if (collectibleID == numberID)
-            {
-                gameObject.SetActive(false);
-            }
+                {
+                Debug.Log("HALLO " + numberID);
+                //gameObject.SetActive(false);
+                Common common = gameObject.AddComponent(typeof(Common)) as Common;
+                common.Value=40;
+                SpriteRenderer sp = gameObject.GetComponent<SpriteRenderer>();
+                sp.sprite = Resources.Load<Sprite>("PickUp Sprites/GoldCoinWithRuby_64x64");
+                Rare r = gameObject.GetComponent<Rare>();
+
+                Object.Destroy(r);
+    
+                }
         
     }
 

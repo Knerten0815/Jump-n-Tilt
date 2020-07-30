@@ -12,7 +12,7 @@ public class ScoringSystem : MonoBehaviour
 {
 
     public GameObject scoreText; //Text displayed to show the current Score
-    public int Score { get; set; } //Score of the player
+    public int Score; //Score of the player
     private string scoreString; //String to be displayed with scoreText
 
 
@@ -25,8 +25,9 @@ public class ScoringSystem : MonoBehaviour
     public void Start()
     {
         ManagementSystem.pickUpHit += scoreUp;
-        Score = 0;
-        scoreString = "Score: " + Score.ToString();
+        ManagementSystem.healthPickUpHit += healthBarUp;
+        Score = 000000000;
+        scoreString = Score.ToString();
         scoreText.GetComponent<UnityEngine.UI.Text>().text = scoreString;
     }
 
@@ -36,12 +37,23 @@ public class ScoringSystem : MonoBehaviour
      * 
      *@Katja
      */
-    private void scoreUp()
+    private void scoreUp(int value)
     {
-        Score += 10;
-        scoreString = "Score: " + Score.ToString();
+        Score += value;
+        scoreString = Score.ToString();
         scoreText.GetComponent<UnityEngine.UI.Text>().text = scoreString;
     }
 
+    private void healthBarUp()
+    {
+        /*
+        *
+        * Hier wäre dann das steigern des momentanen Lebens
+        *
+        *
+        *
+        *
+        */
+    }
 
 }

@@ -11,5 +11,8 @@ using UnityEngine;
 public class Save
 {
     public List<int> collectiblesGathered = new List<int>();
+    public int currentLevel = 0;
+    public int[] Highscore = { 0, 0, 0 };
+    public int unlockedLevels = 0;
 }
 

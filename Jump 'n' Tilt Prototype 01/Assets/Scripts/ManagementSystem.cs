@@ -16,6 +16,9 @@ public class ManagementSystem : MonoBehaviour
 {
 
     private static List<int> collectiblesGathered = new List<int>();
+    private static int currentLevel = 0;
+    private static int[] Highscore = { 0, 0, 0 };
+    private static int unlockedLevels = 0;
 
     /*
     * Cheap and not perfect Singleton initialization. 
@@ -57,7 +60,7 @@ public class ManagementSystem : MonoBehaviour
     * @Katja
     */
 
-    public delegate void scoreUp();
+    public delegate void scoreUp(int score);
     public static event scoreUp pickUpHit;
     /*
     *
@@ -65,9 +68,9 @@ public class ManagementSystem : MonoBehaviour
     *
     * @Katja
     */
-    public static void pickUp()
+    public static void pickUp(int scoreValue)
     {
-        pickUpHit();
+        pickUpHit(scoreValue);
     }
     /*
     *
@@ -88,6 +91,7 @@ public class ManagementSystem : MonoBehaviour
     *   No fucking clue why honestly. 
     * @Katja
     */
+
     public void Awake()
     {
 
@@ -95,11 +99,22 @@ public class ManagementSystem : MonoBehaviour
        
         foreach (int ID in collectiblesGathered)
         {
-            Debug.Log(ID);
-
+            //Debug.Log(ID);
             collectibleOnLoad(ID);
+
         }
-    } 
+
+
+
+    }
+
+    public delegate void pickupHealth();
+    public static event pickupHealth healthPickUpHit;
+
+    public void hUp()
+    {
+        healthPickUpHit();
+    }
 
     /*
     * CreateSaveGameObject creates an empty Save object and overrides it's collectiblesGathered attribute with the current
@@ -111,6 +126,9 @@ public class ManagementSystem : MonoBehaviour
     {
         Save save = new Save();
         save.collectiblesGathered = collectiblesGathered;
+        save.currentLevel = 0;
+        save.Highscore = Highscore;
+        save.unlockedLevels = 0;
         return save;
 
     }
@@ -149,6 +167,9 @@ public class ManagementSystem : MonoBehaviour
             Save save = (Save)bf.Deserialize(file);
             file.Close();
             collectiblesGathered = save.collectiblesGathered;
+            Highscore = save.Highscore;
+            unlockedLevels = save.unlockedLevels;
+            currentLevel = save.currentLevel;
             Debug.Log("Does it load");
         }
         else { 

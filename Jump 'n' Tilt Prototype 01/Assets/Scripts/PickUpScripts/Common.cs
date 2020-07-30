@@ -15,9 +15,13 @@ public class Common : MonoBehaviour, PickUpDescriptor
     *
     * @Katja
     */
+    [SerializeField]
+    public int Value;
+
+
     public void hit()
     {
-        ManagementSystem.pickUp();
+        ManagementSystem.pickUp(Value);
     }
 
 }

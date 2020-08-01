@@ -1098,6 +1098,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d6d190d3a59a94284d85d2baa6d489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  earthquake:
+    clip: {fileID: 0}
+    volume: 0
 --- !u!114 &630257680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1144,7 +1147,6 @@ GameObject:
   - component: {fileID: 680916903}
   - component: {fileID: 680916902}
   - component: {fileID: 680916901}
-  - component: {fileID: 680916904}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1241,23 +1243,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
---- !u!114 &680916904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 680916899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f7aff0d25decf24e8424361ba2e10d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minGroundNormalY: 0
-  minJumpNormalY: 0
-  gravityModifier: 1
-  dampening: 0.85
-  maxSpeed: -1
 --- !u!1 &716115049
 GameObject:
   m_ObjectHideFlags: 0

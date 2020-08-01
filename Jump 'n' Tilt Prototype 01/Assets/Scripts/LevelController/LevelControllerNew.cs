@@ -220,6 +220,7 @@ namespace LevelControlls
 
     //Author: Marvin Winkler
     //Needed to fix wall climbing bug in player Character
+    //Also needed for the arrows
     public int getTiltStep()
     {
         return tiltStep;
@@ -231,12 +232,6 @@ namespace LevelControlls
         private void unsetWorldParent()
         {
             level.transform.SetParent(null);
-        }
-        
-        //Author: Melanie Jäger
-        public float getStep()
-        {
-            return tiltStep;
         }
     }
 }

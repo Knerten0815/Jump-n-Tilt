@@ -14,7 +14,6 @@ public class Onryo : Character
     private Vector2 startPos;
     private Vector2 range;
     private Vector2 goal;
-
     public float gravitySwitchCounter;
 
     public Vector2 roamPos;
@@ -32,6 +31,7 @@ public class Onryo : Character
     {
         base.OnEnable();
         whatIsEnemy = LayerMask.GetMask("Player");
+
     }
 
     protected override void Start()
@@ -45,20 +45,19 @@ public class Onryo : Character
     }
     protected override void ComputeVelocity()
     {
-        base.ComputeVelocity();
 
-        if (Input.GetKeyDown(KeyCode.Y))
+        /*if (Input.GetKeyDown(KeyCode.Y))
         {
             GetComponent<CapsuleCollider2D>().isTrigger = true;
-        }
+        }*/
 
-        if (gravitySwitchCounter >= 0)
+        /*if (gravitySwitchCounter >= 0)
         {
             gravitySwitchCounter -= Time.deltaTime;
         }
         else
         {
-            gravitySwitchCounter = 4f;
+            gravitySwitchCounter = 10f;
         }
 
         if (gravitySwitchCounter < 2f)
@@ -68,7 +67,9 @@ public class Onryo : Character
         else
         {
             gravityModifier = 3f;
-        }
+        }*/
+
+        base.ComputeVelocity();
 
         switch (state)
         {
@@ -86,6 +87,7 @@ public class Onryo : Character
                         movesRight = false;
                         startPos = transform.position;
                     }
+                    Debug.Log("Onryo geht nach rechts");
                 }
                 else
                 {
@@ -97,6 +99,7 @@ public class Onryo : Character
                         movesRight = true;
                         startPos = transform.position;
                     }
+                    Debug.Log("Onryo geht nach links");
                 }
 
                 FindTarget();
@@ -105,26 +108,30 @@ public class Onryo : Character
             case State.ChaseTarget:
                 Debug.Log("Player in der Nähe");
 
-                if(transform.position.x > player.transform.position.x)
+                if (transform.position.x > player.transform.position.x)
                 {
                     movesRight = false;
-                    //Movement(-1);
+                    moveDirection = -1;
                     gravityModifier = 0f;
-                    transform.position = Vector2.MoveTowards(transform.position, player.transform.position, 0.05f);
+                    Vector2 toPlayer = new Vector2((player.transform.position.x - transform.position.x), player.transform.position.y - transform.position.y);
+                    velocity = toPlayer.normalized;
+
+
                 }
                 else
                 {
                     movesRight = true;
-                    //Movement(1);
+                    moveDirection = 1;
                     gravityModifier = 0f;
-                    transform.position = Vector2.MoveTowards(transform.position, player.transform.position, 0.01f);
+                    Vector2 toPlayer = new Vector2((player.transform.position.x - transform.position.x), player.transform.position.y - transform.position.y);
+                    velocity = toPlayer.normalized;
                 }
 
-                float attackRange = 1f;
-                if(Vector3.Distance(transform.position, player.transform.position) < attackRange)
+                /*float attackRange = 1f;
+                if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
                 {
                     Attack();
-                }
+                }*/
 
                 float targetRange = 5f;
                 if (Vector3.Distance(transform.position, player.transform.position) > targetRange)
@@ -139,13 +146,32 @@ public class Onryo : Character
     protected override void Movement(float direction)
     {
         moveDirection = direction;
-        velocity = new Vector2(moveDirection * moveSpeed, 0f);
+
+        if (gravitySwitchCounter >= 0)
+        {
+            gravitySwitchCounter -= Time.deltaTime;
+        }
+        else
+        {
+            gravitySwitchCounter = 4f;
+        }
+
+        if (gravitySwitchCounter < 2f)
+        {
+            velocity = new Vector2(moveDirection * moveSpeed, 1f);
+        }
+        else
+        {
+            velocity = new Vector2(moveDirection * moveSpeed, -1f);
+        }
+
+        //velocity = new Vector2(moveDirection * moveSpeed, -4f);
     }
 
     private void FindTarget()
     {
         float targetRange = 5f;
-        if(Vector3.Distance(transform.position, player.transform.position) < targetRange)
+        if (Vector3.Distance(transform.position, player.transform.position) < targetRange)
         {
             state = State.ChaseTarget;
         }
@@ -162,9 +188,10 @@ public class Onryo : Character
         {
             enemies[i].GetComponent<Character>().TakeDamage(1);
         }*/
-        }
+    }
     public override void TakeDamage(int damage)
     {
         health -= damage;
     }
 }
+

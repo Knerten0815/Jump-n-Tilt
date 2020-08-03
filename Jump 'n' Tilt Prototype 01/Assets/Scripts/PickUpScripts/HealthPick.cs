@@ -11,12 +11,8 @@ public class HealthPick : MonoBehaviour, PickUpDescriptor
     }
     public void hit()
     {
-
+        ManagementSystem.hUp();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
 }

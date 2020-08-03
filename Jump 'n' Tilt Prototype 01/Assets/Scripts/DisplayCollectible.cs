@@ -7,33 +7,36 @@ using TMPro;
 
 public class DisplayCollectible : MonoBehaviour
 {
-    [SerializeField]
+
     public CollectibleCard collectible;
-    public int ID;
+    
     public TextMeshProUGUI title;
     public TextMeshProUGUI description;
-    
-  
+    public Hashtable buttons = new Hashtable();
 
 
-    public Image image;
+
+    public RawImage image;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        title.text = "????";
-        description.text = "????";
-        image.sprite = collectible.artwork;
-        ManagementSystem.collectibleOnLoad += overwrite;
-
-
+       // ManagementSystem.collectibleOnLoad += overwrite;
     }
 
     public void overwrite(int ID)
     {
+        /*
         title.text = collectible.title;
         description.text = collectible.description;
         image.sprite = collectible.artwork;
+        */
+    }
+    public void update()
+    {
+        title.text = collectible.title;
+        description.text = collectible.description;
+        image.texture = collectible.artwork.texture;
     }
 }

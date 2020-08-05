@@ -3,43 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using TimeControlls;
 
+//Author: Melanie Jäger
 public class SpawnArrows : MonoBehaviour
 {
-    public GameObject arrowPrefab;
-    public float spawnTime = 3.0f;
+    public GameObject arrowPrefab;          //arrowprefab needs to be assigned in the inspector
+    public float spawnTime = 7.0f;          //amount of time that passes until a new arrow is spawned (in seconds)
+    public float deltaTimeAdjust = 200.0f;  //varialbe, that calculates a rational result for the time between the spawns, with and withou the TimeController activated
 
     private TimeController timeController;
-    private float timeUntilSpawn;
+    private GameObject arrow; 
 
-    private GameObject arrow;
-
+    //Author: Melanie Jäger
     private void OnEnable()
     {
         timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
     }
 
-    // Start is called before the first frame update
+    //Author: Melanie Jäger
+    //starts the couroutine
     void Start()
     {
         StartCoroutine(ShootingArrows());
     }
 
-    //Spawn the arrow prefab at the position of this gameobject, normally it would be the dispenser for the arrows
+    //Author: Melanie Jäger
+    //Spawns the arrow prefab at the position of this gameobject, normally it would be the dispenser for the arrows
     private void SpawnArrow()
     {
         arrow = Instantiate(arrowPrefab) as GameObject;
-        //arrow.transform.parent = transform;
         arrow.transform.position = transform.position;
-        //arrow.transform.position = new Vector3(transform.position.x, transform.position.y + 3f, transform.position.z);
-        
     }
 
+    //Author: Melanie Jäger
     IEnumerator ShootingArrows()
     {
         while(true)
         {
-            yield return new WaitForSeconds(spawnTime);
+            yield return new WaitForSeconds(spawnTime - (timeController.getSpeedAdjustedDeltaTime() * deltaTimeAdjust));
             SpawnArrow();
         }
-    }
+    } 
 }

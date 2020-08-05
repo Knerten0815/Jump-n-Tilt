@@ -111,8 +111,9 @@ public class ManagementSystem : MonoBehaviour
     public delegate void pickupHealth();
     public static event pickupHealth healthPickUpHit;
 
-    public void hUp()
+    public static void hUp()
     {
+        Debug.Log("TEST hUp");
         healthPickUpHit();
     }
 

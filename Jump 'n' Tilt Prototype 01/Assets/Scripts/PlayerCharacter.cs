@@ -38,6 +38,11 @@ public class PlayerCharacter : Character
 
     private BoxCollider2D collider;
 
+    // variables for animation by Marvin Winkler
+    private Animator animator;
+   // private bool slideStart;
+
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -46,6 +51,11 @@ public class PlayerCharacter : Character
         levelController = GameObject.Find("LevelController").GetComponent<LevelControlls.LevelControllerNew>();
 
         collider = GetComponent<BoxCollider2D>();
+
+        animator = GetComponent<Animator>();
+        //slideStart = false;
+
+        ManagementSystem.healthPickUpHit += addHealth;
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;
@@ -74,6 +84,9 @@ public class PlayerCharacter : Character
         //Michelle
         PlayerInput.onVerticalDown -= CrouchDown;
         PlayerInput.onVerticalUp -= CrouchUp;
+
+        //Marvin
+        ManagementSystem.healthPickUpHit -= addHealth;
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
@@ -95,12 +108,61 @@ public class PlayerCharacter : Character
         {
             onWall = true;
         }
-        //Debug.Log(onWall);
+
+        //Animation stuff by Marvin Winkler
+        
+        //Is running?
+        animator.SetFloat("animationDirection", velocity.magnitude);
+
+        //Is jumping?
+        if(onWall || grounded)
+        {
+            animator.SetBool("isJumping", false);
+        }
+        else
+        {
+            animator.SetBool("isJumping", true);
+        }
+
+        animator.SetBool("IsJumpingUp", false);
+        animator.SetBool("IsJumpingDown", false);
+
+        if (!jumpable && velocity.y > 0)
+        {
+            animator.SetBool("IsJumpingUp", true);
+        }
+        else if (!jumpable && velocity.y < 0)
+        {
+            animator.SetBool("IsJumpingDown", true);
+        }
+
+        //Is on Wall?
+        animator.SetBool("isOnWall", touchesWall);
+
+        //Is crouching?
+        animator.SetBool("isCrouching", crouching);
+
+        //Is sliding?
+        //animator.SetBool("slideStart", false);
+        //if (slideStart == false && isSliding == true)
+        //{
+        //    slideStart = true;
+         //   animator.SetBool("slideStart", true);
+        //}
+        //if(isSliding == false)
+        //{
+        //    slideStart = false;
+        //}
+        animator.SetBool("isSliding", isSliding);
+
     }
 
     protected override void Movement(float direction)
     {
             base.Movement(direction);
+
+        //animDir = Mathf.Abs(direction);
+        //animator.SetFloat("animationDirection", animDir);
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
@@ -229,7 +291,7 @@ public class PlayerCharacter : Character
         if (!crouching && grounded && direction < 0)
         {
             //Scale the Sprite
-            GetComponent<SpriteRenderer>().size = GetComponent<SpriteRenderer>().size * new Vector2(1f, 0.5f);
+            //GetComponent<SpriteRenderer>().size = GetComponent<SpriteRenderer>().size * new Vector2(1f, 0.5f);
 
             //Scale the CapsuleCollider and set with offset to new position, so player does not get stuck in ground
             collider.size = new Vector2(collider.size.x, 15.44461f);
@@ -268,7 +330,7 @@ public class PlayerCharacter : Character
                 if (!inFrontOfPlayer && !behindPlayer)
                 {
                     //Rescale the Sprite
-                    GetComponent<SpriteRenderer>().size = GetComponent<SpriteRenderer>().size * new Vector2(1f, 2f);
+                    //GetComponent<SpriteRenderer>().size = GetComponent<SpriteRenderer>().size * new Vector2(1f, 2f);
 
                     //Rescale the CapsuleCollider size and offset and put the player in a higher y position, so the player does not get stuck in ground 
                     transform.position += new Vector3(0f, 0.3f, 0f);
@@ -287,6 +349,11 @@ public class PlayerCharacter : Character
 
         }
 
+    }
+    //Author: Marvin Winkler
+    private void addHealth()
+    {
+        health++;
     }
 
     /*

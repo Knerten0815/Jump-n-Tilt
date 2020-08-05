@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -231,7 +231,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.6, y: 1.3}
+  m_AnchoredPosition: {x: 19.6, y: -5.2000027}
   m_SizeDelta: {x: 113.260284, y: 27.208736}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &36874577
@@ -1444,12 +1444,6 @@ MonoBehaviour:
   music:
     clip: {fileID: 8300000, guid: 79afcbeb778b96449bf64283d4aad31b, type: 3}
     volume: 1
-  attack:
-    clip: {fileID: 0}
-    volume: 0
-  earthquake:
-    clip: {fileID: 8300000, guid: 5a63471c01d8b834fa444c721a13c9aa, type: 3}
-    volume: 1
 --- !u!82 &272875734
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1888,7 +1882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -8.799999}
+  m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 21.056221, y: -70.70056}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &334683620
@@ -3834,6 +3828,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d6d190d3a59a94284d85d2baa6d489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  earthquake:
+    clip: {fileID: 0}
+    volume: 0
 --- !u!114 &630257680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5001,7 +4998,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -29.400002, y: -21.300003}
+  m_AnchoredPosition: {x: -29.400002, y: -27.80001}
   m_SizeDelta: {x: 64.63018, y: -67.58728}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &821511099
@@ -6029,7 +6026,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -29.400002, y: 11.799999}
+  m_AnchoredPosition: {x: -29.400002, y: 7.6999974}
   m_SizeDelta: {x: 21.056221, y: -70.70056}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &971635011
@@ -6417,7 +6414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.6, y: -21.6}
+  m_AnchoredPosition: {x: 19.6, y: -28.1}
   m_SizeDelta: {x: 113.260284, y: 27.208736}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1002723185
@@ -6477,8 +6474,11 @@ MonoBehaviour:
   jumpHeightReducer: 0.5
   moveWhileJumping: 2
   airResistance: 0.97
+  wallJumpTimeSpeed: 0
+  onWall: 0
   slideSpeed: 3
   slideReducer: -6
+  slideBackwardsMaxSpeed: 0
   isFacingRight: 1
   isSliding: 0
   attackPos: {fileID: 1703643106}
@@ -6499,7 +6499,7 @@ MonoBehaviour:
   wallSliding: 0
   wallSlidingSpeed: 0.3
   facingDirection: 1
-  wallJumpTimer: 0.5
+  wallJumpSpeed: 0
 --- !u!70 &1002723188
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -20731,7 +20731,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -29.400002, y: 1.2999992}
+  m_AnchoredPosition: {x: -29.400002, y: -5.200004}
   m_SizeDelta: {x: 21.056221, y: -70.70056}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1506846487
@@ -23581,8 +23581,11 @@ MonoBehaviour:
   jumpHeightReducer: 0.5
   moveWhileJumping: 7
   airResistance: 0
+  wallJumpTimeSpeed: 0
+  onWall: 0
   slideSpeed: 2
   slideReducer: 0.5
+  slideBackwardsMaxSpeed: 0
   isFacingRight: 0
   isSliding: 0
   attackPos: {fileID: 0}
@@ -23775,7 +23778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.6, y: 13.604}
+  m_AnchoredPosition: {x: 19.6, y: 9.503998}
   m_SizeDelta: {x: 113.260284, y: 27.208736}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1879053931

@@ -6,7 +6,7 @@ using GameActions;
 public class PlayerCharacter : Character
 {
 
-    // Author: Nicole Mynarek, Michelle Limbach
+    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
 
     // variables for jumping
     public int jumpCount;                   // Possible amount of jumps
@@ -40,7 +40,8 @@ public class PlayerCharacter : Character
 
     // variables for animation by Marvin Winkler
     private Animator animator;
-   // private bool slideStart;
+    private int lastTilt;
+    private bool jumpStart;
 
 
     protected override void OnEnable()
@@ -53,7 +54,8 @@ public class PlayerCharacter : Character
         collider = GetComponent<BoxCollider2D>();
 
         animator = GetComponent<Animator>();
-        //slideStart = false;
+        lastTilt = 0;
+        jumpStart = true;
 
         ManagementSystem.healthPickUpHit += addHealth;
 
@@ -109,6 +111,7 @@ public class PlayerCharacter : Character
             onWall = true;
         }
 
+
         //Animation stuff by Marvin Winkler
         
         //Is running?
@@ -118,10 +121,13 @@ public class PlayerCharacter : Character
         if(onWall || grounded)
         {
             animator.SetBool("isJumping", false);
+            jumpStart = true;
         }
         else
         {
             animator.SetBool("isJumping", true);
+            animator.SetBool("jumpStart", jumpStart);
+            jumpStart = false;
         }
 
         animator.SetBool("IsJumpingUp", false);
@@ -143,17 +149,18 @@ public class PlayerCharacter : Character
         animator.SetBool("isCrouching", crouching);
 
         //Is sliding?
-        //animator.SetBool("slideStart", false);
-        //if (slideStart == false && isSliding == true)
-        //{
-        //    slideStart = true;
-         //   animator.SetBool("slideStart", true);
-        //}
-        //if(isSliding == false)
-        //{
-        //    slideStart = false;
-        //}
         animator.SetBool("isSliding", isSliding);
+
+        //Did level just tilt?
+        animator.SetBool("justTilted", false);
+        if(levelController.getTiltStep() != lastTilt)
+        { 
+            if (lastTilt == 0)
+            {
+                animator.SetBool("justTilted", true);
+            }
+            lastTilt = levelController.getTiltStep();
+        }
 
     }
 
@@ -187,7 +194,7 @@ public class PlayerCharacter : Character
         }
     }
 
-    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables
+    // Author: Nicole Mynarek, Michelle Limbach; Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables
     // Method overridden, double jump is possible now
     protected override void Jump()
     {
@@ -301,7 +308,7 @@ public class PlayerCharacter : Character
             crouching = true;
 
             //Decrease movement speed
-            moveSpeed = moveSpeed - 3f;
+            moveSpeed = moveSpeed/3;
 
             //Player cannot jump while crouching
             canJump = false;
@@ -311,6 +318,7 @@ public class PlayerCharacter : Character
     }
 
     // Author: Michelle Limbach
+    //minorly Edited: Marvin Winkler
     private void CrouchUp(float direction)
     {
         //If the player is crouching
@@ -341,7 +349,7 @@ public class PlayerCharacter : Character
                     crouching = false;
 
                     //Increase movement speed
-                    moveSpeed = moveSpeed + 3f;
+                    moveSpeed = moveSpeed*3;
 
                     canJump = true;
                 }

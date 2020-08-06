@@ -22,7 +22,7 @@ public class Onryo : Character
 
     public bool movesRight = true;
 
-    private Animator anim;
+    //private Animator anim;
 
     private void Awake()
     {
@@ -44,7 +44,7 @@ public class Onryo : Character
         player = GameObject.Find("Player");
         //range = new Vector2(Random.Range(-7f, 7f), Random.Range(-7f, 7f));
         //goal = startPos + range;
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
     }
     protected override void ComputeVelocity()
     {
@@ -56,7 +56,7 @@ public class Onryo : Character
             default:
             case State.Walking:
 
-                anim.SetBool("isAttacking", false);
+                //anim.SetBool("isAttacking", false);
 
                 if (movesRight)
                 {
@@ -90,7 +90,7 @@ public class Onryo : Character
             case State.ChaseTarget:
                 //Debug.Log("Player in der Nähe");
 
-                anim.SetBool("isAttacking", true);
+                //anim.SetBool("isAttacking", true);
 
                 if (transform.position.x > player.transform.position.x)
                 {
@@ -143,11 +143,11 @@ public class Onryo : Character
 
         if (gravitySwitchCounter < 2f)
         {
-            velocity = new Vector2(moveDirection * moveSpeed, 0.5f);
+            velocity = new Vector2(moveDirection * moveSpeed, 1f);
         }
         else
         {
-            velocity = new Vector2(moveDirection * moveSpeed, -0.5f);
+            velocity = new Vector2(moveDirection * moveSpeed, -1f);
         }
 
         //velocity = new Vector2(moveDirection * moveSpeed, -4f);

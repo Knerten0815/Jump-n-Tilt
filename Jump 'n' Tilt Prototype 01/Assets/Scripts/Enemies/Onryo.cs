@@ -22,6 +22,8 @@ public class Onryo : Character
 
     public bool movesRight = true;
 
+    public Transform OnryoStarter;
+
     //private Animator anim;
 
     private void Awake()
@@ -45,6 +47,7 @@ public class Onryo : Character
         //range = new Vector2(Random.Range(-7f, 7f), Random.Range(-7f, 7f));
         //goal = startPos + range;
         //anim = GetComponent<Animator>();
+        grounded = true;
     }
     protected override void ComputeVelocity()
     {
@@ -53,42 +56,7 @@ public class Onryo : Character
 
         switch (state)
         {
-            default:
-            case State.Walking:
-
-                //anim.SetBool("isAttacking", false);
-
-                if (movesRight)
-                {
-                    Movement(1);
-                    Vector2 goal = startPos + roamPos;
-                    //Debug.Log("Goal positiv: " + goal);
-                    //Debug.Log("aktuelle Position: " + transform.position);
-                    if (transform.position.x >= goal.x /*&& transform.position.y == goal.y*/)
-                    {
-                        movesRight = false;
-                        startPos = transform.position;
-                    }
-                    Debug.Log("Onryo geht nach rechts");
-                }
-                else
-                {
-                    Movement(-1);
-                    Vector2 goal = startPos - roamPos;
-                    //Debug.Log("Goal negativ: " + goal);
-                    if (transform.position.x <= goal.x /*&& transform.position.y == goal.y*/)
-                    {
-                        movesRight = true;
-                        startPos = transform.position;
-                    }
-                    //Debug.Log("Onryo geht nach links");
-                }
-
-                FindTarget();
-                break;
-
             case State.ChaseTarget:
-                //Debug.Log("Player in der Nähe");
 
                 //anim.SetBool("isAttacking", true);
 
@@ -123,13 +91,44 @@ public class Onryo : Character
                     state = State.Walking;
                 }
                 break;
+
+            default:
+
+                Debug.Log("State walking");
+                //anim.SetBool("isAttacking", false);
+
+                if (movesRight)
+                {
+                    Movement(1);
+                    Vector2 goal = startPos + roamPos;
+                    //Debug.Log("Goal positiv: " + goal);
+                    //Debug.Log("aktuelle Position: " + transform.position);
+                    if (transform.position.x >= goal.x /*&& transform.position.y == goal.y*/)
+                    {
+                        movesRight = false;
+                        startPos = transform.position;
+                    }
+                }
+                else
+                {
+                    Movement(-1);
+                    Vector2 goal = startPos - roamPos;
+                    //Debug.Log("Goal negativ: " + goal);
+                    if (transform.position.x <= goal.x /*&& transform.position.y == goal.y*/)
+                    {
+                        movesRight = true;
+                        startPos = transform.position;
+                    }
+                }
+
+                FindTarget();
+                break;
         }
 
     }
 
     protected override void Movement(float direction)
     {
-        Debug.Log("Movement test");
         moveDirection = direction;
 
         if (gravitySwitchCounter >= 0)
@@ -177,6 +176,15 @@ public class Onryo : Character
     public override void TakeDamage(int damage)
     {
         health -= damage;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "OnryoCollider")
+        {
+            Debug.Log("Collider berührt");
+            Destroy(collision.gameObject);
+        }
     }
 }
 

@@ -163,6 +163,7 @@ public class Character : PhysicsObject
                     // left tilt direction
                     if (normal.x < 0)
                     {
+                        Debug.Log("Normal x < 0: " + normal.x);
                         slideDirection = Vector2.Perpendicular(normal);
 
                         slideDirection.x = -1;
@@ -171,6 +172,7 @@ public class Character : PhysicsObject
                     // right tilt direction
                     else
                     {
+                        Debug.Log("Normal x > 0: " + normal.x);
                         slideDirection = Vector2.Perpendicular(-normal);
 
                         slideDirection.x = 1;

@@ -40,8 +40,16 @@ public class PlayerCharacter : Character
 
     // variables for animation by Marvin Winkler
     private Animator animator;
-    private int lastTilt;
     private bool jumpStart;
+    private float playerInputBuffer;
+    private float fishTimer;
+
+
+    public delegate void fishCausedEarthquake(float playerInput);
+    public static event fishCausedEarthquake onFishCausedEarthquake;
+
+    public delegate void fishCausedEarthquakeStart(float playerInput);
+    public static event fishCausedEarthquakeStart onFishCausedEarthquakeStart;
 
 
     protected override void OnEnable()
@@ -54,8 +62,8 @@ public class PlayerCharacter : Character
         collider = GetComponent<BoxCollider2D>();
 
         animator = GetComponent<Animator>();
-        lastTilt = 0;
         jumpStart = true;
+        PlayerInput.onTiltDown += smashFishToTilt;
 
         ManagementSystem.healthPickUpHit += addHealth;
 
@@ -89,6 +97,7 @@ public class PlayerCharacter : Character
 
         //Marvin
         ManagementSystem.healthPickUpHit -= addHealth;
+        PlayerInput.onTiltDown -= smashFishToTilt;
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
@@ -111,14 +120,20 @@ public class PlayerCharacter : Character
             onWall = true;
         }
 
+        playAnimations();
 
-        //Animation stuff by Marvin Winkler
-        
+    }
+
+    //Author: Marvin Winkler
+    //States for all the player animations
+    private void playAnimations()
+    {
+
         //Is running?
         animator.SetFloat("animationDirection", velocity.magnitude);
 
         //Is jumping?
-        if(onWall || grounded)
+        if (onWall || grounded)
         {
             animator.SetBool("isJumping", false);
             jumpStart = true;
@@ -152,16 +167,45 @@ public class PlayerCharacter : Character
         animator.SetBool("isSliding", isSliding);
 
         //Did level just tilt?
-        animator.SetBool("justTilted", false);
-        if(levelController.getTiltStep() != lastTilt)
-        { 
-            if (lastTilt == 0)
+        if (fishTimer >= 0)
+        {
+            fishTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        else
+        {
+            if (fishTimer > -100)
             {
-                animator.SetBool("justTilted", true);
+                onFishCausedEarthquake(playerInputBuffer);
+                onFishCausedEarthquakeStart(0);
+                fishTimer = -101;
             }
-            lastTilt = levelController.getTiltStep();
+            else
+            {
+                onFishCausedEarthquake(Input.GetAxis("Tilt"));
+            }
+            animator.SetBool("justTilted", false);
         }
 
+    }
+
+    //Author: Marvin Winkler
+    //Waits for the animation before the level is tilted
+    private void smashFishToTilt(float playerInput)
+    {
+        fishTimer = 3f;
+        if(Input.GetAxisRaw("Tilt") < 0)
+        {
+            playerInputBuffer = -1;
+        }
+        else if(Input.GetAxisRaw("Tilt") > 0)
+        {
+            playerInputBuffer = 1;
+        }
+        else
+        {
+            playerInputBuffer = 0;
+        }
+        animator.SetBool("justTilted", true);
     }
 
     protected override void Movement(float direction)

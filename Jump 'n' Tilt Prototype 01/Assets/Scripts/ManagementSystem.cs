@@ -113,7 +113,7 @@ public class ManagementSystem : MonoBehaviour
 
     public static void hUp()
     {
-        Debug.Log("TEST hUp");
+        //Debug.Log("TEST hUp");
         healthPickUpHit();
     }
 

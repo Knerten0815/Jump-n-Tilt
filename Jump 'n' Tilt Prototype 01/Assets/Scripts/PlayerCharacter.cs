@@ -43,6 +43,9 @@ public class PlayerCharacter : Character
     private bool jumpStart;
     private float playerInputBuffer;
     private float fishTimer;
+    private bool justTookDamage;
+    public float stunnTime;
+    private float stunnTimer;
 
 
     public delegate void fishCausedEarthquake(float playerInput);
@@ -63,6 +66,7 @@ public class PlayerCharacter : Character
 
         animator = GetComponent<Animator>();
         jumpStart = true;
+        justTookDamage = false;
         PlayerInput.onTiltDown += smashFishToTilt;
 
         ManagementSystem.healthPickUpHit += addHealth;
@@ -121,6 +125,17 @@ public class PlayerCharacter : Character
         }
 
         playAnimations();
+
+        //Just for testing:
+        //+++
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Vector3 hitDirectionTest = gameObject.transform.localPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 hitDirectionTest2D = new Vector2(hitDirectionTest.x, hitDirectionTest.y);
+            hitDirectionTest2D.Normalize();
+            TakeDamage(0, hitDirectionTest2D);
+        }
+        //+++
 
     }
 
@@ -186,6 +201,25 @@ public class PlayerCharacter : Character
             animator.SetBool("justTilted", false);
         }
 
+        //Did player just take Damage?
+        if (justTookDamage)
+        {
+            animator.SetBool("justTookDamage", true);
+            justTookDamage = false;
+        }
+        else
+        {
+            animator.SetBool("justTookDamage", false);
+        }
+        if(stunnTimer > 0)
+        {
+            stunnTimer -= timeController.getSpeedAdjustedDeltaTime();
+            animator.SetBool("stunned", true);
+        }
+        else
+        {
+            animator.SetBool("stunned", false);
+        }
     }
 
     //Author: Marvin Winkler
@@ -406,6 +440,16 @@ public class PlayerCharacter : Character
     private void addHealth()
     {
         health++;
+    }
+
+    //Author: Marvin Winkler
+    public override void TakeDamage(int damage, Vector2 direction)
+    {
+        health -= damage;
+        justTookDamage = true;
+        velocity = new Vector2(direction.x * knockback, knockup);
+        CharacterFacingDirection(-velocity.x);
+        stunnTimer = stunnTime;
     }
 
     /*

@@ -32,7 +32,11 @@ public class Character : PhysicsObject
     public Transform attackPos;                 // is set in Unity window
     public float attackRadius;
     public LayerMask whatIsEnemy;
+
+    // taking Damage, getting knocked back
     public int health;
+    public float knockback;             //by Marvin Winkler, backwards velocity given to character when hit
+    public float knockup;               //by Marvin Winkler, upwards velocity given to character when hit
 
     // inherited from PhysicsObject.cs
     protected override void OnEnable()
@@ -42,6 +46,7 @@ public class Character : PhysicsObject
     }
 
     // Author: Michelle Limbach, Nicole Mynarek, Marvin Winkler
+    //gets called onece per update
     protected override void ComputeVelocity()
     {
         // Player only slides when there is no input
@@ -192,6 +197,7 @@ public class Character : PhysicsObject
         }
     }
 
+    //Author: Nicole Mynarek, Marvin Winkler
     protected virtual void Attack()
     {
         //  Debug.Log("Nicole ---------- ATTACK!!!!!!!");
@@ -199,14 +205,19 @@ public class Character : PhysicsObject
 
         for (int i = 0; i < enemies.Length; i++)
         {
-            enemies[i].GetComponent<Enemy>().TakeDamage(1);
+            Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
+            Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
+            dmgDirection2D.Normalize();
+            enemies[i].GetComponent<Enemy>().TakeDamage(1, dmgDirection2D);
         }
     }
 
-    // Author: Nicole Mynarek
+    // Author: Nicole Mynarek, Marvin Winkler
     // changed protected to public to access it in Onryo script
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, Vector2 direction)
     {
         health -= damage;
+        velocity = new Vector2(-direction.x * knockback, knockup);
+        CharacterFacingDirection(-velocity.x);
     }
 }

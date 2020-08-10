@@ -1962,7 +1962,9 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 1024
-  health: 1
+  health: 3
+  knockback: 13
+  knockup: 8
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
@@ -1976,6 +1978,7 @@ MonoBehaviour:
   wallSlidingSpeed: 0.3
   facingDirection: 1
   wallJumpSpeed: 15
+  stunnTime: 0.6
 --- !u!95 &1002723188
 Animator:
   serializedVersion: 3
@@ -14205,6 +14208,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   health: 1
+  knockback: 0
+  knockup: 0
   moveCounter: 10
 --- !u!1001 &1867272065
 PrefabInstance:

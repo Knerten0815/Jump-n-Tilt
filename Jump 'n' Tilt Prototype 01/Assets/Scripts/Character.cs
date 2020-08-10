@@ -26,7 +26,7 @@ public class Character : PhysicsObject
     private Vector2 slideDirection;
 
     public bool isFacingRight;
-    public bool isSliding;
+    protected bool isSliding;
 
     // for Attack method
     public Transform attackPos;                 // is set in Unity window

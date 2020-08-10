@@ -68,8 +68,12 @@ public class PlayerCharacter : Character
         jumpStart = true;
         justTookDamage = false;
         PlayerInput.onTiltDown += smashFishToTilt;
+        PlayerInput.onTiltDown += disableSliding;
 
         ManagementSystem.healthPickUpHit += addHealth;
+
+        PlayerInput.onHorizontalDown += disableSliding;
+        PlayerInput.onJumpButtonDown += disableSliding;
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;
@@ -85,6 +89,18 @@ public class PlayerCharacter : Character
         whatIsLevel = LayerMask.GetMask("Level");
         whatIsEnemy = LayerMask.GetMask("Enemy");
         
+    }
+    //Author: Marvin Winkler
+    //Used to fix several bugs
+    private void disableSliding(float a)
+    {
+        isSliding = false;
+    }
+    //Author: Marvin Winkler
+    //Used to fix several bugs
+    private void disableSliding()
+    {
+        isSliding = false;
     }
 
     protected override void OnDisable()
@@ -102,6 +118,9 @@ public class PlayerCharacter : Character
         //Marvin
         ManagementSystem.healthPickUpHit -= addHealth;
         PlayerInput.onTiltDown -= smashFishToTilt;
+        PlayerInput.onTiltDown -= disableSliding;
+        PlayerInput.onHorizontalDown -= disableSliding;
+        PlayerInput.onJumpButtonDown -= disableSliding;
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
@@ -226,7 +245,7 @@ public class PlayerCharacter : Character
     //Waits for the animation before the level is tilted
     private void smashFishToTilt(float playerInput)
     {
-        fishTimer = 3f;
+        fishTimer = 0.5f;
         if(Input.GetAxisRaw("Tilt") < 0)
         {
             playerInputBuffer = -1;
@@ -245,7 +264,6 @@ public class PlayerCharacter : Character
     protected override void Movement(float direction)
     {
             base.Movement(direction);
-
         //animDir = Mathf.Abs(direction);
         //animator.SetFloat("animationDirection", animDir);
     }

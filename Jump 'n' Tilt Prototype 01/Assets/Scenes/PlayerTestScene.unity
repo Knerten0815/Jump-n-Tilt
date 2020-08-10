@@ -1956,7 +1956,6 @@ MonoBehaviour:
   slideReducer: -6
   slideBackwardsMaxSpeed: 3
   isFacingRight: 1
-  isSliding: 0
   attackPos: {fileID: 1703643106}
   attackRadius: 1
   whatIsEnemy:
@@ -14201,7 +14200,6 @@ MonoBehaviour:
   slideReducer: 0.5
   slideBackwardsMaxSpeed: 0
   isFacingRight: 0
-  isSliding: 0
   attackPos: {fileID: 0}
   attackRadius: 0
   whatIsEnemy:

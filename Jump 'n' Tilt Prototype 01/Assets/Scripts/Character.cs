@@ -37,12 +37,14 @@ public class Character : PhysicsObject
     public int health;
     public float knockback;             //by Marvin Winkler, backwards velocity given to character when hit
     public float knockup;               //by Marvin Winkler, upwards velocity given to character when hit
+    protected bool isDead;              //by Marvin Winkler, true when character is dead
 
     // inherited from PhysicsObject.cs
     protected override void OnEnable()
     {
         base.OnEnable();
         wallJumpTime = 0;
+        isDead = false;
     }
 
     // Author: Michelle Limbach, Nicole Mynarek, Marvin Winkler
@@ -62,10 +64,10 @@ public class Character : PhysicsObject
         moveDirection = 0;
 
         // death of character
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-        }
+        //if (health <= 0)
+        //{
+        //    Destroy(gameObject);
+        //}
 
         if(wallJumpTime < 0)
         {
@@ -219,5 +221,9 @@ public class Character : PhysicsObject
         health -= damage;
         velocity = new Vector2(-direction.x * knockback, knockup);
         CharacterFacingDirection(-velocity.x);
+        if(health <= 0)
+        {
+            isDead = true;
+        }
     }
 }

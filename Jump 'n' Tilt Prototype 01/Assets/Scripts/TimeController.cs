@@ -28,19 +28,9 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
         {
             PlayerInput.onSlowMoDown -= switchSloMo;
         }
-        /*
+
         //Author: Marvin Winkler
-        void Update()
-        {
-            //Just for testing
-            //++
-            if (Input.GetKeyDown(KeyCode.T))
-                switchSloMo();
-            //++
-        }
-        */
-        //Author: Marvin Winkler
-        private void LateUpdate()
+        private void Update()
         {
             if (isSlow)
                 timeSpeed = slowTimeSpeed;

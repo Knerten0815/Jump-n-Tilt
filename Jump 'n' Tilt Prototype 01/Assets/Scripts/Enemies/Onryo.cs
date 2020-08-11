@@ -173,10 +173,10 @@ public class Onryo : Character
             enemies[i].GetComponent<Character>().TakeDamage(1);
         }*/
     }
-    public override void TakeDamage(int damage)
-    {
-        health -= damage;
-    }
+    //public override void TakeDamage(int damage)
+    //{
+    //    health -= damage;
+    //}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

@@ -43,6 +43,10 @@ public class PlayerCharacter : Character
     private bool jumpStart;
     private float playerInputBuffer;
     private float fishTimer;
+    private bool justTookDamage;
+    public float stunnTime;
+    private float stunnTimer;
+    private float deadFishTimer;
 
 
     public delegate void fishCausedEarthquake(float playerInput);
@@ -63,9 +67,16 @@ public class PlayerCharacter : Character
 
         animator = GetComponent<Animator>();
         jumpStart = true;
+        justTookDamage = false;
+        deadFishTimer = -101;
+
         PlayerInput.onTiltDown += smashFishToTilt;
+        PlayerInput.onTiltDown += disableSliding;
 
         ManagementSystem.healthPickUpHit += addHealth;
+
+        PlayerInput.onHorizontalDown += disableSliding;
+        PlayerInput.onJumpButtonDown += disableSliding;
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;
@@ -82,8 +93,25 @@ public class PlayerCharacter : Character
         whatIsEnemy = LayerMask.GetMask("Enemy");
         
     }
+    //Author: Marvin Winkler
+    //Used to fix several bugs
+    private void disableSliding(float a)
+    {
+        isSliding = false;
+    }
+    //Author: Marvin Winkler
+    //Used to fix several bugs
+    private void disableSliding()
+    {
+        isSliding = false;
+    }
 
     protected override void OnDisable()
+    {
+        disableInput();
+    }
+
+    private void disableInput()
     {
         // Nicole 
         PlayerInput.onHorizontalDown -= Movement;
@@ -98,20 +126,24 @@ public class PlayerCharacter : Character
         //Marvin
         ManagementSystem.healthPickUpHit -= addHealth;
         PlayerInput.onTiltDown -= smashFishToTilt;
+        PlayerInput.onTiltDown -= disableSliding;
+        PlayerInput.onHorizontalDown -= disableSliding;
+        PlayerInput.onJumpButtonDown -= disableSliding;
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
-        base.ComputeVelocity();
+        if(!isDead)
+            base.ComputeVelocity();
 
         // jump cooldown
         if (cooldown > 0)
         {
             cooldown -= Time.deltaTime;
         }
-
-        WallSliding();
+        if (!isDead)
+            WallSliding();
 
         onWall = false;
 
@@ -122,12 +154,29 @@ public class PlayerCharacter : Character
 
         playAnimations();
 
+        //Just for testing:
+        //+++
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Vector3 hitDirectionTest = gameObject.transform.localPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 hitDirectionTest2D = new Vector2(hitDirectionTest.x, hitDirectionTest.y);
+            hitDirectionTest2D.Normalize();
+            TakeDamage(1, hitDirectionTest2D);
+        }
+        //+++
+
     }
 
     //Author: Marvin Winkler
     //States for all the player animations
     private void playAnimations()
     {
+        //Animation speed adjustment
+        animator.speed = timeController.getTimeSpeed();
+
+        //Is dead?
+        animator.SetBool("isDead", isDead);
+        animator.SetBool("justDied", false);
 
         //Is running?
         animator.SetFloat("animationDirection", velocity.magnitude);
@@ -186,13 +235,50 @@ public class PlayerCharacter : Character
             animator.SetBool("justTilted", false);
         }
 
+        //Did player just take Damage?
+        if (justTookDamage)
+        {
+            animator.SetBool("justTookDamage", true);
+            justTookDamage = false;
+        }
+        else
+        {
+            animator.SetBool("justTookDamage", false);
+        }
+        if(stunnTimer > 0)
+        {
+            stunnTimer -= timeController.getSpeedAdjustedDeltaTime();
+            animator.SetBool("stunned", true);
+        }
+        else
+        {
+            animator.SetBool("stunned", false);
+        }
+
+        //Is it time for the dead fish to appear?
+        if(deadFishTimer > 0)
+        {
+            deadFishTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        else if(deadFishTimer < -100)
+        {
+            return;
+        }
+        else if(deadFishTimer <= 0)
+        {
+            GameObject deadFish = GameObject.Find("deadFish");
+            deadFish.GetComponent<SpriteRenderer>().enabled = true;
+            deadFish.GetComponent<Animator>().enabled = true;
+            deadFish.GetComponent<SpriteRenderer>().flipX = gameObject.GetComponent<SpriteRenderer>().flipX;
+            deadFish.GetComponent<Animator>().speed = timeController.getTimeSpeed();
+        }
     }
 
     //Author: Marvin Winkler
     //Waits for the animation before the level is tilted
     private void smashFishToTilt(float playerInput)
     {
-        fishTimer = 3f;
+        fishTimer = 1f;
         if(Input.GetAxisRaw("Tilt") < 0)
         {
             playerInputBuffer = -1;
@@ -211,7 +297,6 @@ public class PlayerCharacter : Character
     protected override void Movement(float direction)
     {
             base.Movement(direction);
-
         //animDir = Mathf.Abs(direction);
         //animator.SetFloat("animationDirection", animDir);
     }
@@ -406,6 +491,27 @@ public class PlayerCharacter : Character
     private void addHealth()
     {
         health++;
+    }
+
+    //Author: Marvin Winkler
+    public override void TakeDamage(int damage, Vector2 direction)
+    {
+        health -= damage;
+        justTookDamage = true;
+        velocity = new Vector2(direction.x * knockback, knockup);
+        CharacterFacingDirection(-velocity.x);
+        stunnTimer = stunnTime;
+        if(health <= 0)
+        {
+            isDead = true;
+            die();
+            disableInput();
+        }
+    }
+    private void die()
+    {
+        animator.SetBool("justDied", true);
+        deadFishTimer = 2f;
     }
 
     /*

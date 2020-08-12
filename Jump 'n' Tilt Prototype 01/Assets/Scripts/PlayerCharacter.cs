@@ -176,7 +176,7 @@ public class PlayerCharacter : Character
 
         //Is dead?
         animator.SetBool("isDead", isDead);
-        animator.SetBool("justDied", false);
+        //animator.SetBool("justDied", false);
 
         //Is running?
         animator.SetFloat("animationDirection", velocity.magnitude);
@@ -269,7 +269,19 @@ public class PlayerCharacter : Character
             GameObject deadFish = GameObject.Find("deadFish");
             deadFish.GetComponent<SpriteRenderer>().enabled = true;
             deadFish.GetComponent<Animator>().enabled = true;
-            deadFish.GetComponent<SpriteRenderer>().flipX = gameObject.GetComponent<SpriteRenderer>().flipX;
+
+            bool isXFliped = gameObject.GetComponent<SpriteRenderer>().flipX;
+            deadFish.GetComponent<SpriteRenderer>().flipX = isXFliped;
+
+            if (isXFliped)
+            {
+                deadFish.GetComponent<Transform>().localPosition = new Vector3(15, 0, 1);
+            }
+            else
+            {
+                deadFish.GetComponent<Transform>().localPosition = new Vector3(-15, 0, 1);
+            }
+
             deadFish.GetComponent<Animator>().speed = timeController.getTimeSpeed();
         }
     }
@@ -510,8 +522,8 @@ public class PlayerCharacter : Character
     }
     private void die()
     {
-        animator.SetBool("justDied", true);
-        deadFishTimer = 2f;
+        //animator.SetBool("justDied", true);
+        deadFishTimer = 2.1f;
     }
 
     /*

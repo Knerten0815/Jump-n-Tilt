@@ -30,7 +30,7 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
         }
 
         //Author: Marvin Winkler
-        private void Update()
+        private void FixedUpdate()
         {
             if (isSlow)
                 timeSpeed = slowTimeSpeed;
@@ -58,7 +58,7 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
         //Author: Marvin Winkler
         private void timeAdjustments()
         {
-            speedAdjustedDeltaTime = Time.fixedDeltaTime* timeSpeed;
+            speedAdjustedDeltaTime = Time.deltaTime* timeSpeed; //Gets called in fixed update
         }
 
         //This should be called each time you would normally use deltaTime

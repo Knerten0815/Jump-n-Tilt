@@ -6,7 +6,7 @@ using GameActions;
 public class PlayerCharacter : Character
 {
 
-    // Author: Nicole Mynarek, Michelle Limbach
+    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
 
     // variables for jumping
     public int jumpCount;                   // Possible amount of jumps
@@ -40,7 +40,20 @@ public class PlayerCharacter : Character
 
     // variables for animation by Marvin Winkler
     private Animator animator;
-   // private bool slideStart;
+    private bool jumpStart;
+    private float playerInputBuffer;
+    private float fishTimer;
+    private bool justTookDamage;
+    public float stunnTime;
+    private float stunnTimer;
+    private float deadFishTimer;
+
+
+    public delegate void fishCausedEarthquake(float playerInput);
+    public static event fishCausedEarthquake onFishCausedEarthquake;
+
+    public delegate void fishCausedEarthquakeStart(float playerInput);
+    public static event fishCausedEarthquakeStart onFishCausedEarthquakeStart;
 
 
     protected override void OnEnable()
@@ -53,9 +66,17 @@ public class PlayerCharacter : Character
         collider = GetComponent<BoxCollider2D>();
 
         animator = GetComponent<Animator>();
-        //slideStart = false;
+        jumpStart = true;
+        justTookDamage = false;
+        deadFishTimer = -101;
+
+        PlayerInput.onTiltDown += smashFishToTilt;
+        PlayerInput.onTiltDown += disableSliding;
 
         ManagementSystem.healthPickUpHit += addHealth;
+
+        PlayerInput.onHorizontalDown += disableSliding;
+        PlayerInput.onJumpButtonDown += disableSliding;
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;
@@ -72,8 +93,25 @@ public class PlayerCharacter : Character
         whatIsEnemy = LayerMask.GetMask("Enemy");
         
     }
+    //Author: Marvin Winkler
+    //Used to fix several bugs
+    private void disableSliding(float a)
+    {
+        isSliding = false;
+    }
+    //Author: Marvin Winkler
+    //Used to fix several bugs
+    private void disableSliding()
+    {
+        isSliding = false;
+    }
 
     protected override void OnDisable()
+    {
+        disableInput();
+    }
+
+    private void disableInput()
     {
         // Nicole 
         PlayerInput.onHorizontalDown -= Movement;
@@ -87,20 +125,25 @@ public class PlayerCharacter : Character
 
         //Marvin
         ManagementSystem.healthPickUpHit -= addHealth;
+        PlayerInput.onTiltDown -= smashFishToTilt;
+        PlayerInput.onTiltDown -= disableSliding;
+        PlayerInput.onHorizontalDown -= disableSliding;
+        PlayerInput.onJumpButtonDown -= disableSliding;
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
-        base.ComputeVelocity();
+        if(!isDead)
+            base.ComputeVelocity();
 
         // jump cooldown
         if (cooldown > 0)
         {
             cooldown -= Time.deltaTime;
         }
-
-        WallSliding();
+        if (!isDead)
+            WallSliding();
 
         onWall = false;
 
@@ -109,19 +152,46 @@ public class PlayerCharacter : Character
             onWall = true;
         }
 
-        //Animation stuff by Marvin Winkler
-        
+        playAnimations();
+
+        //Just for testing:
+        //+++
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Vector3 hitDirectionTest = gameObject.transform.localPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 hitDirectionTest2D = new Vector2(hitDirectionTest.x, hitDirectionTest.y);
+            hitDirectionTest2D.Normalize();
+            TakeDamage(1, hitDirectionTest2D);
+        }
+        //+++
+
+    }
+
+    //Author: Marvin Winkler
+    //States for all the player animations
+    private void playAnimations()
+    {
+        //Animation speed adjustment
+        animator.speed = timeController.getTimeSpeed();
+
+        //Is dead?
+        animator.SetBool("isDead", isDead);
+        //animator.SetBool("justDied", false);
+
         //Is running?
         animator.SetFloat("animationDirection", velocity.magnitude);
 
         //Is jumping?
-        if(onWall || grounded)
+        if (onWall || grounded)
         {
             animator.SetBool("isJumping", false);
+            jumpStart = true;
         }
         else
         {
             animator.SetBool("isJumping", true);
+            animator.SetBool("jumpStart", jumpStart);
+            jumpStart = false;
         }
 
         animator.SetBool("IsJumpingUp", false);
@@ -143,24 +213,102 @@ public class PlayerCharacter : Character
         animator.SetBool("isCrouching", crouching);
 
         //Is sliding?
-        //animator.SetBool("slideStart", false);
-        //if (slideStart == false && isSliding == true)
-        //{
-        //    slideStart = true;
-         //   animator.SetBool("slideStart", true);
-        //}
-        //if(isSliding == false)
-        //{
-        //    slideStart = false;
-        //}
         animator.SetBool("isSliding", isSliding);
 
+        //Did level just tilt?
+        if (fishTimer >= 0)
+        {
+            fishTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        else
+        {
+            if (fishTimer > -100)
+            {
+                onFishCausedEarthquake(playerInputBuffer);
+                onFishCausedEarthquakeStart(0);
+                fishTimer = -101;
+            }
+            else
+            {
+                onFishCausedEarthquake(Input.GetAxis("Tilt"));
+            }
+            animator.SetBool("justTilted", false);
+        }
+
+        //Did player just take Damage?
+        if (justTookDamage)
+        {
+            animator.SetBool("justTookDamage", true);
+            justTookDamage = false;
+        }
+        else
+        {
+            animator.SetBool("justTookDamage", false);
+        }
+        if(stunnTimer > 0)
+        {
+            stunnTimer -= timeController.getSpeedAdjustedDeltaTime();
+            animator.SetBool("stunned", true);
+        }
+        else
+        {
+            animator.SetBool("stunned", false);
+        }
+
+        //Is it time for the dead fish to appear?
+        if(deadFishTimer > 0)
+        {
+            deadFishTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        else if(deadFishTimer < -100)
+        {
+            return;
+        }
+        else if(deadFishTimer <= 0)
+        {
+            GameObject deadFish = GameObject.Find("deadFish");
+            deadFish.GetComponent<SpriteRenderer>().enabled = true;
+            deadFish.GetComponent<Animator>().enabled = true;
+
+            bool isXFliped = gameObject.GetComponent<SpriteRenderer>().flipX;
+            deadFish.GetComponent<SpriteRenderer>().flipX = isXFliped;
+
+            if (isXFliped)
+            {
+                deadFish.GetComponent<Transform>().localPosition = new Vector3(15, 0, 1);
+            }
+            else
+            {
+                deadFish.GetComponent<Transform>().localPosition = new Vector3(-15, 0, 1);
+            }
+
+            deadFish.GetComponent<Animator>().speed = timeController.getTimeSpeed();
+        }
+    }
+
+    //Author: Marvin Winkler
+    //Waits for the animation before the level is tilted
+    private void smashFishToTilt(float playerInput)
+    {
+        fishTimer = 1f;
+        if(Input.GetAxisRaw("Tilt") < 0)
+        {
+            playerInputBuffer = -1;
+        }
+        else if(Input.GetAxisRaw("Tilt") > 0)
+        {
+            playerInputBuffer = 1;
+        }
+        else
+        {
+            playerInputBuffer = 0;
+        }
+        animator.SetBool("justTilted", true);
     }
 
     protected override void Movement(float direction)
     {
             base.Movement(direction);
-
         //animDir = Mathf.Abs(direction);
         //animator.SetFloat("animationDirection", animDir);
     }
@@ -187,7 +335,7 @@ public class PlayerCharacter : Character
         }
     }
 
-    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables
+    // Author: Nicole Mynarek, Michelle Limbach; Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables
     // Method overridden, double jump is possible now
     protected override void Jump()
     {
@@ -301,7 +449,7 @@ public class PlayerCharacter : Character
             crouching = true;
 
             //Decrease movement speed
-            moveSpeed = moveSpeed - 3f;
+            moveSpeed = moveSpeed/3;
 
             //Player cannot jump while crouching
             canJump = false;
@@ -311,6 +459,7 @@ public class PlayerCharacter : Character
     }
 
     // Author: Michelle Limbach
+    //minorly Edited: Marvin Winkler
     private void CrouchUp(float direction)
     {
         //If the player is crouching
@@ -341,7 +490,7 @@ public class PlayerCharacter : Character
                     crouching = false;
 
                     //Increase movement speed
-                    moveSpeed = moveSpeed + 3f;
+                    moveSpeed = moveSpeed*3;
 
                     canJump = true;
                 }
@@ -354,6 +503,27 @@ public class PlayerCharacter : Character
     private void addHealth()
     {
         health++;
+    }
+
+    //Author: Marvin Winkler
+    public override void TakeDamage(int damage, Vector2 direction)
+    {
+        health -= damage;
+        justTookDamage = true;
+        velocity = new Vector2(direction.x * knockback, knockup);
+        CharacterFacingDirection(-velocity.x);
+        stunnTimer = stunnTime;
+        if(health <= 0)
+        {
+            isDead = true;
+            die();
+            disableInput();
+        }
+    }
+    private void die()
+    {
+        //animator.SetBool("justDied", true);
+        deadFishTimer = 2.1f;
     }
 
     /*

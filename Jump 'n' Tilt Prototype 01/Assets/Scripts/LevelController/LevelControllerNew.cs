@@ -56,20 +56,22 @@ namespace LevelControlls
         private void Start()
         {
             tiltStep = defaultTilt;                           //sets the default rotation as step = 0
-            PlayerInput.onTiltDown += TiltMechanic;
+            //PlayerInput.onTiltDown += TiltMechanic;
+            PlayerCharacter.onFishCausedEarthquake += TiltMechanic; //Changed by Marvin Winkler
         }
 
         //Author: Melanie Jäger
         private void OnDisable()
         {
-            PlayerInput.onTiltDown -= TiltMechanic;
+            //PlayerInput.onTiltDown -= TiltMechanic;
+            PlayerCharacter.onFishCausedEarthquake -= TiltMechanic; //Changed by Marvin Winkler
         }
 
         //Author: Melanie Jäger
         private void Update()
         {
-            playerInput = Input.GetAxisRaw("Tilt");
-            TiltMechanic(playerInput);
+            //playerInput = Input.GetAxisRaw("Tilt");   //Disabled by Marvin Winkler (get's called in PlayerCharakter instead)
+            //TiltMechanic(playerInput);                //Disabled by Marvin Winkler
         }
 
         //Author: Melanie Jäger

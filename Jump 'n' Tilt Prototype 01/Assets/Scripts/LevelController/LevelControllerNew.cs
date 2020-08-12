@@ -43,6 +43,12 @@ namespace LevelControlls
         private float targetLeft;
         private float startLeft;
 
+        public delegate void worldWasTilted(float tiltDirection);
+        public static event worldWasTilted onWorldWasTilted;
+
+        public delegate void worldWasUntilted();
+        public static event worldWasUntilted onWorldWasUntilted;
+
         //Author: Melanie Jäger
         //gets all the needed objects from scene and other scripts
         private void OnEnable()
@@ -169,6 +175,8 @@ namespace LevelControlls
             Vector3 backTilt = new Vector3(0, 0, backStep);
             transform.eulerAngles = backTilt;
 
+            onWorldWasUntilted?.Invoke();
+
             unsetWorldParent(); //prevents whole world from changing the position as well
         }
 
@@ -185,6 +193,8 @@ namespace LevelControlls
             Vector3 rightIncrement = new Vector3(0, 0, rightStep);
             transform.eulerAngles = rightIncrement;
 
+            onWorldWasTilted?.Invoke(1f);
+
             unsetWorldParent();     //prevents whole world from changing the position as well
         }
 
@@ -200,6 +210,8 @@ namespace LevelControlls
             float leftStep = Mathf.LerpAngle(startLeft, targetLeft, tiltTime);      //interpolates between the start and the endposition for a smooth tilting
             Vector3 leftIncrement = new Vector3(0, 0, leftStep);
             transform.eulerAngles = leftIncrement;
+
+            onWorldWasTilted?.Invoke(-1f);
 
             unsetWorldParent();     //prevents whole world from changing the position as well
         }

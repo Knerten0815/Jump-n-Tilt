@@ -41,6 +41,7 @@ public class FlyingEnemy : Character
         startPos = transform.position;
         player = GameObject.Find("Player");
         grounded = true;
+        gravitySwitchCounter = gravityCounter;
     }
     protected override void ComputeVelocity()
     {
@@ -147,7 +148,7 @@ public class FlyingEnemy : Character
     {
         moveDirection = direction;
 
-        gravitySwitchCounter = gravityCounter;
+        Debug.Log(gravitySwitchCounter);
 
         if (gravitySwitchCounter >= 0)
         {

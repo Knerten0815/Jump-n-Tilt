@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Author: Nicole Mynarek
-public class Onryo : FlyingEnemy
+public class Tengu : FlyingEnemy
 {
+
     private Animator anim;
 
     protected override void OnEnable()
@@ -16,14 +16,13 @@ public class Onryo : FlyingEnemy
     {
         base.ComputeVelocity();
 
-        if (isAttacking)
+        if (isChasing)
         {
-            anim.SetBool("hitting", true);
+            anim.SetBool("isAttacking", true);
         }
         else
         {
-            anim.SetBool("hitting", false);
+            anim.SetBool("isAttacking", false);
         }
     }
 }
-

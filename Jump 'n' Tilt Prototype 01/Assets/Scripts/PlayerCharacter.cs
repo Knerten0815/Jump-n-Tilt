@@ -48,6 +48,12 @@ public class PlayerCharacter : Character
     private float stunnTimer;
     private float deadFishTimer;
 
+    // attack stuff by Marvin Winkler
+    private Transform fishTrans;
+    public Vector3 attackOffset;            //Offset from player position where he attacks
+    private float attackTimer;
+    public float attackDelay;               //Minimum time between attacks in seconds
+
 
     public delegate void fishCausedEarthquake(float playerInput);
     public static event fishCausedEarthquake onFishCausedEarthquake;
@@ -62,6 +68,7 @@ public class PlayerCharacter : Character
 
         //Marvin
         levelController = GameObject.Find("LevelController").GetComponent<LevelControlls.LevelControllerNew>();
+        fishTrans = GameObject.Find("Fish").GetComponent<Transform>();
 
         collider = GetComponent<BoxCollider2D>();
 
@@ -152,8 +159,6 @@ public class PlayerCharacter : Character
             onWall = true;
         }
 
-        playAnimations();
-
         //Just for testing:
         //+++
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -165,6 +170,10 @@ public class PlayerCharacter : Character
         }
         //+++
 
+    }
+    protected override void updateAnimations()
+    {
+        playAnimations();
     }
 
     //Author: Marvin Winkler
@@ -255,8 +264,20 @@ public class PlayerCharacter : Character
             animator.SetBool("stunned", false);
         }
 
-        //Is it time for the dead fish to appear?
-        if(deadFishTimer > 0)
+        Debug.Log(timeController.getSpeedAdjustedDeltaTime());
+        //Is the player attacking?
+        if (attackTimer >= 0)
+        {
+            animator.SetBool("isAttacking", true);
+            attackTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        else
+        {
+            animator.SetBool("isAttacking", false);
+        }
+
+        //Is it time for the dead fish to appear?   DONT WRITE ANYTH NEW STUFF BELOW THIS IN PLAY ANIMATIONS, THE DEAD FISH STUFF NEEDS TO BE LAST!
+        if (deadFishTimer > 0)
         {
             deadFishTimer -= timeController.getSpeedAdjustedDeltaTime();
         }
@@ -290,7 +311,7 @@ public class PlayerCharacter : Character
     //Waits for the animation before the level is tilted
     private void smashFishToTilt(float playerInput)
     {
-        fishTimer = 1f;
+        fishTimer = 0.5f;
         if(Input.GetAxisRaw("Tilt") < 0)
         {
             playerInputBuffer = -1;
@@ -523,7 +544,23 @@ public class PlayerCharacter : Character
     private void die()
     {
         //animator.SetBool("justDied", true);
-        deadFishTimer = 2.1f;
+        deadFishTimer = 1.3f;
+    }
+
+    private void Attack()
+    {
+        attackTimer = attackDelay;
+
+        if (isFacingRight)
+        {
+            fishTrans.localPosition = attackOffset;
+        }
+        else
+        {
+            fishTrans.localPosition = new Vector3(-attackOffset.x, attackOffset.y, attackOffset.z);
+        }
+        base.Attack();
+
     }
 
     /*

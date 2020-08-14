@@ -99,6 +99,14 @@ public class PhysicsObject : MonoBehaviour
         {
             velocity = velocity.normalized * maxSpeed;
         }
+        updateAnimations();
+    }
+
+    //Used for animations
+    //Author Marvin Winkler
+    protected virtual void updateAnimations()
+    {
+
     }
 
     //Applies movement, updates position

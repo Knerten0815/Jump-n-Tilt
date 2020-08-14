@@ -1921,7 +1921,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002723185}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.738, y: -2.399, z: 0}
+  m_LocalPosition: {x: 0.738, y: -2.52, z: 0}
   m_LocalScale: {x: 0.05066718, y: 0.05066718, z: 0.05066718}
   m_Children:
   - {fileID: 1703643106}
@@ -1956,9 +1956,10 @@ MonoBehaviour:
   slideSpeed: 1
   slideReducer: -6
   slideBackwardsMaxSpeed: 3
+  slideDirection: {x: 0, y: 0}
   isFacingRight: 1
   attackPos: {fileID: 1703643106}
-  attackRadius: 1
+  attackRadius: 5
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 1024
@@ -1979,6 +1980,8 @@ MonoBehaviour:
   facingDirection: 1
   wallJumpSpeed: 15
   stunnTime: 0.6
+  attackOffset: {x: 23, y: -4, z: 0}
+  attackDelay: 0.8
 --- !u!95 &1002723188
 Animator:
   serializedVersion: 3
@@ -2063,7 +2066,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 55, y: 55}
+  m_Size: {x: 90, y: 90}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2082,18 +2085,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.58708787, y: -5.66}
+  m_Offset: {x: 0.61, y: -10.2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4.266667, y: 4.266667}
-    newSize: {x: 55, y: 55}
+    newSize: {x: 90, y: 90}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 7.926233, y: 23.543964}
+  m_Size: {x: 11.99, y: 37.54}
   m_EdgeRadius: 0.02
 --- !u!1 &1007569834
 GameObject:
@@ -14064,7 +14067,7 @@ SpriteRenderer:
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 55, y: 55}
+  m_Size: {x: 90, y: 90}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -14137,7 +14140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703643105}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.3, y: 1.5, z: 0}
+  m_LocalPosition: {x: 23, y: -4, z: 0}
   m_LocalScale: {x: 19.73664, y: 19.73664, z: 19.73664}
   m_Children: []
   m_Father: {fileID: 1002723186}
@@ -14301,6 +14304,7 @@ MonoBehaviour:
   slideSpeed: 2
   slideReducer: 0.5
   slideBackwardsMaxSpeed: 0
+  slideDirection: {x: 0, y: 0}
   isFacingRight: 0
   attackPos: {fileID: 0}
   attackRadius: 0

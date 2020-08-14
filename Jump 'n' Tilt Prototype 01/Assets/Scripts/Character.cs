@@ -218,6 +218,7 @@ public class Character : PhysicsObject
     // changed protected to public to access it in Onryo script
     public virtual void TakeDamage(int damage, Vector2 direction)
     {
+        Debug.Log("player damage");
         health -= damage;
         velocity = new Vector2(-direction.x * knockback, knockup);
         CharacterFacingDirection(-velocity.x);

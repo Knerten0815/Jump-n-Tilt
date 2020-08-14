@@ -174,7 +174,7 @@ MonoBehaviour:
   minJumpNormalY: 0
   gravityModifier: 0
   dampening: 0
-  maxSpeed: 30
+  maxSpeed: 5
   moveSpeed: 1.3
   jumpHeight: 0
   jumpHeightReducer: 0
@@ -198,6 +198,7 @@ MonoBehaviour:
   velY: 1
   roamPos: {x: 5, y: 0}
   movesRight: 1
+  hasAttacked: 0
 --- !u!95 &92851408
 Animator:
   serializedVersion: 3
@@ -2117,7 +2118,7 @@ GameObject:
   - component: {fileID: 1002723191}
   - component: {fileID: 1002723187}
   - component: {fileID: 1002723188}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2172,10 +2173,10 @@ MonoBehaviour:
   attackRadius: 1
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 1024
-  health: 1
-  knockback: 13
-  knockup: 8
+    m_Bits: 66560
+  health: 2
+  knockback: 0
+  knockup: 0
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
@@ -14423,7 +14424,7 @@ GameObject:
   - component: {fileID: 1585827715}
   - component: {fileID: 1585827717}
   - component: {fileID: 1585827716}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: deadFish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14565,7 +14566,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1703643106}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Fish
   m_TagString: Untagged
   m_Icon: {fileID: 0}

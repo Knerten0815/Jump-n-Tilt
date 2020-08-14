@@ -20,6 +20,7 @@ public class FlyingEnemy : Character
     private GameObject player;
 
     public bool movesRight = true;
+    public bool hasAttacked = false;
     protected bool isAttacking;
     protected bool isWalking;
     protected bool isChasing;
@@ -65,16 +66,16 @@ public class FlyingEnemy : Character
                     gravityModifier = 0f;
 
                     Vector2 toPlayer = new Vector2((player.transform.position.x - transform.position.x), player.transform.position.y - transform.position.y);
-                    if (!(velocity.x < 0 && toPlayer.x < 0) || !(velocity.y < 0 && toPlayer.y < 0))
-                    {
+                    //if (!(velocity.x < 0 && toPlayer.x < 0) || !(velocity.y < 0 && toPlayer.y < 0))
+                    //{
                         Debug.Log("nicht schneller");
                         velocity = toPlayer.normalized;
-                    }
+                    /*}
                     else
                     {
                         Debug.Log("Schneller!");
                         velocity += toPlayer.normalized;
-                    }
+                    }*/
                 }
                 else
                 {
@@ -83,16 +84,16 @@ public class FlyingEnemy : Character
                     gravityModifier = 0f;
 
                     Vector2 toPlayer = new Vector2((player.transform.position.x - transform.position.x), player.transform.position.y - transform.position.y);
-                    if (!(velocity.x > 0 && toPlayer.x > 0) || !(velocity.y < 0 && toPlayer.y < 0))
-                    {
+                    //if (!(velocity.x > 0 && toPlayer.x > 0) || !(velocity.y < 0 && toPlayer.y < 0))
+                    //{
                         Debug.Log("nicht schneller");
                         velocity = toPlayer.normalized;
-                    }
+                    /*}
                     else
                     {
                         Debug.Log("Schneller!");
                         velocity += toPlayer.normalized;
-                    }
+                    }*/
 
                     Debug.Log("velocity onryo: " + velocity + " velocity toplayer: " + toPlayer);
                 }
@@ -180,9 +181,43 @@ public class FlyingEnemy : Character
 
     protected override void Attack()
     {
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
+            Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
+            dmgDirection2D.Normalize();
+
+            if (!hasAttacked)
+            {
+                enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
+                Debug.Log("Tengus enemy: " + enemies[i]);
+
+                if (movesRight)
+                {
+                    Vector2 awayFromPlayer = new Vector2((player.transform.position.x - 10f) - transform.position.x, transform.position.y);
+                    velocity = awayFromPlayer.normalized;
+                }
+                else
+                {
+                    Vector2 awayFromPlayer = new Vector2((transform.position.x + 4f) - transform.position.x, transform.position.y);
+                    velocity = awayFromPlayer.normalized;
+                }
+            }
+
+            if(enemies.Length == 0)
+            {
+                hasAttacked = false;
+            }
+            
+        }
         isAttacking = true;
-        base.Attack();
+        //base.Attack();
         Debug.Log("ATTACK!!!!!!!!!!!!!!!!!");
+        Debug.Log("enemies: " + enemies);
+        Debug.Log("enemies length: " + enemies.Length);
+        Debug.Log("enemy: " + enemies[0]);
     }
 
     private void OnCollisionExit2D(Collision2D collision)

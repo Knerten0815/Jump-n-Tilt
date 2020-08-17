@@ -215,6 +215,7 @@ MonoBehaviour:
   slideSpeed: 0
   slideReducer: 0
   slideBackwardsMaxSpeed: 0
+  slideDirection: {x: 0, y: 0}
   isFacingRight: 0
   attackPos: {fileID: 1487877007}
   attackRadius: 3
@@ -2200,6 +2201,7 @@ MonoBehaviour:
   slideSpeed: 1
   slideReducer: -6
   slideBackwardsMaxSpeed: 3
+  slideDirection: {x: 0, y: 0}
   isFacingRight: 1
   attackPos: {fileID: 1703643106}
   attackRadius: 1
@@ -2223,6 +2225,8 @@ MonoBehaviour:
   facingDirection: 1
   wallJumpSpeed: 15
   stunnTime: 0.6
+  attackOffset: {x: 0, y: 0, z: 0}
+  attackDelay: 0
 --- !u!95 &1002723188
 Animator:
   serializedVersion: 3
@@ -14975,6 +14979,7 @@ MonoBehaviour:
   slideSpeed: 0
   slideReducer: 0
   slideBackwardsMaxSpeed: 0
+  slideDirection: {x: 0, y: 0}
   isFacingRight: 0
   attackPos: {fileID: 48055216}
   attackRadius: 1

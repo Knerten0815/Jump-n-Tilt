@@ -6,7 +6,7 @@ using GameActions;
 public class PlayerCharacter : Character
 {
 
-    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
+    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler //Debugging Git
 
     // variables for jumping
     public int jumpCount;                   // Possible amount of jumps

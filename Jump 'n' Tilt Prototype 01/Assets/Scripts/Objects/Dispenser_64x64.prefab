@@ -150,4 +150,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowPrefab: {fileID: 6549967435999221565, guid: cd5790881da82e0428531dc707968eba,
     type: 3}
-  spawnTime: 3
+  spawnTime: 7
+  deltaTimeAdjust: 200

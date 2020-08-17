@@ -28,19 +28,9 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
         {
             PlayerInput.onSlowMoDown -= switchSloMo;
         }
-        /*
+
         //Author: Marvin Winkler
-        void Update()
-        {
-            //Just for testing
-            //++
-            if (Input.GetKeyDown(KeyCode.T))
-                switchSloMo();
-            //++
-        }
-        */
-        //Author: Marvin Winkler
-        private void LateUpdate()
+        private void FixedUpdate()
         {
             if (isSlow)
                 timeSpeed = slowTimeSpeed;
@@ -68,7 +58,7 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
         //Author: Marvin Winkler
         private void timeAdjustments()
         {
-            speedAdjustedDeltaTime = Time.fixedDeltaTime* timeSpeed;
+            speedAdjustedDeltaTime = Time.deltaTime* timeSpeed; //Gets called in fixed update
         }
 
         //This should be called each time you would normally use deltaTime

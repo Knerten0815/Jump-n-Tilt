@@ -250,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &36874578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1215,7 +1215,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 428, y: 137}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &179463763
@@ -1331,6 +1331,7 @@ MonoBehaviour:
     - 'Of all the gods there are, they trapped me with the most boring one down here! '
     - "Of all the demons there were, they send me to take care of the immortal one\u2026 "
     - You could just set me free, you know.
+  continueButton: {fileID: 1562245788}
 --- !u!1 &196999134
 GameObject:
   m_ObjectHideFlags: 0
@@ -4266,7 +4267,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &680916900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4345,7 +4346,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 716115054}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -5571,7 +5572,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 716115054}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -5621,6 +5622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17ffc5dd9ba74944c912cca0465771f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 0}
 --- !u!1 &871431115
 GameObject:
   m_ObjectHideFlags: 0
@@ -6335,7 +6337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -29.400002, y: 7.6999974}
+  m_AnchoredPosition: {x: -29.400002, y: 7.699997}
   m_SizeDelta: {x: 21.056221, y: -70.70056}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &971635011
@@ -6788,14 +6790,16 @@ MonoBehaviour:
   slideSpeed: 3
   slideReducer: -6
   slideBackwardsMaxSpeed: 0
+  slideDirection: {x: 0, y: 0}
   isFacingRight: 1
-  isSliding: 0
   attackPos: {fileID: 1703643106}
   attackRadius: 1
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 1024
   health: 10
+  knockback: 0
+  knockup: 0
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
@@ -6809,6 +6813,9 @@ MonoBehaviour:
   wallSlidingSpeed: 0.3
   facingDirection: 1
   wallJumpSpeed: 0
+  stunnTime: 0
+  attackOffset: {x: 0, y: 0, z: 0}
+  attackDelay: 0
 --- !u!70 &1002723188
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -9456,7 +9463,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 256, y: -211}
+  m_AnchoredPosition: {x: -305, y: 183}
   m_SizeDelta: {x: 300, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1286748064
@@ -9507,7 +9514,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 2e958761f8cfce84695c925e1f21eea8, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -21392,7 +21399,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -29.400002, y: -5.200004}
+  m_AnchoredPosition: {x: -29.400002, y: -5.2000046}
   m_SizeDelta: {x: 21.056221, y: -70.70056}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1506846487
@@ -24376,14 +24383,16 @@ MonoBehaviour:
   slideSpeed: 2
   slideReducer: 0.5
   slideBackwardsMaxSpeed: 0
+  slideDirection: {x: 0, y: 0}
   isFacingRight: 0
-  isSliding: 0
   attackPos: {fileID: 0}
   attackRadius: 0
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 0
   health: 1
+  knockback: 0
+  knockup: 0
   moveCounter: 10
 --- !u!1 &1863875064
 GameObject:

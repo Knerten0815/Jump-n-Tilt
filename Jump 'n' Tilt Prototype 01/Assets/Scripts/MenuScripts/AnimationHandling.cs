@@ -11,9 +11,10 @@ namespace menuHandling
 {
     public class AnimationHandling : MonoBehaviour
     {
-        private  GameObject menuBackground;
-        private  GameObject firstMenuPage;
+        private GameObject menuBackground;
+        private GameObject firstMenuPage;
         private Animator animator;
+        public Animator dialogueBox;
 
         public void Start()
         {
@@ -21,7 +22,7 @@ namespace menuHandling
             menuBackground = GameObject.Find("Schriftrolle");
             firstMenuPage = GameObject.Find("Main Menu");
             animator = menuBackground.GetComponent<Animator>();
-            
+
 
             if (SceneManager.GetActiveScene().name == "NewMenu")
             {
@@ -64,11 +65,12 @@ namespace menuHandling
 
         private void pauseGame()
         {
+            DialogueManager.Instance.EndDialogue();
             Time.timeScale = 0f;
             menuBackground.SetActive(true);
             animator.SetTrigger("OpenScroll");
             StartCoroutine(ShowMenu());
-            
+
         }
     }
 }

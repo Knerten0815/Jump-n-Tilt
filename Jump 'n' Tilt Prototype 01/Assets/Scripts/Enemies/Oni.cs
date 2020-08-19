@@ -7,7 +7,7 @@ public class Oni : GroundEnemy
     [SerializeField] Audio oniHit;
     [SerializeField] float attackSpeed;
     private float speed;
-    private bool attacking;
+    private bool isAttacking;
 
     protected override void Start()
     {
@@ -19,10 +19,12 @@ public class Oni : GroundEnemy
     {
         base.ComputeVelocity();
 
+        Debug.DrawRay(transform.position, velocity);
+
         //slide when you should slide!
         if (isSliding)
         {
-            attacking = false;
+            isAttacking = false;
             Slide();
         }
         //charge towards the player if he is on the same height and in reach
@@ -34,18 +36,18 @@ public class Oni : GroundEnemy
                 direction = 1;
 
             moveSpeed = attackSpeed;
-            if (!attacking)
+            if (!isAttacking)
             {
-                attacking = true;
+                isAttacking = true;
                 AudioController.Instance.playFXSound(oniAttack);
             }                
         }
         else
         {
-            attacking = false;
+            isAttacking = false;
             //patrol
             moveSpeed = speed;
-            if (IsWallAhead(true) == true || isGroundAhead(false) == false)
+            if (IsWallAhead(saw) == true || isGroundAhead(sag) == false)
             {
 
                 if (isFacingRight == true)

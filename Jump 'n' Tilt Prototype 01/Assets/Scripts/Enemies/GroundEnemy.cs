@@ -11,9 +11,9 @@ public class GroundEnemy : Character
     [SerializeField] LayerMask whatIsGround, whatIsWall;
 
     public float direction;
-    private float wallCheckDistance = 0.1f;
-    private float groundCheckDistance = 0.1f;
-    private BoxCollider2D bc2d;
+    private float wallCheckDistance = 0.05f;
+    private float groundCheckDistance = 0.3f;
+    private CapsuleCollider2D bc2d;
     private GameObject player;
 
     protected override void OnEnable()
@@ -21,7 +21,6 @@ public class GroundEnemy : Character
         base.OnEnable();
         LevelControllerNew.onWorldWasTilted += startSlide;
         LevelControllerNew.onWorldWasUntilted += stopSlide;
-
     }
 
     protected override void OnDisable()
@@ -38,7 +37,7 @@ public class GroundEnemy : Character
         whatIsEnemy = LayerMask.GetMask("Player");
         whatIsGround = LayerMask.GetMask("Level");      //needs to be changed to Ground later
         whatIsWall = LayerMask.GetMask("Level");        //needs to be changed to Wall later
-        bc2d = GetComponent<BoxCollider2D>();
+        bc2d = GetComponent<CapsuleCollider2D>();
         direction = startDirection;
         if (direction == 1)
             isFacingRight = true;
@@ -84,12 +83,11 @@ public class GroundEnemy : Character
         offset.y -= bc2d.bounds.extents.y;
 
         if(!slopesAreWalls)
-            offset.y += bc2d.bounds.size.y / (wallCheckPrecision);
-        
+            offset.y += bc2d.bounds.size.y / (wallCheckPrecision);        
 
         for (int i = 0; i < wallCheckPrecision; i++)
         {
-            //Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
+            Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
             wallAhead = Physics2D.Raycast(offset, Vector2.right * direction, wallCheckDistance, whatIsWall);
             if (wallAhead.collider)
                 return true;
@@ -100,26 +98,41 @@ public class GroundEnemy : Character
     }
 
     /// <summary>
-    /// Returns true if there is ground in front of the GroundEnemy. Returns false it approaches a chasm.
+    /// Returns true if there is ground in front of the GroundEnemy. Returns false if it approaches a chasm.
     /// </summary>
     /// <param name="slopesAreGround">if true, downward slopes are detected as ground. Otherwise like a chasm.</param>
     public bool isGroundAhead(bool slopesAreGround)
     {
-        Vector2 offset;
-
-        if (isFacingRight)
-            offset = new Vector2(transform.position.x + bc2d.bounds.extents.x, transform.position.y - bc2d.bounds.extents.y);
-        else
-            offset = transform.position - bc2d.bounds.extents;
-
-        RaycastHit2D groundAhead;
+        Vector2 offsetAhead, offsetBehind;
+        Vector3 slopeOffset = bc2d.bounds.extents;
 
         if (slopesAreGround)
-            groundAhead = Physics2D.Raycast(offset, Vector2.down, bc2d.bounds.size.x, whatIsGround);
-        else
-            groundAhead = Physics2D.Raycast(offset, Vector2.down, groundCheckDistance, whatIsGround);
+        {
+            slopeOffset.x = bc2d.bounds.extents.x / 2;
+            groundCheckDistance = 1.1f;
+        }
+            
 
-        return groundAhead.collider;
+        if (isFacingRight)
+        {
+            offsetAhead = new Vector2(transform.position.x + slopeOffset.x, transform.position.y - slopeOffset.y);
+            offsetBehind = transform.position - slopeOffset;
+        }
+        else
+        {
+            offsetAhead = transform.position - slopeOffset;
+            offsetBehind = new Vector2(transform.position.x + slopeOffset.x, transform.position.y - slopeOffset.y);
+        }
+
+        RaycastHit2D groundAhead, slopeBehind;
+
+        groundAhead = Physics2D.Raycast(offsetAhead, Vector2.down, groundCheckDistance, whatIsGround);
+        Debug.DrawRay(offsetAhead, Vector2.down * groundCheckDistance);
+
+        slopeBehind = Physics2D.Raycast(offsetBehind, Vector2.right * -direction, 0.3f , whatIsGround);
+        Debug.DrawRay(offsetBehind, Vector2.right * -direction * groundCheckDistance);
+
+        return groundAhead.collider || (!groundAhead.collider && slopeBehind.collider);
     }
 
     /// <summary>

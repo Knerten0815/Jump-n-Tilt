@@ -23,7 +23,7 @@ public class Character : PhysicsObject
 
     public float slideBackwardsMaxSpeed;    //by Marvin Winkler, max speed while pressing against the tilt
 
-    private Vector2 slideDirection;
+    public Vector2 slideDirection;
 
     public bool isFacingRight;
     protected bool isSliding;

@@ -12,12 +12,7 @@ public class TimePickUp : MonoBehaviour, PickUpDescriptor
 
     public void hit()
     {
-        
+      ManagementSystem.tUp();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

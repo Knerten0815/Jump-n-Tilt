@@ -117,6 +117,17 @@ public class ManagementSystem : MonoBehaviour
         healthPickUpHit();
     }
 
+
+    public delegate void pickupTime();
+    public static event pickupTime timePickUpHit;
+
+    public static void tUp()
+    {
+        //Debug.Log("TEST tUp");
+        timePickUpHit();
+    }
+
+
     /*
     * CreateSaveGameObject creates an empty Save object and overrides it's collectiblesGathered attribute with the current
     * ManagementSystem version

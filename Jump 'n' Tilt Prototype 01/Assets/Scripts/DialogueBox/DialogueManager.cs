@@ -41,9 +41,9 @@ public class DialogueManager : MonoBehaviour
         sentences.Clear();
         names.Clear();
         Time.timeScale = 0f;
-        if(dialogue.images.Length > 4)
+        if(dialogue.images.Length > 3)
         {
-            Debug.Log("Bitte nicht mehr als 4 Bilder in den Dialoge laden!");
+            Debug.Log("Bitte nicht mehr als 3 Bilder in den Dialoge laden!");
             EndDialogue();
             return;
         }
@@ -61,14 +61,10 @@ public class DialogueManager : MonoBehaviour
                 case "Kitsune":
                     dialogueImages[2] = image;
                     break;
-                case "Hanzoku":
-                    dialogueImages[3] = image;
-                    break;
             }
         }
         foreach(GameObject image in dialogueImages)
         {
-            Debug.Log(image.name);
             image.SetActive(false);
         }
         foreach (string name in dialogue.name)
@@ -114,10 +110,6 @@ public class DialogueManager : MonoBehaviour
             case "Kitsune":
                 dialogueImages[2].SetActive(true);
                 currentActiveImage = dialogueImages[2];
-                break;
-            case "Hanzoku":
-                dialogueImages[3].SetActive(true);
-                currentActiveImage = dialogueImages[3];
                 break;
         }
     }

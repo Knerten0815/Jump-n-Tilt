@@ -5,16 +5,16 @@ using TimeControlls;
 using LevelControlls;
 
 //Author: Melanie Jäger
-public class Arrow : PhysicsObject
+public class Arrow : Character
 {
     private Transform level;
-    private float moveDirection;
+    private new float moveDirection;
     private float moveAngle;
 
     private float cameraPos;
 
-    public float destroyDistance = 10.0f;  //distance from the camera position until the arrow is destroyed
-    public int spawnDistance = 3;       //variable to multiply the distance from the camera position until the arrow is spawned
+    public float destroyDistance = 10.0f;   //distance from the camera position until the arrow is destroyed
+    public int spawnDistance = 3;           //variable to multiply the distance from the camera position until the arrow is spawned
 
     //Author: Melanie Jäger
     //sets the basic values for the arrow movement
@@ -51,7 +51,7 @@ public class Arrow : PhysicsObject
     }
 
     //Author: Melanie Jäger
-    //destroys the arrow object when a certain distance is between it and the cameraposition
+    //destroys the arrow object when a certain distance is between it and the cameraposition --> so there a not a million arrows in the scene
     //distance can be changed in the inspector with the variables destroyDistance and spawnDistance
     private void DestoryObject()
     {
@@ -63,18 +63,19 @@ public class Arrow : PhysicsObject
 
 
     //Author: Melanie Jäger
-    //Collision with player destroys the player
+    //Collision with player takes one health point from the player
     //Collision with any other object destroys this object
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.name == "Player")
+        if (collision.gameObject.name == "Player")
         {
-            Destroy(collision.gameObject);
+            //Debug.Log("hit");
+            Attack();
         }
 
         else
         {
             Destroy(gameObject);
-        }
+        }        
     }
 }

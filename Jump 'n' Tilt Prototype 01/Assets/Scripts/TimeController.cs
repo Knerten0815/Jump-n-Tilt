@@ -19,14 +19,14 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
 
         private void Start()
         {
-            PlayerInput.onSlowMoDown += switchSloMo;
+            PlayerCharacter.onUseSloMoTime += switchSloMo;
             timeSpeed = 1;
             isSlow = false;
         }
 
         private void OnDisable()
         {
-            PlayerInput.onSlowMoDown -= switchSloMo;
+            PlayerCharacter.onUseSloMoTime -= switchSloMo;
         }
 
         //Author: Marvin Winkler

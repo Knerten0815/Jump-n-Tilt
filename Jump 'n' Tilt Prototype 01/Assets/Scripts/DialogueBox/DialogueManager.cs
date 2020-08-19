@@ -12,7 +12,12 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> names;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI dialogueText;
+    //public GameObject kashima;
+    //public GameObject onamazu;
+    private GameObject[] dialogueImages;
     public Animator animator;
+    private GameObject currentActiveImage;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -36,6 +41,36 @@ public class DialogueManager : MonoBehaviour
         sentences.Clear();
         names.Clear();
         Time.timeScale = 0f;
+        if(dialogue.images.Length > 4)
+        {
+            Debug.Log("Bitte nicht mehr als 4 Bilder in den Dialoge laden!");
+            EndDialogue();
+            return;
+        }
+        dialogueImages = new GameObject[dialogue.images.Length];
+        foreach (GameObject image in dialogue.images)
+        {
+            switch (image.name)
+            {
+                case "Kashima":
+                    dialogueImages[0] = image;
+                    break;
+                case "Onamazu":
+                    dialogueImages[1] = image;
+                    break;
+                case "Kitsune":
+                    dialogueImages[2] = image;
+                    break;
+                case "Hanzoku":
+                    dialogueImages[3] = image;
+                    break;
+            }
+        }
+        foreach(GameObject image in dialogueImages)
+        {
+            Debug.Log(image.name);
+            image.SetActive(false);
+        }
         foreach (string name in dialogue.name)
         {
             names.Enqueue(name);
@@ -56,11 +91,35 @@ public class DialogueManager : MonoBehaviour
             EndDialogue();
             return;
         }
+
         string sentence = sentences.Dequeue();
         string name = names.Dequeue();
         nameText.text = name;
         StopAllCoroutines();
         StartCoroutine(TypeSentence(sentence));
+        if(currentActiveImage != null)
+        {
+            currentActiveImage.SetActive(false);
+        }
+        switch (name)
+        {
+            case "Kashima":
+                dialogueImages[0].SetActive(true);
+                currentActiveImage = dialogueImages[0];
+                break;
+            case "Onamazu":
+                dialogueImages[1].SetActive(true);
+                currentActiveImage = dialogueImages[1];
+                break;
+            case "Kitsune":
+                dialogueImages[2].SetActive(true);
+                currentActiveImage = dialogueImages[2];
+                break;
+            case "Hanzoku":
+                dialogueImages[3].SetActive(true);
+                currentActiveImage = dialogueImages[3];
+                break;
+        }
     }
 
     IEnumerator TypeSentence(string sentence)
@@ -77,6 +136,10 @@ public class DialogueManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         animator.SetBool("isOpen", false);
+        if (currentActiveImage != null)
+        {
+            currentActiveImage.SetActive(false);
+        }
     }
 
 }

@@ -6,7 +6,7 @@ using GameActions;
 public class PlayerCharacter : Character
 {
 
-    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler //Debugging Git YAY
+    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
 
     // variables for jumping
     public int jumpCount;                   // Possible amount of jumps
@@ -21,6 +21,7 @@ public class PlayerCharacter : Character
     private float plattformCheckDistance = 1f;  //Distance for Raycast is set to 15, because it is the half of the Player size
     private bool inFrontOfPlayer;
     private bool behindPlayer;
+    public float crouchSpeedModifier;           //Factor by which the players speed is adjusted while crouching
 
     // variables for wall jump, wall sliding and detection
     private RaycastHit2D lastWallcontact;
@@ -53,6 +54,7 @@ public class PlayerCharacter : Character
     public Vector3 attackOffset;            //Offset from player position where he attacks
     private float attackTimer;
     public float attackDelay;               //Minimum time between attacks in seconds
+    private bool isAttacking;
 
 
     public delegate void fishCausedEarthquake(float playerInput);
@@ -82,8 +84,8 @@ public class PlayerCharacter : Character
 
         ManagementSystem.healthPickUpHit += addHealth;
 
-        PlayerInput.onHorizontalDown += disableSliding;
-        PlayerInput.onJumpButtonDown += disableSliding;
+        //PlayerInput.onHorizontalDown += disableSliding;
+        //PlayerInput.onJumpButtonDown += disableSliding;
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;
@@ -134,8 +136,8 @@ public class PlayerCharacter : Character
         ManagementSystem.healthPickUpHit -= addHealth;
         PlayerInput.onTiltDown -= smashFishToTilt;
         PlayerInput.onTiltDown -= disableSliding;
-        PlayerInput.onHorizontalDown -= disableSliding;
-        PlayerInput.onJumpButtonDown -= disableSliding;
+        //PlayerInput.onHorizontalDown -= disableSliding;
+        //PlayerInput.onJumpButtonDown -= disableSliding;
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
@@ -171,6 +173,8 @@ public class PlayerCharacter : Character
         //+++
 
     }
+
+    //Author: Marvin Winkler
     protected override void updateAnimations()
     {
         playAnimations();
@@ -264,19 +268,22 @@ public class PlayerCharacter : Character
             animator.SetBool("stunned", false);
         }
 
-        Debug.Log(timeController.getSpeedAdjustedDeltaTime());
         //Is the player attacking?
         if (attackTimer >= 0)
         {
+            isAttacking = true;
             animator.SetBool("isAttacking", true);
             attackTimer -= timeController.getSpeedAdjustedDeltaTime();
         }
         else
         {
+            isAttacking = false;
             animator.SetBool("isAttacking", false);
         }
 
-        //Is it time for the dead fish to appear?   DONT WRITE ANYTH NEW STUFF BELOW THIS IN PLAY ANIMATIONS, THE DEAD FISH STUFF NEEDS TO BE LAST!
+        //Is it time for the dead fish to spawn?
+        //DON'T WRITE ANY NEW STUFF BELOW THIS IN playAnimations(), THE DEAD FISH STUFF NEEDS TO BE LAST!
+        //+++
         if (deadFishTimer > 0)
         {
             deadFishTimer -= timeController.getSpeedAdjustedDeltaTime();
@@ -304,6 +311,17 @@ public class PlayerCharacter : Character
             }
 
             deadFish.GetComponent<Animator>().speed = timeController.getTimeSpeed();
+        }
+        //+++
+    }
+
+    //Author: Marvin Winkler
+    //Stops direction change during attack animation
+    protected override void CharacterFacingDirection(float direction)
+    {
+        if (!isAttacking)
+        {
+            base.CharacterFacingDirection(direction);
         }
     }
 
@@ -339,6 +357,7 @@ public class PlayerCharacter : Character
     {
         // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
         touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsLevel));  
+
         // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)
         {
@@ -452,35 +471,29 @@ public class PlayerCharacter : Character
         }
     }
 
-    //Author: Michelle Limbach
-    //Edited: Marvin Winkler
+    //Author: Michelle Limbach, Marvin Winkler
     private void CrouchDown(float direction)
     {
         //Player is not crouching yet, is grounded and the Arrow down Button is pressed
         if (!crouching && grounded && direction < 0)
         {
-            //Scale the Sprite
-            //GetComponent<SpriteRenderer>().size = GetComponent<SpriteRenderer>().size * new Vector2(1f, 0.5f);
-
             //Scale the CapsuleCollider and set with offset to new position, so player does not get stuck in ground
-            collider.size = new Vector2(collider.size.x, 15.44461f);
-            collider.offset = new Vector2(1.019688f, -0.01133485f);
+            collider.size = new Vector2(collider.size.x, collider.size.y/2);
+            collider.offset = new Vector2(collider.offset.x, collider.offset.y - collider.size.y / 2);
 
             //Set crouching to true, so Script knows player is already crouching
             crouching = true;
 
             //Decrease movement speed
-            moveSpeed = moveSpeed/3;
+            moveSpeed = moveSpeed * crouchSpeedModifier;
 
             //Player cannot jump while crouching
             canJump = false;
-
         }
 
     }
 
-    // Author: Michelle Limbach
-    //minorly Edited: Marvin Winkler
+    // Author: Michelle Limbach, Marvin Winkler
     private void CrouchUp(float direction)
     {
         //If the player is crouching
@@ -499,19 +512,15 @@ public class PlayerCharacter : Character
                 // If there is no Plattfrom over or right behind the Player, the Player can stand up
                 if (!inFrontOfPlayer && !behindPlayer)
                 {
-                    //Rescale the Sprite
-                    //GetComponent<SpriteRenderer>().size = GetComponent<SpriteRenderer>().size * new Vector2(1f, 2f);
-
-                    //Rescale the CapsuleCollider size and offset and put the player in a higher y position, so the player does not get stuck in ground 
-                    transform.position += new Vector3(0f, 0.3f, 0f);
-                    collider.size = new Vector2(collider.size.x, 27.17294f);
-                    collider.offset = new Vector2(1.019688f, 0.2658937f);
+                    //Rescale the CapsuleCollider size and offset
+                    collider.offset = new Vector2(collider.offset.x, collider.offset.y + collider.size.y / 2);
+                    collider.size = new Vector2(collider.size.x, collider.size.y*2);
 
                     //Set crouching to false, because the player does not crouch anymore
                     crouching = false;
 
                     //Increase movement speed
-                    moveSpeed = moveSpeed*3;
+                    moveSpeed = moveSpeed * (1 / crouchSpeedModifier);
 
                     canJump = true;
                 }
@@ -541,12 +550,14 @@ public class PlayerCharacter : Character
             disableInput();
         }
     }
+
+    //Author: Marvin Winkler
     private void die()
     {
-        //animator.SetBool("justDied", true);
         deadFishTimer = 1.3f;
     }
 
+    //Author: Marvin Winkler
     private void Attack()
     {
         attackTimer = attackDelay;

@@ -1969,6 +1969,7 @@ MonoBehaviour:
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
+  crouchSpeedModifier: 0.3
   wallJumpCounter: 0
   touchesWall: 0
   wallCheckDistance: 0.4
@@ -1976,7 +1977,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   wallSliding: 0
-  wallSlidingSpeed: 0.3
+  wallSlidingSpeed: 0.333
   facingDirection: 1
   wallJumpSpeed: 15
   stunnTime: 0.6

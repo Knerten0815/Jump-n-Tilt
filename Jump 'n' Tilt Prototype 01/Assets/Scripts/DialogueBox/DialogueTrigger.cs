@@ -20,4 +20,9 @@ public class DialogueTrigger : MonoBehaviour
         continueButton.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline | FontStyles.Bold;
         continueButton.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0.6470f, 0.0627f, 0.0627f);
     }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        GetComponent<DialogueTrigger>().TriggerDialogue();
+    }
 }

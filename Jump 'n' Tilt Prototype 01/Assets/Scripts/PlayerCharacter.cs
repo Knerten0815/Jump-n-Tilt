@@ -56,6 +56,13 @@ public class PlayerCharacter : Character
     public float attackDelay;               //Minimum time between attacks in seconds
     private bool isAttacking;
 
+    //pickup stuff by Marvin Winkler
+    private bool hasTimePickup;
+    private float sloMoTimer;
+    public float sloMoTime;                 //Duration of SloMoTime power up in seconds
+
+    public delegate void useSloMoTime();
+    public static event useSloMoTime onUseSloMoTime;
 
     public delegate void fishCausedEarthquake(float playerInput);
     public static event fishCausedEarthquake onFishCausedEarthquake;
@@ -78,11 +85,14 @@ public class PlayerCharacter : Character
         jumpStart = true;
         justTookDamage = false;
         deadFishTimer = -101;
+        sloMoTimer = -100;
 
         PlayerInput.onTiltDown += smashFishToTilt;
         PlayerInput.onTiltDown += disableSliding;
+        PlayerInput.onSlowMoDown += useSloMoPickup;
 
         ManagementSystem.healthPickUpHit += addHealth;
+        ManagementSystem.timePickUpHit += addTimePickup;
 
         //PlayerInput.onHorizontalDown += disableSliding;
         //PlayerInput.onJumpButtonDown += disableSliding;
@@ -98,8 +108,8 @@ public class PlayerCharacter : Character
         PlayerInput.onVerticalUp += CrouchUp;
 
         // Nicole 
-        whatIsLevel = LayerMask.GetMask("Level");
-        whatIsEnemy = LayerMask.GetMask("Enemy");
+        //whatIsLevel = LayerMask.GetMask("Level");
+        //whatIsEnemy = LayerMask.GetMask("Enemy");
         
     }
     //Author: Marvin Winkler
@@ -134,8 +144,10 @@ public class PlayerCharacter : Character
 
         //Marvin
         ManagementSystem.healthPickUpHit -= addHealth;
+        ManagementSystem.timePickUpHit -= addTimePickup;
         PlayerInput.onTiltDown -= smashFishToTilt;
         PlayerInput.onTiltDown -= disableSliding;
+        PlayerInput.onSlowMoDown -= useSloMoPickup;
         //PlayerInput.onHorizontalDown -= disableSliding;
         //PlayerInput.onJumpButtonDown -= disableSliding;
     }
@@ -159,6 +171,21 @@ public class PlayerCharacter : Character
         if (touchesWall && levelController.getTiltStep() != 0)
         {
             onWall = true;
+        }
+        
+        //SloMoTime powerup
+        if(sloMoTimer >= 0)
+        {
+            sloMoTimer -= Time.deltaTime;
+        }
+        else if(sloMoTimer <= -100)
+        {
+            return;
+        }
+        else
+        {
+            onUseSloMoTime();
+            sloMoTimer = -100;
         }
 
         //Just for testing:
@@ -356,7 +383,7 @@ public class PlayerCharacter : Character
     private void WallSliding()
     {
         // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
-        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsLevel));  
+        touchesWall = (Physics2D.Raycast((Vector2)transform.localPosition, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.localPosition, -transform.right, wallCheckDistance, whatIsLevel));  
 
         // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)
@@ -536,6 +563,23 @@ public class PlayerCharacter : Character
     }
 
     //Author: Marvin Winkler
+    private void addTimePickup()
+    {
+        hasTimePickup = true;
+    }
+
+    //Author: Marvin Winkler
+    private void useSloMoPickup()
+    {
+        if (hasTimePickup)
+        {
+            sloMoTimer = sloMoTime;
+            hasTimePickup = false;
+            onUseSloMoTime();
+        }
+    }
+
+    //Author: Marvin Winkler
     public override void TakeDamage(int damage, Vector2 direction)
     {
         health -= damage;
@@ -592,5 +636,4 @@ public class PlayerCharacter : Character
             pickUpComponent.hit();
         }
     }
-
-    }
+}

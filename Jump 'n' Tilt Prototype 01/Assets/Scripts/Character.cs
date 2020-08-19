@@ -133,7 +133,7 @@ public class Character : PhysicsObject
 
     // Author: Nicole Mynarek, Rewritten for debugging by Marvin Winkler
     // Method for flipping character sprites according to moving direction
-    protected void CharacterFacingDirection(float direction)
+    protected virtual void CharacterFacingDirection(float direction)
     {
         if(direction < 0)
         {

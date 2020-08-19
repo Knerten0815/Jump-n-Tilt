@@ -21,6 +21,7 @@ public class PlayerCharacter : Character
     private float plattformCheckDistance = 1f;  //Distance for Raycast is set to 15, because it is the half of the Player size
     private bool inFrontOfPlayer;
     private bool behindPlayer;
+    public float crouchSpeedModifier;           //Factor by which the players speed is adjusted while crouching
 
     // variables for wall jump, wall sliding and detection
     private RaycastHit2D lastWallcontact;
@@ -48,6 +49,20 @@ public class PlayerCharacter : Character
     private float stunnTimer;
     private float deadFishTimer;
 
+    // attack stuff by Marvin Winkler
+    private Transform fishTrans;
+    public Vector3 attackOffset;            //Offset from player position where he attacks
+    private float attackTimer;
+    public float attackDelay;               //Minimum time between attacks in seconds
+    private bool isAttacking;
+
+    //pickup stuff by Marvin Winkler
+    private bool hasTimePickup;
+    private float sloMoTimer;
+    public float sloMoTime;                 //Duration of SloMoTime power up in seconds
+
+    public delegate void useSloMoTime();
+    public static event useSloMoTime onUseSloMoTime;
 
     public delegate void fishCausedEarthquake(float playerInput);
     public static event fishCausedEarthquake onFishCausedEarthquake;
@@ -62,6 +77,7 @@ public class PlayerCharacter : Character
 
         //Marvin
         levelController = GameObject.Find("LevelController").GetComponent<LevelControlls.LevelControllerNew>();
+        fishTrans = GameObject.Find("Fish").GetComponent<Transform>();
 
         collider = GetComponent<BoxCollider2D>();
 
@@ -69,14 +85,17 @@ public class PlayerCharacter : Character
         jumpStart = true;
         justTookDamage = false;
         deadFishTimer = -101;
+        sloMoTimer = -100;
 
         PlayerInput.onTiltDown += smashFishToTilt;
         PlayerInput.onTiltDown += disableSliding;
+        PlayerInput.onSlowMoDown += useSloMoPickup;
 
         ManagementSystem.healthPickUpHit += addHealth;
+        ManagementSystem.timePickUpHit += addTimePickup;
 
-        PlayerInput.onHorizontalDown += disableSliding;
-        PlayerInput.onJumpButtonDown += disableSliding;
+        //PlayerInput.onHorizontalDown += disableSliding;
+        //PlayerInput.onJumpButtonDown += disableSliding;
 
         // Nicole 
         PlayerInput.onHorizontalDown += Movement;
@@ -89,8 +108,8 @@ public class PlayerCharacter : Character
         PlayerInput.onVerticalUp += CrouchUp;
 
         // Nicole 
-        whatIsLevel = LayerMask.GetMask("Level");
-        whatIsEnemy = LayerMask.GetMask("Enemy");
+        //whatIsLevel = LayerMask.GetMask("Level");
+        //whatIsEnemy = LayerMask.GetMask("Enemy");
         
     }
     //Author: Marvin Winkler
@@ -125,10 +144,12 @@ public class PlayerCharacter : Character
 
         //Marvin
         ManagementSystem.healthPickUpHit -= addHealth;
+        ManagementSystem.timePickUpHit -= addTimePickup;
         PlayerInput.onTiltDown -= smashFishToTilt;
         PlayerInput.onTiltDown -= disableSliding;
-        PlayerInput.onHorizontalDown -= disableSliding;
-        PlayerInput.onJumpButtonDown -= disableSliding;
+        PlayerInput.onSlowMoDown -= useSloMoPickup;
+        //PlayerInput.onHorizontalDown -= disableSliding;
+        //PlayerInput.onJumpButtonDown -= disableSliding;
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
@@ -151,8 +172,21 @@ public class PlayerCharacter : Character
         {
             onWall = true;
         }
-
-        playAnimations();
+        
+        //SloMoTime powerup
+        if(sloMoTimer >= 0)
+        {
+            sloMoTimer -= Time.deltaTime;
+        }
+        else if(sloMoTimer <= -100)
+        {
+            return;
+        }
+        else
+        {
+            onUseSloMoTime();
+            sloMoTimer = -100;
+        }
 
         //Just for testing:
         //+++
@@ -165,6 +199,12 @@ public class PlayerCharacter : Character
         }
         //+++
 
+    }
+
+    //Author: Marvin Winkler
+    protected override void updateAnimations()
+    {
+        playAnimations();
     }
 
     //Author: Marvin Winkler
@@ -255,8 +295,23 @@ public class PlayerCharacter : Character
             animator.SetBool("stunned", false);
         }
 
-        //Is it time for the dead fish to appear?
-        if(deadFishTimer > 0)
+        //Is the player attacking?
+        if (attackTimer >= 0)
+        {
+            isAttacking = true;
+            animator.SetBool("isAttacking", true);
+            attackTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        else
+        {
+            isAttacking = false;
+            animator.SetBool("isAttacking", false);
+        }
+
+        //Is it time for the dead fish to spawn?
+        //DON'T WRITE ANY NEW STUFF BELOW THIS IN playAnimations(), THE DEAD FISH STUFF NEEDS TO BE LAST!
+        //+++
+        if (deadFishTimer > 0)
         {
             deadFishTimer -= timeController.getSpeedAdjustedDeltaTime();
         }
@@ -284,13 +339,24 @@ public class PlayerCharacter : Character
 
             deadFish.GetComponent<Animator>().speed = timeController.getTimeSpeed();
         }
+        //+++
+    }
+
+    //Author: Marvin Winkler
+    //Stops direction change during attack animation
+    protected override void CharacterFacingDirection(float direction)
+    {
+        if (!isAttacking)
+        {
+            base.CharacterFacingDirection(direction);
+        }
     }
 
     //Author: Marvin Winkler
     //Waits for the animation before the level is tilted
     private void smashFishToTilt(float playerInput)
     {
-        fishTimer = 1f;
+        fishTimer = 0.5f;
         if(Input.GetAxisRaw("Tilt") < 0)
         {
             playerInputBuffer = -1;
@@ -317,7 +383,8 @@ public class PlayerCharacter : Character
     private void WallSliding()
     {
         // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
-        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsLevel));  
+        touchesWall = (Physics2D.Raycast((Vector2)transform.localPosition, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.localPosition, -transform.right, wallCheckDistance, whatIsLevel));  
+
         // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)
         {
@@ -431,35 +498,29 @@ public class PlayerCharacter : Character
         }
     }
 
-    //Author: Michelle Limbach
-    //Edited: Marvin Winkler
+    //Author: Michelle Limbach, Marvin Winkler
     private void CrouchDown(float direction)
     {
         //Player is not crouching yet, is grounded and the Arrow down Button is pressed
         if (!crouching && grounded && direction < 0)
         {
-            //Scale the Sprite
-            //GetComponent<SpriteRenderer>().size = GetComponent<SpriteRenderer>().size * new Vector2(1f, 0.5f);
-
             //Scale the CapsuleCollider and set with offset to new position, so player does not get stuck in ground
-            collider.size = new Vector2(collider.size.x, 15.44461f);
-            collider.offset = new Vector2(1.019688f, -0.01133485f);
+            collider.size = new Vector2(collider.size.x, collider.size.y/2);
+            collider.offset = new Vector2(collider.offset.x, collider.offset.y - collider.size.y / 2);
 
             //Set crouching to true, so Script knows player is already crouching
             crouching = true;
 
             //Decrease movement speed
-            moveSpeed = moveSpeed/3;
+            moveSpeed = moveSpeed * crouchSpeedModifier;
 
             //Player cannot jump while crouching
             canJump = false;
-
         }
 
     }
 
-    // Author: Michelle Limbach
-    //minorly Edited: Marvin Winkler
+    // Author: Michelle Limbach, Marvin Winkler
     private void CrouchUp(float direction)
     {
         //If the player is crouching
@@ -478,19 +539,15 @@ public class PlayerCharacter : Character
                 // If there is no Plattfrom over or right behind the Player, the Player can stand up
                 if (!inFrontOfPlayer && !behindPlayer)
                 {
-                    //Rescale the Sprite
-                    //GetComponent<SpriteRenderer>().size = GetComponent<SpriteRenderer>().size * new Vector2(1f, 2f);
-
-                    //Rescale the CapsuleCollider size and offset and put the player in a higher y position, so the player does not get stuck in ground 
-                    transform.position += new Vector3(0f, 0.3f, 0f);
-                    collider.size = new Vector2(collider.size.x, 27.17294f);
-                    collider.offset = new Vector2(1.019688f, 0.2658937f);
+                    //Rescale the CapsuleCollider size and offset
+                    collider.offset = new Vector2(collider.offset.x, collider.offset.y + collider.size.y / 2);
+                    collider.size = new Vector2(collider.size.x, collider.size.y*2);
 
                     //Set crouching to false, because the player does not crouch anymore
                     crouching = false;
 
                     //Increase movement speed
-                    moveSpeed = moveSpeed*3;
+                    moveSpeed = moveSpeed * (1 / crouchSpeedModifier);
 
                     canJump = true;
                 }
@@ -503,6 +560,23 @@ public class PlayerCharacter : Character
     private void addHealth()
     {
         health++;
+    }
+
+    //Author: Marvin Winkler
+    private void addTimePickup()
+    {
+        hasTimePickup = true;
+    }
+
+    //Author: Marvin Winkler
+    private void useSloMoPickup()
+    {
+        if (hasTimePickup)
+        {
+            sloMoTimer = sloMoTime;
+            hasTimePickup = false;
+            onUseSloMoTime();
+        }
     }
 
     //Author: Marvin Winkler
@@ -520,10 +594,28 @@ public class PlayerCharacter : Character
             disableInput();
         }
     }
+
+    //Author: Marvin Winkler
     private void die()
     {
-        //animator.SetBool("justDied", true);
-        deadFishTimer = 2.1f;
+        deadFishTimer = 1.3f;
+    }
+
+    //Author: Marvin Winkler
+    private void Attack()
+    {
+        attackTimer = attackDelay;
+
+        if (isFacingRight)
+        {
+            fishTrans.localPosition = attackOffset;
+        }
+        else
+        {
+            fishTrans.localPosition = new Vector3(-attackOffset.x, attackOffset.y, attackOffset.z);
+        }
+        base.Attack();
+
     }
 
     /*
@@ -544,5 +636,4 @@ public class PlayerCharacter : Character
             pickUpComponent.hit();
         }
     }
-
-    }
+}

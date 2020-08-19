@@ -9117,7 +9117,7 @@ GameObject:
   - component: {fileID: 1002723191}
   - component: {fileID: 1002723187}
   - component: {fileID: 1002723188}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9132,7 +9132,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002723185}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 67.6, y: 0.6, z: 0}
+  m_LocalPosition: {x: 70.15, y: -0.9, z: 0}
   m_LocalScale: {x: 0.05066718, y: 0.05066718, z: 0.05066718}
   m_Children:
   - {fileID: 1703643106}
@@ -9173,8 +9173,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   health: 10
-  knockback: 0
-  knockup: 0
+  knockback: -13
+  knockup: 8
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
@@ -9196,7 +9196,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002723185}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2ab257605108d447a0e351fc2fc3f8c, type: 3}
   m_Name: 
@@ -9221,10 +9221,10 @@ MonoBehaviour:
   attackRadius: 1
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 66560
   health: 1
-  knockback: 0
-  knockup: 0
+  knockback: -13
+  knockup: 8
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
@@ -9954,6 +9954,15 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
+  - first: {x: 76, y: -2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
   - first: {x: 45, y: -1, z: 0}
     second:
       serializedVersion: 2
@@ -9964,6 +9973,15 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
   - first: {x: 49, y: -1, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
+  - first: {x: 76, y: -1, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -9991,6 +10009,15 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
   - first: {x: 57, y: 0, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
+  - first: {x: 76, y: 0, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -10109,19 +10136,19 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 19
+  - m_RefCount: 22
     m_Data: {fileID: 11400000, guid: c962250f32f6a7548ae3d7b44fe36916, type: 2}
   - m_RefCount: 2
     m_Data: {fileID: 11400000, guid: 4c6fbee4511cf5449b8b61954414ab98, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 19
+  - m_RefCount: 22
     m_Data: {fileID: -2877942168336704649, guid: 2be83d82f472f3541958760057cb82da,
       type: 3}
   - m_RefCount: 2
     m_Data: {fileID: 5267377997929404645, guid: 2be83d82f472f3541958760057cb82da,
       type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 21
+  - m_RefCount: 24
     m_Data:
       e00: 1
       e01: 0
@@ -10140,13 +10167,13 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 21
+  - m_RefCount: 24
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: -4, z: 0}
-  m_Size: {x: 58, y: 11, z: 1}
+  m_Size: {x: 77, y: 11, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -10190,7 +10217,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112212438}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.31, y: 0, z: 0}
+  m_LocalPosition: {x: 0.07, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1491682781}
@@ -10248,7 +10275,7 @@ MonoBehaviour:
   minJumpNormalY: 0
   gravityModifier: 0
   dampening: 0
-  maxSpeed: 30
+  maxSpeed: 4
   moveSpeed: 1.3
   jumpHeight: 0
   jumpHeightReducer: 0
@@ -10272,6 +10299,7 @@ MonoBehaviour:
   velY: 1
   roamPos: {x: 5, y: 0}
   movesRight: 1
+  hasAttacked: 0
 --- !u!95 &1122344325
 Animator:
   serializedVersion: 3
@@ -22155,6 +22183,33 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
+  - first: {x: 83, y: 1, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
+  - first: {x: 84, y: 1, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
+  - first: {x: 85, y: 1, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
   - first: {x: 102, y: 1, z: 0}
     second:
       serializedVersion: 2
@@ -22373,14 +22428,14 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 27
+  - m_RefCount: 30
     m_Data: {fileID: 11400000, guid: 4c6fbee4511cf5449b8b61954414ab98, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 27
+  - m_RefCount: 30
     m_Data: {fileID: 5267377997929404645, guid: 2be83d82f472f3541958760057cb82da,
       type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 27
+  - m_RefCount: 30
     m_Data:
       e00: 1
       e01: 0
@@ -22399,7 +22454,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 27
+  - m_RefCount: 30
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -22572,6 +22627,7 @@ MonoBehaviour:
   velY: 1
   roamPos: {x: 5, y: 0}
   movesRight: 1
+  hasAttacked: 0
 --- !u!61 &1491682778
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -23190,7 +23246,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1703643106}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Fish
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}

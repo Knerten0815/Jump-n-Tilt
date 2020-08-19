@@ -22,10 +22,10 @@ namespace LevelControlls
 
         private int tiltStep;               //counter variable for the tilt in each direction
 
-        private float playerInput;
+        //private float playerInput;
         private float tiltTime;
         private float tiltBackTime;
-        private float delay;
+        //private float delay;
 
         private TimeController timeController;
 
@@ -88,7 +88,7 @@ namespace LevelControlls
             if (playerInput == 0 && isAxisInUse == true)
             {
                 tiltBackTime = 0f;
-                delay = -2f;
+                //delay = 0f;
                 tiltBack = true;
                 isAxisInUse = false;
 
@@ -100,7 +100,7 @@ namespace LevelControlls
             {
                 tiltTime = 0;
                 tiltRight = true;
-                isAxisInUse = true;
+                //isAxisInUse = true;
                 tiltStep--;
 
                 targetRight = transform.eulerAngles.z + tiltAngle;
@@ -112,7 +112,7 @@ namespace LevelControlls
             {
                 tiltTime = 0;
                 tiltLeft = true;
-                isAxisInUse = true;
+                //isAxisInUse = true;
                 tiltStep++;
 
                 targetLeft = transform.eulerAngles.z + (-tiltAngle);
@@ -122,11 +122,12 @@ namespace LevelControlls
             //called when the conditions for a backtilt are met
             if (tiltBack == true)
             {
-                delay += delayTime * timeController.getSpeedAdjustedDeltaTime();
+                //delay += delayTime * timeController.getSpeedAdjustedDeltaTime();
+                //--> decicion against a delay, player needs to hold the buttons for tilting otherwise the level tilts back
 
                 //starts tilting back when the delay has reached 0
-                if (delay > 0f)
-                {
+                //if (delay > 0f)
+                    //{
                     BackTilt();
                     canTilt = false;    //prevents player from tilting when BackTilt() is currently processing
 
@@ -136,7 +137,7 @@ namespace LevelControlls
                         tiltStep = defaultTilt; //tiltStep goes back to the default rotation
                         canTilt = true;         //after tilting back the player should be able to tilt again normally
                     }
-                }
+                //}
             }
 
             //called when the conditions for a righttilt are met
@@ -147,6 +148,7 @@ namespace LevelControlls
                 if (tiltTime > 1)
                 {
                     tiltRight = false;      //becomes false when RightTilt() is finished; prevents from calling the method continuously
+                    isAxisInUse = true;
                 }
             }
 
@@ -158,6 +160,7 @@ namespace LevelControlls
                 if (tiltTime > 1)
                 {
                     tiltLeft = false;       //becomes false when LeftTilt() is finished; prevents from calling the method continuously
+                    isAxisInUse = true;
                 }
             }
         }

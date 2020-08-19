@@ -42,5 +42,5 @@ public class SpawnArrows : MonoBehaviour
             yield return new WaitForSeconds(spawnTime - (timeController.getSpeedAdjustedDeltaTime() * deltaTimeAdjust));
             SpawnArrow();
         }
-    } 
+    }
 }

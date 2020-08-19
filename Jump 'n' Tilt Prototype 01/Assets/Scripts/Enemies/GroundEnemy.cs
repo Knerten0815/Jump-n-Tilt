@@ -9,11 +9,12 @@ public class GroundEnemy : Character
     [SerializeField] float startDirection = 1;      //The direction the ground enemy will start to walk in. -1 = left, 1 = right
     [SerializeField] int wallCheckPrecision = 5;        //read isWallAhead() comment for more information. 0 turns wall checks off.
     [SerializeField] LayerMask whatIsGround, whatIsWall;
+    [SerializeField] int touchAttackDamage = 1;             //amount of damage, that is distributed on touching the player
 
     public float direction;
     private float wallCheckDistance = 0.05f;
     private float groundCheckDistance = 0.3f;
-    private CapsuleCollider2D bc2d;
+    public CapsuleCollider2D cc2d;
     private GameObject player;
 
     protected override void OnEnable()
@@ -37,7 +38,7 @@ public class GroundEnemy : Character
         whatIsEnemy = LayerMask.GetMask("Player");
         whatIsGround = LayerMask.GetMask("Level");      //needs to be changed to Ground later
         whatIsWall = LayerMask.GetMask("Level");        //needs to be changed to Wall later
-        bc2d = GetComponent<CapsuleCollider2D>();
+        cc2d = GetComponent<CapsuleCollider2D>();
         direction = startDirection;
         if (direction == 1)
             isFacingRight = true;
@@ -76,22 +77,22 @@ public class GroundEnemy : Character
         Vector2 offset = transform.position;
 
         if(isFacingRight)
-            offset.x += bc2d.bounds.extents.x;
+            offset.x +=cc2d.bounds.extents.x;
         else
-            offset.x -= bc2d.bounds.extents.x;
+            offset.x -= cc2d.bounds.extents.x;
 
-        offset.y -= bc2d.bounds.extents.y;
+        offset.y -= cc2d.bounds.extents.y;
 
         if(!slopesAreWalls)
-            offset.y += bc2d.bounds.size.y / (wallCheckPrecision);        
+            offset.y += cc2d.bounds.size.y / (wallCheckPrecision);        
 
         for (int i = 0; i < wallCheckPrecision; i++)
         {
-            Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
+            //Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
             wallAhead = Physics2D.Raycast(offset, Vector2.right * direction, wallCheckDistance, whatIsWall);
             if (wallAhead.collider)
                 return true;
-            offset.y += bc2d.bounds.size.y / (wallCheckPrecision);
+            offset.y += cc2d.bounds.size.y / (wallCheckPrecision);
         }
 
         return false;
@@ -104,11 +105,11 @@ public class GroundEnemy : Character
     public bool isGroundAhead(bool slopesAreGround)
     {
         Vector2 offsetAhead, offsetBehind;
-        Vector3 slopeOffset = bc2d.bounds.extents;
+        Vector3 slopeOffset = cc2d.bounds.extents;
 
         if (slopesAreGround)
         {
-            slopeOffset.x = bc2d.bounds.extents.x / 2;
+            slopeOffset.x = cc2d.bounds.extents.x / 2;
             groundCheckDistance = 1.1f;
         }
             
@@ -127,10 +128,10 @@ public class GroundEnemy : Character
         RaycastHit2D groundAhead, slopeBehind;
 
         groundAhead = Physics2D.Raycast(offsetAhead, Vector2.down, groundCheckDistance, whatIsGround);
-        Debug.DrawRay(offsetAhead, Vector2.down * groundCheckDistance);
+        //Debug.DrawRay(offsetAhead, Vector2.down * groundCheckDistance);
 
         slopeBehind = Physics2D.Raycast(offsetBehind, Vector2.right * -direction, 0.3f , whatIsGround);
-        Debug.DrawRay(offsetBehind, Vector2.right * -direction * groundCheckDistance);
+        //Debug.DrawRay(offsetBehind, Vector2.right * -direction * groundCheckDistance);
 
         return groundAhead.collider || (!groundAhead.collider && slopeBehind.collider);
     }
@@ -141,5 +142,17 @@ public class GroundEnemy : Character
     public Vector2 playerDirection()
     {
         return player.transform.position - transform.position;
+    }
+
+    /// <summary>
+    /// distributes damgae when the player touches the GroundEnemy
+    /// </summary>
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject == player)
+        {
+            player.GetComponent<PlayerCharacter>().TakeDamage(touchAttackDamage, -playerDirection());
+            //Debug.Log("Playerhealth: " + player.GetComponent<PlayerCharacter>().health);
+        }
     }
 }

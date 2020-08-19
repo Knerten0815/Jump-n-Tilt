@@ -752,7 +752,6 @@ GameObject:
   - component: {fileID: 67783903}
   - component: {fileID: 67783902}
   - component: {fileID: 67783901}
-  - component: {fileID: 67783905}
   - component: {fileID: 67783904}
   - component: {fileID: 67783907}
   - component: {fileID: 67783906}
@@ -867,32 +866,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &67783905
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67783900}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.266667, y: 4.266667}
-    newSize: {x: 4.266667, y: 4.266667}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.1, y: 2.78}
-  m_EdgeRadius: 0.05
 --- !u!70 &67783906
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -933,7 +906,7 @@ MonoBehaviour:
   airResistance: 0
   wallJumpTimeSpeed: 0
   onWall: 0
-  slideSpeed: 16
+  slideSpeed: 8
   slideReducer: -6
   slideBackwardsMaxSpeed: 3
   slideDirection: {x: 0, y: 0}
@@ -954,16 +927,16 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 512
+  touchAttackDamage: 1
   direction: 0
+  cc2d: {fileID: 0}
   oniAttack:
     clip: {fileID: 8300000, guid: cc0b31f8043b6854dbcba03f9e9f3ae8, type: 3}
     volume: 0.48
   oniHit:
     clip: {fileID: 8300000, guid: 5672cb5df4b75c3479ad96959813e311, type: 3}
-    volume: 0.79
-  attackSpeed: 10
-  saw: 0
-  sag: 0
+    volume: 0.78
+  attackSpeed: 8
 --- !u!1 &68543269
 GameObject:
   m_ObjectHideFlags: 0
@@ -5966,6 +5939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17ffc5dd9ba74944c912cca0465771f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 0}
 --- !u!81 &695954103
 AudioListener:
   m_ObjectHideFlags: 0
@@ -30825,6 +30799,7 @@ MonoBehaviour:
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
+  crouchSpeedModifier: 0
   wallJumpCounter: 0
   touchesWall: 0
   wallCheckDistance: 0.4
@@ -30836,6 +30811,9 @@ MonoBehaviour:
   facingDirection: 1
   wallJumpSpeed: 15
   stunnTime: 0
+  attackOffset: {x: 0, y: 0, z: 0}
+  attackDelay: 0
+  sloMoTime: 0
 --- !u!61 &2114359797
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -30846,7 +30824,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.58708787, y: -5.66}

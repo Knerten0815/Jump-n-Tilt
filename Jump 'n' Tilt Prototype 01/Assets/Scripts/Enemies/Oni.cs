@@ -6,29 +6,39 @@ public class Oni : GroundEnemy
     [SerializeField] Audio oniAttack;
     [SerializeField] Audio oniHit;
     [SerializeField] float attackSpeed;
+
+    private Animator anim;
     private float speed;
-    private bool isAttacking;
 
     protected override void Start()
     {
         base.Start();
         speed = moveSpeed;
+        anim = GetComponent<Animator>();
     }
 
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
 
-        Debug.DrawRay(transform.position, velocity);
+        /* Charge check: when the player is in range and between these two rays, the oni will charge towards him
+        Vector2 testorigin = transform.position;
+        Vector2 testray = playerDirection();
+        testray.y = 0f;
+        Debug.DrawRay(testorigin, testray);
+        testorigin.y -= cc2d.bounds.extents.y;
+        Debug.DrawRay(testorigin, testray);
+        */
 
         //slide when you should slide!
         if (isSliding)
         {
-            isAttacking = false;
             Slide();
+            anim.SetBool("isAttacking", false);
+            anim.SetBool("isSliding", true);
         }
         //charge towards the player if he is on the same height and in reach
-        else if (Mathf.Abs(playerDirection().y) < 0.5f && Mathf.Abs(playerDirection().x) < 15f)
+        else if (playerDirection().y < 0 && playerDirection().y > -cc2d.bounds.extents.y && Mathf.Abs(playerDirection().x) < 15f)
         {
             if (playerDirection().x < 0)
                 direction = -1;
@@ -36,18 +46,17 @@ public class Oni : GroundEnemy
                 direction = 1;
 
             moveSpeed = attackSpeed;
-            if (!isAttacking)
-            {
-                isAttacking = true;
+            if (!anim.GetBool("isAttacking"))                
                 AudioController.Instance.playFXSound(oniAttack);
-            }                
+            
+            anim.SetBool("isAttacking", true);
+            anim.SetBool("isSliding", false);
         }
         else
         {
-            isAttacking = false;
             //patrol
             moveSpeed = speed;
-            if (IsWallAhead(saw) == true || isGroundAhead(sag) == false)
+            if (IsWallAhead(false) == true || isGroundAhead(true) == false)
             {
 
                 if (isFacingRight == true)
@@ -61,6 +70,8 @@ public class Oni : GroundEnemy
                     isFacingRight = true;
                 }
             }
+            anim.SetBool("isAttacking", false);
+            anim.SetBool("isSliding", false);
         }
         Movement(direction);
     }

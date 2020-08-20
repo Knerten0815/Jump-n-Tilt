@@ -15,6 +15,12 @@ public class PlayerCharacter : Character
     public float jumpCooldownTime;
     private bool canJump = true;                //Is Player allowed to jump
 
+    public float hangTime;                      //by Marvin Winkler, how late can the player jump after walking of a platform in seconds
+    private float hangTimer;
+
+    public float jumpBuffer;                    //by Marvin Winkler, how early can the player hit the jump button before hitting the ground in seconds
+    private float jumpBufferTimer;
+
     // variables for crouching
     private bool crouching = false;             //Is player crouching
     private bool underPlattform;                //Checks if there is a plattform over the head of the player
@@ -49,6 +55,12 @@ public class PlayerCharacter : Character
     private float stunnTimer;
     private float deadFishTimer;
 
+    // particle stuff by Marvin Winkler
+    private ParticleSystem footsteps;
+    private float particleOffDelayTimer;
+    private ParticleSystem groundImpact;
+    private bool justLanded;
+
     // attack stuff by Marvin Winkler
     private Transform fishTrans;
     public Vector3 attackOffset;            //Offset from player position where he attacks
@@ -78,6 +90,9 @@ public class PlayerCharacter : Character
         //Marvin
         levelController = GameObject.Find("LevelController").GetComponent<LevelControlls.LevelControllerNew>();
         fishTrans = GameObject.Find("Fish").GetComponent<Transform>();
+
+        footsteps = GameObject.Find("Footsteps").GetComponent<ParticleSystem>();
+        groundImpact = GameObject.Find("FootLanding").GetComponent<ParticleSystem>();
 
         collider = GetComponent<BoxCollider2D>();
 
@@ -158,6 +173,28 @@ public class PlayerCharacter : Character
         if(!isDead)
             base.ComputeVelocity();
 
+        //hang time
+        if (grounded)
+        {
+            hangTimer = hangTime;
+        }
+        else
+        {
+            hangTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        
+        //jump buffer
+        if(grounded && jumpBufferTimer > 0)
+        {
+            jumpBufferTimer = 0;
+            jumpCountLeft = jumpCount;
+            Jump();
+        }
+        else
+        {
+            jumpBufferTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+
         // jump cooldown
         if (cooldown > 0)
         {
@@ -205,6 +242,7 @@ public class PlayerCharacter : Character
     protected override void updateAnimations()
     {
         playAnimations();
+        playParticleSystems();
     }
 
     //Author: Marvin Winkler
@@ -343,6 +381,38 @@ public class PlayerCharacter : Character
     }
 
     //Author: Marvin Winkler
+    private void playParticleSystems()
+    {
+        if(Mathf.Abs(velocity.x) > 0.2f && particleOffDelayTimer >= 0)
+        {
+            footsteps.emissionRate = 5 * Mathf.Abs(velocity.x);
+
+        }
+        else
+        {
+            footsteps.emissionRate = 0;
+        }
+        
+        if (grounded)
+        {
+            particleOffDelayTimer = 0.2f;
+        }
+        else
+        {
+            particleOffDelayTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        if (justLanded && grounded)
+        {
+            groundImpact.Play();
+            justLanded = false;
+        }
+        if (!grounded)
+        {
+            justLanded = true;
+        }
+    }
+
+    //Author: Marvin Winkler
     //Stops direction change during attack animation
     protected override void CharacterFacingDirection(float direction)
     {
@@ -402,10 +472,12 @@ public class PlayerCharacter : Character
         }
     }
 
-    // Author: Nicole Mynarek, Michelle Limbach; Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables
+    // Author: Nicole Mynarek, Michelle Limbach; Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables and added hang time
     // Method overridden, double jump is possible now
     protected override void Jump()
     {
+        jumpBufferTimer = jumpBuffer;
+
         // if touchesWall is true, player can do a wallJump
         if (wallSliding)
         {
@@ -420,7 +492,7 @@ public class PlayerCharacter : Character
         else
         {
             // if player is on the ground
-            if (grounded && velocity.y <= 0 && canJump)
+            if (hangTimer >= 0 && velocity.y <= 0 && canJump)
             {
                 // and cooldown lower or equal to 0
                 if (cooldown <= 0)
@@ -430,8 +502,9 @@ public class PlayerCharacter : Character
 
                     // cooldown will be set
                     cooldown = jumpCooldownTime;
-                    
-                    base.Jump();
+
+                    //base.Jump();
+                    velocity = new Vector2(velocity.x, jumpHeight);
 
                     jumpCountLeft--;
 
@@ -452,7 +525,8 @@ public class PlayerCharacter : Character
 
                 // cooldown is set
                 cooldown = jumpCooldownTime;
-                base.Jump();
+                //base.Jump();
+                velocity = new Vector2(velocity.x, jumpHeight);
                 jumpCountLeft--;
 
             }

@@ -57,8 +57,11 @@ public class PlayerCharacter : Character
 
     // particle stuff by Marvin Winkler
     private ParticleSystem footsteps;
+    private ParticleSystem.EmissionModule footEmission;
+    private ParticleSystem.MainModule footstepsMain;
     private float particleOffDelayTimer;
     private ParticleSystem groundImpact;
+    private ParticleSystem.MainModule groundImpactMain;
     private bool justLanded;
 
     // attack stuff by Marvin Winkler
@@ -92,7 +95,10 @@ public class PlayerCharacter : Character
         fishTrans = GameObject.Find("Fish").GetComponent<Transform>();
 
         footsteps = GameObject.Find("Footsteps").GetComponent<ParticleSystem>();
+        footEmission = footsteps.emission;
+        footstepsMain = footsteps.main;
         groundImpact = GameObject.Find("FootLanding").GetComponent<ParticleSystem>();
+        groundImpactMain = groundImpact.main;
 
         collider = GetComponent<BoxCollider2D>();
 
@@ -224,6 +230,11 @@ public class PlayerCharacter : Character
             onUseSloMoTime();
             sloMoTimer = -100;
         }
+
+        //Particle system simulation speed
+        footstepsMain.simulationSpeed = timeController.getTimeSpeed();
+        groundImpactMain.simulationSpeed = timeController.getTimeSpeed();
+
 
         //Just for testing:
         //+++
@@ -385,12 +396,13 @@ public class PlayerCharacter : Character
     {
         if(Mathf.Abs(velocity.x) > 0.2f && particleOffDelayTimer >= 0)
         {
-            footsteps.emissionRate = 5 * Mathf.Abs(velocity.x);
+            ParticleSystem.PlaybackState state = new ParticleSystem.PlaybackState();
+            footEmission.rateOverTime = 15 * Mathf.Abs(velocity.x);
 
         }
         else
         {
-            footsteps.emissionRate = 0;
+            footEmission.rateOverTime = 0;
         }
         
         if (grounded)
@@ -453,7 +465,7 @@ public class PlayerCharacter : Character
     private void WallSliding()
     {
         // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
-        touchesWall = (Physics2D.Raycast((Vector2)transform.localPosition, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.localPosition, -transform.right, wallCheckDistance, whatIsLevel));  
+        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsLevel));  
 
         // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)

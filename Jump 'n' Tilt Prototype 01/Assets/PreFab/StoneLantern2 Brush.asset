@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StoneLantern2 Brush
   m_EditorClassIdentifier: 
   m_Cells:
-  - m_Tile: {fileID: 11400000, guid: b541041831601944eb376a82a66fb352, type: 2}
+  - m_Tile: {fileID: 0}
     m_Matrix:
       e00: 1
       e01: 0
@@ -36,5 +36,5 @@ MonoBehaviour:
   m_Pivot: {x: 0, y: 0, z: 0}
   m_CanChangeZPosition: 0
   m_Anchor: {x: 0.5, y: 0.5, z: 0.5}
-  m_Prefab: {fileID: 2740590652041347744, guid: a970dd5448383f149a4d31e24220691c,
+  m_Prefab: {fileID: 2114768886853127629, guid: 9265e7795b4effe4b9892ec6b8779a9d,
     type: 3}

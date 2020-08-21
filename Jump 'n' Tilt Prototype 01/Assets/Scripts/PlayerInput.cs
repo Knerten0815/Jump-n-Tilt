@@ -131,7 +131,7 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
                 if (Input.GetButtonDown("Tilt"))
                 {
                     onTiltDown?.Invoke(Input.GetAxisRaw("Tilt"));
-                    AudioController.Instance.playFXSound(earthquake);           //example of playing a sound with, the AudioController
+                    //AudioController.Instance.playFXSound(earthquake);           //example of playing a sound with, the AudioController
                 }
                 else if (Input.GetButtonUp("Tilt"))
                 {

@@ -39,7 +39,8 @@ public class PlayerCharacter : Character
     public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
     public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
-    private static float wallJumpTimer = 1;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
+    public float wallJumpTime;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
+    private float wallJumpTimer;
     public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
 
@@ -55,6 +56,7 @@ public class PlayerCharacter : Character
     private float stunnTimer;
     private float deadFishTimer;
     private bool animatedAttack;
+    private float movementTimer;
 
     // particle stuff by Marvin Winkler
     private ParticleSystem footsteps;
@@ -180,6 +182,7 @@ public class PlayerCharacter : Character
     // Author: Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
+        moveDirection = Input.GetAxis("Horizontal");
         if(!isDead)
             base.ComputeVelocity();
 
@@ -249,6 +252,9 @@ public class PlayerCharacter : Character
             onUseSloMoTime();
             sloMoTimer = -100;
         }
+
+        if (grounded)
+            wallJumpTimer = 0;
 
         //Particle system simulation speed
         footstepsMain.simulationSpeed = timeController.getTimeSpeed();
@@ -475,7 +481,16 @@ public class PlayerCharacter : Character
 
     protected override void Movement(float direction)
     {
+        if (wallJumpTimer <= 0)
+        {
             base.Movement(direction);
+            wallJumpTimer = 0;
+        }
+        else
+        {
+            wallJumpTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+
         //animDir = Mathf.Abs(direction);
         //animator.SetFloat("animationDirection", animDir);
     }
@@ -528,22 +543,21 @@ public class PlayerCharacter : Character
                 // and cooldown lower or equal to 0
                 if (cooldown <= 0)
                 {
-                    // jumpCountLeft will be reset
-                    jumpCountLeft = jumpCount;
+                    // reset of wallJumpCounter
+                    wallJumpCounter = 2;
+                    lastWallcontact = new RaycastHit2D();
 
                     // cooldown will be set
                     cooldown = jumpCooldownTime;
 
                     //base.Jump();
-                    velocity = new Vector2(velocity.x, jumpHeight);
+                    velocity = new Vector2(Input.GetAxis("Horizontal") * maxAirMovementSpeed, jumpHeight);
+
+                    // jumpCountLeft will be reset
+                    jumpCountLeft = jumpCount;
 
                     jumpCountLeft--;
-
                 }
-
-                // reset of wallJumpCounter
-                wallJumpCounter = 2;
-                lastWallcontact = new RaycastHit2D();
             }
             // if jumpCountLeft is lower than or equal to 0, player can not jump anymore
             else if (jumpCountLeft <= 0)
@@ -557,7 +571,7 @@ public class PlayerCharacter : Character
                 // cooldown is set
                 cooldown = jumpCooldownTime;
                 //base.Jump();
-                velocity = new Vector2(velocity.x, jumpHeight);
+                velocity = new Vector2(Input.GetAxis("Horizontal") * maxAirMovementSpeed, jumpHeight);
                 jumpCountLeft--;
 
             }
@@ -584,7 +598,7 @@ public class PlayerCharacter : Character
             jumpable = false;
             lastWallcontact = hit;
             wallJumpCounter--;
-            wallJumpTime = wallJumpTimer;
+            wallJumpTimer = wallJumpTime;
         }
         else
         {

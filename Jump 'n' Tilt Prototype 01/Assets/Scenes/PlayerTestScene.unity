@@ -407,7 +407,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.7075472, g: 0.64951235, b: 0.6107601, a: 0.7372549}
+      maxColor: {r: 0.4528302, g: 0.41669634, b: 0.39088646, a: 0.9137255}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -6906,6 +6906,7 @@ MonoBehaviour:
   stunnTime: 0.6
   attackOffset: {x: 23, y: -4, z: 0}
   attackDelay: 0.8
+  slideAttackCooldown: 0.1
   sloMoTime: 8
 --- !u!95 &1002723188
 Animator:

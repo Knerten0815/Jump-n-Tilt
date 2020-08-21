@@ -54,6 +54,7 @@ public class PlayerCharacter : Character
     public float stunnTime;
     private float stunnTimer;
     private float deadFishTimer;
+    private bool animatedAttack;
 
     // particle stuff by Marvin Winkler
     private ParticleSystem footsteps;
@@ -70,6 +71,8 @@ public class PlayerCharacter : Character
     private float attackTimer;
     public float attackDelay;               //Minimum time between attacks in seconds
     private bool isAttacking;
+    private float slideAttackCooldownTimer;
+    public float slideAttackCooldown;
 
     //pickup stuff by Marvin Winkler
     private bool hasTimePickup;
@@ -107,6 +110,7 @@ public class PlayerCharacter : Character
         justTookDamage = false;
         deadFishTimer = -101;
         sloMoTimer = -100;
+        animatedAttack = true;
 
         PlayerInput.onTiltDown += smashFishToTilt;
         PlayerInput.onTiltDown += disableSliding;
@@ -201,6 +205,21 @@ public class PlayerCharacter : Character
             jumpBufferTimer -= timeController.getSpeedAdjustedDeltaTime();
         }
 
+        //slideAttackCooldown
+        if(slideAttackCooldownTimer < 0)
+        {
+            slideAttackCooldownTimer = 0;
+        }
+        else if(slideAttackCooldownTimer == 0)
+        {
+            //don't do anything
+        }
+        else
+        {
+            slideAttackCooldownTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+
+
         // jump cooldown
         if (cooldown > 0)
         {
@@ -223,7 +242,7 @@ public class PlayerCharacter : Character
         }
         else if(sloMoTimer <= -100)
         {
-            return;
+            //don't do anything
         }
         else
         {
@@ -688,8 +707,9 @@ public class PlayerCharacter : Character
     }
 
     //Author: Marvin Winkler
-    private void Attack()
+    protected override void Attack()
     {
+        if(animatedAttack)
         attackTimer = attackDelay;
 
         if (isFacingRight)
@@ -702,6 +722,18 @@ public class PlayerCharacter : Character
         }
         base.Attack();
 
+    }
+
+    protected override void Slide()
+    {
+        if(velocity.magnitude > slideBackwardsMaxSpeed && slideAttackCooldownTimer <= 0)
+        {
+            slideAttackCooldownTimer = slideAttackCooldown;
+            animatedAttack = false;
+            Attack();
+            animatedAttack = true;
+        }
+        base.Slide();
     }
 
     /*

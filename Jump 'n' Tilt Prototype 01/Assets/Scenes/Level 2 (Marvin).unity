@@ -4411,7 +4411,7 @@ MonoBehaviour:
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
-  hangTime: 0.18
+  hangTime: 0.2
   jumpBuffer: 0.2
   crouchSpeedModifier: 0.3
   wallJumpCounter: 0

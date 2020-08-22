@@ -71,7 +71,7 @@ public class PhysicsObject : MonoBehaviour
 
         velocity += gravityModifier * Physics2D.gravity * deltaTime;
         deltaPosition = velocity * deltaTime;
-        
+
         grounded = false;
         jumpable = false;
 
@@ -84,22 +84,28 @@ public class PhysicsObject : MonoBehaviour
 
         Movement(move, true);
 
-        if (grounded)
-        {
-            if (timeController.getTimeSpeed() < 1) {
-                velocity *= (dampening + (1-dampening) * timeController.getTimeSpeed());
-            }
-            else
-            {
-                velocity *= dampening;
-            }
-        }
+        calculateDampening();
 
         if (velocity.magnitude > maxSpeed)
         {
             velocity = velocity.normalized * maxSpeed;
         }
         updateAnimations();
+    }
+
+    protected virtual void calculateDampening()
+    {
+        if (grounded)
+        {
+            if (timeController.getTimeSpeed() < 1)
+            {
+                velocity *= (dampening + (1 - dampening) * timeController.getTimeSpeed());
+            }
+            else
+            {
+                velocity *= dampening;
+            }
+        }
     }
 
     //Used for animations
@@ -130,14 +136,14 @@ public class PhysicsObject : MonoBehaviour
 
                 //Debug.Log(currentNormal);
                 //Checks if ground is jumpable
-                if (currentNormal.y > minJumpNormalY)
-                {
-                    jumpable = true;
-                    if (yMovement)
-                    {
-                        groundNormal = currentNormal;
-                    }
-                }
+                //if (currentNormal.y > minJumpNormalY)
+                //{
+                //    jumpable = true;
+                //    if (yMovement)
+                //    {
+                //        groundNormal = currentNormal;
+                //    }
+                //}
                 //Checks if object is grounded
                 if (currentNormal.y > minGroundNormalY)
                 {

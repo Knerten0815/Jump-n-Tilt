@@ -9,12 +9,15 @@ public class FlyingEnemy : Character
         Walking,
         ChaseTarget,
         Win,
+        Wait,
     }
 
     private Vector2 startPos;
     public float gravityCounter;
     private float gravitySwitchCounter;
     public float velY;
+    public float waitTime;
+    private float waitTimeCounter;
 
     public Vector2 roamPos;
     private State state;
@@ -130,6 +133,25 @@ public class FlyingEnemy : Character
 
                 break;
 
+            case State.Wait:
+                Debug.Log("FlyingEnemy wartet.");
+                Movement(0);
+
+                Vector2 awayFromPlayer = new Vector2(transform.position.x + 1f, transform.position.y + 1f);
+                velocity = awayFromPlayer;
+
+                isAttacking = false;
+                isChasing = false;
+                isWalking = false;
+
+                if (Vector3.Distance(transform.position, player.transform.position) < 5f)
+                {
+                    state = State.Walking;
+                }
+
+                break;
+
+
             default:
 
                 Debug.Log("State walking");
@@ -169,7 +191,7 @@ public class FlyingEnemy : Character
     {
         moveDirection = direction;
 
-        Debug.Log(gravitySwitchCounter);
+        //Debug.Log(gravitySwitchCounter);
 
         if (gravitySwitchCounter >= 0)
         {
@@ -215,18 +237,25 @@ public class FlyingEnemy : Character
                 enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
                 Debug.Log("Tengus enemy: " + enemies[i]);
 
+                Debug.Log("velocity onryo: " + velocity);
+
+                //hasAttacked = true;
+
+                //state = State.Wait;
+
                 if (movesRight)
                 {
-                    Vector2 awayFromPlayer = new Vector2(transform.position.x - 6, transform.position.y);
-                    //velocity = awayFromPlayer;
+                    Vector2 awayFromPlayer = new Vector2(transform.position.x - 6f - transform.position.x, transform.position.y);
+                    //velocity = new Vector2(moveDirection * 10, 0);
                     transform.position = new Vector3(transform.position.x - 1f, transform.position.y, 0);
-                    
+                    Debug.Log("away: " + awayFromPlayer);
                 }
                 else
                 {
                     Vector2 awayFromPlayer = new Vector2((transform.position.x + 5f) - transform.position.x, transform.position.y);
-                    //velocity = awayFromPlayer.normalized;
+                    //velocity += awayFromPlayer.normalized;
                     transform.position = new Vector3(transform.position.x + 1f, transform.position.y, 0);
+                    Debug.Log("away: " + awayFromPlayer);
                 }
             }
 

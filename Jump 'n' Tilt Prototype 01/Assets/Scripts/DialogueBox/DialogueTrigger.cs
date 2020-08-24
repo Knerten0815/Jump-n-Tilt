@@ -11,14 +11,19 @@ public class DialogueTrigger : MonoBehaviour
     public Dialogue dialogue;
     public GameObject continueButton;
     EventSystem m_EventSystem;
+    private bool notTriggeredYet = true;
 
     public void TriggerDialogue()
     {
-        DialogueManager.Instance.StartDialogue(dialogue);
-        m_EventSystem = EventSystem.current;
-        m_EventSystem.SetSelectedGameObject(continueButton);
-        continueButton.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline | FontStyles.Bold;
-        continueButton.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0.6470f, 0.0627f, 0.0627f);
+        if (notTriggeredYet)
+        {
+            DialogueManager.Instance.StartDialogue(dialogue);
+            m_EventSystem = EventSystem.current;
+            m_EventSystem.SetSelectedGameObject(continueButton);
+            continueButton.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline | FontStyles.Bold;
+            continueButton.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0.6470f, 0.0627f, 0.0627f);
+            notTriggeredYet = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D col)

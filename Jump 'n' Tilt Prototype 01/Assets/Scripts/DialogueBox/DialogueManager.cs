@@ -12,8 +12,6 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> names;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI dialogueText;
-    //public GameObject kashima;
-    //public GameObject onamazu;
     private GameObject[] dialogueImages;
     public Animator animator;
     private GameObject currentActiveImage;
@@ -41,9 +39,9 @@ public class DialogueManager : MonoBehaviour
         sentences.Clear();
         names.Clear();
         Time.timeScale = 0f;
-        if(dialogue.images.Length > 3)
+        if(dialogue.images.Length > 4)
         {
-            Debug.Log("Bitte nicht mehr als 3 Bilder in den Dialoge laden!");
+            Debug.Log("Bitte nicht mehr als 4 Bilder in den Dialoge laden!");
             EndDialogue();
             return;
         }
@@ -60,6 +58,9 @@ public class DialogueManager : MonoBehaviour
                     break;
                 case "Kitsune":
                     dialogueImages[2] = image;
+                    break;
+                case "Tutorial":
+                    dialogueImages[3] = image;
                     break;
             }
         }
@@ -109,6 +110,10 @@ public class DialogueManager : MonoBehaviour
                 break;
             case "Kitsune":
                 dialogueImages[2].SetActive(true);
+                currentActiveImage = dialogueImages[2];
+                break;
+            case "Tutorial":
+                dialogueImages[3].SetActive(true);
                 currentActiveImage = dialogueImages[2];
                 break;
         }

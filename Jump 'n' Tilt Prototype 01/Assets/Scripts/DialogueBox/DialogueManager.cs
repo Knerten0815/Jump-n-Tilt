@@ -114,7 +114,7 @@ public class DialogueManager : MonoBehaviour
                 break;
             case "Tutorial":
                 dialogueImages[3].SetActive(true);
-                currentActiveImage = dialogueImages[2];
+                currentActiveImage = dialogueImages[3];
                 break;
         }
     }

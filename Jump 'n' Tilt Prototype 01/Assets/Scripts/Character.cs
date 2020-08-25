@@ -187,7 +187,7 @@ public class Character : PhysicsObject
                     if (normal.x < 0)
                     {
                         //Debug.Log("Normal x < 0: " + normal.x);
-                        slideDirection = Vector2.Perpendicular(normal);
+                        //slideDirection = Vector2.Perpendicular(normal);
 
                         slideDirection.x = -1;
                         CharacterFacingDirection(slideDirection.x);
@@ -196,7 +196,7 @@ public class Character : PhysicsObject
                     else
                     {
                         //Debug.Log("Normal x > 0: " + normal.x);
-                        slideDirection = Vector2.Perpendicular(-normal);
+                        //slideDirection = Vector2.Perpendicular(-normal);
 
                         slideDirection.x = 1;
                         CharacterFacingDirection(slideDirection.x);
@@ -209,8 +209,7 @@ public class Character : PhysicsObject
             }
             else
             {
-                isSliding = false;
-                slideDirection = new Vector2(0f, 0f);
+                //slideDirection = new Vector2(0f, 0f);
             }
         }
     }

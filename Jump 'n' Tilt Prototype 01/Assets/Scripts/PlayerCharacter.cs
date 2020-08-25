@@ -485,7 +485,11 @@ public class PlayerCharacter : Character
         if (wallJumpTimer <= 0)
         {
             //if(direction > 0 && slideDirection.x < 0 || direction < 0 && slideDirection.x > 0)
-            if (levelController.getTiltStep() > 0 && direction < 0 || levelController.getTiltStep() < 0 && direction > 0 || levelController.getTiltStep() == 0)
+            if (levelController.getTiltStep() > 0 && direction < 0 && slideDirection.x > 0
+                || levelController.getTiltStep() < 0 && direction > 0 && slideDirection.x < 0
+                || levelController.getTiltStep() == 0
+                || levelController.getTiltStep() > 0 && direction > 0 && slideDirection.x < 0
+                || levelController.getTiltStep() < 0 && direction < 0 && slideDirection.x > 0)
             {
                 base.Movement(direction);
             }

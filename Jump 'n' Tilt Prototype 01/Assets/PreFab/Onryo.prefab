@@ -59,7 +59,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8695302587430117915}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 80.98, y: 0.64, z: 0}
+  m_LocalPosition: {x: 81.14, y: 0.64, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8695302587272717332}
@@ -110,7 +110,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1.5, y: 1.5}
+  m_Size: {x: 3, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -150,18 +150,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0074748993, y: -0.06728268}
+  m_Offset: {x: 0.059799194, y: -0.26167893}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4.266667, y: 4.266667}
-    newSize: {x: 1.5, y: 1.5}
+    newSize: {x: 3, y: 3}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.63648605, y: 1.0068836}
+  m_Size: {x: 0.74113464, y: 2.143354}
   m_EdgeRadius: 0
 --- !u!114 &8695302587430117914
 MonoBehaviour:
@@ -186,10 +186,11 @@ MonoBehaviour:
   moveWhileJumping: 0
   airResistance: 0
   wallJumpTimeSpeed: 0
+  maxAirMovementSpeed: 0
   onWall: 0
   slideSpeed: 0
-  slideReducer: 0
   slideBackwardsMaxSpeed: 0
+  slideSpeedChange: 0
   slideDirection: {x: 0, y: 0}
   isFacingRight: 0
   attackPos: {fileID: 8695302587272717332}
@@ -202,6 +203,7 @@ MonoBehaviour:
   knockup: 0.5
   gravityCounter: 4
   velY: 1
+  waitTime: 0
   roamPos: {x: 5, y: 0}
   movesRight: 1
   hasAttacked: 0

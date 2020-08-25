@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlyingEnemy : Character
+public class FlyingEnemy : Enemy
 {
     private enum State
     {
@@ -61,6 +61,7 @@ public class FlyingEnemy : Character
         if (isDead)
         {
             gameObject.SetActive(false);
+            Debug.Log("Enemy ist tot!");
         }
 
         switch (state)
@@ -265,12 +266,11 @@ public class FlyingEnemy : Character
             }
             
         }
-        
-        //base.Attack();
+
         Debug.Log("ATTACK!!!!!!!!!!!!!!!!!");
-        Debug.Log("enemies: " + enemies);
+        /*Debug.Log("enemies: " + enemies);
         Debug.Log("enemies length: " + enemies.Length);
-        Debug.Log("enemy: " + enemies[0]);
+        Debug.Log("enemy: " + enemies[0]);*/
     }
 
     private void OnCollisionExit2D(Collision2D collision)

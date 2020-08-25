@@ -483,7 +483,17 @@ public class PlayerCharacter : Character
     {
         if (wallJumpTimer <= 0)
         {
-            base.Movement(direction);
+            //if(direction > 0 && slideDirection.x < 0 || direction < 0 && slideDirection.x > 0)
+            if (levelController.getTiltStep() > 0 && direction < 0 || levelController.getTiltStep() < 0 && direction > 0 || levelController.getTiltStep() == 0)
+            {
+                base.Movement(direction);
+            }
+            else
+            {
+                isSliding = true;
+                Slide();
+            }
+
             wallJumpTimer = 0;
         }
         else
@@ -747,6 +757,9 @@ public class PlayerCharacter : Character
             Attack();
             animatedAttack = true;
         }
+
+        //Slides down, runs up
+        if(slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0 || moveDirection == 0)
         base.Slide();
     }
 

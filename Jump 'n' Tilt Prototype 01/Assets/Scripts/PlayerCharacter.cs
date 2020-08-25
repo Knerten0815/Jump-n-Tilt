@@ -24,7 +24,7 @@ public class PlayerCharacter : Character
     // variables for crouching
     private bool crouching = false;             //Is player crouching
     private bool underPlattform;                //Checks if there is a plattform over the head of the player
-    private float plattformCheckDistance = 1f;  //Distance for Raycast is set to 15, because it is the half of the Player size
+    public float plattformCheckDistance;        //Distance for Raycast is set to 15, because it is the half of the Player size
     private bool inFrontOfPlayer;
     private bool behindPlayer;
     public float crouchSpeedModifier;           //Factor by which the players speed is adjusted while crouching
@@ -35,6 +35,7 @@ public class PlayerCharacter : Character
     public bool touchesWall;                    // for wall detection
     public float wallCheckDistance;      //public Vector2 offsetRight = new Vector2(0.5f, 0);
     public LayerMask whatIsLevel;               //public Transform test;
+    public LayerMask whatIsWall;
     public bool wallSliding;
     public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
     public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
@@ -509,7 +510,7 @@ public class PlayerCharacter : Character
     private void WallSliding()
     {
         // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
-        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsLevel));  
+        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsWall) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsWall));  
 
         // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)
@@ -537,8 +538,8 @@ public class PlayerCharacter : Character
         // if touchesWall is true, player can do a wallJump
         if (wallSliding)
         {
-            hit = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel);
-            lastWallcontact = Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsLevel);
+            hit = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsWall);
+            lastWallcontact = Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsWall);
             if (hit.distance < lastWallcontact.distance)
             {
                 hit = lastWallcontact;
@@ -657,6 +658,9 @@ public class PlayerCharacter : Character
         {
             //Checks if Player has a Plattform over his head
             underPlattform = Physics2D.Raycast((Vector2)transform.position, transform.up, plattformCheckDistance, whatIsLevel);
+            //The next two are nessesary so the player does not glitch thru the platform when just coming out from beneath it
+            underPlattform = underPlattform || Physics2D.Raycast((Vector2)transform.position, new Vector2(1, 1), plattformCheckDistance, whatIsLevel);
+            underPlattform = underPlattform || Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, 1), plattformCheckDistance, whatIsLevel);
 
             //If there is no Plattform above the Player
             if (!underPlattform)

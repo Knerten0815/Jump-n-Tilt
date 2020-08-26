@@ -10,16 +10,16 @@ using UnityEngine.UI;
 public class InputVisualization : MonoBehaviour
 {
 
-    private GameObject Button_Left;
-    private GameObject Button_Right;
-    private GameObject Button_Down;
-    private GameObject Button_Up;
-    private GameObject Button_A;
-    private GameObject Button_B;
-    private GameObject Button_X;
-    private GameObject Button_Y;
-    private GameObject Button_L;
-    private GameObject Button_R;
+    public GameObject Button_Left;
+    public GameObject Button_Right;
+    public GameObject Button_Down;
+    public GameObject Button_Up;
+    public GameObject Button_A;
+    public GameObject Button_B;
+    public GameObject Button_X;
+    public GameObject Button_Y;
+    public GameObject Button_L;
+    public GameObject Button_R;
  
 
     private Color highlighted = new Color(1f, 1f, 1f); //Color for the highlighted Buttons
@@ -29,17 +29,6 @@ public class InputVisualization : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Initialize all Buttons, X is currently without function and not used
-        Button_Left = GameObject.Find("Button_Left");
-        Button_Right = GameObject.Find("Button_Right");
-        Button_Up = GameObject.Find("Button_Up");
-        Button_Down = GameObject.Find("Button_Down");
-        Button_A = GameObject.Find("Button_A");
-        Button_B = GameObject.Find("Button_B");
-        Button_X = GameObject.Find("Button_X");
-        Button_Y = GameObject.Find("Button_Y");
-        Button_L = GameObject.Find("Button_L");
-        Button_R = GameObject.Find("Button_R");
 
         //Subscribe methods to events in the Start-method for pressing a button
         PlayerInput.onHorizontalDown += HorizontalArrowsDown;

@@ -135,9 +135,9 @@ namespace AudioControlling
         }
 
         //classes can call this method, to set the background music
-        public void playMusic(Audio music)
+        public void changeMusic(Audio newMusic)
         {
-            source.PlayOneShot(music.clip, music.volume * musicVol);
+            music = newMusic;
         }
     }
 }

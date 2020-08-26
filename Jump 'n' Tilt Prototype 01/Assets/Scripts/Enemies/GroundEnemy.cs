@@ -9,7 +9,7 @@ public class GroundEnemy : Character
     [SerializeField] float startDirection = 1;      //The direction the ground enemy will start to walk in. -1 = left, 1 = right
     [SerializeField] int wallCheckPrecision = 5;        //read isWallAhead() comment for more information. 0 turns wall checks off.
     [SerializeField] LayerMask whatIsGround, whatIsWall;
-    [SerializeField] int touchAttackDamage = 1;             //amount of damage, that is distributed on touching the player
+    [SerializeField] public int touchAttackDamage = 1;             //amount of damage, that is distributed on touching the player
 
     public float direction;
     private float wallCheckDistance = 0.05f;
@@ -144,6 +144,7 @@ public class GroundEnemy : Character
         return player.transform.position - transform.position;
     }
 
+    /*
     /// <summary>
     /// distributes damgae when the player touches the GroundEnemy
     /// </summary>
@@ -155,4 +156,5 @@ public class GroundEnemy : Character
             //Debug.Log("Playerhealth: " + player.GetComponent<PlayerCharacter>().health);
         }
     }
+    */
 }

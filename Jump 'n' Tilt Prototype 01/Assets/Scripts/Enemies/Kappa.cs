@@ -13,6 +13,7 @@ public class Kappa : GroundEnemy
     public bool isIdle = true;
     public bool isJumping = false;
     public bool isFalling = false;
+    public bool hasAttacked = false;
     
 
     // Start is called before the first frame update
@@ -27,7 +28,7 @@ public class Kappa : GroundEnemy
     {
         base.ComputeVelocity();
 
-        Debug.Log("isSliding? " + isSliding);
+        //Debug.Log("isSliding? " + isSliding);
 
         //patrol
         //moveSpeed = speed;
@@ -35,7 +36,7 @@ public class Kappa : GroundEnemy
         //{
             if (IsWallAhead(false) == true || isGroundAhead(true) == false)
             {
-
+                hasAttacked = false;
                 if (isFacingRight == true)
                 {
                     direction = -1;
@@ -48,14 +49,17 @@ public class Kappa : GroundEnemy
                 }
             }
         //}
-        else if (playerDirection().y < 0 && playerDirection().y > -cc2d.bounds.extents.y && Mathf.Abs(playerDirection().x) < 15f)
+        else if (playerDirection().y < 0 && playerDirection().y > -cc2d.bounds.extents.y && Mathf.Abs(playerDirection().x) < 2f /*Vector3.Distance(GameObject.Find("Player").transform.position, transform.position) < 2f*/)
         {
-            if (playerDirection().x < 0)
+            /*if (playerDirection().x < 0)
                 direction = -1;
             else if (playerDirection().x > 0)
-                direction = 1;
+                direction = 1;*/
 
-            Debug.Log("Player in der Nähe");
+            //Debug.Log("Player in der Nähe");
+
+            Attack();
+            //Debug.Log("attacke passiert?");
 
             //moveSpeed = attackSpeed;
             //if (!anim.GetBool("isAttacking"))
@@ -71,7 +75,7 @@ public class Kappa : GroundEnemy
             isJumping = false;
             isFalling = false;
             Slide();
-            Debug.Log("Kappa slided");
+            //Debug.Log("Kappa slided");
         }
         else if (isIdle)
         {
@@ -127,7 +131,44 @@ public class Kappa : GroundEnemy
 
             velocity = new Vector2(6 * direction, jumpHeight);
 
-            Debug.Log("Kappa Jump");
+            //Debug.Log("Kappa Jump");
         
+    }
+
+    protected override void Attack()
+    {
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
+            Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
+            dmgDirection2D.Normalize();
+
+            if(hasAttacked == false)
+            {
+                enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
+                Debug.Log("Kappa macht Schaden!!!!!!!!!!!!!!!!!!!1");
+                hasAttacked = true;
+            }
+
+            enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+
+            /*Debug.Log("enemies: " + enemies);
+            Debug.Log("enemies length: " + enemies.Length);
+            Debug.Log("enemy: " + enemies[0]);*/
+
+            /*if (enemies.Length == 0)
+            {
+                hasAttacked = false;
+            }*/
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(attackPos.position, attackRadius);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using LevelControlls;
 using System;
 
-public class GroundEnemy : Character
+public class GroundEnemy : Enemy
 {
     [SerializeField] float startDirection = 1;      //The direction the ground enemy will start to walk in. -1 = left, 1 = right
     [SerializeField] int wallCheckPrecision = 5;        //read isWallAhead() comment for more information. 0 turns wall checks off.

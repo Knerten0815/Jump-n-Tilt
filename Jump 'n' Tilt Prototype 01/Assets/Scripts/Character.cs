@@ -15,13 +15,16 @@ public class Character : PhysicsObject
     public float airResistance;              //by Marvin Winkler, 1 no resistance, 0 no movement possible (x-axis dampening wile in the air)
     protected float wallJumpTime;             //by Marvin Winkler, used so that midAir movement does not overreide the wall jump
     public float wallJumpTimeSpeed;           //by Marvin Winkler, used to adjust the time less midair movement is possible after a wall jump
+    public float maxAirMovementSpeed;          //by Marvin Winkler, maximum horizontal air movement speed
 
     public bool onWall;                 //by Marvin Winkler, used to fix wall climbing while level is tilted
 
     public float slideSpeed;
-    public float slideReducer;
+    //public float slideReducer;
 
     public float slideBackwardsMaxSpeed;    //by Marvin Winkler, max speed while pressing against the tilt
+    public float slideSpeedChange;          //by Marvin Winkler, accelaration speed
+    protected Vector2 posBuffer;              //by Marvin used to fix slide bug
 
     public Vector2 slideDirection;
 
@@ -45,12 +48,14 @@ public class Character : PhysicsObject
         base.OnEnable();
         wallJumpTime = 0;
         isDead = false;
+        posBuffer = new Vector2(transform.localPosition.x, transform.localPosition.y);
     }
 
     // Author: Michelle Limbach, Nicole Mynarek, Marvin Winkler
     //gets called onece per update
     protected override void ComputeVelocity()
     {
+
         // Player only slides when there is no input
         if (moveDirection != 0)
         {
@@ -61,7 +66,6 @@ public class Character : PhysicsObject
         {
             Slide();
         }
-        moveDirection = 0;
 
         // death of character
         //if (health <= 0)
@@ -69,7 +73,7 @@ public class Character : PhysicsObject
         //    Destroy(gameObject);
         //}
 
-        if(wallJumpTime < 0)
+        if (wallJumpTime < 0)
         {
             wallJumpTime = 0;
         }
@@ -77,6 +81,17 @@ public class Character : PhysicsObject
         {
             wallJumpTime -= (1 - wallJumpTime * 0.99f) * timeController.getSpeedAdjustedDeltaTime() * wallJumpTimeSpeed;
         }
+
+        isSliding = false;
+
+        posBuffer = posBuffer - new Vector2(transform.localPosition.x, transform.localPosition.y);
+
+        if (groundNormal.y < 1 && posBuffer.y >= 0 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0)) 
+        {
+            isSliding = true;
+        }
+
+        posBuffer = new Vector2(transform.localPosition.x, transform.localPosition.y);
 
         velocity.x -= velocity.x * airResistance;
     }
@@ -92,30 +107,31 @@ public class Character : PhysicsObject
             return; // this disables manual movement if the player is on a wall while the level is tilted, thus disabling wall climbing
         }
 
-        if (grounded)
-        {
-            if (isSliding)
-            {
+        //if (grounded && isSliding)
+        //{
                 // if slideDirection and moveDirection are both negativ or positiv, then the player moves faster
-                if ((slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0) && velocity.magnitude < maxSpeed)
-                {
-                    velocity += moveDirection * slideSpeed * Vector2.right; //Because the velocity is changed and not replaced Speed changes don't happen instantly but have an excelleration time
-                }
+                //if ((slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0) && velocity.magnitude < maxSpeed)
+                //{
+                //    //velocity += moveDirection * slideSpeed * slideSpeedChange * (moveSpeed) * Vector2.right; //Because the velocity is changed and not replaced Speed changes don't happen instantly but have an excelleration time
+                //    isSliding = true;
+                //}
                 // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
-                else if ((slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0) && velocity.magnitude < slideBackwardsMaxSpeed)
-                {
-                    velocity += moveDirection * slideSpeed * Vector2.right;
-                }
-            }
-            else
-            {
-                velocity = new Vector2(moveDirection * moveSpeed, velocity.y);  //Here velocity gets a new vector, therefore the speed/direction change happens instantly, there is no excelleration time
-            }
-        }
+                //else if ((slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0) && velocity.magnitude < slideBackwardsMaxSpeed)
+                //{
+                    //velocity += moveDirection * slideSpeed * slideSpeedChange * (moveSpeed) * Vector2.right;
+                //    isSliding = false;
+                //}
+        //}
+
         // if player is in the air and gives input, the player can move left or right
-        else if (!grounded && moveDirection != 0)
+        if (!grounded && moveDirection != 0 && velocity.magnitude < maxAirMovementSpeed && !isSliding)
         {
             velocity += (moveDirection * moveWhileJumping) * Vector2.right * (1 - wallJumpTime) * (1 / ((0.1f + Mathf.Abs(velocity.x) * 0.5f))); //velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude) * (1 - wallJumpTime), velocity.y);
+            isSliding = false;
+        }
+        else if(!isSliding)
+        {
+            velocity = new Vector2(moveDirection * moveSpeed, velocity.y);  //Here velocity gets a new vector, therefore the speed/direction change happens instantly, there is no excelleration time
         }
     }
 
@@ -125,9 +141,10 @@ public class Character : PhysicsObject
     {
         if (jumpable)
         {
+            isSliding = false;
             // Gravity Modifier of PhysicsObject.class needs to be adjusted according to jumpHeight for good game feeling
             //velocity += jumpHeight * Vector2.up;
-            velocity = new Vector2(velocity.x, jumpHeight);
+            velocity = new Vector2(Input.GetAxis("Horizontal") * maxAirMovementSpeed, jumpHeight);
         }
     }
 
@@ -159,9 +176,8 @@ public class Character : PhysicsObject
         if (grounded)
         {
             //Debug.Log(groundNormal);
-            if (groundNormal.y < 1) //!= new Vector2(0f, 1f))
+            if (isSliding) //!= new Vector2(0f, 1f))
             {
-                isSliding = true;
 
                 for (int i = 0; i < hitBufferList.Count; i++)
                 {
@@ -171,7 +187,7 @@ public class Character : PhysicsObject
                     if (normal.x < 0)
                     {
                         //Debug.Log("Normal x < 0: " + normal.x);
-                        slideDirection = Vector2.Perpendicular(normal);
+                        //slideDirection = Vector2.Perpendicular(normal);
 
                         slideDirection.x = -1;
                         CharacterFacingDirection(slideDirection.x);
@@ -180,7 +196,7 @@ public class Character : PhysicsObject
                     else
                     {
                         //Debug.Log("Normal x > 0: " + normal.x);
-                        slideDirection = Vector2.Perpendicular(-normal);
+                        //slideDirection = Vector2.Perpendicular(-normal);
 
                         slideDirection.x = 1;
                         CharacterFacingDirection(slideDirection.x);
@@ -188,13 +204,35 @@ public class Character : PhysicsObject
                 }
                 if(velocity.x <= maxSpeed && velocity.x >= -maxSpeed)
                 {
-                    velocity += slideDirection;
+                    velocity += slideDirection * slideSpeed * slideSpeedChange;
                 } 
             }
             else
             {
-                isSliding = false;
-                slideDirection = new Vector2(0f, 0f);
+                //slideDirection = new Vector2(0f, 0f);
+            }
+        }
+    }
+
+    //Author: Marvin Winkler
+    protected override void calculateDampening()
+    {
+        if (!isSliding)
+        {
+            base.calculateDampening();
+        }
+        else
+        {
+            if (grounded)
+            {
+                if (timeController.getTimeSpeed() < 1)
+                {
+                    velocity *= (dampening * 1.5f + (1 - dampening) * timeController.getTimeSpeed());
+                }
+                else
+                {
+                    velocity *= dampening * 1.5f;
+                }
             }
         }
     }

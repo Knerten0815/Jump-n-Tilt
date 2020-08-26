@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
     private GameObject player;                          //The current position of the Player Character
     private PlayerCharacter playerCtrl;                 //Player Controller for velocity
     private Vector2 offset;                             //current offset of the camera to the player
-    private TilemapCollider2D lvlBounds;                //The TilemapCollider of the level: Needed for getting boundaries of the level
+    public TilemapCollider2D lvlBounds;                //The TilemapCollider of the level: Needed for getting boundaries of the level
 
     ///Once the angle of the tilt is settled, the tilemap needs to be adjusted to show enough ground and walls, so that no empty background is seen.
     ///Once the tilemap is adjusted, these lvlBounds need to be scaled down accordingly, so that the camera won't clamp to the outer bounds of the
@@ -48,7 +48,7 @@ public class CameraController : MonoBehaviour
         player = GameObject.Find("Player");
         parentTrans = cam.transform.parent;
         playerCtrl = player.GetComponent<PlayerCharacter>();
-        lvlBounds = GameObject.Find("Tilemap").GetComponent<TilemapCollider2D>();
+        //lvlBounds = GameObject.Find("Tilemap").GetComponent<TilemapCollider2D>();
 
         //only for testing. Needs to be subscribed to the actual Tilt/Stomp event, not just the PlayerInput
         //PlayerInput.onTiltDown += CameraShake;

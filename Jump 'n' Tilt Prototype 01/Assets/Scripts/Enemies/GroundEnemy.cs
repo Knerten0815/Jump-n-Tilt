@@ -36,8 +36,8 @@ public class GroundEnemy : Character
         base.Start();
         player = GameObject.Find("Player");
         whatIsEnemy = LayerMask.GetMask("Player");
-        whatIsGround = LayerMask.GetMask("Level");      //needs to be changed to Ground later
-        whatIsWall = LayerMask.GetMask("Level");        //needs to be changed to Wall later
+        whatIsGround = LayerMask.GetMask("Ground");      //needs to be changed to Ground later
+        whatIsWall = LayerMask.GetMask("Wall");        //needs to be changed to Wall later
         cc2d = GetComponent<CapsuleCollider2D>();
         direction = startDirection;
         if (direction == 1)

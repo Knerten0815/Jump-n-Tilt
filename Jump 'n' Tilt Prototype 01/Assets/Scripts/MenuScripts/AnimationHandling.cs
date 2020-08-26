@@ -14,7 +14,6 @@ namespace menuHandling
         private GameObject menuBackground;
         private GameObject firstMenuPage;
         private Animator animator;
-        public Animator dialogueBox;
 
         public void Start()
         {

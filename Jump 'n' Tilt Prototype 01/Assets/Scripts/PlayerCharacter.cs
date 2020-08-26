@@ -15,10 +15,16 @@ public class PlayerCharacter : Character
     public float jumpCooldownTime;
     private bool canJump = true;                //Is Player allowed to jump
 
+    public float hangTime;                      //by Marvin Winkler, how late can the player jump after walking of a platform in seconds
+    private float hangTimer;
+
+    public float jumpBuffer;                    //by Marvin Winkler, how early can the player hit the jump button before hitting the ground in seconds
+    private float jumpBufferTimer;
+
     // variables for crouching
     private bool crouching = false;             //Is player crouching
     private bool underPlattform;                //Checks if there is a plattform over the head of the player
-    private float plattformCheckDistance = 1f;  //Distance for Raycast is set to 15, because it is the half of the Player size
+    public float plattformCheckDistance;        //Distance for Raycast is set to 15, because it is the half of the Player size
     private bool inFrontOfPlayer;
     private bool behindPlayer;
     public float crouchSpeedModifier;           //Factor by which the players speed is adjusted while crouching
@@ -29,11 +35,13 @@ public class PlayerCharacter : Character
     public bool touchesWall;                    // for wall detection
     public float wallCheckDistance;      //public Vector2 offsetRight = new Vector2(0.5f, 0);
     public LayerMask whatIsLevel;               //public Transform test;
+    public LayerMask whatIsWall;
     public bool wallSliding;
     public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
     public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
-    private static float wallJumpTimer = 1;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
+    public float wallJumpTime;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
+    private float wallJumpTimer;
     public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
 
@@ -48,6 +56,17 @@ public class PlayerCharacter : Character
     public float stunnTime;
     private float stunnTimer;
     private float deadFishTimer;
+    private bool animatedAttack;
+    private float movementTimer;
+
+    // particle stuff by Marvin Winkler
+    private ParticleSystem footsteps;
+    private ParticleSystem.EmissionModule footEmission;
+    private ParticleSystem.MainModule footstepsMain;
+    private float particleOffDelayTimer;
+    private ParticleSystem groundImpact;
+    private ParticleSystem.MainModule groundImpactMain;
+    private bool justLanded;
 
     // attack stuff by Marvin Winkler
     private Transform fishTrans;
@@ -55,6 +74,8 @@ public class PlayerCharacter : Character
     private float attackTimer;
     public float attackDelay;               //Minimum time between attacks in seconds
     private bool isAttacking;
+    private float slideAttackCooldownTimer;
+    public float slideAttackCooldown;
 
     //pickup stuff by Marvin Winkler
     private bool hasTimePickup;
@@ -79,6 +100,12 @@ public class PlayerCharacter : Character
         levelController = GameObject.Find("LevelController").GetComponent<LevelControlls.LevelControllerNew>();
         fishTrans = GameObject.Find("Fish").GetComponent<Transform>();
 
+        footsteps = GameObject.Find("Footsteps").GetComponent<ParticleSystem>();
+        footEmission = footsteps.emission;
+        footstepsMain = footsteps.main;
+        groundImpact = GameObject.Find("FootLanding").GetComponent<ParticleSystem>();
+        groundImpactMain = groundImpact.main;
+
         collider = GetComponent<BoxCollider2D>();
 
         animator = GetComponent<Animator>();
@@ -86,6 +113,7 @@ public class PlayerCharacter : Character
         justTookDamage = false;
         deadFishTimer = -101;
         sloMoTimer = -100;
+        animatedAttack = true;
 
         PlayerInput.onTiltDown += smashFishToTilt;
         PlayerInput.onTiltDown += disableSliding;
@@ -155,8 +183,46 @@ public class PlayerCharacter : Character
     // Author: Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
+        moveDirection = Input.GetAxis("Horizontal");
         if(!isDead)
             base.ComputeVelocity();
+
+        //hang time
+        if (grounded)
+        {
+            hangTimer = hangTime;
+        }
+        else
+        {
+            hangTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        
+        //jump buffer
+        if(grounded && jumpBufferTimer > 0)
+        {
+            jumpBufferTimer = 0;
+            jumpCountLeft = jumpCount;
+            Jump();
+        }
+        else
+        {
+            jumpBufferTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+
+        //slideAttackCooldown
+        if(slideAttackCooldownTimer < 0)
+        {
+            slideAttackCooldownTimer = 0;
+        }
+        else if(slideAttackCooldownTimer == 0)
+        {
+            //don't do anything
+        }
+        else
+        {
+            slideAttackCooldownTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+
 
         // jump cooldown
         if (cooldown > 0)
@@ -180,13 +246,21 @@ public class PlayerCharacter : Character
         }
         else if(sloMoTimer <= -100)
         {
-            return;
+            //don't do anything
         }
         else
         {
             onUseSloMoTime();
             sloMoTimer = -100;
         }
+
+        if (grounded)
+            wallJumpTimer = 0;
+
+        //Particle system simulation speed
+        footstepsMain.simulationSpeed = timeController.getTimeSpeed();
+        groundImpactMain.simulationSpeed = timeController.getTimeSpeed();
+
 
         //Just for testing:
         //+++
@@ -205,6 +279,7 @@ public class PlayerCharacter : Character
     protected override void updateAnimations()
     {
         playAnimations();
+        playParticleSystems();
     }
 
     //Author: Marvin Winkler
@@ -343,6 +418,39 @@ public class PlayerCharacter : Character
     }
 
     //Author: Marvin Winkler
+    private void playParticleSystems()
+    {
+        if(Mathf.Abs(velocity.x) > 0.2f && particleOffDelayTimer >= 0)
+        {
+            ParticleSystem.PlaybackState state = new ParticleSystem.PlaybackState();
+            footEmission.rateOverTime = 15 * Mathf.Abs(velocity.x);
+
+        }
+        else
+        {
+            footEmission.rateOverTime = 0;
+        }
+        
+        if (grounded)
+        {
+            particleOffDelayTimer = 0.2f;
+        }
+        else
+        {
+            particleOffDelayTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+        if (justLanded && grounded)
+        {
+            groundImpact.Play();
+            justLanded = false;
+        }
+        if (!grounded)
+        {
+            justLanded = true;
+        }
+    }
+
+    //Author: Marvin Winkler
     //Stops direction change during attack animation
     protected override void CharacterFacingDirection(float direction)
     {
@@ -374,7 +482,30 @@ public class PlayerCharacter : Character
 
     protected override void Movement(float direction)
     {
-            base.Movement(direction);
+        if (wallJumpTimer <= 0)
+        {
+            //if(direction > 0 && slideDirection.x < 0 || direction < 0 && slideDirection.x > 0)
+            if (levelController.getTiltStep() > 0 && direction < 0 && slideDirection.x > 0
+                || levelController.getTiltStep() < 0 && direction > 0 && slideDirection.x < 0
+                || levelController.getTiltStep() == 0
+                || levelController.getTiltStep() > 0 && direction > 0 && slideDirection.x < 0
+                || levelController.getTiltStep() < 0 && direction < 0 && slideDirection.x > 0)
+            {
+                base.Movement(direction);
+            }
+            else
+            {
+                isSliding = true;
+                Slide();
+            }
+
+            wallJumpTimer = 0;
+        }
+        else
+        {
+            wallJumpTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+
         //animDir = Mathf.Abs(direction);
         //animator.SetFloat("animationDirection", animDir);
     }
@@ -383,7 +514,7 @@ public class PlayerCharacter : Character
     private void WallSliding()
     {
         // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
-        touchesWall = (Physics2D.Raycast((Vector2)transform.localPosition, transform.right, wallCheckDistance, whatIsLevel) || Physics2D.Raycast((Vector2)transform.localPosition, -transform.right, wallCheckDistance, whatIsLevel));  
+        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsWall) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsWall));  
 
         // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)
@@ -402,15 +533,17 @@ public class PlayerCharacter : Character
         }
     }
 
-    // Author: Nicole Mynarek, Michelle Limbach; Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables
+    // Author: Nicole Mynarek, Michelle Limbach; Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables and added hang time
     // Method overridden, double jump is possible now
     protected override void Jump()
     {
+        jumpBufferTimer = jumpBuffer;
+
         // if touchesWall is true, player can do a wallJump
         if (wallSliding)
         {
-            hit = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsLevel);
-            lastWallcontact = Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsLevel);
+            hit = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsWall);
+            lastWallcontact = Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsWall);
             if (hit.distance < lastWallcontact.distance)
             {
                 hit = lastWallcontact;
@@ -420,26 +553,26 @@ public class PlayerCharacter : Character
         else
         {
             // if player is on the ground
-            if (grounded && velocity.y <= 0 && canJump)
+            if (hangTimer >= 0 && velocity.y <= 0 && canJump)
             {
                 // and cooldown lower or equal to 0
                 if (cooldown <= 0)
                 {
-                    // jumpCountLeft will be reset
-                    jumpCountLeft = jumpCount;
+                    // reset of wallJumpCounter
+                    wallJumpCounter = 2;
+                    lastWallcontact = new RaycastHit2D();
 
                     // cooldown will be set
                     cooldown = jumpCooldownTime;
-                    
-                    base.Jump();
+
+                    //base.Jump();
+                    velocity = new Vector2(Input.GetAxis("Horizontal") * maxAirMovementSpeed, jumpHeight);
+
+                    // jumpCountLeft will be reset
+                    jumpCountLeft = jumpCount;
 
                     jumpCountLeft--;
-
                 }
-
-                // reset of wallJumpCounter
-                wallJumpCounter = 2;
-                lastWallcontact = new RaycastHit2D();
             }
             // if jumpCountLeft is lower than or equal to 0, player can not jump anymore
             else if (jumpCountLeft <= 0)
@@ -452,7 +585,8 @@ public class PlayerCharacter : Character
 
                 // cooldown is set
                 cooldown = jumpCooldownTime;
-                base.Jump();
+                //base.Jump();
+                velocity = new Vector2(Input.GetAxis("Horizontal") * maxAirMovementSpeed, jumpHeight);
                 jumpCountLeft--;
 
             }
@@ -479,7 +613,7 @@ public class PlayerCharacter : Character
             jumpable = false;
             lastWallcontact = hit;
             wallJumpCounter--;
-            wallJumpTime = wallJumpTimer;
+            wallJumpTimer = wallJumpTime;
         }
         else
         {
@@ -528,6 +662,9 @@ public class PlayerCharacter : Character
         {
             //Checks if Player has a Plattform over his head
             underPlattform = Physics2D.Raycast((Vector2)transform.position, transform.up, plattformCheckDistance, whatIsLevel);
+            //The next two are nessesary so the player does not glitch thru the platform when just coming out from beneath it
+            underPlattform = underPlattform || Physics2D.Raycast((Vector2)transform.position, new Vector2(1, 1), plattformCheckDistance, whatIsLevel);
+            underPlattform = underPlattform || Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, 1), plattformCheckDistance, whatIsLevel);
 
             //If there is no Plattform above the Player
             if (!underPlattform)
@@ -602,8 +739,9 @@ public class PlayerCharacter : Character
     }
 
     //Author: Marvin Winkler
-    private void Attack()
+    protected override void Attack()
     {
+        if(animatedAttack)
         attackTimer = attackDelay;
 
         if (isFacingRight)
@@ -616,6 +754,21 @@ public class PlayerCharacter : Character
         }
         base.Attack();
 
+    }
+
+    protected override void Slide()
+    {
+        if(velocity.magnitude > slideBackwardsMaxSpeed && slideAttackCooldownTimer <= 0)
+        {
+            slideAttackCooldownTimer = slideAttackCooldown;
+            animatedAttack = false;
+            Attack();
+            animatedAttack = true;
+        }
+
+        //Slides down, runs up
+        if(slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0 || moveDirection == 0)
+        base.Slide();
     }
 
     /*

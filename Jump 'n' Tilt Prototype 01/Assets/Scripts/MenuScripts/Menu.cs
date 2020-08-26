@@ -16,6 +16,7 @@ namespace menuHandling
         public GameObject firstSelected;
         public GameObject currentMenuPage;
         EventSystem m_EventSystem;
+        public GameObject inputvis;
 
 
 
@@ -51,6 +52,18 @@ namespace menuHandling
             else
             {
                 Screen.fullScreen = true;
+            }
+        }
+
+        public void DisplayInputVisualization(Slider slider)
+        {
+            if (slider.value == 0)
+            {
+                inputvis.SetActive(false);
+            }
+            else
+            {
+                inputvis.SetActive(true);
             }
         }
 

@@ -13,7 +13,6 @@ public class Kappa : GroundEnemy
     public bool isIdle = true;
     public bool isJumping = false;
     public bool isFalling = false;
-    public bool hasAttacked = false;
     
 
     // Start is called before the first frame update
@@ -58,7 +57,7 @@ public class Kappa : GroundEnemy
 
             //Debug.Log("Player in der Nähe");
 
-            Attack();
+            //Attack();
             //Debug.Log("attacke passiert?");
 
             //moveSpeed = attackSpeed;
@@ -85,7 +84,7 @@ public class Kappa : GroundEnemy
             {
                 currentIdleTime = 0;
                 //isFacingRight = !isFacingRight;
-                Jump();
+                //Jump();
             }
         }
 
@@ -133,36 +132,6 @@ public class Kappa : GroundEnemy
 
             //Debug.Log("Kappa Jump");
         
-    }
-
-    protected override void Attack()
-    {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
-
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
-            Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
-            dmgDirection2D.Normalize();
-
-            if(hasAttacked == false)
-            {
-                enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
-                Debug.Log("Kappa macht Schaden!!!!!!!!!!!!!!!!!!!1");
-                hasAttacked = true;
-            }
-
-            enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
-
-            /*Debug.Log("enemies: " + enemies);
-            Debug.Log("enemies length: " + enemies.Length);
-            Debug.Log("enemy: " + enemies[0]);*/
-
-            /*if (enemies.Length == 0)
-            {
-                hasAttacked = false;
-            }*/
-        }
     }
 
     void OnDrawGizmos()

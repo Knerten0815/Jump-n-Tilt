@@ -53,7 +53,7 @@ public class PhysicsObject : MonoBehaviour
     }
 
     //Applied velocity gets updated e.g. player movement
-    void Update()
+    protected virtual void Update()
     {
         ComputeVelocity();
     }

@@ -1,4 +1,5 @@
 ﻿using AudioControlling;
+using System.Collections;
 using UnityEngine;
 
 public class Oni : GroundEnemy
@@ -14,14 +15,15 @@ public class Oni : GroundEnemy
     {
         base.Start();
         speed = moveSpeed;
-        anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();        
+        attackRadius = 1.25f;
     }
 
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
 
-        /* Charge check: when the player is in range and between these two rays, the oni will charge towards him
+        /* Charge check: when the player is in range and between these two rays, the oni will charge towards him *
         Vector2 testorigin = transform.position;
         Vector2 testray = playerDirection();
         testray.y = 0f;
@@ -31,14 +33,14 @@ public class Oni : GroundEnemy
         */
 
         //slide when you should slide!
-        if (isSliding)
+            if (isSliding)
         {
             Slide();
             anim.SetBool("isAttacking", false);
             anim.SetBool("isSliding", true);
         }
         //charge towards the player if he is on the same height and in reach
-        else if (playerDirection().y < 0 && playerDirection().y > -cc2d.bounds.extents.y && Mathf.Abs(playerDirection().x) < 15f)
+        else if (playerDirection().y < 0 && playerDirection().y > -cc2d.bounds.extents.y && Mathf.Abs(playerDirection().x) < 15f  && !hasAttacked)
         {
             if (playerDirection().x < 0)
                 direction = -1;
@@ -47,7 +49,7 @@ public class Oni : GroundEnemy
 
             moveSpeed = attackSpeed;
             if (!anim.GetBool("isAttacking"))                
-                AudioController.Instance.playFXSound(oniAttack);
+                //AudioController.Instance.playFXSound(oniAttack);
             
             anim.SetBool("isAttacking", true);
             anim.SetBool("isSliding", false);
@@ -56,7 +58,7 @@ public class Oni : GroundEnemy
         {
             //patrol
             moveSpeed = speed;
-            if (IsWallAhead(false) == true || isGroundAhead(true) == false)
+            if (IsWallAhead() == true || isGroundAhead() == false)
             {
 
                 if (isFacingRight == true)
@@ -79,6 +81,6 @@ public class Oni : GroundEnemy
     public override void TakeDamage(int damage, Vector2 direction)
     {
         base.TakeDamage(damage, direction);
-        AudioController.Instance.playFXSound(oniHit);
+        //AudioController.Instance.playFXSound(oniHit);
     }
 }

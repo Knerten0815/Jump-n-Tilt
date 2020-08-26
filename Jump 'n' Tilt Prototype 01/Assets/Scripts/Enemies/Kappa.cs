@@ -33,7 +33,7 @@ public class Kappa : GroundEnemy
         //moveSpeed = speed;
         //if (grounded)
         //{
-            if (IsWallAhead(false) == true || isGroundAhead(true) == false)
+            if (IsWallAhead() == true || isGroundAhead() == false)
             {
                 hasAttacked = false;
                 if (isFacingRight == true)
@@ -133,11 +133,11 @@ public class Kappa : GroundEnemy
             //Debug.Log("Kappa Jump");
         
     }
-
+    /*
     void OnDrawGizmos()
     {
         // Draw a yellow sphere at the transform's position
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(attackPos.position, attackRadius);
-    }
+    }*/
 }

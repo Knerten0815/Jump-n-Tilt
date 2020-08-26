@@ -3,6 +3,7 @@
 using UnityEngine;
 using LevelControlls;
 using System;
+using System.Collections;
 
 public class GroundEnemy : Enemy
 {
@@ -10,13 +11,16 @@ public class GroundEnemy : Enemy
     [SerializeField] int wallCheckPrecision = 5;        //read isWallAhead() comment for more information. 0 turns wall checks off.
     [SerializeField] LayerMask whatIsGround, whatIsWall;
     [SerializeField] public int touchAttackDamage = 1;             //amount of damage, that is distributed on touching the player
+    [SerializeField] float attackCooldownTime;
 
     public bool hasAttacked = false;
     public float direction;
+    public CapsuleCollider2D cc2d;
+    private GameObject attackCircle;
+    private Coroutine coolroutine;
     private float wallCheckDistance = 0.05f;
     private float groundCheckDistance = 0.3f;
-    public CapsuleCollider2D cc2d;
-    private GameObject player;
+
 
     protected override void OnEnable()
     {
@@ -34,15 +38,35 @@ public class GroundEnemy : Enemy
 
     protected override void Start()
     {
-        base.Start();
-        player = GameObject.Find("Player");
+        base.Start();        
         whatIsEnemy = LayerMask.GetMask("Player");
-        whatIsGround = LayerMask.GetMask("Ground");      //needs to be changed to Ground later
-        whatIsWall = LayerMask.GetMask("Wall");        //needs to be changed to Wall later
+        whatIsGround = LayerMask.GetMask("Platform") | LayerMask.GetMask("Ground");
+        whatIsWall = LayerMask.GetMask("Wall");
+
+        attackCircle = new GameObject();
+        attackCircle.transform.SetParent(transform);
+        attackCircle.transform.localPosition = Vector3.zero;
+        attackPos = attackCircle.transform;
+
         cc2d = GetComponent<CapsuleCollider2D>();
         direction = startDirection;
         if (direction == 1)
             isFacingRight = true;
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
+            Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
+            dmgDirection2D.Normalize();
+            groundEnemyAttack(enemies[i], dmgDirection2D);
+            Debug.Log("Player im AttackRadius!");
+        }
     }
 
     protected override void ComputeVelocity()
@@ -64,28 +88,26 @@ public class GroundEnemy : Enemy
 
 
     /// <summary>
-    /// Detects walls in front of the GroundEnemy. Also detects upward slopes, if slopesAreWalls is true.
+    /// Detects walls in front of the GroundEnemy.
     /// wallCheckPrecision determines how many checks are done at evenly distributed heights in front of the enemy.
-    /// If wallCheckPrecision is set to high, slopes will be detected, even if slopesAreWalls is set to false.
+    /// If wallCheckPrecision is set to high, slopes will be detected, too.
     /// If it is to low, hovering obstacles might not be detected.
-    /// Correct precision depends on the height of the enemys BoxCollider2D: Un-comment Debug.DrawRay() for testing.
+    /// Correct precision depends on the height of the BoxCollider2D: Un-comment Debug.DrawRay() inside the for-loop for testing.
     /// </summary>
     /// <param name="slopesAreWalls">Upward slopes are detected as walls if set true</param>
     /// <returns></returns>
-    public bool IsWallAhead(bool slopesAreWalls)
+    public bool IsWallAhead()
     {
         RaycastHit2D wallAhead;
         Vector2 offset = transform.position;
 
-        if(isFacingRight)
-            offset.x +=cc2d.bounds.extents.x;
+        if (isFacingRight)
+            offset.x += cc2d.bounds.extents.x;
         else
             offset.x -= cc2d.bounds.extents.x;
 
         offset.y -= cc2d.bounds.extents.y;
-
-        if(!slopesAreWalls)
-            offset.y += cc2d.bounds.size.y / (wallCheckPrecision);        
+        offset.y += cc2d.bounds.size.y / (wallCheckPrecision);
 
         for (int i = 0; i < wallCheckPrecision; i++)
         {
@@ -102,18 +124,13 @@ public class GroundEnemy : Enemy
     /// <summary>
     /// Returns true if there is ground in front of the GroundEnemy. Returns false if it approaches a chasm.
     /// </summary>
-    /// <param name="slopesAreGround">if true, downward slopes are detected as ground. Otherwise like a chasm.</param>
-    public bool isGroundAhead(bool slopesAreGround)
+    public bool isGroundAhead()
     {
         Vector2 offsetAhead, offsetBehind;
         Vector3 slopeOffset = cc2d.bounds.extents;
 
-        if (slopesAreGround)
-        {
-            slopeOffset.x = cc2d.bounds.extents.x / 2;
-            groundCheckDistance = 1.1f;
-        }
-            
+        slopeOffset.x = cc2d.bounds.extents.x / 2;
+        groundCheckDistance = 1.1f;
 
         if (isFacingRight)
         {
@@ -137,54 +154,23 @@ public class GroundEnemy : Enemy
         return groundAhead.collider || (!groundAhead.collider && slopeBehind.collider);
     }
 
-    /// <summary>
-    /// Returns a Vector2 pointing to the transform of the player.
-    /// </summary>
-    public Vector2 playerDirection()
+    public void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
     {
-        return player.transform.position - transform.position;
-    }
-
-    /*
-    /// <summary>
-    /// distributes damgae when the player touches the GroundEnemy
-    /// </summary>
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject == player)
+        if (hasAttacked == false)
         {
-            player.GetComponent<PlayerCharacter>().TakeDamage(touchAttackDamage, -playerDirection());
-            //Debug.Log("Playerhealth: " + player.GetComponent<PlayerCharacter>().health);
+            enemy.GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
+            //Debug.Log("GroundEnemy macht Schaden!!!!!!!!!!!!!!!!!!!1");
+            hasAttacked = true;
+            coolroutine = StartCoroutine(attackCooldown(attackCooldownTime));
         }
     }
 
-    protected override void Attack()
+    IEnumerator attackCooldown(float coolDownTime)
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
-
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
-            Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
-            dmgDirection2D.Normalize();
-
-            if (hasAttacked == false)
-            {
-                enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
-                //Debug.Log("Kappa macht Schaden!!!!!!!!!!!!!!!!!!!1");
-                hasAttacked = true;
-            }
-
-            enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
-
-            /*Debug.Log("enemies: " + enemies);
-            Debug.Log("enemies length: " + enemies.Length);
-            Debug.Log("enemy: " + enemies[0]);*/
-
-            /*if (enemies.Length == 0)
-            {
-                hasAttacked = false;
-            }*/
-        }
+        //Debug.Log(coolDownTime + " seconds Cooldown!");
+        yield return new WaitForSeconds(coolDownTime);
+        //Debug.Log("Cooldown end!");
+        hasAttacked = false;
+        StopCoroutine(coolroutine);
     }
 }

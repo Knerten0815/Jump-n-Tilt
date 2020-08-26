@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 8478334875988699357}
   - component: {fileID: 8478334875988699169}
   - component: {fileID: 8478334875988699170}
-  - component: {fileID: 8478334875988699171}
   - component: {fileID: 8478334875988699356}
   - component: {fileID: 8402831992008467973}
   m_Layer: 0
-  m_Name: PickUp Common
+  m_Name: PickUp 10 Common
   m_TagString: PickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,27 +100,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &8478334875988699171
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8478334875988699358}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &8478334875988699356
 MonoBehaviour:
   m_ObjectHideFlags: 0

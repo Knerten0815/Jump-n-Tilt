@@ -11,6 +11,7 @@ public class GroundEnemy : Enemy
     [SerializeField] LayerMask whatIsGround, whatIsWall;
     [SerializeField] public int touchAttackDamage = 1;             //amount of damage, that is distributed on touching the player
 
+    public bool hasAttacked = false;
     public float direction;
     private float wallCheckDistance = 0.05f;
     private float groundCheckDistance = 0.3f;
@@ -156,5 +157,34 @@ public class GroundEnemy : Enemy
             //Debug.Log("Playerhealth: " + player.GetComponent<PlayerCharacter>().health);
         }
     }
-    */
+
+    protected override void Attack()
+    {
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
+            Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
+            dmgDirection2D.Normalize();
+
+            if (hasAttacked == false)
+            {
+                enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
+                //Debug.Log("Kappa macht Schaden!!!!!!!!!!!!!!!!!!!1");
+                hasAttacked = true;
+            }
+
+            enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+
+            /*Debug.Log("enemies: " + enemies);
+            Debug.Log("enemies length: " + enemies.Length);
+            Debug.Log("enemy: " + enemies[0]);*/
+
+            /*if (enemies.Length == 0)
+            {
+                hasAttacked = false;
+            }*/
+        }
+    }
 }

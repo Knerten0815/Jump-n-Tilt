@@ -58,11 +58,11 @@ public class FlyingEnemy : Enemy
 
         base.ComputeVelocity();
 
-        if (isDead)
+        /*if (isDead)
         {
             gameObject.SetActive(false);
             Debug.Log("Enemy ist tot!");
-        }
+        }*/
 
         switch (state)
         {

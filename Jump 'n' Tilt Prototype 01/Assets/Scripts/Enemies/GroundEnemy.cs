@@ -111,7 +111,7 @@ public class GroundEnemy : Enemy
 
         for (int i = 0; i < wallCheckPrecision; i++)
         {
-            //Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
+            Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
             wallAhead = Physics2D.Raycast(offset, Vector2.right * direction, wallCheckDistance, whatIsWall);
             if (wallAhead.collider)
                 return true;
@@ -146,10 +146,10 @@ public class GroundEnemy : Enemy
         RaycastHit2D groundAhead, slopeBehind;
 
         groundAhead = Physics2D.Raycast(offsetAhead, Vector2.down, groundCheckDistance, whatIsGround);
-        //Debug.DrawRay(offsetAhead, Vector2.down * groundCheckDistance);
+        Debug.DrawRay(offsetAhead, Vector2.down * groundCheckDistance);
 
         slopeBehind = Physics2D.Raycast(offsetBehind, Vector2.right * -direction, 0.3f , whatIsGround);
-        //Debug.DrawRay(offsetBehind, Vector2.right * -direction * groundCheckDistance);
+        Debug.DrawRay(offsetBehind, Vector2.right * -direction * groundCheckDistance);
 
         return groundAhead.collider || (!groundAhead.collider && slopeBehind.collider);
     }

@@ -20,7 +20,7 @@ public class Kappa : GroundEnemy
     {
         base.Start();
         lastYPos = transform.position.y;
-        //speed = moveSpeed;
+        attackRadius = 1.3f;
     }
 
     protected override void ComputeVelocity()
@@ -30,10 +30,17 @@ public class Kappa : GroundEnemy
         //Debug.Log("isSliding? " + isSliding);
 
         //patrol
-        //moveSpeed = speed;
-        //if (grounded)
+        if (isSliding)
+        {
+            isIdle = false;
+            isJumping = false;
+            isFalling = false;
+            Slide();
+            //Debug.Log("Kappa slided");
+        }
+        //else if (grounded)
         //{
-            if (IsWallAhead() == true || isGroundAhead() == false)
+            else if (IsWallAhead() == true || isGroundAhead() == false)
             {
                 hasAttacked = false;
                 if (isFacingRight == true)
@@ -48,35 +55,8 @@ public class Kappa : GroundEnemy
                 }
             }
         //}
-        else if (playerDirection().y < 0 && playerDirection().y > -cc2d.bounds.extents.y && Mathf.Abs(playerDirection().x) < 2f /*Vector3.Distance(GameObject.Find("Player").transform.position, transform.position) < 2f*/)
-        {
-            /*if (playerDirection().x < 0)
-                direction = -1;
-            else if (playerDirection().x > 0)
-                direction = 1;*/
 
-            //Debug.Log("Player in der Nähe");
-
-            //Attack();
-            //Debug.Log("attacke passiert?");
-
-            //moveSpeed = attackSpeed;
-            //if (!anim.GetBool("isAttacking"))
-                //AudioController.Instance.playFXSound(oniAttack);
-
-            //anim.SetBool("isAttacking", true);
-            //anim.SetBool("isSliding", false);
-        }
-
-        if (isSliding)
-        {
-            isIdle = false;
-            isJumping = false;
-            isFalling = false;
-            Slide();
-            //Debug.Log("Kappa slided");
-        }
-        else if (isIdle)
+        if (isIdle)
         {
             currentIdleTime += Time.deltaTime;
 
@@ -84,7 +64,7 @@ public class Kappa : GroundEnemy
             {
                 currentIdleTime = 0;
                 //isFacingRight = !isFacingRight;
-                //Jump();
+                Jump();
             }
         }
 
@@ -133,11 +113,11 @@ public class Kappa : GroundEnemy
             //Debug.Log("Kappa Jump");
         
     }
-    /*
+    
     void OnDrawGizmos()
     {
         // Draw a yellow sphere at the transform's position
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(attackPos.position, attackRadius);
-    }*/
+    }
 }

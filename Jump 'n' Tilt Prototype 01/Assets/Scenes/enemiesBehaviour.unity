@@ -11036,9 +11036,9 @@ MonoBehaviour:
   direction: 1
   cc2d: {fileID: 956939701}
   lastYPos: 0
-  idleTime: 0.2
+  idleTime: 1
   currentIdleTime: 0
-  isIdle: 1
+  isIdle: 0
   isJumping: 0
   isFalling: 0
 --- !u!70 &956939701

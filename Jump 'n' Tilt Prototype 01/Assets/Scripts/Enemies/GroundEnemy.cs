@@ -65,7 +65,7 @@ public class GroundEnemy : Enemy
             Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
             dmgDirection2D.Normalize();
             groundEnemyAttack(enemies[i], dmgDirection2D);
-            Debug.Log("Player im AttackRadius!");
+            //Debug.Log("Player im AttackRadius!");
         }
     }
 

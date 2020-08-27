@@ -93,31 +93,38 @@ public class Kappa : GroundEnemy
     protected override void Jump()
     {
         
-            isSliding = false;
-            isIdle = false;
-            isJumping = true;
+        isSliding = false;
+        isIdle = false;
+        isJumping = true;
 
-            if (isFacingRight == true)
-            {
-                direction = 1f;
-                CharacterFacingDirection(direction);
-            }
-            else
-            {
-                direction = -1f;
-                CharacterFacingDirection(direction);
-            }
+        if (isFacingRight == true /*&& playerDirection().x > 0*/)
+        {
+            direction = 1f;
+            CharacterFacingDirection(direction);
+        }
+        else
+        {
+            direction = -1f;
+            CharacterFacingDirection(direction);
+        }
 
-            velocity = new Vector2(6 * direction, jumpHeight);
+        velocity = new Vector2(6 * direction, jumpHeight);
+
+        if(playerDirection().x < 20f)
+        {
+            Debug.Log("player wird verfolgt");
+            Debug.Log("Playerdirection: " + playerDirection().x);
+            velocity = new Vector2(6 * direction * -playerDirection().x, jumpHeight);
+        }
 
             //Debug.Log("Kappa Jump");
         
     }
     
-    void OnDrawGizmos()
+    /*void OnDrawGizmos()
     {
         // Draw a yellow sphere at the transform's position
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(attackPos.position, attackRadius);
-    }
+    }*/
 }

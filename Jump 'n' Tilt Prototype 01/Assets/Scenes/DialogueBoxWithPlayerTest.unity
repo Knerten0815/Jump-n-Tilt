@@ -596,6 +596,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330954983}
   m_CullTransparentMesh: 0
+--- !u!1 &350162826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 350162827}
+  - component: {fileID: 350162829}
+  - component: {fileID: 350162828}
+  m_Layer: 0
+  m_Name: Tutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &350162827
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350162826}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00024414062}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1317930019}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -91.800026, y: 0.4999752}
+  m_SizeDelta: {x: 78, y: 78}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &350162828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350162826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 5aeb14ee8e497f64c9ab002d595be8a5, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &350162829
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350162826}
+  m_CullTransparentMesh: 0
 --- !u!1 &455501746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1710,6 +1783,7 @@ MonoBehaviour:
   xOffset: 4
   xSmoothTime: 0.4
   ySmoothTime: 0.2
+  lvlBounds: {fileID: 0}
 --- !u!81 &716115053
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2356,10 +2430,11 @@ MonoBehaviour:
   moveWhileJumping: 0.5
   airResistance: 0.005
   wallJumpTimeSpeed: 1
+  maxAirMovementSpeed: 0
   onWall: 0
   slideSpeed: 1
-  slideReducer: -6
   slideBackwardsMaxSpeed: 3
+  slideSpeedChange: 0
   slideDirection: {x: 0, y: 0}
   isFacingRight: 1
   attackPos: {fileID: 1703643106}
@@ -2373,6 +2448,9 @@ MonoBehaviour:
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
+  hangTime: 0
+  jumpBuffer: 0
+  plattformCheckDistance: 0
   crouchSpeedModifier: 0.3
   wallJumpCounter: 0
   touchesWall: 0
@@ -2380,13 +2458,19 @@ MonoBehaviour:
   whatIsLevel:
     serializedVersion: 2
     m_Bits: 0
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 0
   wallSliding: 0
   wallSlidingSpeed: 0.333
   facingDirection: 1
+  wallJumpTime: 0
   wallJumpSpeed: 15
   stunnTime: 0.6
   attackOffset: {x: 23, y: -4, z: 0}
   attackDelay: 0.8
+  slideAttackCooldown: 0
+  sloMoTime: 0
 --- !u!95 &1002723188
 Animator:
   serializedVersion: 3
@@ -2584,6 +2668,79 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1013916242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1013916243}
+  - component: {fileID: 1013916245}
+  - component: {fileID: 1013916244}
+  m_Layer: 0
+  m_Name: Narrator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1013916243
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013916242}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00024414062}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1317930019}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -91.800026, y: 0.4999752}
+  m_SizeDelta: {x: 78, y: 78}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1013916244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013916242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 5aeb14ee8e497f64c9ab002d595be8a5, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1013916245
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013916242}
+  m_CullTransparentMesh: 0
 --- !u!1 &1048008765
 GameObject:
   m_ObjectHideFlags: 0
@@ -3046,6 +3203,8 @@ RectTransform:
   - {fileID: 1541480481}
   - {fileID: 781598027}
   - {fileID: 1963335222}
+  - {fileID: 1013916243}
+  - {fileID: 350162827}
   m_Father: {fileID: 1785660229}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14216,6 +14375,8 @@ MonoBehaviour:
     - {fileID: 781598026}
     - {fileID: 1541480480}
     - {fileID: 1963335221}
+    - {fileID: 1013916242}
+    - {fileID: 350162826}
   continueButton: {fileID: 622263450}
 --- !u!61 &1528071917
 BoxCollider2D:
@@ -14828,6 +14989,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94d4fd0ef1ba2ce489d5dc538df905e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Button_Left: {fileID: 0}
+  Button_Right: {fileID: 0}
+  Button_Down: {fileID: 0}
+  Button_Up: {fileID: 0}
+  Button_A: {fileID: 0}
+  Button_B: {fileID: 0}
+  Button_X: {fileID: 0}
+  Button_Y: {fileID: 0}
+  Button_L: {fileID: 0}
+  Button_R: {fileID: 0}
 --- !u!1 &1703643105
 GameObject:
   m_ObjectHideFlags: 0
@@ -15267,10 +15438,11 @@ MonoBehaviour:
   moveWhileJumping: 7
   airResistance: 0
   wallJumpTimeSpeed: 0
+  maxAirMovementSpeed: 0
   onWall: 0
   slideSpeed: 2
-  slideReducer: 0.5
   slideBackwardsMaxSpeed: 0
+  slideSpeedChange: 0
   slideDirection: {x: 0, y: 0}
   isFacingRight: 0
   attackPos: {fileID: 0}
@@ -15281,7 +15453,6 @@ MonoBehaviour:
   health: 1
   knockback: 0
   knockup: 0
-  moveCounter: 10
 --- !u!1001 &1867272065
 PrefabInstance:
   m_ObjectHideFlags: 0

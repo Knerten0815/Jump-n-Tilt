@@ -39,9 +39,9 @@ public class DialogueManager : MonoBehaviour
         sentences.Clear();
         names.Clear();
         Time.timeScale = 0f;
-        if(dialogue.images.Length > 4)
+        if(dialogue.images.Length > 5)
         {
-            Debug.Log("Bitte nicht mehr als 4 Bilder in den Dialoge laden!");
+            Debug.Log("Bitte nicht mehr als 5 Bilder in den Dialoge laden!");
             EndDialogue();
             return;
         }
@@ -61,6 +61,9 @@ public class DialogueManager : MonoBehaviour
                     break;
                 case "Tutorial":
                     dialogueImages[3] = image;
+                    break;
+                case "Narrator":
+                    dialogueImages[4] = image;
                     break;
             }
         }
@@ -115,6 +118,10 @@ public class DialogueManager : MonoBehaviour
             case "Tutorial":
                 dialogueImages[3].SetActive(true);
                 currentActiveImage = dialogueImages[3];
+                break;
+            case "Narrator":
+                dialogueImages[4].SetActive(true);
+                currentActiveImage = dialogueImages[4];
                 break;
         }
     }

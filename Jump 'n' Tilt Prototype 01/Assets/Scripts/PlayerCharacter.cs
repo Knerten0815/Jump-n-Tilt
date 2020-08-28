@@ -183,6 +183,7 @@ public class PlayerCharacter : Character
     // Author: Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
+
         moveDirection = Input.GetAxis("Horizontal");
         if(!isDead)
             base.ComputeVelocity();
@@ -229,15 +230,21 @@ public class PlayerCharacter : Character
         {
             cooldown -= Time.deltaTime;
         }
-        if (!isDead)
-            WallSliding();
-
-        onWall = false;
 
         if (touchesWall && levelController.getTiltStep() != 0)
         {
             onWall = true;
         }
+        else
+        {
+            onWall = false;
+        }
+
+        if (!isDead)
+            WallSliding();
+
+        if (wallSliding)
+            isSliding = false;
         
         //SloMoTime powerup
         if(sloMoTimer >= 0)
@@ -514,7 +521,7 @@ public class PlayerCharacter : Character
     private void WallSliding()
     {
         // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
-        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsWall) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsWall));  
+        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsWall) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsWall));
 
         // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)
@@ -537,6 +544,9 @@ public class PlayerCharacter : Character
     // Method overridden, double jump is possible now
     protected override void Jump()
     {
+        if (onWall) //only when on wall and level is tilted
+            return;
+
         jumpBufferTimer = jumpBuffer;
 
         // if touchesWall is true, player can do a wallJump
@@ -549,6 +559,14 @@ public class PlayerCharacter : Character
                 hit = lastWallcontact;
             }
             WallJump();
+            if((hit.point - new Vector2(transform.position.x, transform.position.y)).x < 0)
+            {
+                CharacterFacingDirection(1);
+            }
+            else
+            {
+                CharacterFacingDirection(-1);
+            }
         }
         else
         {
@@ -758,7 +776,7 @@ public class PlayerCharacter : Character
 
     protected override void Slide()
     {
-        if(velocity.magnitude > slideBackwardsMaxSpeed && slideAttackCooldownTimer <= 0)
+        if(velocity.magnitude > slideBackwardsMaxSpeed && slideAttackCooldownTimer <= 0 && isSliding)
         {
             slideAttackCooldownTimer = slideAttackCooldown;
             animatedAttack = false;

@@ -19,17 +19,17 @@ public class Character : PhysicsObject
 
     public bool onWall;                 //by Marvin Winkler, used to fix wall climbing while level is tilted
 
-    public float slideSpeed;
+    public float slideSpeed;            //slide accelleration, not speed
     //public float slideReducer;
 
     public float slideBackwardsMaxSpeed;    //by Marvin Winkler, max speed while pressing against the tilt
-    public float slideSpeedChange;          //by Marvin Winkler, accelaration speed
     protected Vector2 posBuffer;              //by Marvin used to fix slide bug
 
     public Vector2 slideDirection;
 
     public bool isFacingRight;
     protected bool isSliding;
+    public float slideDampeningFactor;      //Dampening factor used while sliding on ground
 
     // for Attack method
     public Transform attackPos;                 // is set in Unity window
@@ -86,7 +86,7 @@ public class Character : PhysicsObject
 
         posBuffer = posBuffer - new Vector2(transform.localPosition.x, transform.localPosition.y);
 
-        if (groundNormal.y < 1 && posBuffer.y >= 0 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0)) 
+        if (!onWall && Mathf.Abs(groundNormal.y) < 1 && posBuffer.y >= 0 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0)) 
         {
             isSliding = true;
         }
@@ -171,6 +171,11 @@ public class Character : PhysicsObject
     // Sliding speed still has to be adjusted
     protected virtual void Slide()
     {
+        if (onWall)
+        {
+            return;
+        }
+
         Vector2 normal;
 
         if (grounded)
@@ -204,7 +209,7 @@ public class Character : PhysicsObject
                 }
                 if(velocity.x <= maxSpeed && velocity.x >= -maxSpeed)
                 {
-                    velocity += slideDirection * slideSpeed * slideSpeedChange;
+                    velocity += slideDirection * slideSpeed;
                 } 
             }
             else
@@ -227,11 +232,11 @@ public class Character : PhysicsObject
             {
                 if (timeController.getTimeSpeed() < 1)
                 {
-                    velocity *= (dampening * 1.5f + (1 - dampening) * timeController.getTimeSpeed());
+                    velocity *= (slideDampeningFactor + (1 - dampening) * timeController.getTimeSpeed());
                 }
                 else
                 {
-                    velocity *= dampening * 1.5f;
+                    velocity *= slideDampeningFactor;
                 }
             }
         }

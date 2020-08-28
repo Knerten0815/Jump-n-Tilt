@@ -44,6 +44,8 @@ public class PlayerCharacter : Character
     private float wallJumpTimer;
     public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
+    public float slideJumpHeightX;          //Jumpheight during sliding
+    public float slideJumpHeightY;
 
     private BoxCollider2D collider;
 
@@ -110,6 +112,7 @@ public class PlayerCharacter : Character
 
         animator = GetComponent<Animator>();
         jumpStart = true;
+        jumpCountLeft = jumpCount;
         justTookDamage = false;
         deadFishTimer = -101;
         sloMoTimer = -100;
@@ -121,6 +124,7 @@ public class PlayerCharacter : Character
 
         ManagementSystem.healthPickUpHit += addHealth;
         ManagementSystem.timePickUpHit += addTimePickup;
+
 
         //PlayerInput.onHorizontalDown += disableSliding;
         //PlayerInput.onJumpButtonDown += disableSliding;
@@ -279,7 +283,6 @@ public class PlayerCharacter : Character
             TakeDamage(1, hitDirectionTest2D);
         }
         //+++
-
     }
 
     //Author: Marvin Winkler
@@ -494,9 +497,11 @@ public class PlayerCharacter : Character
             //if(direction > 0 && slideDirection.x < 0 || direction < 0 && slideDirection.x > 0)
             if (levelController.getTiltStep() > 0 && direction < 0 && slideDirection.x > 0
                 || levelController.getTiltStep() < 0 && direction > 0 && slideDirection.x < 0
-                || levelController.getTiltStep() == 0
+                || levelController.getTiltStep() == 0 && direction > 0 && slideDirection.x < 0
+                || levelController.getTiltStep() == 0 && direction < 0 && slideDirection.x > 0
                 || levelController.getTiltStep() > 0 && direction > 0 && slideDirection.x < 0
-                || levelController.getTiltStep() < 0 && direction < 0 && slideDirection.x > 0)
+                || levelController.getTiltStep() < 0 && direction < 0 && slideDirection.x > 0
+                || !isSliding)
             {
                 base.Movement(direction);
             }
@@ -547,7 +552,11 @@ public class PlayerCharacter : Character
         if (onWall) //only when on wall and level is tilted
             return;
 
-        jumpBufferTimer = jumpBuffer;
+        if (!touchesWall && !grounded && jumpCountLeft <= 0)
+        {
+            jumpBufferTimer = jumpBuffer;
+            return;
+        }
 
         // if touchesWall is true, player can do a wallJump
         if (wallSliding)
@@ -584,7 +593,14 @@ public class PlayerCharacter : Character
                     cooldown = jumpCooldownTime;
 
                     //base.Jump();
-                    velocity = new Vector2(Input.GetAxis("Horizontal") * maxAirMovementSpeed, jumpHeight);
+                    if (isSliding)
+                    {
+                        velocity = new Vector2(velocity.x + slideDirection.x * slideJumpHeightX, slideJumpHeightY);
+                    }
+                    else
+                    {
+                        velocity = new Vector2(moveDirection * maxAirMovementSpeed, jumpHeight);
+                    }
 
                     // jumpCountLeft will be reset
                     jumpCountLeft = jumpCount;
@@ -604,7 +620,9 @@ public class PlayerCharacter : Character
                 // cooldown is set
                 cooldown = jumpCooldownTime;
                 //base.Jump();
-                velocity = new Vector2(Input.GetAxis("Horizontal") * maxAirMovementSpeed, jumpHeight);
+
+                    velocity = new Vector2(velocity.x + moveDirection * moveWhileJumping, jumpHeight);
+
                 jumpCountLeft--;
 
             }

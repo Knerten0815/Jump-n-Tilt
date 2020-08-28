@@ -91,7 +91,7 @@ public class Character : PhysicsObject
             isSliding = true;
         }
 
-        posBuffer = new Vector2(transform.localPosition.x, transform.localPosition.y);
+            posBuffer = new Vector2(transform.localPosition.x, transform.localPosition.y);
 
         velocity.x -= velocity.x * airResistance;
     }
@@ -109,19 +109,20 @@ public class Character : PhysicsObject
 
         //if (grounded && isSliding)
         //{
-                // if slideDirection and moveDirection are both negativ or positiv, then the player moves faster
-                //if ((slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0) && velocity.magnitude < maxSpeed)
-                //{
-                //    //velocity += moveDirection * slideSpeed * slideSpeedChange * (moveSpeed) * Vector2.right; //Because the velocity is changed and not replaced Speed changes don't happen instantly but have an excelleration time
-                //    isSliding = true;
-                //}
-                // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
-                //else if ((slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0) && velocity.magnitude < slideBackwardsMaxSpeed)
-                //{
-                    //velocity += moveDirection * slideSpeed * slideSpeedChange * (moveSpeed) * Vector2.right;
-                //    isSliding = false;
-                //}
+        // if slideDirection and moveDirection are both negativ or positiv, then the player moves faster
+        //if ((slideDirection.x < 0 && moveDirection < 0 || slideDirection.x > 0 && moveDirection > 0) && velocity.magnitude < maxSpeed)
+        //{
+        //    //velocity += moveDirection * slideSpeed * slideSpeedChange * (moveSpeed) * Vector2.right; //Because the velocity is changed and not replaced Speed changes don't happen instantly but have an excelleration time
+        //    isSliding = true;
         //}
+        // if slideDirection and moveDirection have unequal signs (e. g. one is positive and the other one is negative), then the player moves slower
+        //else if ((slideDirection.x < 0 && moveDirection > 0 || slideDirection.x > 0 && moveDirection < 0) && velocity.magnitude < slideBackwardsMaxSpeed)
+        //{
+        //velocity += moveDirection * slideSpeed * slideSpeedChange * (moveSpeed) * Vector2.right;
+        //    isSliding = false;
+        //}
+        //}
+
 
         // if player is in the air and gives input, the player can move left or right
         if (!grounded && moveDirection != 0 && velocity.magnitude < maxAirMovementSpeed && !isSliding)
@@ -129,9 +130,10 @@ public class Character : PhysicsObject
             velocity += (moveDirection * moveWhileJumping) * Vector2.right * (1 - wallJumpTime) * (1 / ((0.1f + Mathf.Abs(velocity.x) * 0.5f))); //velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude) * (1 - wallJumpTime), velocity.y);
             isSliding = false;
         }
-        else if(!isSliding)
+        //Here velocity gets a new vector, therefore the speed/direction change happens instantly, there is no excelleration time
+        else if (!isSliding)
         {
-            velocity = new Vector2(moveDirection * moveSpeed, velocity.y);  //Here velocity gets a new vector, therefore the speed/direction change happens instantly, there is no excelleration time
+            velocity = new Vector2(moveDirection * moveSpeed, velocity.y);
         }
     }
 

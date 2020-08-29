@@ -13,7 +13,9 @@ public class Kappa : GroundEnemy
     public bool isIdle = true;
     public bool isJumping = false;
     public bool isFalling = false;
-    
+
+    //public LayerMask whatIsPlatform = LayerMask.GetMask("Platform");
+
 
     // Start is called before the first frame update
     protected override void Start()
@@ -56,22 +58,41 @@ public class Kappa : GroundEnemy
             }
         //}
 
-        if (isIdle)
+        
+
+        if (isIdle && playerDirection().x >= 20f)
         {
             currentIdleTime += Time.deltaTime;
 
             if(currentIdleTime >= idleTime)
             {
                 currentIdleTime = 0;
-                //isFacingRight = !isFacingRight;
+                isFacingRight = !isFacingRight;
+                Jump();
+            }
+        }
+        else if (isIdle && playerDirection().x < 20f)
+        {   
+            if(platformAhead() != Vector2.zero)
+            {
+                Debug.Log(platformAhead());
+                Debug.Log("Da ist eine Plattform!!!");
+
+                Vector2 platformDirection = platformAhead();
+                jumpHeight += Mathf.Abs(platformDirection.y);
+            }
+
+            currentIdleTime += Time.deltaTime;
+
+            if(currentIdleTime >= idleTime)
+            {
+                currentIdleTime = 0;
                 Jump();
             }
         }
 
         if(grounded == true && isJumping == false)
         {
-            //Debug.Log("grounded? " + grounded);
-
             isIdle = true;
             isJumping = false;
             isFalling = false;
@@ -97,15 +118,19 @@ public class Kappa : GroundEnemy
         isIdle = false;
         isJumping = true;
 
-        if (isFacingRight == true /*&& playerDirection().x > 0*/)
+        if (playerDirection().x >= 20f)
         {
-            direction = 1f;
-            CharacterFacingDirection(direction);
-        }
-        else
-        {
-            direction = -1f;
-            CharacterFacingDirection(direction);
+            Debug.Log("Player wird NICHT verfolgt!!!!");
+            if (isFacingRight == true)
+            {
+                direction = 1f;
+                CharacterFacingDirection(direction);
+            }
+            else
+            {
+                direction = -1f;
+                CharacterFacingDirection(direction);
+            }
         }
 
         velocity = new Vector2(6 * direction, jumpHeight);
@@ -114,13 +139,37 @@ public class Kappa : GroundEnemy
         {
             Debug.Log("player wird verfolgt");
             Debug.Log("Playerdirection: " + playerDirection().x);
-            velocity = new Vector2(6 * direction * -playerDirection().x, jumpHeight);
+
+            if(playerDirection().x < 0f)
+            {
+                direction = -1f;
+                //isFacingRight = false;
+                CharacterFacingDirection(direction);
+            }
+            else
+            {
+                direction = 1f;
+                //isFacingRight = true;
+                CharacterFacingDirection(direction);
+            }
+            velocity = new Vector2(6 * playerDirection().x, jumpHeight);
+        }
+    }
+
+    /*bool platformAhead()
+    {
+        RaycastHit2D platformAhead;
+        Debug.DrawRay(new Vector2(transform.position.x + 0.5f, transform.position.y), Vector2.up * 10f);
+        platformAhead = Physics2D.Raycast(new Vector2(transform.position.x + 0.5f, transform.position.y), Vector2.up, 10f, whatIsPlatform);
+
+        if (platformAhead.collider)
+        {
+            return true;
         }
 
-            //Debug.Log("Kappa Jump");
-        
-    }
-    
+        return false;
+    }*/
+
     /*void OnDrawGizmos()
     {
         // Draw a yellow sphere at the transform's position

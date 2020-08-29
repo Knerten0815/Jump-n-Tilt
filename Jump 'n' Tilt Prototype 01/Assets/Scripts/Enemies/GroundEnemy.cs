@@ -12,6 +12,9 @@ public class GroundEnemy : Enemy
     [SerializeField] LayerMask whatIsGround, whatIsWall;
     [SerializeField] public int touchAttackDamage = 1;             //amount of damage, that is distributed on touching the player
     [SerializeField] float attackCooldownTime;
+    [SerializeField] int platformCheckPrecision = 5;
+
+    [SerializeField] LayerMask whatIsPlatform;
 
     public bool hasAttacked = false;
     public float direction;
@@ -20,7 +23,7 @@ public class GroundEnemy : Enemy
     private Coroutine coolroutine;
     private float wallCheckDistance = 0.05f;
     private float groundCheckDistance = 0.3f;
-
+    private float platformCheckDistance = 1f;
 
     protected override void OnEnable()
     {
@@ -42,6 +45,7 @@ public class GroundEnemy : Enemy
         whatIsEnemy = LayerMask.GetMask("Player");
         whatIsGround = LayerMask.GetMask("Platform") | LayerMask.GetMask("Ground");
         whatIsWall = LayerMask.GetMask("Wall");
+        whatIsPlatform = LayerMask.GetMask("Platform");
 
         attackCircle = new GameObject();
         attackCircle.transform.SetParent(transform);
@@ -111,7 +115,7 @@ public class GroundEnemy : Enemy
 
         for (int i = 0; i < wallCheckPrecision; i++)
         {
-            Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
+            //Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
             wallAhead = Physics2D.Raycast(offset, Vector2.right * direction, wallCheckDistance, whatIsWall);
             if (wallAhead.collider)
                 return true;
@@ -152,6 +156,45 @@ public class GroundEnemy : Enemy
         Debug.DrawRay(offsetBehind, Vector2.right * -direction * groundCheckDistance);
 
         return groundAhead.collider || (!groundAhead.collider && slopeBehind.collider);
+    }
+
+    public bool IsPlatformAhead()
+    {
+        RaycastHit2D platformAhead;
+        Vector2 offset = transform.position;
+
+        if (isFacingRight)
+            offset.x += cc2d.bounds.extents.x;
+        else
+            offset.x -= cc2d.bounds.extents.x;
+
+        offset.y -= cc2d.bounds.extents.y;
+        offset.y += cc2d.bounds.size.y / (platformCheckPrecision);
+
+        for (int i = 0; i < platformCheckPrecision; i++)
+        {
+            Debug.DrawRay(offset, Vector2.right * direction * platformCheckDistance);
+            platformAhead = Physics2D.Raycast(offset, Vector2.right * direction, platformCheckDistance, whatIsGround);
+            if (platformAhead.collider)
+                return true;
+            offset.y += cc2d.bounds.size.y / (platformCheckPrecision);
+        }
+
+        return false;
+    }
+
+    public Vector2 platformAhead()
+    {
+        RaycastHit2D platformAhead;
+        Debug.DrawRay(new Vector2(transform.position.x + 2f, transform.position.y), Vector2.up * 5f);
+        platformAhead = Physics2D.Raycast(new Vector2(transform.position.x + 2f, transform.position.y), Vector2.up, 5f, whatIsPlatform);
+
+        if (platformAhead.collider)
+        {
+            return platformAhead.point;
+        }
+
+        return Vector2.zero;
     }
 
     public void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)

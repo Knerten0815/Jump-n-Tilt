@@ -105,6 +105,7 @@ public class Kappa : GroundEnemy
             isFalling = false;
 
             anim.SetBool("isJumping", false);
+            anim.SetBool("isIdle", true);
             jumpStart = true;
         }
         else if(transform.position.y > lastYPos && grounded == false && isIdle == false)
@@ -134,7 +135,7 @@ public class Kappa : GroundEnemy
 
         if (playerDirection().x >= 20f)
         {
-            //Debug.Log("Player wird NICHT verfolgt!!!!");
+            Debug.Log("Player wird NICHT verfolgt!!!!");
             if (isFacingRight == true)
             {
                 direction = 1f;
@@ -150,7 +151,7 @@ public class Kappa : GroundEnemy
 
         if(playerDirection().x < 20f)
         {
-            //Debug.Log("Player wird verfolgt");
+            Debug.Log("Player wird verfolgt");
             if(playerDirection().x < 0f)
             {
                 direction = -1f;
@@ -162,7 +163,9 @@ public class Kappa : GroundEnemy
                 CharacterFacingDirection(direction);
             }
 
-            velocity = new Vector2(15f + direction, jumpHeight);
+            Debug.Log(playerDirection().normalized.x);
+
+            velocity = new Vector2(playerDirection().normalized.x * 15f, jumpHeight);
         }
     }
 

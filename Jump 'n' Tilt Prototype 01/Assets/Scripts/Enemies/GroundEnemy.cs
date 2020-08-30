@@ -197,6 +197,48 @@ public class GroundEnemy : Enemy
         return Vector2.zero;
     }
 
+    public Vector2 platformAheadDirect()
+    {
+        RaycastHit2D platformAhead;
+        Debug.DrawRay(new Vector2(transform.position.x + 1f, transform.position.y), -Vector2.up * 5f);
+        platformAhead = Physics2D.Raycast(new Vector2(transform.position.x + 1f, transform.position.y), -Vector2.up, 5f, whatIsPlatform);
+
+        if (platformAhead.collider)
+        {
+            return platformAhead.point;
+        }
+
+        return Vector2.zero;
+    }
+
+    public Vector2 platformBehind()
+    {
+        RaycastHit2D platformBehind;
+        Debug.DrawRay(new Vector2(transform.position.x - 5f, transform.position.y), Vector2.up * 5f);
+        platformBehind = Physics2D.Raycast(new Vector2(transform.position.x - 5f, transform.position.y), Vector2.up, 5f, whatIsPlatform);
+
+        if (platformBehind.collider)
+        {
+            return platformBehind.point;
+        }
+
+        return Vector2.zero;
+    }
+
+    public Vector2 platformBehindDirect()
+    {
+        RaycastHit2D platformBehind;
+        Debug.DrawRay(new Vector2(transform.position.x - 1f, transform.position.y), -Vector2.up * 5f);
+        platformBehind = Physics2D.Raycast(new Vector2(transform.position.x - 1f, transform.position.y), Vector2.up, 5f, whatIsPlatform);
+
+        if (platformBehind.collider)
+        {
+            return platformBehind.point;
+        }
+
+        return Vector2.zero;
+    }
+
     public void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
     {
         if (hasAttacked == false)

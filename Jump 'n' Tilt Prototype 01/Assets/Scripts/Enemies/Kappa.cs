@@ -13,9 +13,9 @@ public class Kappa : GroundEnemy
     public bool isIdle = true;
     public bool isJumping = false;
     public bool isFalling = false;
+    public bool jumpStart = false;
 
-    //public LayerMask whatIsPlatform = LayerMask.GetMask("Platform");
-
+    private Animator anim;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -23,6 +23,7 @@ public class Kappa : GroundEnemy
         base.Start();
         lastYPos = transform.position.y;
         attackRadius = 1.3f;
+        anim = GetComponent<Animator>();
     }
 
     protected override void ComputeVelocity()
@@ -42,7 +43,7 @@ public class Kappa : GroundEnemy
         }
         //else if (grounded)
         //{
-            else if (IsWallAhead() == true || isGroundAhead() == false)
+            /*else if (IsWallAhead() == true || isGroundAhead() == false)
             {
                 hasAttacked = false;
                 if (isFacingRight == true)
@@ -55,13 +56,13 @@ public class Kappa : GroundEnemy
                     direction = 1;
                     isFacingRight = true;
                 }
-            }
+            }*/
         //}
-
-        
 
         if (isIdle && playerDirection().x >= 20f)
         {
+            jumpHeight = 22;
+
             currentIdleTime += Time.deltaTime;
 
             if(currentIdleTime >= idleTime)
@@ -70,18 +71,24 @@ public class Kappa : GroundEnemy
                 isFacingRight = !isFacingRight;
                 Jump();
             }
+
+           if (IsWallAhead() == true || isGroundAhead() == false)
+            {
+                //hasAttacked = false;
+                if (isFacingRight == true)
+                {
+                    direction = -1;
+                    isFacingRight = false;
+                }
+                else
+                {
+                    direction = 1;
+                    isFacingRight = true;
+                }
+            }
         }
         else if (isIdle && playerDirection().x < 20f)
-        {   
-            if(platformAhead() != Vector2.zero)
-            {
-                Debug.Log(platformAhead());
-                Debug.Log("Da ist eine Plattform!!!");
-
-                Vector2 platformDirection = platformAhead();
-                jumpHeight += Mathf.Abs(platformDirection.y);
-            }
-
+        {
             currentIdleTime += Time.deltaTime;
 
             if(currentIdleTime >= idleTime)
@@ -96,11 +103,18 @@ public class Kappa : GroundEnemy
             isIdle = true;
             isJumping = false;
             isFalling = false;
+
+            anim.SetBool("isJumping", false);
+            jumpStart = true;
         }
         else if(transform.position.y > lastYPos && grounded == false && isIdle == false)
         {
             isJumping = true;
             isFalling = false;
+
+            anim.SetBool("isJumping", true);
+            anim.SetBool("jumpStart", jumpStart);
+            jumpStart = false;
         }
         else if(transform.position.y < lastYPos && grounded == false && isIdle == false)
         {
@@ -120,7 +134,7 @@ public class Kappa : GroundEnemy
 
         if (playerDirection().x >= 20f)
         {
-            Debug.Log("Player wird NICHT verfolgt!!!!");
+            //Debug.Log("Player wird NICHT verfolgt!!!!");
             if (isFacingRight == true)
             {
                 direction = 1f;
@@ -131,28 +145,24 @@ public class Kappa : GroundEnemy
                 direction = -1f;
                 CharacterFacingDirection(direction);
             }
+            velocity = new Vector2(10 * direction, jumpHeight);
         }
-
-        velocity = new Vector2(6 * direction, jumpHeight);
 
         if(playerDirection().x < 20f)
         {
-            Debug.Log("player wird verfolgt");
-            Debug.Log("Playerdirection: " + playerDirection().x);
-
+            //Debug.Log("Player wird verfolgt");
             if(playerDirection().x < 0f)
             {
                 direction = -1f;
-                //isFacingRight = false;
                 CharacterFacingDirection(direction);
             }
             else
             {
                 direction = 1f;
-                //isFacingRight = true;
                 CharacterFacingDirection(direction);
             }
-            velocity = new Vector2(6 * playerDirection().x, jumpHeight);
+
+            velocity = new Vector2(15f + direction, jumpHeight);
         }
     }
 

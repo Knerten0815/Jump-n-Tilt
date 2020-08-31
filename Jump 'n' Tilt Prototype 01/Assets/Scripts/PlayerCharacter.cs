@@ -40,8 +40,6 @@ public class PlayerCharacter : Character
     public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
     public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
-    public float wallJumpTime;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
-    private float wallJumpTimer;
     public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
     public float slideJumpHeightX;          //Jumpheight during sliding
@@ -268,6 +266,16 @@ public class PlayerCharacter : Character
         if (grounded)
             wallJumpTimer = 0;
 
+        if (wallJumpTimer > 0)
+        {
+            wallJumpTimer -= timeController.getSpeedAdjustedDeltaTime();
+
+            if (wallJumpTimer < 0)
+                wallJumpTimer = 0;
+        }
+
+
+
         //Particle system simulation speed
         footstepsMain.simulationSpeed = timeController.getTimeSpeed();
         groundImpactMain.simulationSpeed = timeController.getTimeSpeed();
@@ -492,8 +500,11 @@ public class PlayerCharacter : Character
 
     protected override void Movement(float direction)
     {
-        if (wallJumpTimer <= 0)
-        {
+        //if (wallJumpTimer <= 0.9f * wallJumpTime)
+        //{
+        if (wallJumpTimer < 0)
+            wallJumpTimer = 0;
+
             //if(direction > 0 && slideDirection.x < 0 || direction < 0 && slideDirection.x > 0)
             if (levelController.getTiltStep() > 0 && direction < 0 && slideDirection.x > 0
                 || levelController.getTiltStep() < 0 && direction > 0 && slideDirection.x < 0
@@ -503,7 +514,10 @@ public class PlayerCharacter : Character
                 || levelController.getTiltStep() < 0 && direction < 0 && slideDirection.x > 0
                 || !isSliding)
             {
-                base.Movement(direction);
+            //if (wallJumpTimer < 0.5f * wallJumpTime)
+            //{
+            base.Movement(direction * ((wallJumpTime - wallJumpTimer) / (wallJumpTime)));
+            //}
             }
             else
             {
@@ -511,12 +525,8 @@ public class PlayerCharacter : Character
                 Slide();
             }
 
-            wallJumpTimer = 0;
-        }
-        else
-        {
-            wallJumpTimer -= timeController.getSpeedAdjustedDeltaTime();
-        }
+            //wallJumpTimer = 0;
+        //}
 
         //animDir = Mathf.Abs(direction);
         //animator.SetFloat("animationDirection", animDir);
@@ -586,7 +596,7 @@ public class PlayerCharacter : Character
                 if (cooldown <= 0)
                 {
                     // reset of wallJumpCounter
-                    wallJumpCounter = 2;
+                    wallJumpCounter = 5;
                     lastWallcontact = new RaycastHit2D();
 
                     // cooldown will be set
@@ -629,18 +639,22 @@ public class PlayerCharacter : Character
         }
     }
 
+    //Debugged by Marvin Winkler
     private void WallJump()
     {
+        //resets wallJumpCounter, so there is no limit for wall jumps on the same wall
+        wallJumpCounter = 5;
+
         // player can jump if canJump is true and the location of the lastWallContact is different to the new contact location 'hit' 
         // or if the wallJumpCounter is higher than 0
         if (canJump && (lastWallcontact.point.x != hit.point.x || (wallJumpCounter > 0))) //Player springt ab
         {
             // if he location of the lastWallContact is different to the new contact location 'hit' 
-            if (lastWallcontact.point.x != hit.point.x)
-            {
+            //if (lastWallcontact.point.x != hit.point.x)
+            //{
                 // wallJumpCounter is reset
-                wallJumpCounter = 2;
-            }
+                //wallJumpCounter = 2;
+            //}
             
             wallSliding = false;
             jumpCountLeft--;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AudioControlling;
 
 // Author: Nicole Mynarek
 public class Kappa : GroundEnemy
@@ -15,6 +16,9 @@ public class Kappa : GroundEnemy
     public bool isFalling = false;
     public bool jumpStart = false;
     public float jumpDistance;
+
+    public Audio kappaJump;
+    public Audio kappaHit;
 
     private Animator anim;
 
@@ -49,6 +53,7 @@ public class Kappa : GroundEnemy
             {
                 currentIdleTime = 0;
                 //Jump();
+
             }
                 }
 
@@ -80,7 +85,6 @@ public class Kappa : GroundEnemy
         lastYPos = transform.position.y;
 
         airMovement();
-
     }
 
     protected override void Jump()
@@ -102,6 +106,7 @@ public class Kappa : GroundEnemy
             }
 
             velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
+        AudioController.Instance.playFXSound(kappaJump);
         }
 
     void airMovement()

@@ -49,7 +49,7 @@ public class Oni : GroundEnemy
 
             moveSpeed = attackSpeed;
             if (!anim.GetBool("isAttacking"))                
-                //AudioController.Instance.playFXSound(oniAttack);
+                AudioController.Instance.playFXSound(oniAttack);
             
             anim.SetBool("isAttacking", true);
             anim.SetBool("isSliding", false);

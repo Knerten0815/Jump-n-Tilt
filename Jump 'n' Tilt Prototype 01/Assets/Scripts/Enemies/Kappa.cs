@@ -30,12 +30,6 @@ public class Kappa : GroundEnemy
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
-        Debug.DrawRay(transform.position, velocity);
-        //Debug.Log("position: " + transform.position);
-        //Debug.Log("Velocity: " + velocity);
-        //Debug.Log("playerdirection: " + playerDirection().normalized);
-        Debug.Log("isSliding? " + isSliding);
-        Debug.Log("isGrounded? " + grounded);
 
         //patrol
         if (isSliding)
@@ -54,7 +48,7 @@ public class Kappa : GroundEnemy
             if(currentIdleTime >= idleTime)
             {
                 currentIdleTime = 0;
-                Jump();
+                //Jump();
             }
                 }
 
@@ -121,10 +115,26 @@ public class Kappa : GroundEnemy
         }
     }
 
-    void OnDrawGizmos()
+    public override void TakeDamage(int damage, Vector2 direction)
     {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(attackPos.position, attackRadius);
-}
+        if (direction.x < 0  && !isFacingRight)
+        {
+            base.TakeDamage(1, direction);
+            AudioController.Instance.playFXSound(kappaHit);
+        }
+        else
+        {
+            AudioController.Instance.playFXSound(kappaBlock);
+        } 
+        
+        if (direction.x > 0 && isFacingRight)
+        {
+            base.TakeDamage(1, direction);
+            AudioController.Instance.playFXSound(kappaHit);
+        }
+        else
+        {
+            AudioController.Instance.playFXSound(kappaBlock);
+        }
+    }
 }

@@ -14,6 +14,7 @@ public class Kappa : GroundEnemy
     public bool isJumping = false;
     public bool isFalling = false;
     public bool jumpStart = false;
+    public float jumpDistance;
 
     private Animator anim;
 
@@ -29,8 +30,12 @@ public class Kappa : GroundEnemy
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
-
-        //Debug.Log("isSliding? " + isSliding);
+        Debug.DrawRay(transform.position, velocity);
+        //Debug.Log("position: " + transform.position);
+        //Debug.Log("Velocity: " + velocity);
+        //Debug.Log("playerdirection: " + playerDirection().normalized);
+        Debug.Log("isSliding? " + isSliding);
+        Debug.Log("isGrounded? " + grounded);
 
         //patrol
         if (isSliding)
@@ -41,53 +46,8 @@ public class Kappa : GroundEnemy
             Slide();
             //Debug.Log("Kappa slided");
         }
-        //else if (grounded)
-        //{
-            /*else if (IsWallAhead() == true || isGroundAhead() == false)
-            {
-                hasAttacked = false;
-                if (isFacingRight == true)
-                {
-                    direction = -1;
-                    isFacingRight = false;
-                }
-                else
-                {
-                    direction = 1;
-                    isFacingRight = true;
-                }
-            }*/
-        //}
 
-        if (isIdle && playerDirection().x >= 20f)
-        {
-            jumpHeight = 22;
-
-            currentIdleTime += Time.deltaTime;
-
-            if(currentIdleTime >= idleTime)
-            {
-                currentIdleTime = 0;
-                isFacingRight = !isFacingRight;
-                Jump();
-            }
-
-           if (IsWallAhead() == true || isGroundAhead() == false)
-            {
-                //hasAttacked = false;
-                if (isFacingRight == true)
-                {
-                    direction = -1;
-                    isFacingRight = false;
-                }
-                else
-                {
-                    direction = 1;
-                    isFacingRight = true;
-                }
-            }
-        }
-        else if (isIdle && playerDirection().x < 20f)
+        if (isIdle && playerDirection().x < 20f && !isSliding)
         {
             currentIdleTime += Time.deltaTime;
 
@@ -124,6 +84,9 @@ public class Kappa : GroundEnemy
         }
 
         lastYPos = transform.position.y;
+
+        airMovement();
+
     }
 
     protected override void Jump()
@@ -133,25 +96,6 @@ public class Kappa : GroundEnemy
         isIdle = false;
         isJumping = true;
 
-        if (playerDirection().x >= 20f)
-        {
-            Debug.Log("Player wird NICHT verfolgt!!!!");
-            if (isFacingRight == true)
-            {
-                direction = 1f;
-                CharacterFacingDirection(direction);
-            }
-            else
-            {
-                direction = -1f;
-                CharacterFacingDirection(direction);
-            }
-            velocity = new Vector2(10 * direction, jumpHeight);
-        }
-
-        if(playerDirection().x < 20f)
-        {
-            Debug.Log("Player wird verfolgt");
             if(playerDirection().x < 0f)
             {
                 direction = -1f;
@@ -163,30 +107,24 @@ public class Kappa : GroundEnemy
                 CharacterFacingDirection(direction);
             }
 
-            Debug.Log(playerDirection().normalized.x);
+            velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
+    }
 
-            velocity = new Vector2(playerDirection().normalized.x * 15f, jumpHeight);
+    void airMovement()
+    {
+        //Debug.Log("Air movement wird aufgerufen");
+        if (!grounded && direction != 0 && velocity.magnitude < maxAirMovementSpeed && !isSliding)
+        {
+            velocity += (direction * moveWhileJumping) * Vector2.right * (1 - wallJumpTime) * (1 / ((0.1f + Mathf.Abs(velocity.x) * 0.5f))); //velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude) * (1 - wallJumpTime), velocity.y);
+            isSliding = false;
+            //Debug.Log("Airmovement funktioniert?");
         }
     }
 
-    /*bool platformAhead()
-    {
-        RaycastHit2D platformAhead;
-        Debug.DrawRay(new Vector2(transform.position.x + 0.5f, transform.position.y), Vector2.up * 10f);
-        platformAhead = Physics2D.Raycast(new Vector2(transform.position.x + 0.5f, transform.position.y), Vector2.up, 10f, whatIsPlatform);
-
-        if (platformAhead.collider)
-        {
-            return true;
-        }
-
-        return false;
-    }*/
-
-    /*void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         // Draw a yellow sphere at the transform's position
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(attackPos.position, attackRadius);
-    }*/
+    }
 }

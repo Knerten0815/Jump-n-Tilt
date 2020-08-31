@@ -13,7 +13,8 @@ public class Character : PhysicsObject
     public float jumpHeightReducer;      // Reduces jump height, if button is pressed shortly
     public float moveWhileJumping;         // Movement value while jumping
     public float airResistance;              //by Marvin Winkler, 1 no resistance, 0 no movement possible (x-axis dampening wile in the air)
-    protected float wallJumpTime;             //by Marvin Winkler, used so that midAir movement does not overreide the wall jump
+    public float wallJumpTime;             //by Marvin Winkler, used so that midAir movement does not overreide the wall jump
+    protected float wallJumpTimer;
     public float wallJumpTimeSpeed;           //by Marvin Winkler, used to adjust the time less midair movement is possible after a wall jump
     public float maxAirMovementSpeed;          //by Marvin Winkler, maximum horizontal air movement speed
 
@@ -46,7 +47,6 @@ public class Character : PhysicsObject
     protected override void OnEnable()
     {
         base.OnEnable();
-        wallJumpTime = 0;
         isDead = false;
         posBuffer = new Vector2(transform.localPosition.x, transform.localPosition.y);
     }
@@ -73,14 +73,14 @@ public class Character : PhysicsObject
         //    Destroy(gameObject);
         //}
 
-        if (wallJumpTime < 0)
-        {
-            wallJumpTime = 0;
-        }
-        else if(wallJumpTime > 0)
-        {
-            wallJumpTime -= (1 - wallJumpTime * 0.99f) * timeController.getSpeedAdjustedDeltaTime() * wallJumpTimeSpeed;
-        }
+        //if (wallJumpTime < 0)
+        //{
+        //    wallJumpTime = 0;
+        //}
+        //else if(wallJumpTime > 0)
+        //{
+        //    wallJumpTime -= (1 - wallJumpTime * 0.99f) * timeController.getSpeedAdjustedDeltaTime() * wallJumpTimeSpeed;
+        //}
 
         isSliding = false;
 
@@ -123,13 +123,13 @@ public class Character : PhysicsObject
         //}
         //}
 
-
         // if player is in the air and gives input, the player can move left or right
-        if (!grounded && moveDirection != 0 && velocity.magnitude < maxAirMovementSpeed && !isSliding)
+        if (!grounded && velocity.magnitude < maxAirMovementSpeed && !isSliding || wallJumpTimer > 0)
         {
-            velocity += (moveDirection * moveWhileJumping) * Vector2.right * (1 - wallJumpTime) * (1 / ((0.1f + Mathf.Abs(velocity.x) * 0.5f))); //velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude) * (1 - wallJumpTime), velocity.y);
+            velocity += (moveDirection * moveWhileJumping) * Vector2.right * (1 / ((0.1f + Mathf.Abs(velocity.x) * 0.5f))); //velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude) * (1 - wallJumpTime), velocity.y);
             isSliding = false;
         }
+
         //Here velocity gets a new vector, therefore the speed/direction change happens instantly, there is no excelleration time
         else if (!isSliding)
         {

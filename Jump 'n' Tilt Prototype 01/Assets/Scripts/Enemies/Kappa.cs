@@ -18,7 +18,7 @@ public class Kappa : GroundEnemy
     public float jumpDistance;
 
     public Audio kappaJump;
-    public Audio kappaHit;
+    public Audio kappaHit, kappaBlock;
 
     private Animator anim;
 
@@ -52,10 +52,9 @@ public class Kappa : GroundEnemy
             if(currentIdleTime >= idleTime)
             {
                 currentIdleTime = 0;
-                //Jump();
-
+                Jump();
             }
-                }
+        }
 
         if(grounded == true && isJumping == false)
         {
@@ -122,20 +121,10 @@ public class Kappa : GroundEnemy
 
     public override void TakeDamage(int damage, Vector2 direction)
     {
-        if (direction.x < 0  && !isFacingRight)
+        if (direction.x < 0  && !isFacingRight || direction.x > 0 && isFacingRight || isSliding)
         {
-            base.TakeDamage(1, direction);
             AudioController.Instance.playFXSound(kappaHit);
-        }
-        else
-        {
-            AudioController.Instance.playFXSound(kappaBlock);
-        } 
-        
-        if (direction.x > 0 && isFacingRight)
-        {
-            base.TakeDamage(1, direction);
-            AudioController.Instance.playFXSound(kappaHit);
+            base.TakeDamage(1, -direction);
         }
         else
         {

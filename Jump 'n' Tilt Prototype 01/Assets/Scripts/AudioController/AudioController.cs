@@ -46,8 +46,7 @@ namespace AudioControlling
             }
 
             //initalizing variables
-            gameObject.AddComponent<AudioSource>();
-            source = GetComponent<AudioSource>();
+            source = gameObject.AddComponent<AudioSource>();
             source.clip = music.clip;
             source.volume = music.volume;
             source.Play();

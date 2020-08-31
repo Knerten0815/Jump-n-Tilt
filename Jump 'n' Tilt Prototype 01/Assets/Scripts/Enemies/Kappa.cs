@@ -61,7 +61,7 @@ public class Kappa : GroundEnemy
 
         if (isIdle && playerDirection().x >= 20f)
         {
-            jumpHeight = 22;
+            //jumpHeight = 22;
 
             currentIdleTime += Time.deltaTime;
 

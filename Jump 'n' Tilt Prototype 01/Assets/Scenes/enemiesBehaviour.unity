@@ -1008,7 +1008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &69621181
 Transform:
   m_ObjectHideFlags: 0
@@ -3971,7 +3971,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &276813983
 Animator:
   serializedVersion: 3
@@ -8253,7 +8253,7 @@ GameObject:
   - component: {fileID: 707090062}
   - component: {fileID: 707090061}
   - component: {fileID: 707090060}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Oni
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8268,7 +8268,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 707090058}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.440002, y: -3.19, z: 0}
+  m_LocalPosition: {x: 64.56, y: -3.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1336185930}
@@ -8312,6 +8312,7 @@ MonoBehaviour:
   jumpHeightReducer: 0
   moveWhileJumping: 0
   airResistance: 0
+  wallJumpTime: 0
   wallJumpTimeSpeed: 0
   maxAirMovementSpeed: 0
   onWall: 0
@@ -11041,7 +11042,7 @@ GameObject:
   - component: {fileID: 956939701}
   - component: {fileID: 956939704}
   - component: {fileID: 956939705}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Kappa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11084,6 +11085,7 @@ MonoBehaviour:
   jumpHeightReducer: 0
   moveWhileJumping: 1.3
   airResistance: 0
+  wallJumpTime: 0
   wallJumpTimeSpeed: 0
   maxAirMovementSpeed: 5
   onWall: 0
@@ -11119,12 +11121,18 @@ MonoBehaviour:
   cc2d: {fileID: 956939701}
   lastYPos: 0
   idleTime: 1
-  currentIdleTime: 0.2
+  currentIdleTime: 2
   isIdle: 0
   isJumping: 0
   isFalling: 0
   jumpStart: 0
   jumpDistance: 10
+  kappaJump:
+    clip: {fileID: 8300000, guid: f5df74967ddf81b4db8c87faa04a6cc7, type: 3}
+    volume: 1
+  kappaHit:
+    clip: {fileID: 0}
+    volume: 0
 --- !u!70 &956939701
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -12563,7 +12571,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1112653752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14453,6 +14461,7 @@ MonoBehaviour:
   jumpHeightReducer: 0.5
   moveWhileJumping: 1.3
   airResistance: 0.002
+  wallJumpTime: 0.22
   wallJumpTimeSpeed: 1
   maxAirMovementSpeed: 11
   onWall: 0
@@ -14488,7 +14497,6 @@ MonoBehaviour:
   wallSliding: 0
   wallSlidingSpeed: 0.333
   facingDirection: 1
-  wallJumpTime: 0.22
   wallJumpSpeed: 16
   slideJumpHeightX: 0
   slideJumpHeightY: 0
@@ -14850,7 +14858,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1337163000
 Transform:
   m_ObjectHideFlags: 0
@@ -14973,8 +14981,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 088e2117064892e47a26f94c35f11bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSlider: {fileID: 0}
-  fxSlider: {fileID: 0}
+  musicSlider: {fileID: 9385037}
+  fxSlider: {fileID: 783577697}
   music:
     clip: {fileID: 8300000, guid: 133e8f153d9b8c746bb07930fb0f0cae, type: 3}
     volume: 0
@@ -21521,7 +21529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1526461033
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11131,8 +11131,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: f5df74967ddf81b4db8c87faa04a6cc7, type: 3}
     volume: 1
   kappaHit:
-    clip: {fileID: 0}
-    volume: 0
+    clip: {fileID: 8300000, guid: 2fa2bc16f3ade1842a4a1c0b875bad63, type: 3}
+    volume: 1
+  kappaBlock:
+    clip: {fileID: 8300000, guid: 89ab742d5f9be0e47907de18f9f3bd23, type: 3}
+    volume: 1
 --- !u!70 &956939701
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -14985,7 +14988,7 @@ MonoBehaviour:
   fxSlider: {fileID: 783577697}
   music:
     clip: {fileID: 8300000, guid: 133e8f153d9b8c746bb07930fb0f0cae, type: 3}
-    volume: 0
+    volume: 1
 --- !u!1 &1343065935
 GameObject:
   m_ObjectHideFlags: 0

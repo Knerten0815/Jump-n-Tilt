@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9648815371af94a944da0618baed14, type: 3}
+  m_Name: Oni
+  m_EditorClassIdentifier: 
+  name: Oni
+  title: Oni
+  description: Ferocious beasts, that haunt the dreams of their prey long before
+    they start to finally hunt it down. When one of these visits you in your sleep,
+    take the precious time you have left to come clean with those close to you and
+    settle old vendettas. Maybe they will loose the taste for you.
+  artwork: {fileID: 0}

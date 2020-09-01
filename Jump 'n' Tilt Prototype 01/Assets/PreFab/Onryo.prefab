@@ -179,34 +179,44 @@ MonoBehaviour:
   minJumpNormalY: 0
   gravityModifier: 0
   dampening: 0
-  maxSpeed: 20
+  maxSpeed: 5
   moveSpeed: 1.3
   jumpHeight: 0
   jumpHeightReducer: 0
   moveWhileJumping: 0
   airResistance: 0
+  wallJumpTime: 0
   wallJumpTimeSpeed: 0
   maxAirMovementSpeed: 0
   onWall: 0
   slideSpeed: 0
   slideBackwardsMaxSpeed: 0
-  slideSpeedChange: 0
   slideDirection: {x: 0, y: 0}
   isFacingRight: 0
+  slideDampeningFactor: 0
   attackPos: {fileID: 8695302587272717332}
   attackRadius: 1
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2048
   health: 1
-  knockback: 2
-  knockup: 0.5
+  knockback: -10
+  knockup: 5
   gravityCounter: 4
   velY: 1
   waitTime: 0
   roamPos: {x: 5, y: 0}
   movesRight: 1
   hasAttacked: 0
+  onryoIdle:
+    clip: {fileID: 8300000, guid: 34b52a6b07b26c14397fce9c9b8fc9eb, type: 3}
+    volume: 1
+  onryoHit:
+    clip: {fileID: 8300000, guid: d971b8bc5e2475e47b0de4e587ad023e, type: 3}
+    volume: 1
+  onryoDeath:
+    clip: {fileID: 8300000, guid: bdd761f98b9e54c42a741744f82933ac, type: 3}
+    volume: 1
 --- !u!95 &8695302587430117917
 Animator:
   serializedVersion: 3

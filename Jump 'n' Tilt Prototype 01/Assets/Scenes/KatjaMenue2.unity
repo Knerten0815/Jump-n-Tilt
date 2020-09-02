@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2019,7 +2019,7 @@ GameObject:
   - component: {fileID: 185278435}
   - component: {fileID: 185278434}
   m_Layer: 5
-  m_Name: Human Enemy
+  m_Name: Humans
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2092,8 +2092,19 @@ MonoBehaviour:
         m_MethodName: GetCollectibles
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 1701441280}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 185278438}
+        m_MethodName: SetCard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2159,8 +2170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4219fd36b4e7942beb0b5fbdcf605b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  display: {fileID: 0}
-  collectible: {fileID: 0}
+  display: {fileID: 1910962730}
 --- !u!1 &198943869
 GameObject:
   m_ObjectHideFlags: 0
@@ -6926,7 +6936,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   display: {fileID: 1910962730}
-  collectible: {fileID: 0}
 --- !u!1 &610855767
 GameObject:
   m_ObjectHideFlags: 0
@@ -7468,7 +7477,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   display: {fileID: 1910962730}
-  collectible: {fileID: 0}
 --- !u!1 &668720892
 GameObject:
   m_ObjectHideFlags: 0
@@ -16172,8 +16180,19 @@ MonoBehaviour:
         m_MethodName: GetCollectibles
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 1701441280}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1477727534}
+        m_MethodName: SetCard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -16239,8 +16258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4219fd36b4e7942beb0b5fbdcf605b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  display: {fileID: 0}
-  collectible: {fileID: 0}
+  display: {fileID: 1910962730}
 --- !u!1 &1478163045
 GameObject:
   m_ObjectHideFlags: 0
@@ -17029,7 +17047,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   display: {fileID: 1910962730}
-  collectible: {fileID: 0}
 --- !u!1 &1548651266
 GameObject:
   m_ObjectHideFlags: 0
@@ -20067,7 +20084,7 @@ MonoBehaviour:
         m_MethodName: GetCollectibles
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 1701441280}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -20145,8 +20162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4219fd36b4e7942beb0b5fbdcf605b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  display: {fileID: 0}
-  collectible: {fileID: 0}
+  display: {fileID: 1910962730}
 --- !u!1 &1729713707
 GameObject:
   m_ObjectHideFlags: 0
@@ -20730,8 +20746,19 @@ MonoBehaviour:
         m_MethodName: GetCollectibles
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 1701441280}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1825397346}
+        m_MethodName: SetCard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -20797,8 +20824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4219fd36b4e7942beb0b5fbdcf605b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  display: {fileID: 0}
-  collectible: {fileID: 0}
+  display: {fileID: 1910962730}
 --- !u!1 &1853441778
 GameObject:
   m_ObjectHideFlags: 0
@@ -21222,8 +21248,19 @@ MonoBehaviour:
         m_MethodName: GetCollectibles
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 1701441280}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1904392454}
+        m_MethodName: SetCard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -21289,8 +21326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4219fd36b4e7942beb0b5fbdcf605b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  display: {fileID: 0}
-  collectible: {fileID: 0}
+  display: {fileID: 1910962730}
 --- !u!1 &1910962729
 GameObject:
   m_ObjectHideFlags: 0
@@ -21338,11 +21374,6 @@ MonoBehaviour:
   - {fileID: 1325497653}
   - {fileID: 810428814}
   continueButton: {fileID: 1060621388}
-  cards:
-  - {fileID: 11400000, guid: 9fc52cc835ee9ae45ade1f24089f1241, type: 2}
-  - {fileID: 11400000, guid: 52e5ead5e9261e74db6382185995a545, type: 2}
-  - {fileID: 11400000, guid: 5db772ffa916e1b4b86e25582f26f2c2, type: 2}
-  Names: []
   image: {fileID: 198943871}
 --- !u!4 &1910962731
 Transform:
@@ -21446,7 +21477,7 @@ MonoBehaviour:
         m_MethodName: GetCollectibles
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 1701441280}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -21524,8 +21555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4219fd36b4e7942beb0b5fbdcf605b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  display: {fileID: 0}
-  collectible: {fileID: 0}
+  display: {fileID: 1910962730}
 --- !u!1 &1922642916
 GameObject:
   m_ObjectHideFlags: 0

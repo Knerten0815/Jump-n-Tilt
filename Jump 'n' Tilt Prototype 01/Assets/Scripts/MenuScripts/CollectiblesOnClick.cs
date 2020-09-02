@@ -7,7 +7,7 @@ using TMPro;
 public class CollectiblesOnClick : MonoBehaviour
 {
     public DisplayCollectible display;
-    public CollectibleCard collectible;
+
     public void GetCollectibles(GameObject collected)
     {
         if(this.GetComponentInChildren<TextMeshProUGUI>().text != "???")

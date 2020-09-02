@@ -158,6 +158,12 @@ public class ManagementSystem : MonoBehaviour
         collectiblesGathered.Add(0);
         collectiblesGathered.Add(1);
         collectiblesGathered.Add(2);
+        collectiblesGathered.Add(3);
+        collectiblesGathered.Add(4);
+        collectiblesGathered.Add(5);
+        collectiblesGathered.Add(6);
+        collectiblesGathered.Add(7);
+        collectiblesGathered.Add(8);
         save.collectiblesGathered = collectiblesGathered;
         save.currentLevel = 1;
         save.Highscore = Highscore;

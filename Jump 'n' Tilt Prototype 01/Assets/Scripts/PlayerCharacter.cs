@@ -40,10 +40,10 @@ public class PlayerCharacter : Character
     public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
     public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
-    public float wallJumpTime;             //by Marvin Winkler, determines how long mid air movemnet is disabled after a wall jump
-    private float wallJumpTimer;
     public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
+    public float slideJumpHeightX;          //Jumpheight during sliding
+    public float slideJumpHeightY;
 
     private BoxCollider2D collider;
 
@@ -110,6 +110,7 @@ public class PlayerCharacter : Character
 
         animator = GetComponent<Animator>();
         jumpStart = true;
+        jumpCountLeft = jumpCount;
         justTookDamage = false;
         deadFishTimer = -101;
         sloMoTimer = -100;
@@ -121,6 +122,7 @@ public class PlayerCharacter : Character
 
         ManagementSystem.healthPickUpHit += addHealth;
         ManagementSystem.timePickUpHit += addTimePickup;
+
 
         //PlayerInput.onHorizontalDown += disableSliding;
         //PlayerInput.onJumpButtonDown += disableSliding;
@@ -183,6 +185,7 @@ public class PlayerCharacter : Character
     // Author: Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
+
         moveDirection = Input.GetAxis("Horizontal");
         if(!isDead)
             base.ComputeVelocity();
@@ -229,15 +232,21 @@ public class PlayerCharacter : Character
         {
             cooldown -= Time.deltaTime;
         }
-        if (!isDead)
-            WallSliding();
-
-        onWall = false;
 
         if (touchesWall && levelController.getTiltStep() != 0)
         {
             onWall = true;
         }
+        else
+        {
+            onWall = false;
+        }
+
+        if (!isDead)
+            WallSliding();
+
+        if (wallSliding)
+            isSliding = false;
         
         //SloMoTime powerup
         if(sloMoTimer >= 0)
@@ -257,6 +266,16 @@ public class PlayerCharacter : Character
         if (grounded)
             wallJumpTimer = 0;
 
+        if (wallJumpTimer > 0)
+        {
+            wallJumpTimer -= timeController.getSpeedAdjustedDeltaTime();
+
+            if (wallJumpTimer < 0)
+                wallJumpTimer = 0;
+        }
+
+
+
         //Particle system simulation speed
         footstepsMain.simulationSpeed = timeController.getTimeSpeed();
         groundImpactMain.simulationSpeed = timeController.getTimeSpeed();
@@ -272,7 +291,6 @@ public class PlayerCharacter : Character
             TakeDamage(1, hitDirectionTest2D);
         }
         //+++
-
     }
 
     //Author: Marvin Winkler
@@ -482,16 +500,24 @@ public class PlayerCharacter : Character
 
     protected override void Movement(float direction)
     {
-        if (wallJumpTimer <= 0)
-        {
+        //if (wallJumpTimer <= 0.9f * wallJumpTime)
+        //{
+        if (wallJumpTimer < 0)
+            wallJumpTimer = 0;
+
             //if(direction > 0 && slideDirection.x < 0 || direction < 0 && slideDirection.x > 0)
             if (levelController.getTiltStep() > 0 && direction < 0 && slideDirection.x > 0
                 || levelController.getTiltStep() < 0 && direction > 0 && slideDirection.x < 0
-                || levelController.getTiltStep() == 0
+                || levelController.getTiltStep() == 0 && direction > 0 && slideDirection.x < 0
+                || levelController.getTiltStep() == 0 && direction < 0 && slideDirection.x > 0
                 || levelController.getTiltStep() > 0 && direction > 0 && slideDirection.x < 0
-                || levelController.getTiltStep() < 0 && direction < 0 && slideDirection.x > 0)
+                || levelController.getTiltStep() < 0 && direction < 0 && slideDirection.x > 0
+                || !isSliding)
             {
-                base.Movement(direction);
+            //if (wallJumpTimer < 0.5f * wallJumpTime)
+            //{
+            base.Movement(direction * ((wallJumpTime - wallJumpTimer) / (wallJumpTime)));
+            //}
             }
             else
             {
@@ -499,12 +525,8 @@ public class PlayerCharacter : Character
                 Slide();
             }
 
-            wallJumpTimer = 0;
-        }
-        else
-        {
-            wallJumpTimer -= timeController.getSpeedAdjustedDeltaTime();
-        }
+            //wallJumpTimer = 0;
+        //}
 
         //animDir = Mathf.Abs(direction);
         //animator.SetFloat("animationDirection", animDir);
@@ -514,7 +536,7 @@ public class PlayerCharacter : Character
     private void WallSliding()
     {
         // checking if player touches wall (for wallSliding, wallJump), touchesWall is a bool
-        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsWall) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsWall));  
+        touchesWall = (Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance, whatIsWall) || Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance, whatIsWall));
 
         // if player touches wall and is in air, wallSliding is true
         if (touchesWall && !grounded && velocity.y < 0)
@@ -537,7 +559,14 @@ public class PlayerCharacter : Character
     // Method overridden, double jump is possible now
     protected override void Jump()
     {
-        jumpBufferTimer = jumpBuffer;
+        if (onWall) //only when on wall and level is tilted
+            return;
+
+        if (!touchesWall && !grounded && jumpCountLeft <= 0)
+        {
+            jumpBufferTimer = jumpBuffer;
+            return;
+        }
 
         // if touchesWall is true, player can do a wallJump
         if (wallSliding)
@@ -549,6 +578,14 @@ public class PlayerCharacter : Character
                 hit = lastWallcontact;
             }
             WallJump();
+            if((hit.point - new Vector2(transform.position.x, transform.position.y)).x < 0)
+            {
+                CharacterFacingDirection(1);
+            }
+            else
+            {
+                CharacterFacingDirection(-1);
+            }
         }
         else
         {
@@ -559,14 +596,21 @@ public class PlayerCharacter : Character
                 if (cooldown <= 0)
                 {
                     // reset of wallJumpCounter
-                    wallJumpCounter = 2;
+                    wallJumpCounter = 5;
                     lastWallcontact = new RaycastHit2D();
 
                     // cooldown will be set
                     cooldown = jumpCooldownTime;
 
                     //base.Jump();
-                    velocity = new Vector2(Input.GetAxis("Horizontal") * maxAirMovementSpeed, jumpHeight);
+                    if (isSliding)
+                    {
+                        velocity = new Vector2(velocity.x + slideDirection.x * slideJumpHeightX, slideJumpHeightY);
+                    }
+                    else
+                    {
+                        velocity = new Vector2(moveDirection * maxAirMovementSpeed, jumpHeight);
+                    }
 
                     // jumpCountLeft will be reset
                     jumpCountLeft = jumpCount;
@@ -586,25 +630,31 @@ public class PlayerCharacter : Character
                 // cooldown is set
                 cooldown = jumpCooldownTime;
                 //base.Jump();
-                velocity = new Vector2(Input.GetAxis("Horizontal") * maxAirMovementSpeed, jumpHeight);
+
+                    velocity = new Vector2(velocity.x + moveDirection * moveWhileJumping, jumpHeight);
+
                 jumpCountLeft--;
 
             }
         }
     }
 
+    //Debugged by Marvin Winkler
     private void WallJump()
     {
+        //resets wallJumpCounter, so there is no limit for wall jumps on the same wall
+        wallJumpCounter = 5;
+
         // player can jump if canJump is true and the location of the lastWallContact is different to the new contact location 'hit' 
         // or if the wallJumpCounter is higher than 0
         if (canJump && (lastWallcontact.point.x != hit.point.x || (wallJumpCounter > 0))) //Player springt ab
         {
             // if he location of the lastWallContact is different to the new contact location 'hit' 
-            if (lastWallcontact.point.x != hit.point.x)
-            {
+            //if (lastWallcontact.point.x != hit.point.x)
+            //{
                 // wallJumpCounter is reset
-                wallJumpCounter = 2;
-            }
+                //wallJumpCounter = 2;
+            //}
             
             wallSliding = false;
             jumpCountLeft--;
@@ -758,7 +808,7 @@ public class PlayerCharacter : Character
 
     protected override void Slide()
     {
-        if(velocity.magnitude > slideBackwardsMaxSpeed && slideAttackCooldownTimer <= 0)
+        if(velocity.magnitude > slideBackwardsMaxSpeed && slideAttackCooldownTimer <= 0 && isSliding)
         {
             slideAttackCooldownTimer = slideAttackCooldown;
             animatedAttack = false;

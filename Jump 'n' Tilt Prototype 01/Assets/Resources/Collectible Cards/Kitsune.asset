@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e9648815371af94a944da0618baed14, type: 3}
   m_Name: Kitsune
   m_EditorClassIdentifier: 
-  name: 
-  title: 
-  description: 
-  artwork: {fileID: 0}
+  name: Kitsune
+  title: Kitsune
+  description: Kitsune are supernatural mythical creatures in the shape of a fox.
+    They are shape-shifters and messengers of good luck to the gods. But not everyone
+    has good intentions. Like the Nogitsune, the evil race of those mystical fox
+    spirits. They are deceitful and malicious and enjoy driving people mad. But what
+    makes Kitsune special is the number of their tails, which give them power. The
+    older they are, the more they grow. With nine tails they have reached their maximum
+    power.
+  artwork: {fileID: 21300000, guid: e78aa324a4fbc7945bf074138b699006, type: 3}

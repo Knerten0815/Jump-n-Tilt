@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Onryo
   title: Onyro
-  description: These wretched creatures roam the air and cast down on unwary passengers.
-    They are attracted to everything shiny and bear a deep desire to own it. Unfortunately,
-    they not only take what they are craving, but also the life of those who happen
-    to carry it.
-  artwork: {fileID: 0}
+  description: Vengeful spirits, forcibly torn from their lives, their thirst for
+    revenge unquenched. These are Onryo. These deceased souls were denied their revenge
+    by death, which is why they cannot rest in peace, and why they haunt the world
+    of the living in rage. They especially curse their human enemies. They torture
+    them and cause suffering. Even when their soul has found rest, their curses remain
+    for years.
+  artwork: {fileID: 21300000, guid: f29621ffdbff2f44383d4c41926beb09, type: 3}

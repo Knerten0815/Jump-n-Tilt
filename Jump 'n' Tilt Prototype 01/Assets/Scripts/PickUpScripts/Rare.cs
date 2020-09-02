@@ -43,7 +43,6 @@ public class Rare: MonoBehaviour, PickUpDescriptor
         
             if (collectibleID == numberID)
                 {
-                Debug.Log("HALLO " + numberID);
                 //gameObject.SetActive(false);
                 Common common = gameObject.AddComponent(typeof(Common)) as Common;
                 common.Value=40;

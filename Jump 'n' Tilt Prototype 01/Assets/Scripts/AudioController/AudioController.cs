@@ -82,7 +82,7 @@ namespace AudioControlling
 
             //subscribing to events
             TimeController.onTimeSpeedChange += slowDownAudio;
-            PlayerInput.onSlowMoDown += slowDownAudio;
+            //PlayerInput.onSlowMoDown += slowDownAudio;
         }
 
         public void SaveSoundSettings()
@@ -104,7 +104,7 @@ namespace AudioControlling
         private void OnDisable()
         {
             TimeController.onTimeSpeedChange -= slowDownAudio;
-            PlayerInput.onSlowMoDown -= slowDownAudio;
+            //PlayerInput.onSlowMoDown -= slowDownAudio;
         }
 
         //Audio slow down for bullet time

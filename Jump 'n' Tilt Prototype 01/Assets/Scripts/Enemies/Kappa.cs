@@ -50,13 +50,13 @@ public class Kappa : GroundEnemy
             anim.SetBool("slideStart", slideStart);
             slideStart = false;
         }
-        else if (!isSliding)
+        else
         {
             anim.SetBool("isSliding", false);
             slideStart = true;
         }
 
-        if (isIdle && playerDirection().x < 20f && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
+        if (isIdle && Mathf.Abs(playerDirection().x) < 20f && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
         {
             currentIdleTime += Time.deltaTime;
 
@@ -106,31 +106,29 @@ public class Kappa : GroundEnemy
 
         if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
         {
-            airMovement();
-        }
+        airMovement();
     }
-
+    }
     protected override void Jump()
-    {
-        
+    {        
         isSliding = false;
         isIdle = false;
         isJumping = true;
 
-        if(playerDirection().x < 0f)
-        {
-            direction = -1f;
-            CharacterFacingDirection(direction);
-        }
-        else
-        {
-            direction = 1f;
-            CharacterFacingDirection(direction);
-        }
+            if(playerDirection().x < 0f)
+            {
+                direction = -1f;
+                CharacterFacingDirection(direction);
+            }
+            else
+            {
+                direction = 1f;
+                CharacterFacingDirection(direction);
+            }
 
-        velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
+            velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
         AudioController.Instance.playFXSound(kappaJump);
-    }
+        }
 
     protected void JumpWin()
     {

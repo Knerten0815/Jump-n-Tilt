@@ -48,12 +48,9 @@ public class CameraController : MonoBehaviour
         player = GameObject.Find("Player");
         parentTrans = cam.transform.parent;
         playerCtrl = player.GetComponent<PlayerCharacter>();
-        //lvlBounds = GameObject.Find("Tilemap").GetComponent<TilemapCollider2D>();
+        //lvlBounds = GameObject.Find("Bounds").GetComponent<TilemapCollider2D>();
 
-        //only for testing. Needs to be subscribed to the actual Tilt/Stomp event, not just the PlayerInput
-        //PlayerInput.onTiltDown += CameraShake;
         PlayerCharacter.onFishCausedEarthquakeStart += CameraShake; //Changed by Marvin Winkler
-        PlayerInput.onStomp += CameraShake;
     }
 
     private void FixedUpdate()
@@ -70,9 +67,7 @@ public class CameraController : MonoBehaviour
     //unsubscribing events
     private void OnDisable()
     {
-        //PlayerInput.onTiltDown -= CameraShake;
         PlayerCharacter.onFishCausedEarthquakeStart -= CameraShake;
-        PlayerInput.onStomp -= CameraShake;
     }
 
     //general CameraShake

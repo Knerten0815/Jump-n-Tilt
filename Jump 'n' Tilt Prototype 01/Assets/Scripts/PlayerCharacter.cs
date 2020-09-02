@@ -81,6 +81,7 @@ public class PlayerCharacter : Character
     private bool hasTimePickup;
     private float sloMoTimer;
     public float sloMoTime;                 //Duration of SloMoTime power up in seconds
+    private float remainingSloMoTime;
 
     public delegate void useSloMoTime();
     public static event useSloMoTime onUseSloMoTime;
@@ -800,14 +801,21 @@ public class PlayerCharacter : Character
     private void addTimePickup()
     {
         hasTimePickup = true;
+        remainingSloMoTime += sloMoTime;
     }
 
     //Author: Marvin Winkler
     private void useSloMoPickup()
     {
-        if (hasTimePickup)
+        if(timeController.getTimeSpeed() == timeController.slowTimeSpeed)
         {
-            sloMoTimer = sloMoTime;
+            remainingSloMoTime = sloMoTimer;
+            onUseSloMoTime();
+            return;
+        }
+        if (remainingSloMoTime > 0)//hasTimePickup)
+        {
+            sloMoTimer = remainingSloMoTime;
             hasTimePickup = false;
             onUseSloMoTime();
         }

@@ -122,7 +122,14 @@ public class ManagementSystem : MonoBehaviour
     }
 
 
-  
+
+    public delegate void healthCurrent(int health);
+    public static event healthCurrent healthPassOn;
+
+    public static void updatePlayerHealth(int health)
+    {
+        healthPassOn(health);
+    }
 
 
 

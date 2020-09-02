@@ -52,11 +52,12 @@ public class PhysicsObject : MonoBehaviour
 
     }
 
-    //Applied velocity gets updated e.g. player movement
     protected virtual void Update()
     {
 
     }
+
+    //Applied velocity gets updated e.g. player movement
     protected virtual void ComputeVelocity()
     {
 

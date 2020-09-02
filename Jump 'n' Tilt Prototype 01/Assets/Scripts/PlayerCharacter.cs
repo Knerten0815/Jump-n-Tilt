@@ -128,8 +128,8 @@ public class PlayerCharacter : Character
         //PlayerInput.onJumpButtonDown += disableSliding;
 
         // Nicole 
-        PlayerInput.onHorizontalDown += Movement;
         PlayerInput.onJumpButtonDown += Jump;
+        PlayerInput.onHorizontalDown += Movement;
         PlayerInput.onJumpButtonUp += ShortJump;
         PlayerInput.onPlayerAttackDown += Attack;
 
@@ -189,7 +189,6 @@ public class PlayerCharacter : Character
         moveDirection = Input.GetAxis("Horizontal");
         if (!isDead)
         {
-            Debug.Log(moveDirection);
             // Player only slides when there is no input
             if (moveDirection != 0)
             {
@@ -321,7 +320,6 @@ public class PlayerCharacter : Character
             if (wallJumpTimer < 0)
                 wallJumpTimer = 0;
         }
-
 
 
         //Particle system simulation speed
@@ -564,7 +562,7 @@ public class PlayerCharacter : Character
             {
             //if (wallJumpTimer < 0.5f * wallJumpTime)
             //{
-            base.Movement(direction * ((wallJumpTime - wallJumpTimer) / (wallJumpTime)));
+                base.Movement(direction * ((wallJumpTime - wallJumpTimer) / (wallJumpTime)));
             //}
             }
             else
@@ -672,6 +670,7 @@ public class PlayerCharacter : Character
                 jumpable = false;
             }
             else
+            //double jump
             {
                 jumpable = true;
 
@@ -679,7 +678,7 @@ public class PlayerCharacter : Character
                 cooldown = jumpCooldownTime;
                 //base.Jump();
 
-                    velocity = new Vector2(velocity.x + moveDirection * moveWhileJumping, jumpHeight);
+                    velocity = new Vector2(velocity.x + moveDirection * maxAirMovementSpeed, jumpHeight);
 
                 jumpCountLeft--;
 

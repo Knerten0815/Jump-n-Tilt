@@ -11057,7 +11057,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956939698}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 83.78, y: -3.58, z: 0}
+  m_LocalPosition: {x: 74.71, y: -2.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1336185930}
@@ -11099,7 +11099,7 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2048
-  health: 1
+  health: 5
   knockback: -10
   knockup: 8
   startDirection: 1
@@ -11131,8 +11131,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: f5df74967ddf81b4db8c87faa04a6cc7, type: 3}
     volume: 1
   kappaHit:
-    clip: {fileID: 0}
-    volume: 0
+    clip: {fileID: 8300000, guid: 2fa2bc16f3ade1842a4a1c0b875bad63, type: 3}
+    volume: 1
+  kappaBlock:
+    clip: {fileID: 8300000, guid: 89ab742d5f9be0e47907de18f9f3bd23, type: 3}
+    volume: 1
 --- !u!70 &956939701
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -14851,7 +14854,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1337163000}
   - component: {fileID: 1337163002}
-  - component: {fileID: 1337163001}
   m_Layer: 0
   m_Name: AudioController
   m_TagString: Untagged
@@ -14873,102 +14875,6 @@ Transform:
   m_Father: {fileID: 1952484004}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &1337163001
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1337162999}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &1337163002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14985,7 +14891,7 @@ MonoBehaviour:
   fxSlider: {fileID: 783577697}
   music:
     clip: {fileID: 8300000, guid: 133e8f153d9b8c746bb07930fb0f0cae, type: 3}
-    volume: 0
+    volume: 1
 --- !u!1 &1343065935
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,7 +45,7 @@ public class Kappa : GroundEnemy
             //Debug.Log("Kappa slided");
         }
 
-        if (isIdle && playerDirection().x < 20f && !isSliding)
+        if (isIdle && Mathf.Abs(playerDirection().x) < 20f && !isSliding)
         {
             currentIdleTime += Time.deltaTime;
 

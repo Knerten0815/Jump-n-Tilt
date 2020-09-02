@@ -187,8 +187,53 @@ public class PlayerCharacter : Character
     {
 
         moveDirection = Input.GetAxis("Horizontal");
-        if(!isDead)
-            base.ComputeVelocity();
+        if (!isDead)
+        {
+            Debug.Log(moveDirection);
+            // Player only slides when there is no input
+            if (moveDirection != 0)
+            {
+                // character looks in the direction he is moving
+                CharacterFacingDirection(moveDirection);
+
+                if(moveDirection > 0 && slideDirection.x > 0 || moveDirection < 0 && slideDirection.x < 0)
+                {
+                    Slide();
+                }
+            }
+            else
+            {
+                Slide();
+            }
+
+            // death of character
+            //if (health <= 0)
+            //{
+            //    Destroy(gameObject);
+            //}
+
+            //if (wallJumpTime < 0)
+            //{
+            //    wallJumpTime = 0;
+            //}
+            //else if(wallJumpTime > 0)
+            //{
+            //    wallJumpTime -= (1 - wallJumpTime * 0.99f) * timeController.getSpeedAdjustedDeltaTime() * wallJumpTimeSpeed;
+            //}
+
+            isSliding = false;
+
+            posBuffer = posBuffer - new Vector2(transform.localPosition.x, transform.localPosition.y);
+
+            if (!onWall && Mathf.Abs(groundNormal.y) < 1 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0))
+            {
+                isSliding = true;
+            }
+            posBuffer = new Vector2(transform.localPosition.x, transform.localPosition.y);
+
+            velocity.x -= velocity.x * airResistance;
+        }
+            //base.ComputeVelocity();
 
         //hang time
         if (grounded)
@@ -198,6 +243,9 @@ public class PlayerCharacter : Character
         else
         {
             hangTimer -= timeController.getSpeedAdjustedDeltaTime();
+
+            //Slide after physics jump
+            slideDirection.x = moveDirection;
         }
         
         //jump buffer
@@ -521,7 +569,7 @@ public class PlayerCharacter : Character
             }
             else
             {
-                isSliding = true;
+                //isSliding = true;
                 Slide();
             }
 
@@ -808,7 +856,11 @@ public class PlayerCharacter : Character
 
     protected override void Slide()
     {
-        if(velocity.magnitude > slideBackwardsMaxSpeed && slideAttackCooldownTimer <= 0 && isSliding)
+        if (onWall)
+        {
+            return;
+        }
+        if (velocity.magnitude > slideBackwardsMaxSpeed && slideAttackCooldownTimer <= 0 && isSliding)
         {
             slideAttackCooldownTimer = slideAttackCooldown;
             animatedAttack = false;

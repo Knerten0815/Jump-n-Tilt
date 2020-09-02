@@ -55,7 +55,7 @@ public class PhysicsObject : MonoBehaviour
     //Applied velocity gets updated e.g. player movement
     protected virtual void Update()
     {
-        ComputeVelocity();
+
     }
     protected virtual void ComputeVelocity()
     {
@@ -66,6 +66,8 @@ public class PhysicsObject : MonoBehaviour
     //Author: Marvin Winkler
     private void FixedUpdate()
     {
+        ComputeVelocity();
+
         float deltaTime = timeController.getSpeedAdjustedDeltaTime();
         Vector2 deltaPosition;
 

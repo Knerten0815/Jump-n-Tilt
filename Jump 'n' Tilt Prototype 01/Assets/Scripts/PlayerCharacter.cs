@@ -521,8 +521,8 @@ public class PlayerCharacter : Character
             }
             else
             {
-                isSliding = true;
-                Slide();
+                //isSliding = true;
+                //Slide();
             }
 
             //wallJumpTimer = 0;

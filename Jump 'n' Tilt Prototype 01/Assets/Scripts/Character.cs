@@ -127,7 +127,7 @@ public class Character : PhysicsObject
         if (!grounded && velocity.magnitude < maxAirMovementSpeed && !isSliding || wallJumpTimer > 0)
         {
             velocity += (moveDirection * moveWhileJumping) * Vector2.right * (1 / ((0.1f + Mathf.Abs(velocity.x) * 0.5f))); //velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude) * (1 - wallJumpTime), velocity.y);
-            isSliding = false;
+            //isSliding = false;
         }
 
         //Here velocity gets a new vector, therefore the speed/direction change happens instantly, there is no excelleration time

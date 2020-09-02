@@ -21,7 +21,7 @@ public class GroundEnemy : Enemy
     public CapsuleCollider2D cc2d;
     private GameObject attackCircle;
     private Coroutine coolroutine;
-    private float wallCheckDistance = 0.05f;
+    public float wallCheckDistance = 0.05f;
     private float groundCheckDistance = 0.3f;
     private float platformCheckDistance = 1f;
 
@@ -239,9 +239,9 @@ public class GroundEnemy : Enemy
         return Vector2.zero;
     }
 
-    public void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
+    public virtual void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
     {
-        if (hasAttacked == false)
+        if (!hasAttacked && !isSliding && getPlayerScript().health > 0)
         {
             enemy.GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
             //Debug.Log("GroundEnemy macht Schaden!!!!!!!!!!!!!!!!!!!1");

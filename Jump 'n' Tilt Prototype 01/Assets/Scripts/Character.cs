@@ -55,45 +55,13 @@ public class Character : PhysicsObject
     //gets called onece per update
     protected override void ComputeVelocity()
     {
-
         // Player only slides when there is no input
         if (moveDirection != 0)
         {
             // character looks in the direction he is moving
             CharacterFacingDirection(moveDirection);
         }
-        else
-        {
-            Slide();
-        }
 
-        // death of character
-        //if (health <= 0)
-        //{
-        //    Destroy(gameObject);
-        //}
-
-        //if (wallJumpTime < 0)
-        //{
-        //    wallJumpTime = 0;
-        //}
-        //else if(wallJumpTime > 0)
-        //{
-        //    wallJumpTime -= (1 - wallJumpTime * 0.99f) * timeController.getSpeedAdjustedDeltaTime() * wallJumpTimeSpeed;
-        //}
-
-        isSliding = false;
-
-        posBuffer = posBuffer - new Vector2(transform.localPosition.x, transform.localPosition.y);
-
-        if (!onWall && Mathf.Abs(groundNormal.y) < 1 && posBuffer.y >= 0 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0)) 
-        {
-            isSliding = true;
-        }
-
-            posBuffer = new Vector2(transform.localPosition.x, transform.localPosition.y);
-
-        velocity.x -= velocity.x * airResistance;
     }
 
     // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
@@ -173,12 +141,7 @@ public class Character : PhysicsObject
     // Sliding speed still has to be adjusted
     protected virtual void Slide()
     {
-        if (onWall)
-        {
-            return;
-        }
-
-        Vector2 normal;
+         Vector2 normal;
 
         if (grounded)
         {

@@ -14,6 +14,7 @@ namespace menuHandling
         private GameObject menuBackground;
         private GameObject firstMenuPage;
         private Animator animator;
+        private bool showPauseMenu = false;
 
         public void Start()
         {
@@ -64,11 +65,28 @@ namespace menuHandling
 
         private void pauseGame()
         {
-            DialogueManager.Instance.EndDialogue();
-            Time.timeScale = 0f;
-            menuBackground.SetActive(true);
-            animator.SetTrigger("OpenScroll");
-            StartCoroutine(ShowMenu());
+            if (!showPauseMenu)
+            {
+                DialogueManager.Instance.EndDialogue();
+                Time.timeScale = 0f;
+                menuBackground.SetActive(true);
+                animator.SetTrigger("OpenScroll");
+                StartCoroutine(ShowMenu());
+                showPauseMenu = true;
+            }
+            else
+            {
+                foreach (Transform child in transform)
+                {
+                    if (child.gameObject.activeSelf && child.transform.name != "Schriftrolle") {
+                        child.gameObject.SetActive(false);
+                        animator.SetTrigger("CloseScroll");
+                        StartCoroutine(DisableMenu());
+                        Time.timeScale = 1f;
+                        showPauseMenu = false;
+                    }
+                }
+            }
 
         }
     }

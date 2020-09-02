@@ -1,0 +1,781 @@
+fileFormatVersion: 2
+guid: 2cb200229ce8f344d810396d77db61ed
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5843843504588996514
+    second: Grass Tiles neu_0
+  - first:
+      213: 4458795790041399180
+    second: Grass Tiles neu_1
+  - first:
+      213: -8311780040289652070
+    second: Grass Tiles neu_2
+  - first:
+      213: -6306033306865812762
+    second: Grass Tiles neu_3
+  - first:
+      213: -8198762350436473343
+    second: Grass Tiles neu_4
+  - first:
+      213: -4113461012442214508
+    second: Grass Tiles neu_5
+  - first:
+      213: -8774780972434083224
+    second: Grass Tiles neu_6
+  - first:
+      213: -7250712477102943459
+    second: Grass Tiles neu_7
+  - first:
+      213: 3373049603826014291
+    second: Grass Tiles neu_8
+  - first:
+      213: -997179670273766374
+    second: Grass Tiles neu_9
+  - first:
+      213: -1369801727136826710
+    second: Grass Tiles neu_10
+  - first:
+      213: -6587907212560648790
+    second: Grass Tiles neu_11
+  - first:
+      213: 2346708130990335259
+    second: Grass Tiles neu_12
+  - first:
+      213: -7189479905309200516
+    second: Grass Tiles neu_13
+  - first:
+      213: -2294025155088446805
+    second: Grass Tiles neu_14
+  - first:
+      213: 6079667041359981094
+    second: Grass Tiles neu_15
+  - first:
+      213: -103417634935634604
+    second: Grass Tiles neu_16
+  - first:
+      213: 3219872273741267314
+    second: Grass Tiles neu_17
+  - first:
+      213: -5220975918134221733
+    second: Grass Tiles neu_18
+  - first:
+      213: -7197541737026961015
+    second: Grass Tiles neu_19
+  - first:
+      213: 5104673739876142612
+    second: Grass Tiles neu_20
+  - first:
+      213: 4535757793742846321
+    second: Grass Tiles neu_21
+  - first:
+      213: -5056073695006819554
+    second: Grass Tiles neu_22
+  - first:
+      213: 5481992130938910385
+    second: Grass Tiles neu_23
+  - first:
+      213: 6537756802562224328
+    second: Grass Tiles neu_24
+  - first:
+      213: 8244714840607799236
+    second: Grass Tiles neu_25
+  - first:
+      213: 3981228987258930348
+    second: Grass Tiles neu_26
+  - first:
+      213: 8114123207482411679
+    second: Grass Tiles neu_27
+  - first:
+      213: -474071420108053556
+    second: Grass Tiles neu_28
+  - first:
+      213: -5734665133824995407
+    second: Grass Tiles neu_29
+  - first:
+      213: 119721292974081722
+    second: Grass Tiles neu_30
+  - first:
+      213: -9189503491799693252
+    second: Grass Tiles neu_31
+  - first:
+      213: -8394489751297483464
+    second: Grass Tiles neu_32
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 44
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Grass Tiles neu_0
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 232
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 22, y: 22}
+        - {x: -22, y: -22}
+        - {x: -22, y: -22}
+        - {x: 22, y: -22}
+        - {x: 22, y: 22}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e50cff96b4f76eea0800000000000000
+      internalID: -5843843504588996514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_1
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 232
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8fbc67b523d0ed30800000000000000
+      internalID: 4458795790041399180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_2
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 232
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -22, y: 22}
+        - {x: -22, y: -22}
+        - {x: 22, y: -22}
+        - {x: 22, y: -22}
+        - {x: -22, y: 22}
+      tessellationDetail: 0
+      bones: []
+      spriteID: a927a5f4710a6ac80800000000000000
+      internalID: -8311780040289652070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_4
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 186
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1062368c415283e80800000000000000
+      internalID: -8198762350436473343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_5
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 186
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49f86f3d00d0ae6c0800000000000000
+      internalID: -4113461012442214508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_6
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 186
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 862b5344237b93680800000000000000
+      internalID: -8774780972434083224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_7
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 186
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1359c10b6b406b90800000000000000
+      internalID: -7250712477102943459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_8
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 186
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35852d55eba7fce20800000000000000
+      internalID: 3373049603826014291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_9
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 186
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1c47188f5e4922f0800000000000000
+      internalID: -997179670273766374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_10
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 186
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aaafa41369c7dfce0800000000000000
+      internalID: -1369801727136826710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_11
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 140
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa5b61e5b4d0394a0800000000000000
+      internalID: -6587907212560648790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_12
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 140
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b15233b9c9e219020800000000000000
+      internalID: 2346708130990335259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_13
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 140
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7f6c3c1e16d93c90800000000000000
+      internalID: -7189479905309200516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_14
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 140
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: baa8425964cf920e0800000000000000
+      internalID: -2294025155088446805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_15
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 140
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62a69e076f05f5450800000000000000
+      internalID: 6079667041359981094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_16
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 140
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 455862e7536909ef0800000000000000
+      internalID: -103417634935634604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_17
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 140
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2714a7af5c84fac20800000000000000
+      internalID: 3219872273741267314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_20
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 94
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 22, y: 22}
+        - {x: -22, y: -22}
+        - {x: -22, y: -22}
+        - {x: 22, y: -22}
+        - {x: 22, y: 22}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41e059f78b177d640800000000000000
+      internalID: 5104673739876142612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_21
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 94
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17970439eaf32fe30800000000000000
+      internalID: 4535757793742846321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_22
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 94
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -22, y: 22}
+        - {x: -22, y: -22}
+        - {x: 22, y: -22}
+        - {x: 22, y: -22}
+        - {x: -22, y: 22}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1bfbea33c735d9b0800000000000000
+      internalID: -5056073695006819554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_25
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 48
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c7b1d4177c1b6270800000000000000
+      internalID: 8244714840607799236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_26
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 48
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca48e03abaa204730800000000000000
+      internalID: 3981228987258930348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_27
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 48
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9a0eb511182b9070800000000000000
+      internalID: 8114123207482411679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_29
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 2
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -22, y: 22}
+        - {x: -22, y: 22}
+        - {x: 22, y: -22}
+        - {x: 22, y: -22}
+        - {x: 22, y: 22}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bf0b80c1706a60b0800000000000000
+      internalID: -5734665133824995407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_30
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 2
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab645c3b1e559a100800000000000000
+      internalID: 119721292974081722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Tiles neu_31
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 2
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -22, y: 22}
+        - {x: -22, y: -22}
+        - {x: -22, y: -22}
+        - {x: 22, y: 22}
+        - {x: 22, y: 22}
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3841152343587080800000000000000
+      internalID: -9189503491799693252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures:
+    - texture: {fileID: 2800000, guid: 3ab14015c9fea144e86778a660962b8f, type: 3}
+      name: _NormalMap
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

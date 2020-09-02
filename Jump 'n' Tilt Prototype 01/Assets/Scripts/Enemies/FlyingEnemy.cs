@@ -9,7 +9,6 @@ public class FlyingEnemy : Enemy
         Walking,
         ChaseTarget,
         Win,
-        Wait,
     }
 
     private Vector2 startPos;
@@ -58,12 +57,6 @@ public class FlyingEnemy : Enemy
 
         base.ComputeVelocity();
 
-        /*if (isDead)
-        {
-            gameObject.SetActive(false);
-            Debug.Log("Enemy ist tot!");
-        }*/
-
         switch (state)
         {
             case State.ChaseTarget:
@@ -106,11 +99,9 @@ public class FlyingEnemy : Enemy
                         Debug.Log("Schneller!");
                         velocity += toPlayer.normalized;
                     //}
-
-                    Debug.Log("velocity onryo: " + velocity + " velocity toplayer: " + toPlayer);
                 }
 
-                float attackRange = 1f;
+                float attackRange = 2f;
                 if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
                 {
                     Attack();
@@ -126,36 +117,14 @@ public class FlyingEnemy : Enemy
 
             case State.Win:
 
-                Debug.Log("Player ist tot.");
                 Movement(0);
                 isAttacking = false;
                 isChasing = false;
                 isWalking = false;
 
                 break;
-
-            case State.Wait:
-                Debug.Log("FlyingEnemy wartet.");
-                Movement(0);
-
-                Vector2 awayFromPlayer = new Vector2(transform.position.x + 1f, transform.position.y + 1f);
-                velocity = awayFromPlayer;
-
-                isAttacking = false;
-                isChasing = false;
-                isWalking = false;
-
-                if (Vector3.Distance(transform.position, player.transform.position) < 5f)
-                {
-                    state = State.Walking;
-                }
-
-                break;
-
 
             default:
-
-                Debug.Log("State walking");
 
                 isAttacking = false;
                 isChasing = false;
@@ -191,8 +160,6 @@ public class FlyingEnemy : Enemy
     protected override void Movement(float direction)
     {
         moveDirection = direction;
-
-        //Debug.Log(gravitySwitchCounter);
 
         if (gravitySwitchCounter >= 0)
         {
@@ -236,9 +203,6 @@ public class FlyingEnemy : Enemy
             if (hasAttacked == false)
             {
                 enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
-                Debug.Log("Tengus enemy: " + enemies[i]);
-
-                Debug.Log("velocity onryo: " + velocity);
 
                 //hasAttacked = true;
 
@@ -246,17 +210,15 @@ public class FlyingEnemy : Enemy
 
                 if (movesRight)
                 {
-                    Vector2 awayFromPlayer = new Vector2(transform.position.x - 6f - transform.position.x, transform.position.y);
+                    //Vector2 awayFromPlayer = new Vector2(transform.position.x - 6f - transform.position.x, transform.position.y);
                     //velocity = new Vector2(moveDirection * 10, 0);
                     transform.position = new Vector3(transform.position.x - 1f, transform.position.y, 0);
-                    Debug.Log("away: " + awayFromPlayer);
                 }
                 else
                 {
-                    Vector2 awayFromPlayer = new Vector2((transform.position.x + 5f) - transform.position.x, transform.position.y);
+                    //Vector2 awayFromPlayer = new Vector2((transform.position.x + 5f) - transform.position.x, transform.position.y);
                     //velocity += awayFromPlayer.normalized;
                     transform.position = new Vector3(transform.position.x + 1f, transform.position.y, 0);
-                    Debug.Log("away: " + awayFromPlayer);
                 }
             }
 
@@ -266,16 +228,10 @@ public class FlyingEnemy : Enemy
             }
             
         }
-
-        Debug.Log("ATTACK!!!!!!!!!!!!!!!!!");
-        /*Debug.Log("enemies: " + enemies);
-        Debug.Log("enemies length: " + enemies.Length);
-        Debug.Log("enemy: " + enemies[0]);*/
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        Debug.Log("AAAAAAH");
         collision.gameObject.SetActive(false);
     }
 }

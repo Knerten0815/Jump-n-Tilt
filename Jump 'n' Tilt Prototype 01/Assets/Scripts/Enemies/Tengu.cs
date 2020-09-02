@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AudioControlling;
+
 
 public class Tengu : FlyingEnemy
 {
@@ -10,6 +12,8 @@ public class Tengu : FlyingEnemy
     private bool hitPlatform;
     private LayerMask wall;
     private LayerMask platform;
+
+    public Audio tenguHit, tenguAttack;
 
     protected override void OnEnable()
     {
@@ -22,9 +26,12 @@ public class Tengu : FlyingEnemy
     {
         base.ComputeVelocity();
 
+        anim.speed = timeController.getTimeSpeed();
+
         if (isChasing)
         {
             anim.SetBool("isAttacking", true);
+            AudioController.Instance.playFXSound(tenguAttack);
         }
         else
         {
@@ -45,5 +52,11 @@ public class Tengu : FlyingEnemy
                 movesRight = true;
             }
         }
+    }
+
+    public override void TakeDamage(int damage, Vector2 direction)
+    {
+        AudioController.Instance.playFXSound(tenguHit);
+        base.TakeDamage(damage, direction);
     }
 }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9648815371af94a944da0618baed14, type: 3}
+  m_Name: Onryo
+  m_EditorClassIdentifier: 
+  name: Onryo
+  title: Onyro
+  description: Vengeful spirits, forcibly torn from their lives, their thirst for
+    revenge unquenched. These are Onryo. These deceased souls were denied their revenge
+    by death, which is why they cannot rest in peace, and why they haunt the world
+    of the living in rage. They especially curse their human enemies. They torture
+    them and cause suffering. Even when their soul has found rest, their curses remain
+    for years.
+  artwork: {fileID: 21300000, guid: f29621ffdbff2f44383d4c41926beb09, type: 3}

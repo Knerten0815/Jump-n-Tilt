@@ -174,28 +174,35 @@ MonoBehaviour:
   jumpHeightReducer: 0
   moveWhileJumping: 0
   airResistance: 0
+  wallJumpTime: 0
   wallJumpTimeSpeed: 0
   maxAirMovementSpeed: 0
   onWall: 0
   slideSpeed: 0
   slideBackwardsMaxSpeed: 0
-  slideSpeedChange: 0
   slideDirection: {x: 0, y: 0}
   isFacingRight: 0
+  slideDampeningFactor: 0
   attackPos: {fileID: 6579246517765156844}
   attackRadius: 1
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2048
   health: 1
-  knockback: 1
-  knockup: 0.5
+  knockback: -10
+  knockup: 5
   gravityCounter: 4
   velY: 1
   waitTime: 0
   roamPos: {x: 5, y: 0}
   movesRight: 1
   hasAttacked: 0
+  tenguHit:
+    clip: {fileID: 8300000, guid: 327a5bd4de6fa6648acff43290d605c8, type: 3}
+    volume: 0
+  tenguAttack:
+    clip: {fileID: 8300000, guid: bbc1663eb2cb8df41831cd8a6fc47b4c, type: 3}
+    volume: 0
 --- !u!1 &6579246517765156845
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: Onamazu
   m_EditorClassIdentifier: 
   name: Onamazu
-  title: TEST
-  description: kdsmksdm
-  artwork: {fileID: 0}
+  title: Onamazu
+  description: "Although \u014Cnamazu knows no good nor evil, its every move causes
+    catastrophic earthquakes. And it\u2019s just its nature to fidget and flounder,
+    which is why it had to be dealt with, when the gods pacified the earth. The god
+    Kashima was sent to kill the catfish, but since it is immortal, he buried it
+    beneath a giant rock rendering it motionless. No one knows how old this strange
+    entity is, not even itself."
+  artwork: {fileID: 21300000, guid: ed4d6632129f997438ff458ee09418d6, type: 3}

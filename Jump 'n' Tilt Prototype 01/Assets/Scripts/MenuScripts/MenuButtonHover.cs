@@ -3,17 +3,21 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 //Author: Michelle Limbach
 //This script handels the mouse hover of the menu
 public class MenuButtonHover : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler //IPointerExitHandler 
 {
+
+
     EventSystem m_EventSystem;
     private void Start()
     {
         m_EventSystem = EventSystem.current;
         
     }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         /*m_EventSystem.currentSelectedGameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle &= ~FontStyles.Underline;
@@ -64,10 +68,12 @@ public class MenuButtonHover : MonoBehaviour, ISelectHandler, IDeselectHandler, 
 
     public void OnEnable()
     {
+        
         if(this.GetComponent<Button>().interactable == false)
         {
             this.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Bold;
             this.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0.3113208f, 0.3113208f, 0.3113208f);
+      
         }
     }
 

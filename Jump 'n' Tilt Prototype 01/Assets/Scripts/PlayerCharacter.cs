@@ -81,6 +81,7 @@ public class PlayerCharacter : Character
     private bool hasTimePickup;
     private float sloMoTimer;
     public float sloMoTime;                 //Duration of SloMoTime power up in seconds
+    private float remainingSloMoTime;
 
     public delegate void useSloMoTime();
     public static event useSloMoTime onUseSloMoTime;
@@ -128,8 +129,8 @@ public class PlayerCharacter : Character
         //PlayerInput.onJumpButtonDown += disableSliding;
 
         // Nicole 
-        PlayerInput.onHorizontalDown += Movement;
         PlayerInput.onJumpButtonDown += Jump;
+        PlayerInput.onHorizontalDown += Movement;
         PlayerInput.onJumpButtonUp += ShortJump;
         PlayerInput.onPlayerAttackDown += Attack;
 
@@ -320,7 +321,6 @@ public class PlayerCharacter : Character
             if (wallJumpTimer < 0)
                 wallJumpTimer = 0;
         }
-
 
 
         //Particle system simulation speed
@@ -563,7 +563,7 @@ public class PlayerCharacter : Character
             {
             //if (wallJumpTimer < 0.5f * wallJumpTime)
             //{
-            base.Movement(direction * ((wallJumpTime - wallJumpTimer) / (wallJumpTime)));
+                base.Movement(direction * ((wallJumpTime - wallJumpTimer) / (wallJumpTime)));
             //}
             }
             else
@@ -671,6 +671,7 @@ public class PlayerCharacter : Character
                 jumpable = false;
             }
             else
+            //double jump
             {
                 jumpable = true;
 
@@ -678,7 +679,7 @@ public class PlayerCharacter : Character
                 cooldown = jumpCooldownTime;
                 //base.Jump();
 
-                    velocity = new Vector2(velocity.x + moveDirection * moveWhileJumping, jumpHeight);
+                    velocity = new Vector2(velocity.x + moveDirection * maxAirMovementSpeed, jumpHeight);
 
                 jumpCountLeft--;
 
@@ -800,14 +801,21 @@ public class PlayerCharacter : Character
     private void addTimePickup()
     {
         hasTimePickup = true;
+        remainingSloMoTime += sloMoTime;
     }
 
     //Author: Marvin Winkler
     private void useSloMoPickup()
     {
-        if (hasTimePickup)
+        if(timeController.getTimeSpeed() == timeController.slowTimeSpeed)
         {
-            sloMoTimer = sloMoTime;
+            remainingSloMoTime = sloMoTimer;
+            onUseSloMoTime();
+            return;
+        }
+        if (remainingSloMoTime > 0)//hasTimePickup)
+        {
+            sloMoTimer = remainingSloMoTime;
             hasTimePickup = false;
             onUseSloMoTime();
         }

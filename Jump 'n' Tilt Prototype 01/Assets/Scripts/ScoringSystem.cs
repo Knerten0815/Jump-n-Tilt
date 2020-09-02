@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
 /*
 *
 * Hanldes the Score. Remembers current score, increases it when an applicable event happens and also displays it
@@ -11,7 +13,11 @@ using UnityEngine;
 public class ScoringSystem : MonoBehaviour
 {
 
-    public GameObject scoreText; //Text displayed to show the current Score
+    public TextMeshProUGUI scoreText; //Text displayed to show the current Score
+    public TextMeshProUGUI healthText; //Text displayed to show the current Score
+    private int health;
+    private int collected;
+    private int time; 
     public int Score; //Score of the player
     private string scoreString; //String to be displayed with scoreText
 
@@ -22,13 +28,17 @@ public class ScoringSystem : MonoBehaviour
     * 
     * @Katja
     */
-    public void Start()
+    public void Awake()
     {
         ManagementSystem.pickUpHit += scoreUp;
-        ManagementSystem.healthPickUpHit += healthBarUp;
-        Score = 000000000;
-        scoreString = Score.ToString();
-        scoreText.GetComponent<UnityEngine.UI.Text>().text = scoreString;
+        // ManagementSystem.healthPickUpHit += healthBarUp;
+        ManagementSystem.healthPassOn += healthDisplay;
+        Score = 0;
+        collected = 0;
+        time = 0;
+        scoreString = "0";
+        scoreText.text = scoreString;
+
     }
 
     /*
@@ -40,20 +50,24 @@ public class ScoringSystem : MonoBehaviour
     private void scoreUp(int value)
     {
         Score += value;
-        scoreString = Score.ToString();
-        scoreText.GetComponent<UnityEngine.UI.Text>().text = scoreString;
+        string scoreTempString = Score.ToString();
+       /* int scoreLength = scoreTempString.Length;
+        string scoreString = "";
+        int howManyZeros = 9 - scoreLength;
+        while (howManyZeros > 0)
+        {
+            scoreString = scoreString + "0";
+
+        }*/
+        string scoreString = scoreTempString;
+        scoreText.text = scoreString;
     }
 
-    private void healthBarUp()
+    private void healthDisplay(int health)
     {
-        /*
-        *
-        * Hier wäre dann das steigern des momentanen Lebens
-        *
-        *
-        *
-        *
-        */
+        this.health = health;
+        healthText.text = health.ToString();
     }
+  
 
 }

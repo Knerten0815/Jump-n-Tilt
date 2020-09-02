@@ -122,9 +122,19 @@ public class ManagementSystem : MonoBehaviour
     }
 
 
-  
 
+    public delegate void healthCurrent(int health);
+    public static event healthCurrent healthPassOn;
 
+    public static void updatePlayerHealth(int health)
+    {
+        healthPassOn(health);
+    }
+
+    public static void updateTime(float time)
+    {
+        Debug.Log(time);
+    }
 
     public delegate void pickupHealth();
     public static event pickupHealth healthPickUpHit;
@@ -188,6 +198,7 @@ public class ManagementSystem : MonoBehaviour
         file.Close();
     }
 
+   
     public static void ResetGameSave()
     {
         collectiblesGathered = new List<int>();

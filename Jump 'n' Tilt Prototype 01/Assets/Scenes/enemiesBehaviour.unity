@@ -1095,6 +1095,15 @@ Tilemap:
   m_GameObject: {fileID: 69621180}
   m_Enabled: 1
   m_Tiles:
+  - first: {x: 31, y: -5, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 2
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
   - first: {x: 38, y: -5, z: 0}
     second:
       serializedVersion: 2
@@ -1131,6 +1140,15 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
+  - first: {x: 31, y: -4, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 2
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
   - first: {x: 32, y: -4, z: 0}
     second:
       serializedVersion: 2
@@ -1163,6 +1181,15 @@ Tilemap:
       serializedVersion: 2
       m_TileIndex: 1
       m_TileSpriteIndex: 4294967295
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      m_AllTileFlags: 1073741825
+  - first: {x: 31, y: -3, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -1947,15 +1974,15 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: e93b8994063f4824991f1e2f23a3bae1, type: 2}
   - m_RefCount: 44
     m_Data: {fileID: 11400000, guid: c962250f32f6a7548ae3d7b44fe36916, type: 2}
-  - m_RefCount: 49
+  - m_RefCount: 52
     m_Data: {fileID: 11400000, guid: b541041831601944eb376a82a66fb352, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 49
+  - m_RefCount: 52
     m_Data: {fileID: 21300000, guid: 6d8b143507f36fd40a3f5ca5c8a00bdd, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 94
+  - m_RefCount: 97
     m_Data:
       e00: 1
       e01: 0
@@ -1974,7 +2001,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 94
+  - m_RefCount: 97
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -7895,7 +7922,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657331792}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 83.31, y: -3.71, z: 0}
+  m_LocalPosition: {x: 35.74, y: -3.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1336185930}
@@ -8039,36 +8066,38 @@ MonoBehaviour:
   isFacingRight: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 0}
-  attackRadius: 0
+  attackRadius: 1.2
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 0
-  health: 1
+    m_Bits: 2048
+  health: 10
   knockback: 1
   knockup: 1
   startDirection: 1
   wallCheckPrecision: 5
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 24576
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 49152
   touchAttackDamage: 1
   attackCooldownTime: 1
   platformCheckPrecision: 5
   whatIsPlatform:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16384
   hasAttacked: 0
   direction: 0
   cc2d: {fileID: 0}
+  wallCheckDistance: 0.05
   humanAttack:
     clip: {fileID: 8300000, guid: dc00790a4cdf1874fbdc3b71a6ce8543, type: 3}
     volume: 1
   humanHit:
     clip: {fileID: 8300000, guid: f7c803fa35481cc4d92201e8be8fe6c2, type: 3}
     volume: 1
+  eyeSightDistance: 23
 --- !u!1 &671410692
 GameObject:
   m_ObjectHideFlags: 0
@@ -8910,6 +8939,7 @@ MonoBehaviour:
   hasAttacked: 0
   direction: 0
   cc2d: {fileID: 0}
+  wallCheckDistance: 0.05
   oniAttack:
     clip: {fileID: 8300000, guid: cc0b31f8043b6854dbcba03f9e9f3ae8, type: 3}
     volume: 0.48
@@ -11683,6 +11713,7 @@ MonoBehaviour:
   hasAttacked: 0
   direction: 1
   cc2d: {fileID: 956939701}
+  wallCheckDistance: 0.05
   lastYPos: 0
   idleTime: 1
   currentIdleTime: 2
@@ -14984,7 +15015,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309397689}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 93.87, y: 3.42, z: 0}
+  m_LocalPosition: {x: -1.65, y: -3.29, z: 0}
   m_LocalScale: {x: 0.05066718, y: 0.05066718, z: 0.05066718}
   m_Children:
   - {fileID: 87018448}

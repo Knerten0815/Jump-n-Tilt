@@ -37,4 +37,9 @@ public class Enemy : Character
         return player.transform.position - transform.position;
     }
 
+    public PlayerCharacter getPlayerScript()
+    {
+        return player.GetComponent<PlayerCharacter>();
+    }
+
 }

@@ -189,7 +189,6 @@ public class PlayerCharacter : Character
         moveDirection = Input.GetAxis("Horizontal");
         if (!isDead)
         {
-            Debug.Log(moveDirection);
             // Player only slides when there is no input
             if (moveDirection != 0)
             {

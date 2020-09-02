@@ -5,6 +5,7 @@ public class HumanEnemy : GroundEnemy
 {
     [SerializeField] Audio humanAttack;
     [SerializeField] Audio humanHit;
+    [SerializeField] float eyeSightDistance;
 
     private Animator anim;
 
@@ -13,7 +14,20 @@ public class HumanEnemy : GroundEnemy
         base.Start();
         anim = GetComponent<Animator>();
         isSliding = false;
-        //attackRadius = 1.25f;
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (grounded)
+            anim.SetBool("isJumping", false);
+
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("human_runningAttack") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+            anim.SetBool("isAttacking", false);
+
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("human_jumpAttack") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+            anim.SetBool("isAttacking", false);
     }
 
     protected override void ComputeVelocity()
@@ -23,35 +37,36 @@ public class HumanEnemy : GroundEnemy
         //slide when you should slide!
         if (isSliding)
         {
-            Debug.Log("slideridooo");
+            anim.SetBool("isJumping", false);
             Slide();
         }
-        else if (Mathf.Abs(playerDirection().x) < 20f)
+        //follows the player, when he is in humans eyesight
+        else if (Mathf.Abs(playerDirection().x) < eyeSightDistance && getPlayerScript().health > 0)
         {
-            
-            if (playerDirection().x < 0)
+            if (playerDirection().x < -2f)
                 direction = -1;
-            else if (playerDirection().x > 0)
+            else if (playerDirection().x > 2f)
                 direction = 1;
+            //else
+            //    direction = 0;
 
-            if (playerDirection().y > 2 && grounded)
+            //try to get on the player platform
+            if ((playerDirection().y > 2 && grounded && Mathf.Abs(playerDirection().x) > 0.1f) || IsWallAhead())
             {
                 Jump();
-            }                
-
+                anim.SetBool("isJumping", true);
+            }
+            
             Movement(direction);            
         }
         else
         {
-            Debug.Log("ich mach gar nix!");
             //idle
-        }
-        
+        }        
     }
     protected override void Jump()
     {
         isSliding = false;
-
         velocity = new Vector2(playerDirection().normalized.x * 5, jumpHeight);
     }
 
@@ -59,5 +74,15 @@ public class HumanEnemy : GroundEnemy
     {
         base.TakeDamage(damage, direction);
         AudioController.Instance.playFXSound(humanHit);
+    }
+
+    public override void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
+    {
+        if (!hasAttacked && !isSliding && getPlayerScript().health > 0)
+        {
+            anim.SetBool("isAttacking", true);
+            AudioController.Instance.playFXSound(humanAttack);
+        }
+        base.groundEnemyAttack(enemy, dmgDirection2D);
     }
 }

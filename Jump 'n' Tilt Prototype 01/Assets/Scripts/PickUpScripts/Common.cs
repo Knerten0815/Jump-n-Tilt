@@ -15,7 +15,7 @@ public class Common : MonoBehaviour, PickUpDescriptor
     *
     * @Katja
     */
-    [SerializeField]
+
     public int Value;
 
 

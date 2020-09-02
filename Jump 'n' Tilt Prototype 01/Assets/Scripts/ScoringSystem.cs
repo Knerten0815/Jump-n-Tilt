@@ -12,9 +12,12 @@ using System;
 */
 public class ScoringSystem : MonoBehaviour
 {
-
     public TextMeshProUGUI scoreText; //Text displayed to show the current Score
     public TextMeshProUGUI healthText; //Text displayed to show the current Score
+    public TextMeshProUGUI scrollText; //Text displayed to show the current Score
+
+
+
     private int health;
     private int collected;
     private int time; 
@@ -33,6 +36,7 @@ public class ScoringSystem : MonoBehaviour
         ManagementSystem.pickUpHit += scoreUp;
         // ManagementSystem.healthPickUpHit += healthBarUp;
         ManagementSystem.healthPassOn += healthDisplay;
+        ManagementSystem.collectedScroll += updateScrollCount;
         Score = 0;
         collected = 0;
         time = 0;
@@ -43,7 +47,7 @@ public class ScoringSystem : MonoBehaviour
 
     /*
      *
-     * Increases Score by 10 and updates the Text Component
+     * Increases Score and updates the Text Component
      * 
      *@Katja
      */
@@ -66,7 +70,12 @@ public class ScoringSystem : MonoBehaviour
     private void healthDisplay(int health)
     {
         this.health = health;
-        healthText.text = health.ToString();
+        healthText.text = this.health.ToString();
+    }
+    private void updateScrollCount()
+    {
+        collected++;
+        scrollText.text = collected.ToString();
     }
   
 

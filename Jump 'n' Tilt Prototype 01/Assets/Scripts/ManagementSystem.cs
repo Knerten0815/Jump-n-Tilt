@@ -70,6 +70,7 @@ public class ManagementSystem : MonoBehaviour
     */
     public static void pickUp(int scoreValue)
     {
+        if (pickUpHit != null)
         pickUpHit(scoreValue);
     }
 
@@ -128,6 +129,8 @@ public class ManagementSystem : MonoBehaviour
 
     public static void updatePlayerHealth(int health)
     {
+        Debug.Log("TEST hPuP");
+
         healthPassOn(health);
     }
 
@@ -138,11 +141,20 @@ public class ManagementSystem : MonoBehaviour
 
     public delegate void pickupHealth();
     public static event pickupHealth healthPickUpHit;
-
     public static void hUp()
     {
         //Debug.Log("TEST hUp");
         healthPickUpHit();
+    }
+
+    public delegate void collected();
+    public static event collected collectedScroll;
+
+    public static void collectedUpdate()
+    {
+        Debug.Log("TEST cUp");
+
+        collectedScroll();
     }
 
 

@@ -48,7 +48,7 @@ public class CameraController : MonoBehaviour
         player = GameObject.Find("Player");
         parentTrans = cam.transform.parent;
         playerCtrl = player.GetComponent<PlayerCharacter>();
-        //lvlBounds = GameObject.Find("Tilemap").GetComponent<TilemapCollider2D>();
+        //lvlBounds = GameObject.Find("Bounds").GetComponent<TilemapCollider2D>();
 
         PlayerCharacter.onFishCausedEarthquakeStart += CameraShake; //Changed by Marvin Winkler
     }

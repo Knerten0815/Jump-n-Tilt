@@ -50,7 +50,7 @@ public class Kappa : GroundEnemy
             anim.SetBool("slideStart", slideStart);
             slideStart = false;
         }
-        else if (!isSliding)
+        else
         {
             anim.SetBool("isSliding", false);
             slideStart = true;
@@ -109,10 +109,8 @@ public class Kappa : GroundEnemy
         airMovement();
     }
     }
-
     protected override void Jump()
-    {
-        
+    {        
         isSliding = false;
         isIdle = false;
         isJumping = true;

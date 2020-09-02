@@ -81,6 +81,6 @@ public class Oni : GroundEnemy
     public override void TakeDamage(int damage, Vector2 direction)
     {
         base.TakeDamage(damage, direction);
-        //AudioController.Instance.playFXSound(oniHit);
+        AudioController.Instance.playFXSound(oniHit);
     }
 }

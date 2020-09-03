@@ -208,6 +208,7 @@ public class Character : PhysicsObject
     }
 
     //Author: Nicole Mynarek, Marvin Winkler
+    //Minor Fix: Katja Tümmers
     protected virtual void Attack()
     {
         //  Debug.Log("Nicole ---------- ATTACK!!!!!!!");
@@ -215,10 +216,17 @@ public class Character : PhysicsObject
 
         for (int i = 0; i < enemies.Length; i++)
         {
+
             Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
             Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
             dmgDirection2D.Normalize();
-            enemies[i].GetComponent<Enemy>().TakeDamage(1, dmgDirection2D);
+            Enemy enemy = enemies[i].gameObject.GetComponent<Enemy>();
+            if (enemy != null)
+                enemies[i].GetComponent<Enemy>().TakeDamage(1, dmgDirection2D);
+            else
+            {
+                Debug.Log("No damage aetsch baetsch");
+            }
         }
     }
 

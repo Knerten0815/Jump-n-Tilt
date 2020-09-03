@@ -106,14 +106,15 @@ MonoBehaviour:
   jumpHeightReducer: 0
   moveWhileJumping: 0
   airResistance: 0
+  wallJumpTime: 0
   wallJumpTimeSpeed: 0
   maxAirMovementSpeed: 0
   onWall: 0
   slideSpeed: 0
   slideBackwardsMaxSpeed: 0
-  slideSpeedChange: 0
   slideDirection: {x: 0, y: 0}
   isFacingRight: 0
+  slideDampeningFactor: 0
   attackPos: {fileID: 7487847197766623493}
   attackRadius: 0
   whatIsEnemy:
@@ -170,7 +171,7 @@ PolygonCollider2D:
     m_Paths:
     - - {x: -0.056274414, y: 0.09085274}
       - {x: -0.38206482, y: -0.28425074}
-      - {x: -0.5, y: -0.5}
-      - {x: 0.5, y: -0.5}
+      - {x: -0.5468292, y: -0.47659802}
+      - {x: 0.5187378, y: -0.4719174}
       - {x: 0.5, y: -0.421875}
       - {x: 0.0256958, y: 0.09085274}

@@ -26,7 +26,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Level 2 (Marvin).unity
     guid: 4415601adf2621a45a32173cb48dbef4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level 2 (Marvin) neu.unity
     guid: 41edb9526363c024a9db8b999fd321b8
+  - enabled: 0
+    path: Assets/Scenes/Level 1 (WithEnd Trigger und ScoreSytem).unity
+    guid: 64833e99ae2320446a7961132402cdd1
   m_configObjects: {}

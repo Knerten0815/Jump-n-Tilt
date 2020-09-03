@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 /*
 *
 * Class that overs Events to subscribe too. Can be accessed by other classes to trigger certain events that are subscribed too by all 
@@ -130,8 +132,8 @@ public class ManagementSystem : MonoBehaviour
     public static void updatePlayerHealth(int health)
     {
         Debug.Log("TEST hPuP");
-
-        healthPassOn(health);
+        if (healthPassOn != null)
+            healthPassOn(health);
     }
 
     public static void updateTime(float time)
@@ -177,6 +179,8 @@ public class ManagementSystem : MonoBehaviour
     private static Save CreateSaveGameObject()
     {
         Save save = new Save();
+        collectiblesGathered = new List<int>();
+
         collectiblesGathered.Add(0);
         collectiblesGathered.Add(1);
         collectiblesGathered.Add(2);

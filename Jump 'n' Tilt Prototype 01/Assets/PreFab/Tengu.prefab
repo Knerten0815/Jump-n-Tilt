@@ -169,7 +169,7 @@ MonoBehaviour:
   gravityModifier: 0
   dampening: 0
   maxSpeed: 4
-  moveSpeed: 1.3
+  moveSpeed: 1.8
   jumpHeight: 0
   jumpHeightReducer: 0
   moveWhileJumping: 0
@@ -196,6 +196,7 @@ MonoBehaviour:
   velY: 1
   waitTime: 0
   roamPos: {x: 5, y: 0}
+  attackCooldownTime: 2
   movesRight: 1
   hasAttacked: 0
   tenguHit:

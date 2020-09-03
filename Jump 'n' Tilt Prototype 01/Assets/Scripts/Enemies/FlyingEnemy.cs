@@ -21,12 +21,13 @@ public class FlyingEnemy : Enemy
     public Vector2 roamPos;
     private State state;
     private GameObject player;
-
+    [SerializeField] float attackCooldownTime;
     public bool movesRight = true;
     public bool hasAttacked = false;
     protected bool isAttacking;
     protected bool isWalking;
     protected bool isChasing;
+    private Coroutine coolroutine;
 
     private void Awake()
     {
@@ -101,7 +102,7 @@ public class FlyingEnemy : Enemy
                     //}
                 }
 
-                float attackRange = 2f;
+                float attackRange = 1.5f;
                 if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
                 {
                     Attack();
@@ -192,23 +193,23 @@ public class FlyingEnemy : Enemy
     protected override void Attack()
     {
         //isAttacking = true;
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
-
-        for (int i = 0; i < enemies.Length; i++)
+        if (hasAttacked == false)
         {
-            Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
-            Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
-            dmgDirection2D.Normalize();
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
 
-            if (hasAttacked == false)
+            for (int i = 0; i < enemies.Length; i++)
             {
+                Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
+                Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
+                dmgDirection2D.Normalize();
+
+            
                 enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
 
-                //hasAttacked = true;
+                hasAttacked = true;
+                coolroutine = StartCoroutine(attackCooldown(attackCooldownTime));
 
-                //state = State.Wait;
-
-                if (movesRight)
+                /*if (movesRight)
                 {
                     //Vector2 awayFromPlayer = new Vector2(transform.position.x - 6f - transform.position.x, transform.position.y);
                     //velocity = new Vector2(moveDirection * 10, 0);
@@ -219,15 +220,18 @@ public class FlyingEnemy : Enemy
                     //Vector2 awayFromPlayer = new Vector2((transform.position.x + 5f) - transform.position.x, transform.position.y);
                     //velocity += awayFromPlayer.normalized;
                     transform.position = new Vector3(transform.position.x + 1f, transform.position.y, 0);
-                }
+                }*/
             }
-
-            if(enemies.Length == 0)
-            {
-                hasAttacked = false;
-            }
-            
         }
+    }
+
+    IEnumerator attackCooldown(float coolDownTime)
+    {
+        //Debug.Log(coolDownTime + " seconds Cooldown!");
+        yield return new WaitForSeconds(coolDownTime);
+        //Debug.Log("Cooldown end!");
+        hasAttacked = false;
+        StopCoroutine(coolroutine);
     }
 
     private void OnCollisionExit2D(Collision2D collision)

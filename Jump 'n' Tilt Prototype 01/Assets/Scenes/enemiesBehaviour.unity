@@ -5144,7 +5144,7 @@ PrefabInstance:
     - target: {fileID: 7739481807211276192, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
@@ -6482,7 +6482,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &530513343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11651,8 +11651,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956939698}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 64.52, y: -3.58, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 83.77, y: -3.65, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 1336185930}
   m_RootOrder: 3
@@ -11705,7 +11705,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32768
   touchAttackDamage: 1
-  attackCooldownTime: 5
+  attackCooldownTime: 1
   platformCheckPrecision: 5
   whatIsPlatform:
     serializedVersion: 2
@@ -11723,6 +11723,7 @@ MonoBehaviour:
   jumpStart: 0
   slideStart: 0
   jumpDistance: 10
+  bc2d: {fileID: 0}
   kappaJump:
     clip: {fileID: 8300000, guid: f5df74967ddf81b4db8c87faa04a6cc7, type: 3}
     volume: 1
@@ -11745,8 +11746,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.15857697, y: 0.14374208}
-  m_Size: {x: 0.5115814, y: 0.5115814}
+  m_Offset: {x: 0.11340523, y: -0.17687488}
+  m_Size: {x: 0.82021713, y: 0.91446495}
   m_Direction: 0
 --- !u!50 &956939702
 Rigidbody2D:
@@ -11812,7 +11813,7 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 1
   m_Size: {x: 2.1333334, y: 2.1333334}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -11851,18 +11852,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.24154282, y: -0.27870464}
+  m_Offset: {x: 0.11311531, y: -0.14533603}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4.266667, y: 4.266667}
     newSize: {x: 2.1333334, y: 2.1333334}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.8850021, y: 2.1274166}
+  m_Size: {x: 0.872715, y: 1.0089266}
   m_EdgeRadius: 0
 --- !u!1 &963090289
 GameObject:
@@ -22178,7 +22179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1526461033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64322,7 +64323,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1785881445
 RectTransform:
   m_ObjectHideFlags: 0
@@ -65944,7 +65945,7 @@ PrefabInstance:
     - target: {fileID: 6579246517331179219, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6579246517331179221, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}

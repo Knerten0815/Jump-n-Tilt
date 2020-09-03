@@ -116,6 +116,7 @@ public class ManagementSystem : MonoBehaviour
             }
         }
     
+        if(levelLoadMethod != null)
         levelLoadMethod(unlockedLevels, currentLevel);
     
 
@@ -128,6 +129,7 @@ public class ManagementSystem : MonoBehaviour
 
     public static void updatePlayerHealth(int health)
     {
+        if(healthPassOn != null)
         healthPassOn(health);
     }
 

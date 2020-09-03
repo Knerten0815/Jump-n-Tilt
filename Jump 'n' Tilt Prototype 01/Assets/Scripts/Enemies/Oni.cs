@@ -33,7 +33,7 @@ public class Oni : GroundEnemy
         */
 
         //slide when you should slide!
-            if (isSliding)
+        if (isSliding)
         {
             Slide();
             anim.SetBool("isAttacking", false);
@@ -48,6 +48,7 @@ public class Oni : GroundEnemy
                 direction = 1;
 
             moveSpeed = attackSpeed;
+
             if (!anim.GetBool("isAttacking"))                
                 AudioController.Instance.playFXSound(oniAttack);
             
@@ -56,8 +57,9 @@ public class Oni : GroundEnemy
         }
         else
         {
-            //patrol
+            //patrol (idle)
             moveSpeed = speed;
+
             if (IsWallAhead() == true || isGroundAhead() == false)
             {
 
@@ -72,15 +74,17 @@ public class Oni : GroundEnemy
                     isFacingRight = true;
                 }
             }
+
             anim.SetBool("isAttacking", false);
             anim.SetBool("isSliding", false);
         }
+
         Movement(direction);
     }
 
     public override void TakeDamage(int damage, Vector2 direction)
     {
         base.TakeDamage(damage, direction);
-        //AudioController.Instance.playFXSound(oniHit);
+        AudioController.Instance.playFXSound(oniHit);
     }
 }

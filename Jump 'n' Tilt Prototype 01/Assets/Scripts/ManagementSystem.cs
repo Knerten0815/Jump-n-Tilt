@@ -72,6 +72,11 @@ public class ManagementSystem : MonoBehaviour
     {
         pickUpHit(scoreValue);
     }
+
+
+    public delegate void levelLoad(int unlockedLevels, int currentLevel);
+    
+    public static event levelLoad levelLoadMethod;
     /*
     *
     *   CollectibleLoad Event that currently is just there to notify rare what collectibles have already been Loaded could be expanded to other things
@@ -92,20 +97,43 @@ public class ManagementSystem : MonoBehaviour
     * @Katja
     */
 
-    public void Awake()
+    public void Start()
     {
 
         LoadGame();
-       
-        foreach (int ID in collectiblesGathered)
+        // collectiblesGathered.Clear();
+        //collectiblesGathered.Add(1);
+        //collectiblesGathered.Add(2);
+        //collectiblesGathered.Add(0);
+        //unlockedLevels = 2;
+        //currentLevel = 2;
+
+        if (collectibleOnLoad != null)
         {
-            //Debug.Log(ID);
-            collectibleOnLoad(ID);
-
+            foreach (int ID in collectiblesGathered)
+            {
+                collectibleOnLoad(ID);
+            }
         }
+    
+        levelLoadMethod(unlockedLevels, currentLevel);
+    
+
+    }
 
 
 
+    public delegate void healthCurrent(int health);
+    public static event healthCurrent healthPassOn;
+
+    public static void updatePlayerHealth(int health)
+    {
+        healthPassOn(health);
+    }
+
+    public static void updateTime(float time)
+    {
+        Debug.Log(time);
     }
 
     public delegate void pickupHealth();
@@ -137,14 +165,23 @@ public class ManagementSystem : MonoBehaviour
     private static Save CreateSaveGameObject()
     {
         Save save = new Save();
+        collectiblesGathered.Add(0);
+        collectiblesGathered.Add(1);
+        collectiblesGathered.Add(2);
+        collectiblesGathered.Add(3);
+        collectiblesGathered.Add(4);
+        collectiblesGathered.Add(5);
+        collectiblesGathered.Add(6);
+        collectiblesGathered.Add(7);
+        collectiblesGathered.Add(8);
         save.collectiblesGathered = collectiblesGathered;
-        save.currentLevel = 0;
+        save.currentLevel = 1;
         save.Highscore = Highscore;
-        save.unlockedLevels = 0;
+        save.unlockedLevels = 2;
         return save;
 
     }
-
+   
     /*
      * 
      * Creates binary data from Save object and saves it in file titles /gamesave.save
@@ -155,7 +192,20 @@ public class ManagementSystem : MonoBehaviour
     {
         
         Save save = CreateSaveGameObject();
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
+        bf.Serialize(file, save);
+        file.Close();
+    }
 
+   
+    public static void ResetGameSave()
+    {
+        collectiblesGathered = new List<int>();
+        currentLevel = 0;
+        Highscore = new int[]{ 0, 0, 0 };
+        unlockedLevels = 0;
+        Save save = CreateSaveGameObject();
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
         bf.Serialize(file, save);
@@ -178,6 +228,8 @@ public class ManagementSystem : MonoBehaviour
             FileStream file = File.Open(Application.persistentDataPath + "/gamesave.save", FileMode.Open);
             Save save = (Save)bf.Deserialize(file);
             file.Close();
+           // List<int> collectiblesGatheredDEBUG = new List<int>();
+           // collectiblesGatheredDEBUG.Add(2);
             collectiblesGathered = save.collectiblesGathered;
             Highscore = save.Highscore;
             unlockedLevels = save.unlockedLevels;

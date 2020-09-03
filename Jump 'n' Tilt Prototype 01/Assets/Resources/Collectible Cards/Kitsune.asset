@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9648815371af94a944da0618baed14, type: 3}
+  m_Name: Kitsune
+  m_EditorClassIdentifier: 
+  name: Kitsune
+  title: Kitsune
+  description: Kitsune are supernatural mythical creatures in the shape of a fox.
+    They are shape-shifters and messengers of good luck to the gods. But not everyone
+    has good intentions. Like the Nogitsune, the evil race of those mystical fox
+    spirits. They are deceitful and malicious and enjoy driving people mad. But what
+    makes Kitsune special is the number of their tails, which give them power. The
+    older they are, the more they grow. With nine tails they have reached their maximum
+    power.
+  artwork: {fileID: 21300000, guid: e78aa324a4fbc7945bf074138b699006, type: 3}

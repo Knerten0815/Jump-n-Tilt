@@ -18,6 +18,8 @@ public class Kappa : GroundEnemy
     public bool slideStart = false;
     public float jumpDistance;
 
+    public BoxCollider2D bc2d;
+
     public Audio kappaJump;
     public Audio kappaHit, kappaBlock;
 
@@ -28,13 +30,22 @@ public class Kappa : GroundEnemy
     {
         base.Start();
         lastYPos = transform.position.y;
-        attackRadius = 1.5f;
+        attackRadius = 1.2f;
         anim = GetComponent<Animator>();
+        bc2d = GetComponent<BoxCollider2D>();
+        //bc2d.offset.Set(0.2154121f, -0.3106189f);
+        attackPos.position = new Vector3(bc2d.bounds.center.x, bc2d.bounds.center.y, 0f);
     }
 
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
+
+        /*if(anim.GetBool("isIdle") == true && isJumping == true)
+        {
+            Debug.Log("kleiner Test");
+            Debug.Log("Verhalten wird gestoppt");
+        }*/
 
         //anim.speed = timeController.getTimeSpeed();
 
@@ -50,13 +61,13 @@ public class Kappa : GroundEnemy
             anim.SetBool("slideStart", slideStart);
             slideStart = false;
         }
-        else if (!isSliding)
+        else
         {
             anim.SetBool("isSliding", false);
             slideStart = true;
         }
 
-        if (isIdle && playerDirection().x < 20f && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
+        if (isIdle && Mathf.Abs(playerDirection().x) < 20f && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
         {
             currentIdleTime += Time.deltaTime;
 
@@ -83,6 +94,8 @@ public class Kappa : GroundEnemy
             isJumping = false;
             isFalling = false;
 
+            attackPos.position = new Vector3(bc2d.bounds.center.x, bc2d.bounds.center.y, 0f);
+
             anim.SetBool("isJumping", false);
             anim.SetBool("isIdle", true);
             jumpStart = true;
@@ -92,9 +105,23 @@ public class Kappa : GroundEnemy
             isJumping = true;
             isFalling = false;
 
+            if (isFacingRight)
+            {
+                attackPos.position = new Vector3(bc2d.bounds.center.x + 0.6f, bc2d.bounds.center.y + 1.1f, 0f);
+            }
+            else
+            {
+                attackPos.position = new Vector3(bc2d.bounds.center.x - 0.6f, bc2d.bounds.center.y + 1.1f, 0f);
+            }
+
             anim.SetBool("isJumping", true);
             anim.SetBool("jumpStart", jumpStart);
             jumpStart = false;
+
+            if(playerDirection().y > transform.position.y)
+            {
+                Debug.Log("Player sitzt über Kappa");
+            }
         }
         else if(transform.position.y < lastYPos && grounded == false && isIdle == false)
         {
@@ -106,31 +133,29 @@ public class Kappa : GroundEnemy
 
         if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
         {
-            airMovement();
-        }
+        airMovement();
     }
-
+    }
     protected override void Jump()
-    {
-        
+    {        
         isSliding = false;
         isIdle = false;
         isJumping = true;
 
-        if(playerDirection().x < 0f)
-        {
-            direction = -1f;
-            CharacterFacingDirection(direction);
-        }
-        else
-        {
-            direction = 1f;
-            CharacterFacingDirection(direction);
-        }
+            if(playerDirection().x < 0f)
+            {
+                direction = -1f;
+                CharacterFacingDirection(direction);
+            }
+            else
+            {
+                direction = 1f;
+                CharacterFacingDirection(direction);
+            }
 
-        velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
+            velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
         AudioController.Instance.playFXSound(kappaJump);
-    }
+        }
 
     protected void JumpWin()
     {
@@ -175,4 +200,11 @@ public class Kappa : GroundEnemy
             AudioController.Instance.playFXSound(kappaBlock);
         }
     }
+
+    /*void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(attackPos.position, attackRadius);
+    }*/
 }

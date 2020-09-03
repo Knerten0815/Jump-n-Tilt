@@ -28,6 +28,7 @@ namespace menuHandling
             m_EventSystem.SetSelectedGameObject(firstSelected);
             firstSelected.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline | FontStyles.Bold;
             firstSelected.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0.6470f, 0.0627f, 0.0627f);
+
         }
         //This method loads a scene (later: a level) by a given name
         //Used by Button_StartGame
@@ -36,6 +37,11 @@ namespace menuHandling
             SceneManager.LoadScene(scene_name);
         }
 
+        public void restartGame()
+        {
+            ManagementSystem.ResetGameSave();
+            SceneManager.LoadScene("Level 1 (Tutorial)");
+        }
         //This method closes the whole Application
         //Used by Button_ExitGame
         public void exitGame()

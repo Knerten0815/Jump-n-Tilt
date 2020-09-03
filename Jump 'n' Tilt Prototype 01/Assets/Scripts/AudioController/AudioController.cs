@@ -31,7 +31,9 @@ namespace AudioControlling
         [SerializeField] Slider musicSlider;
         [SerializeField] Slider fxSlider;
 
-        [SerializeField] Audio music;
+        [SerializeField] Audio music, timePickUp, heartPickUp, collectibleCardPickUp;
+        [SerializeField] AudioClip[] coins;
+        [SerializeField] [Range(0f, 1f)] float coinVolume;
 
         void Awake()
         {
@@ -133,10 +135,24 @@ namespace AudioControlling
             source.PlayOneShot(sound.clip, sound.volume * fxVol);
         }
 
-        //classes can call this method, to set the background music
-        public void changeMusic(Audio newMusic)
+        public void playTimePickUpFX()
         {
-            music = newMusic;
+            source.PlayOneShot(timePickUp.clip, timePickUp.volume * fxVol);
+        }
+
+        public void playHeartPickUpFX()
+        {
+            source.PlayOneShot(heartPickUp.clip, heartPickUp.volume * fxVol);
+        }
+
+        public void playCollectibleCardPickUpFX()
+        {
+            source.PlayOneShot(collectibleCardPickUp.clip, collectibleCardPickUp.volume * fxVol);
+        }
+
+        public void playCoinPickUpFX()
+        {
+            source.PlayOneShot(coins[Random.Range(0, 8)], coinVolume * fxVol);
         }
     }
 }

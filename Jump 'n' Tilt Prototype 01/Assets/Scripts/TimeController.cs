@@ -9,14 +9,15 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
     {
         //Author: Marvin Winkler
         //TimeController only works for Kinematic objects
-        private float timeSpeed;    
-        private float speedAdjustedDeltaTime;
-        private bool isSlow;
+        private float timeSpeed;                //Timespeed, 1 = real time, > 1 faster, < 1 slower
+        private float speedAdjustedDeltaTime;   //Dela time adjusted for time speed
+        private bool isSlow;                    //is time currently slow?
         public float slowTimeSpeed;     //1 is normal speed, < 1 is slower speed, > 1 faster speed
 
         public delegate void timeSpeedChange();
         public static event timeSpeedChange onTimeSpeedChange;  //Classes can subscribe to this event. It gets called when a time speed change accurs. Don't forget to unsubscribe on disable!
 
+        //Author: Marvin Winkler
         private void Start()
         {
             PlayerCharacter.onUseSloMoTime += switchSloMo;
@@ -24,6 +25,7 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
             isSlow = false;
         }
 
+        //Author: Marvin Winkler
         private void OnDisable()
         {
             PlayerCharacter.onUseSloMoTime -= switchSloMo;
@@ -40,7 +42,6 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
 
         //Is subscribed to onSloMo switches timeSpeed
         //Author: Marvin Winkler
-
         private void switchSloMo()
         {
             if (isSlow)

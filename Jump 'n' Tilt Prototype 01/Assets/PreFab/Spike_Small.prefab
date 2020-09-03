@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7294395148599566486}
   - component: {fileID: 5556061316406527190}
   - component: {fileID: 5194428489686335540}
+  - component: {fileID: 1545158741336744315}
   m_Layer: 16
   m_Name: Spike_Small
   m_TagString: Untagged
@@ -101,28 +102,11 @@ MonoBehaviour:
   gravityModifier: 0
   dampening: 0
   maxSpeed: 0
-  moveSpeed: 0
-  jumpHeight: 0
-  jumpHeightReducer: 0
-  moveWhileJumping: 0
-  airResistance: 0
-  wallJumpTime: 0
-  wallJumpTimeSpeed: 0
-  maxAirMovementSpeed: 0
-  onWall: 0
-  slideSpeed: 0
-  slideBackwardsMaxSpeed: 0
-  slideDirection: {x: 0, y: 0}
-  isFacingRight: 0
-  slideDampeningFactor: 0
   attackPos: {fileID: 7487847197766623493}
-  attackRadius: 0
+  attackRadius: 0.54
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2048
-  health: 0
-  knockback: 0
-  knockup: 0
 --- !u!50 &5556061316406527190
 Rigidbody2D:
   serializedVersion: 4
@@ -169,9 +153,31 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.056274414, y: 0.09085274}
-      - {x: -0.38206482, y: -0.28425074}
-      - {x: -0.5468292, y: -0.47659802}
-      - {x: 0.5187378, y: -0.4719174}
+    - - {x: -0.0625, y: 0.125}
+      - {x: -0.5, y: -0.265625}
+      - {x: -0.5, y: -0.5}
+      - {x: 0.5, y: -0.5}
       - {x: 0.5, y: -0.421875}
-      - {x: 0.0256958, y: 0.09085274}
+      - {x: 0.125, y: 0.125}
+--- !u!114 &1545158741336744315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9111065263956572211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea9c41feec643384889adb4c7ff7d9c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minGroundNormalY: 0
+  minJumpNormalY: 0
+  gravityModifier: 0
+  dampening: 0
+  maxSpeed: 0
+  attackPos: {fileID: 7487847197766623493}
+  attackRadius: 0.3
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 0

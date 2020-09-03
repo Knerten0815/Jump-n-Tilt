@@ -5,7 +5,7 @@ using TimeControlls;
 using LevelControlls;
 
 //Author: Melanie Jäger
-public class Arrow : Character
+public class Arrow : Hazards
 {
     private Transform level;
     private new float moveDirection;
@@ -14,7 +14,7 @@ public class Arrow : Character
     private float cameraPos;
 
     public float destroyDistance = 10.0f;   //distance from the camera position until the arrow is destroyed
-    public int spawnDistance = 3;           //variable to multiply the distance from the camera position until the arrow is spawned
+    public int spawnDistance = 6;           //variable to multiply the distance from the camera position until the arrow is spawned
 
     //Author: Melanie Jäger
     //sets the basic values for the arrow movement
@@ -69,7 +69,7 @@ public class Arrow : Character
     {
         if (collision.gameObject.name == "Player")
         {
-            //Debug.Log("hit");
+            Debug.Log("hitArrow");
             Attack();
         }
 

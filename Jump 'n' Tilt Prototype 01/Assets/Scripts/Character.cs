@@ -38,6 +38,8 @@ public class Character : PhysicsObject
     public float knockup;                   //by Marvin Winkler, upwards velocity given to character when hit
     protected bool isDead;                  //by Marvin Winkler, true when character is dead
 
+    public GameObject bloodSpray;
+
     // inherited from PhysicsObject.cs
     protected override void OnEnable()
     {

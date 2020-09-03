@@ -4014,12 +4014,12 @@ PrefabInstance:
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 80.584
+      value: 76.62
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.72
+      value: -2.08
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
@@ -5144,7 +5144,7 @@ PrefabInstance:
     - target: {fileID: 7739481807211276192, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
@@ -7839,12 +7839,12 @@ PrefabInstance:
     - target: {fileID: 8695302587430117918, guid: f349cd2f7c50b1348b251f4f70500aba,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 81.14
+      value: 77.176
       objectReference: {fileID: 0}
     - target: {fileID: 8695302587430117918, guid: f349cd2f7c50b1348b251f4f70500aba,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.64
+      value: -0.7199998
       objectReference: {fileID: 0}
     - target: {fileID: 8695302587430117918, guid: f349cd2f7c50b1348b251f4f70500aba,
         type: 3}
@@ -7913,7 +7913,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &657331793
 Transform:
   m_ObjectHideFlags: 0
@@ -8057,13 +8057,12 @@ MonoBehaviour:
   moveWhileJumping: 0
   airResistance: 0
   wallJumpTime: 0
-  wallJumpTimeSpeed: 0
   maxAirMovementSpeed: 0
   onWall: 0
+  isFacingRight: 0
   slideSpeed: 8
   slideBackwardsMaxSpeed: 3
   slideDirection: {x: 0, y: 0}
-  isFacingRight: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 0}
   attackRadius: 1.2
@@ -8073,6 +8072,8 @@ MonoBehaviour:
   health: 10
   knockback: 1
   knockup: 1
+  bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
+    type: 3}
   startDirection: 1
   wallCheckPrecision: 5
   whatIsGround:
@@ -8861,7 +8862,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 707090058}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 81.21, y: 0.18, z: 0}
+  m_LocalPosition: {x: 75.39, y: -3.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1336185930}
@@ -8906,13 +8907,12 @@ MonoBehaviour:
   moveWhileJumping: 0
   airResistance: 0
   wallJumpTime: 0
-  wallJumpTimeSpeed: 0
   maxAirMovementSpeed: 0
   onWall: 0
+  isFacingRight: 0
   slideSpeed: 8
   slideBackwardsMaxSpeed: 3
   slideDirection: {x: 0, y: 0}
-  isFacingRight: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 0}
   attackRadius: 0
@@ -8922,6 +8922,8 @@ MonoBehaviour:
   health: 1
   knockback: 1
   knockup: 1
+  bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
+    type: 3}
   startDirection: -1
   wallCheckPrecision: 5
   whatIsGround:
@@ -11642,7 +11644,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &956939699
 Transform:
   m_ObjectHideFlags: 0
@@ -11651,7 +11653,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956939698}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 83.77, y: -3.65, z: 0}
+  m_LocalPosition: {x: 69.34, y: -4, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 1336185930}
@@ -11680,22 +11682,23 @@ MonoBehaviour:
   moveWhileJumping: 1.3
   airResistance: 0
   wallJumpTime: 0
-  wallJumpTimeSpeed: 0
   maxAirMovementSpeed: 5
   onWall: 0
+  isFacingRight: 0
   slideSpeed: 8
   slideBackwardsMaxSpeed: 3
   slideDirection: {x: 0, y: 0}
-  isFacingRight: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 0}
   attackRadius: 0
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2048
-  health: 3
+  health: 1
   knockback: -10
   knockup: 8
+  bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
+    type: 3}
   startDirection: 1
   wallCheckPrecision: 5
   whatIsGround:
@@ -11746,8 +11749,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.11340523, y: -0.17687488}
-  m_Size: {x: 0.82021713, y: 0.91446495}
+  m_Offset: {x: 0.11112404, y: -0.16240573}
+  m_Size: {x: 0.6696892, y: 0.6696892}
   m_Direction: 0
 --- !u!50 &956939702
 Rigidbody2D:
@@ -11814,7 +11817,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 2.1333334, y: 2.1333334}
+  m_Size: {x: 1.6, y: 1.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -11852,18 +11855,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.11311531, y: -0.14533603}
+  m_Offset: {x: 0.10171318, y: -0.16586715}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4.266667, y: 4.266667}
-    newSize: {x: 2.1333334, y: 2.1333334}
+    newSize: {x: 1.6, y: 1.6}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.872715, y: 1.0089266}
+  m_Size: {x: 0.66744614, y: 0.6849922}
   m_EdgeRadius: 0
 --- !u!1 &963090289
 GameObject:
@@ -15016,7 +15019,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309397689}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.65, y: -3.29, z: 0}
+  m_LocalPosition: {x: 87.52, y: -0.09, z: 0}
   m_LocalScale: {x: 0.05066718, y: 0.05066718, z: 0.05066718}
   m_Children:
   - {fileID: 87018448}
@@ -15068,13 +15071,12 @@ MonoBehaviour:
   moveWhileJumping: 1.3
   airResistance: 0.002
   wallJumpTime: 0.22
-  wallJumpTimeSpeed: 1
   maxAirMovementSpeed: 11
   onWall: 0
+  isFacingRight: 0
   slideSpeed: 10
   slideBackwardsMaxSpeed: 3
   slideDirection: {x: 0, y: 0}
-  isFacingRight: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 87018448}
   attackRadius: 1.5
@@ -15084,6 +15086,8 @@ MonoBehaviour:
   health: 3
   knockback: -15
   knockup: 10
+  bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
+    type: 3}
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
@@ -65945,7 +65949,7 @@ PrefabInstance:
     - target: {fileID: 6579246517331179219, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6579246517331179221, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}

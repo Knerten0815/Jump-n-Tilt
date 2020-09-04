@@ -862,7 +862,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &11718998
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17503,6 +17503,107 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &487305662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 487305663}
+  - component: {fileID: 487305665}
+  - component: {fileID: 487305664}
+  m_Layer: 0
+  m_Name: kitsune_idle0001
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &487305663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487305662}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 17.4, y: -1.16, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1336185930}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &487305664
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487305662}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 06aaedacabc66874fa47e96e864d27b8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!212 &487305665
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487305662}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: a9ae06eca8ea34e4b811a32527aa1c6a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 4.266667, y: 4.266667}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &491609298
 GameObject:
   m_ObjectHideFlags: 0
@@ -29259,7 +29360,7 @@ GameObject:
   - component: {fileID: 1037106623}
   - component: {fileID: 1037106622}
   m_Layer: 0
-  m_Name: MovementTutorial
+  m_Name: BeginningDialogueAndMovementTutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29319,14 +29420,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
     name:
+    - Onamazu
+    - Kashima
+    - Onamazu
+    - Kashima
     - Tutorial
     sentences:
+    - Oh, come on!
+    - "What in the heaven\u2019s name have you done?"
+    - "I did nothing. All I know is, I haven\u2019t felt so alive in centuries! Let
+      me down again!"
+    - "I need to check what\u2019s going on. You are staying on my back!"
     - Use A and D / left joystick to move around.
     images:
     - {fileID: 250823752}
     - {fileID: 1039562089}
     - {fileID: 812834976}
     - {fileID: 1028400130}
+    - {fileID: 280969413}
   continueButton: {fileID: 524927754}
 --- !u!23 &1037106624
 MeshRenderer:
@@ -32076,7 +32187,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175865589}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.334, y: 3.994, z: 469.07562}
+  m_LocalPosition: {x: 21.33, y: 3.994, z: 469.07562}
   m_LocalScale: {x: 0.22147323, y: 11.507106, z: 1}
   m_Children: []
   m_Father: {fileID: 364682118}
@@ -34837,6 +34948,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 487305663}
   - {fileID: 1807569489}
   - {fileID: 149166213}
   - {fileID: 554495207}
@@ -35590,7 +35702,7 @@ GameObject:
   - component: {fileID: 1370928895}
   - component: {fileID: 1370928894}
   m_Layer: 0
-  m_Name: JumpTutorial
+  m_Name: StoryDialogueAndJumpTutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35650,9 +35762,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
     name:
+    - Kitsune
+    - Kashima
+    - Kitsune
+    - Kitsune
+    - Kashima
+    - Kitsune
+    - Kitsune
+    - Kashima
+    - Onamazu
+    - Kitsune
+    - Kitsune
+    - Kashima
+    - Kitsune
+    - Kitsune
+    - Onamazu
+    - Kashima
+    - Kitsune
+    - Kashima
+    - Kitsune
     - Tutorial
     - Tutorial
     sentences:
+    - Hey, now look at you! I almost thought you got crushed in there.
+    - Who are you? What happened? The seal was destroyed!
+    - Yeah, seems your holy shrine was in the way.
+    - "I bet some palace needed a new rice wine cellar or something. They don\u2019t
+      care anymore."
+    - What are you talking about?
+    - "The humans. Those mortal creatures that should be worshipping you. It\u2019s
+      been a long "
+    - 'time, quite possible they just forgot that your rock was all about keeping
+      them safe. '
+    - That's heresy!
+    - I like it.
+    - 'Ha, you literally lived under a rock for ages, huh? The gods are gone. Went
+      back to the '
+    - heavens. Good old fish-guarding Kashima is the only one left as far as I know.
+    - And how do you know me?
+    - "I\u2019m old, I remember. Not like the humans. Or the gods. Even the one guarding
+      the \n"
+    - "exit to the underworld is gone. You can step right in and out nowadays! \r"
+    - 'Hey, how about we step right out of it? And then you throw me back into the
+      sea. '
+    - This is unbelievable! They just left me down here. And the mortals are disgracing
+      my name!
+    - The fish is right, though. They are not worth guarding.
+    - "I\u2019m going to make them pay! "
+    - Yeah, go for it!
     - Press space / A to jump.
     - Press space / A again in the air to do a double jump.
     images:
@@ -35660,6 +35817,7 @@ MonoBehaviour:
     - {fileID: 1039562089}
     - {fileID: 812834976}
     - {fileID: 1028400130}
+    - {fileID: 280969413}
   continueButton: {fileID: 524927754}
 --- !u!23 &1370928896
 MeshRenderer:
@@ -128150,7 +128308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807569488}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 93.5, y: 48.8, z: 0}
+  m_LocalPosition: {x: -2.6, y: 9.8, z: 0}
   m_LocalScale: {x: 0.050669998, y: 0.050669998, z: 0.050669998}
   m_Children:
   - {fileID: 919161431}
@@ -128158,7 +128316,7 @@ Transform:
   - {fileID: 302736825}
   - {fileID: 1774195195}
   m_Father: {fileID: 1336185930}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1807569490
 Animator:

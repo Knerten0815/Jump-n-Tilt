@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 //Author: Michelle Limbach
 public class DialogueManager : MonoBehaviour
@@ -86,9 +87,14 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSectence()
     {
-        if (sentences.Count == 0)
+        if (sentences.Count == 0 && SceneManager.GetActiveScene().name != "Intro")
         {
             EndDialogue();
+            return;
+        }
+        else if(sentences.Count == 0 && SceneManager.GetActiveScene().name == "Intro")
+        {
+            SceneManager.LoadScene("Level 1");
             return;
         }
 

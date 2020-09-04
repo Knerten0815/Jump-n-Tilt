@@ -24,7 +24,7 @@ namespace menuHandling
             animator = menuBackground.GetComponent<Animator>();
 
 
-            if (SceneManager.GetActiveScene().name == "NewMenu" || SceneManager.GetActiveScene().name == "KatjaMenue2")
+            if (SceneManager.GetActiveScene().name == "NewMenu" || SceneManager.GetActiveScene().name == "KatjaMenue2" || SceneManager.GetActiveScene().name == "HighScore")
             {
                 firstMenuPage.SetActive(false);
                 animator.SetTrigger("OpenScroll");

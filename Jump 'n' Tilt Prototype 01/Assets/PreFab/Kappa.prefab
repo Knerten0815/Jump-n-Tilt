@@ -80,7 +80,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 1.8, y: 1.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -165,16 +165,8 @@ MonoBehaviour:
   direction: 1
   cc2d: {fileID: 5699361465839362910}
   wallCheckDistance: 0.05
-  lastYPos: 0
   idleTime: 1
-  currentIdleTime: 2
-  isIdle: 0
-  isJumping: 0
-  isFalling: 0
-  jumpStart: 0
-  slideStart: 0
   jumpDistance: 10
-  bc2d: {fileID: 0}
   kappaJump:
     clip: {fileID: 8300000, guid: f5df74967ddf81b4db8c87faa04a6cc7, type: 3}
     volume: 1
@@ -237,7 +229,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4.266667, y: 4.266667}
-    newSize: {x: 2.56, y: 2.56}
+    newSize: {x: 1.8, y: 1.8}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0

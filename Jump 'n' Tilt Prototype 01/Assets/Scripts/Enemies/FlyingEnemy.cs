@@ -15,15 +15,13 @@ public class FlyingEnemy : Enemy
     public float gravityCounter;
     private float gravitySwitchCounter;
     public float velY;
-    public float waitTime;
-    private float waitTimeCounter;
 
     public Vector2 roamPos;
     private State state;
     private GameObject player;
     [SerializeField] float attackCooldownTime;
-    public bool movesRight = true;
-    public bool hasAttacked = false;
+    protected bool movesRight = true;
+    protected bool hasAttacked = false;
     protected bool isAttacking;
     protected bool isWalking;
     protected bool isChasing;
@@ -105,8 +103,8 @@ public class FlyingEnemy : Enemy
                 float attackRange = 1.5f;
                 if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
                 {
-                    Attack();
                     isAttacking = true;
+                    Attack();
                 }
 
                 float targetRange = 5f;

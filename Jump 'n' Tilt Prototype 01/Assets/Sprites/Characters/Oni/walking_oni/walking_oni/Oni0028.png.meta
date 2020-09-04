@@ -95,7 +95,9 @@ TextureImporter:
     indices: 
     edges: []
     weights: []
-    secondaryTextures: []
+    secondaryTextures:
+    - texture: {fileID: 2800000, guid: 9ac0ee5df621d9b4099faa9342221977, type: 3}
+      name: _NormalMap
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

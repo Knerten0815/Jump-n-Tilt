@@ -19,8 +19,8 @@ public class Enemy : Character
 
         if (isDead)
         {
+            Instantiate(bloodSpray, transform.position, Quaternion.identity);
             gameObject.SetActive(false);
-            Debug.Log("Enemy ist tot!");
         }
     }
     public override void TakeDamage(int damage, Vector2 direction)

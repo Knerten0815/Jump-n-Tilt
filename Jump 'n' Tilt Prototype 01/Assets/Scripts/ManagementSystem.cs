@@ -119,6 +119,7 @@ public class ManagementSystem : MonoBehaviour
             }
         }
     
+        if(levelLoadMethod != null)
         levelLoadMethod(unlockedLevels, currentLevel);
     
 

@@ -186,13 +186,12 @@ MonoBehaviour:
   moveWhileJumping: 0
   airResistance: 0
   wallJumpTime: 0
-  wallJumpTimeSpeed: 0
   maxAirMovementSpeed: 0
   onWall: 0
+  isFacingRight: 0
   slideSpeed: 0
   slideBackwardsMaxSpeed: 0
   slideDirection: {x: 0, y: 0}
-  isFacingRight: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 8695302587272717332}
   attackRadius: 1
@@ -202,10 +201,13 @@ MonoBehaviour:
   health: 1
   knockback: -10
   knockup: 5
+  bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
+    type: 3}
   gravityCounter: 4
   velY: 1
   waitTime: 0
   roamPos: {x: 5, y: 0}
+  attackCooldownTime: 2
   movesRight: 1
   hasAttacked: 0
   onryoIdle:

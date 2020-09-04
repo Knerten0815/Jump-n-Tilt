@@ -5,20 +5,19 @@ using GameActions;
 
 public class PlayerCharacter : Character
 {
-
     // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
 
     // variables for jumping
-    public int jumpCount;                   // Possible amount of jumps
+    public int jumpCount;                       // Possible amount of jumps
     public int jumpCountLeft;                   // Amount of jumps that are left
     private float cooldown;
-    public float jumpCooldownTime;
+    public float jumpCooldownTime;              //Minimum time between jumps
     private bool canJump = true;                //Is Player allowed to jump
 
     public float hangTime;                      //by Marvin Winkler, how late can the player jump after walking of a platform in seconds
     private float hangTimer;
 
-    public float jumpBuffer;                    //by Marvin Winkler, how early can the player hit the jump button before hitting the ground in seconds
+    public float jumpBuffer;                    //by Marvin Winkler, how early can the player hit the jump button before hitting the ground and still jump in seconds
     private float jumpBufferTimer;
 
     // variables for crouching
@@ -33,17 +32,17 @@ public class PlayerCharacter : Character
     private RaycastHit2D lastWallcontact;
     public int wallJumpCounter;
     public bool touchesWall;                    // for wall detection
-    public float wallCheckDistance;      //public Vector2 offsetRight = new Vector2(0.5f, 0);
+    public float wallCheckDistance;             //public Vector2 offsetRight = new Vector2(0.5f, 0);
     public LayerMask whatIsLevel;               //public Transform test;
     public LayerMask whatIsWall;
     public bool wallSliding;
-    public float wallSlidingSpeed;       // can be adjusted in inspector for finding better setting
-    public int facingDirection;             // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
+    public float wallSlidingSpeed;              // can be adjusted in inspector for finding better setting
+    public int facingDirection;                 // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
-    public float wallJumpSpeed;             //by Marvin Winkler, speed given to the player when jumping of a wall
+    public float wallJumpSpeed;                 //by Marvin Winkler, speed given to the player when jumping of a wall
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
-    public float slideJumpHeightX;          //Jumpheight during sliding
-    public float slideJumpHeightY;
+    public float slideJumpHeightX;              //by Marvin Winkler, Jump force in X direction
+    public float slideJumpHeightY;              //by Marvin Winkler, Jump force in Y direction
 
     private BoxCollider2D collider;
 
@@ -51,38 +50,38 @@ public class PlayerCharacter : Character
     private Animator animator;
     private bool jumpStart;
     private float playerInputBuffer;
-    private float fishTimer;
+    private float fishTimer;                    //used for tilt
     private bool justTookDamage;
-    public float stunnTime;
+    public float stunnTime;                     //time input gets ignored after beeing hit
     private float stunnTimer;
-    private float deadFishTimer;
+    private float deadFishTimer;                //used to spawn the fish object during the death animation
     private bool animatedAttack;
-    private float movementTimer;
 
     // particle stuff by Marvin Winkler
     private ParticleSystem footsteps;
     private ParticleSystem.EmissionModule footEmission;
     private ParticleSystem.MainModule footstepsMain;
-    private float particleOffDelayTimer;
+    private float particleOffDelayTimer;        //running particles get spawned even when leaving ground for a brief moment
     private ParticleSystem groundImpact;
     private ParticleSystem.MainModule groundImpactMain;
-    private bool justLanded;
+    private bool justLanded;                    //used by groundImpact
 
     // attack stuff by Marvin Winkler
-    private Transform fishTrans;
-    public Vector3 attackOffset;            //Offset from player position where he attacks
+    private Transform fishTrans;                //is set to attackOffeset
+    public Vector3 attackOffset;                //Offset from player position where he attacks
     private float attackTimer;
-    public float attackDelay;               //Minimum time between attacks in seconds
+    public float attackDelay;                   //Minimum time between attacks in seconds
     private bool isAttacking;
-    private float slideAttackCooldownTimer;
-    public float slideAttackCooldown;
+    private float slideAttackCooldownTimer; 
+    public float slideAttackCooldown;           //Cooldown between attacks during sliding
 
     //pickup stuff by Marvin Winkler
-    private bool hasTimePickup;
     private float sloMoTimer;
-    public float sloMoTime;                 //Duration of SloMoTime power up in seconds
+    public float sloMoTime;                     //Duration of SloMoTime power up in seconds
+    private int sloMoSentTimer;                 //Timer used, so the displayed string does not get constantly updated
     private float remainingSloMoTime;
 
+    //Subscribable events by Marvin Winkler
     public delegate void useSloMoTime();
     public static event useSloMoTime onUseSloMoTime;
 
@@ -97,10 +96,12 @@ public class PlayerCharacter : Character
     {
         base.OnEnable();
 
-        //Marvin
+        //by Marvin Winkler
+        //+++++
         levelController = GameObject.Find("LevelController").GetComponent<LevelControlls.LevelControllerNew>();
         fishTrans = GameObject.Find("Fish").GetComponent<Transform>();
 
+        //Particles
         footsteps = GameObject.Find("Footsteps").GetComponent<ParticleSystem>();
         footEmission = footsteps.emission;
         footstepsMain = footsteps.main;
@@ -109,6 +110,7 @@ public class PlayerCharacter : Character
 
         collider = GetComponent<BoxCollider2D>();
 
+        //Animation
         animator = GetComponent<Animator>();
         jumpStart = true;
         jumpCountLeft = jumpCount;
@@ -117,41 +119,33 @@ public class PlayerCharacter : Character
         sloMoTimer = -100;
         animatedAttack = true;
 
+        //Input
         PlayerInput.onTiltDown += smashFishToTilt;
         PlayerInput.onTiltDown += disableSliding;
         PlayerInput.onSlowMoDown += useSloMoPickup;
 
+        //Management pickup
         ManagementSystem.healthPickUpHit += addHealth;
         ManagementSystem.timePickUpHit += addTimePickup;
 
+        //Management update
+        ManagementSystem.updateTime(remainingSloMoTime);
+        ManagementSystem.updatePlayerHealth(health);
+        //+++++
 
-        //PlayerInput.onHorizontalDown += disableSliding;
-        //PlayerInput.onJumpButtonDown += disableSliding;
-
-        // Nicole 
+        // by Nicole 
         PlayerInput.onJumpButtonDown += Jump;
         PlayerInput.onHorizontalDown += Movement;
         PlayerInput.onJumpButtonUp += ShortJump;
         PlayerInput.onPlayerAttackDown += Attack;
 
-        //Michelle
+        // by Michelle
         PlayerInput.onVerticalDown += CrouchDown;
         PlayerInput.onVerticalUp += CrouchUp;
-
-        // Nicole 
-        //whatIsLevel = LayerMask.GetMask("Level");
-        //whatIsEnemy = LayerMask.GetMask("Enemy");
-        
     }
     //Author: Marvin Winkler
     //Used to fix several bugs
     private void disableSliding(float a)
-    {
-        isSliding = false;
-    }
-    //Author: Marvin Winkler
-    //Used to fix several bugs
-    private void disableSliding()
     {
         isSliding = false;
     }
@@ -173,20 +167,17 @@ public class PlayerCharacter : Character
         PlayerInput.onVerticalDown -= CrouchDown;
         PlayerInput.onVerticalUp -= CrouchUp;
 
-        //Marvin
+        //Marvin Winkler
         ManagementSystem.healthPickUpHit -= addHealth;
         ManagementSystem.timePickUpHit -= addTimePickup;
         PlayerInput.onTiltDown -= smashFishToTilt;
         PlayerInput.onTiltDown -= disableSliding;
         PlayerInput.onSlowMoDown -= useSloMoPickup;
-        //PlayerInput.onHorizontalDown -= disableSliding;
-        //PlayerInput.onJumpButtonDown -= disableSliding;
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
     protected override void ComputeVelocity()
     {
-
         moveDirection = Input.GetAxis("Horizontal");
         if (!isDead)
         {
@@ -206,34 +197,16 @@ public class PlayerCharacter : Character
                 Slide();
             }
 
-            // death of character
-            //if (health <= 0)
-            //{
-            //    Destroy(gameObject);
-            //}
-
-            //if (wallJumpTime < 0)
-            //{
-            //    wallJumpTime = 0;
-            //}
-            //else if(wallJumpTime > 0)
-            //{
-            //    wallJumpTime -= (1 - wallJumpTime * 0.99f) * timeController.getSpeedAdjustedDeltaTime() * wallJumpTimeSpeed;
-            //}
-
+            //Is sliding?
             isSliding = false;
-
-            posBuffer = posBuffer - new Vector2(transform.localPosition.x, transform.localPosition.y);
 
             if (!onWall && Mathf.Abs(groundNormal.y) < 1 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0))
             {
                 isSliding = true;
             }
-            posBuffer = new Vector2(transform.localPosition.x, transform.localPosition.y);
 
             velocity.x -= velocity.x * airResistance;
         }
-            //base.ComputeVelocity();
 
         //hang time
         if (grounded)
@@ -274,13 +247,13 @@ public class PlayerCharacter : Character
             slideAttackCooldownTimer -= timeController.getSpeedAdjustedDeltaTime();
         }
 
-
         // jump cooldown
         if (cooldown > 0)
         {
             cooldown -= Time.deltaTime;
         }
 
+        //On wall while level is tilted?
         if (touchesWall && levelController.getTiltStep() != 0)
         {
             onWall = true;
@@ -290,12 +263,14 @@ public class PlayerCharacter : Character
             onWall = false;
         }
 
+        //Wall sliding
         if (!isDead)
             WallSliding();
 
         if (wallSliding)
             isSliding = false;
         
+        //Not yet working ++++++++++++++++++++++++++++++++++
         //SloMoTime powerup
         if(sloMoTimer >= 0)
         {
@@ -311,6 +286,18 @@ public class PlayerCharacter : Character
             sloMoTimer = -100;
         }
 
+        //SloMoTime to management system
+        if(sloMoTimer >= 0)
+        {
+            if(sloMoSentTimer > sloMoTimer)
+            {
+                sloMoSentTimer = (int)sloMoTimer;
+                ManagementSystem.updateTime(sloMoTimer);
+            }
+        }
+        //++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        //Wall jump timer reduces mid air movement after wall jump
         if (grounded)
             wallJumpTimer = 0;
 
@@ -321,7 +308,6 @@ public class PlayerCharacter : Character
             if (wallJumpTimer < 0)
                 wallJumpTimer = 0;
         }
-
 
         //Particle system simulation speed
         footstepsMain.simulationSpeed = timeController.getTimeSpeed();
@@ -479,17 +465,18 @@ public class PlayerCharacter : Character
 
             deadFish.GetComponent<Animator>().speed = timeController.getTimeSpeed();
         }
-        //+++
+        //+++   SEE ABOVE! ^^
     }
 
     //Author: Marvin Winkler
+    //Particle spawn rates get adjusted
     private void playParticleSystems()
     {
+        //Running
         if(Mathf.Abs(velocity.x) > 0.2f && particleOffDelayTimer >= 0)
         {
             ParticleSystem.PlaybackState state = new ParticleSystem.PlaybackState();
             footEmission.rateOverTime = 15 * Mathf.Abs(velocity.x);
-
         }
         else
         {
@@ -504,6 +491,8 @@ public class PlayerCharacter : Character
         {
             particleOffDelayTimer -= timeController.getSpeedAdjustedDeltaTime();
         }
+
+        //Ground impact
         if (justLanded && grounded)
         {
             groundImpact.Play();
@@ -547,36 +536,25 @@ public class PlayerCharacter : Character
 
     protected override void Movement(float direction)
     {
-        //if (wallJumpTimer <= 0.9f * wallJumpTime)
-        //{
         if (wallJumpTimer < 0)
             wallJumpTimer = 0;
 
-            //if(direction > 0 && slideDirection.x < 0 || direction < 0 && slideDirection.x > 0)
-            if (levelController.getTiltStep() > 0 && direction < 0 && slideDirection.x > 0
-                || levelController.getTiltStep() < 0 && direction > 0 && slideDirection.x < 0
-                || levelController.getTiltStep() == 0 && direction > 0 && slideDirection.x < 0
-                || levelController.getTiltStep() == 0 && direction < 0 && slideDirection.x > 0
-                || levelController.getTiltStep() > 0 && direction > 0 && slideDirection.x < 0
-                || levelController.getTiltStep() < 0 && direction < 0 && slideDirection.x > 0
-                || !isSliding)
-            {
-            //if (wallJumpTimer < 0.5f * wallJumpTime)
-            //{
-                base.Movement(direction * ((wallJumpTime - wallJumpTimer) / (wallJumpTime)));
-            //}
-            }
-            else
-            {
-                //isSliding = true;
-                Slide();
-            }
-
-            //wallJumpTimer = 0;
-        //}
-
-        //animDir = Mathf.Abs(direction);
-        //animator.SetFloat("animationDirection", animDir);
+        //Disables movement if running in slide direction
+        if (levelController.getTiltStep() > 0 && direction < 0 && slideDirection.x > 0
+            || levelController.getTiltStep() < 0 && direction > 0 && slideDirection.x < 0
+            || levelController.getTiltStep() == 0 && direction > 0 && slideDirection.x < 0
+            || levelController.getTiltStep() == 0 && direction < 0 && slideDirection.x > 0
+            || levelController.getTiltStep() > 0 && direction > 0 && slideDirection.x < 0
+            || levelController.getTiltStep() < 0 && direction < 0 && slideDirection.x > 0
+            || !isSliding)
+        {
+            //When wallJumpTimer is 0 direction gets multiplied with 1, otherwise it gets reduced
+            base.Movement(direction * ((wallJumpTime - wallJumpTimer) / (wallJumpTime)));
+        }
+        else
+        {
+            Slide();
+        }
     }
 
     // Author: Nicole Mynarek, Marvin Winkler
@@ -649,7 +627,6 @@ public class PlayerCharacter : Character
                     // cooldown will be set
                     cooldown = jumpCooldownTime;
 
-                    //base.Jump();
                     if (isSliding)
                     {
                         velocity = new Vector2(velocity.x + slideDirection.x * slideJumpHeightX, slideJumpHeightY);
@@ -677,9 +654,8 @@ public class PlayerCharacter : Character
 
                 // cooldown is set
                 cooldown = jumpCooldownTime;
-                //base.Jump();
 
-                    velocity = new Vector2(velocity.x + moveDirection * maxAirMovementSpeed, jumpHeight);
+                velocity = new Vector2(velocity.x + moveDirection * maxAirMovementSpeed, jumpHeight);
 
                 jumpCountLeft--;
 
@@ -693,17 +669,13 @@ public class PlayerCharacter : Character
         //resets wallJumpCounter, so there is no limit for wall jumps on the same wall
         wallJumpCounter = 5;
 
+        //Resets double jumps
+        jumpCountLeft = jumpCount;
+
         // player can jump if canJump is true and the location of the lastWallContact is different to the new contact location 'hit' 
         // or if the wallJumpCounter is higher than 0
         if (canJump && (lastWallcontact.point.x != hit.point.x || (wallJumpCounter > 0))) //Player springt ab
-        {
-            // if he location of the lastWallContact is different to the new contact location 'hit' 
-            //if (lastWallcontact.point.x != hit.point.x)
-            //{
-                // wallJumpCounter is reset
-                //wallJumpCounter = 2;
-            //}
-            
+        { 
             wallSliding = false;
             jumpCountLeft--;
             velocity = new Vector2(hit.normal.x * wallJumpSpeed, jumpHeight); //moveSpeed * (moveDirection), jumpHeight);
@@ -760,6 +732,7 @@ public class PlayerCharacter : Character
         {
             //Checks if Player has a Plattform over his head
             underPlattform = Physics2D.Raycast((Vector2)transform.position, transform.up, plattformCheckDistance, whatIsLevel);
+
             //The next two are nessesary so the player does not glitch thru the platform when just coming out from beneath it
             underPlattform = underPlattform || Physics2D.Raycast((Vector2)transform.position, new Vector2(1, 1), plattformCheckDistance, whatIsLevel);
             underPlattform = underPlattform || Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, 1), plattformCheckDistance, whatIsLevel);
@@ -789,42 +762,46 @@ public class PlayerCharacter : Character
             }
 
         }
-
     }
+
     //Author: Marvin Winkler
     private void addHealth()
     {
         health++;
+        ManagementSystem.updatePlayerHealth(health);
     }
 
     //Author: Marvin Winkler
     private void addTimePickup()
     {
-        hasTimePickup = true;
         remainingSloMoTime += sloMoTime;
+        ManagementSystem.updateTime(remainingSloMoTime);
     }
 
     //Author: Marvin Winkler
+    //Slomo time gets toggled
     private void useSloMoPickup()
     {
         if(timeController.getTimeSpeed() == timeController.slowTimeSpeed)
         {
             remainingSloMoTime = sloMoTimer;
+            sloMoSentTimer = (int)sloMoTimer;
             onUseSloMoTime();
             return;
         }
-        if (remainingSloMoTime > 0)//hasTimePickup)
+        if (remainingSloMoTime > 0)
         {
             sloMoTimer = remainingSloMoTime;
-            hasTimePickup = false;
             onUseSloMoTime();
         }
     }
 
     //Author: Marvin Winkler
+    //Takes damage and gets knocked back, overrides the charackter takeDamage() funktion
     public override void TakeDamage(int damage, Vector2 direction)
     {
         health -= damage;
+        ManagementSystem.updatePlayerHealth(health);
         justTookDamage = true;
         velocity = new Vector2(direction.x * knockback, knockup);
         CharacterFacingDirection(-velocity.x);
@@ -838,14 +815,17 @@ public class PlayerCharacter : Character
     }
 
     //Author: Marvin Winkler
+    //Only used for death animation
     private void die()
     {
         deadFishTimer = 1.3f;
     }
 
     //Author: Marvin Winkler
+    //The fish position gets updated based on the facing direction, then Characters base attack gets called
     protected override void Attack()
     {
+        //During slide the attack is not animated
         if(animatedAttack)
         attackTimer = attackDelay;
 
@@ -858,15 +838,18 @@ public class PlayerCharacter : Character
             fishTrans.localPosition = new Vector3(-attackOffset.x, attackOffset.y, attackOffset.z);
         }
         base.Attack();
-
     }
 
+    //Author: Marvin Winkler
     protected override void Slide()
     {
+        //No slide when on wall while tilted
         if (onWall)
         {
             return;
         }
+
+        //auto attack during slide
         if (velocity.magnitude > slideBackwardsMaxSpeed && slideAttackCooldownTimer <= 0 && isSliding)
         {
             slideAttackCooldownTimer = slideAttackCooldown;

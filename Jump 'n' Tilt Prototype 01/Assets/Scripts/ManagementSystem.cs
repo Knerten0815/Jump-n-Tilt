@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Security;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.SocialPlatforms.Impl;
 /*
 *
 * Class that overs Events to subscribe too. Can be accessed by other classes to trigger certain events that are subscribed too by all 
@@ -19,8 +22,9 @@ public class ManagementSystem : MonoBehaviour
 
     private static List<int> collectiblesGathered = new List<int>();
     private static int currentLevel = 0;
-    private static int[] Highscore = { 0, 0, 0 };
+    private static Save.ScorePair[][] scoreList = new Save.ScorePair[3][];
     private static int unlockedLevels = 0;
+    private static int currentScore;
 
     /*
     * Cheap and not perfect Singleton initialization. 
@@ -73,12 +77,12 @@ public class ManagementSystem : MonoBehaviour
     public static void pickUp(int scoreValue)
     {
         if (pickUpHit != null)
-        pickUpHit(scoreValue);
+            pickUpHit(scoreValue);
     }
 
 
     public delegate void levelLoad(int unlockedLevels, int currentLevel);
-    
+
     public static event levelLoad levelLoadMethod;
     /*
     *
@@ -89,6 +93,25 @@ public class ManagementSystem : MonoBehaviour
     */
     public delegate void pickupLoad(int collectibleID);
     public static event pickupLoad collectibleOnLoad;
+
+    /*
+    *
+    *
+    *
+    * @Katja    
+    */
+    public delegate void displayHS(string name, int score, int level, int spot);
+    public static event displayHS displayHighscoreSub;
+
+    public void displayHighscoreOneLevel(int level)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if(displayHighscoreSub != null)
+                displayHighscoreSub(scoreList[level][i].name, scoreList[level][i].score, level, i);
+        }
+    }
+
 
     /*
     *
@@ -118,10 +141,14 @@ public class ManagementSystem : MonoBehaviour
                 collectibleOnLoad(ID);
             }
         }
-    
-        if(levelLoadMethod != null)
-        levelLoadMethod(unlockedLevels, currentLevel);
-    
+
+        if (levelLoadMethod != null)
+            levelLoadMethod(unlockedLevels, currentLevel);
+
+        for (int i = 0; i < 3; i++)
+        {
+            displayHighscoreOneLevel(i); 
+        }
 
     }
 
@@ -156,8 +183,8 @@ public class ManagementSystem : MonoBehaviour
     public static void collectedUpdate()
     {
         Debug.Log("TEST cUp");
-
-        collectedScroll();
+        if (collectedScroll != null)
+            collectedScroll();
     }
 
 
@@ -191,14 +218,22 @@ public class ManagementSystem : MonoBehaviour
         collectiblesGathered.Add(6);
         collectiblesGathered.Add(7);
         collectiblesGathered.Add(8);
+        for (int i = 0; i < scoreList.Length; i++)
+        {
+            scoreList[i] = new Save.ScorePair[5];
+            for (int j = 0; j < scoreList[i].Length; j++)
+            {
+                scoreList[i][j] = new Save.ScorePair(1000, "Player");
+            }
+        }
         save.collectiblesGathered = collectiblesGathered;
         save.currentLevel = 1;
-        save.Highscore = Highscore;
+        save.scoreList = scoreList;
         save.unlockedLevels = 2;
         return save;
 
     }
-   
+
     /*
      * 
      * Creates binary data from Save object and saves it in file titles /gamesave.save
@@ -207,7 +242,7 @@ public class ManagementSystem : MonoBehaviour
      */
     public static void SaveGame()
     {
-        
+
         Save save = CreateSaveGameObject();
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
@@ -215,12 +250,12 @@ public class ManagementSystem : MonoBehaviour
         file.Close();
     }
 
-   
+
     public static void ResetGameSave()
     {
         collectiblesGathered = new List<int>();
         currentLevel = 0;
-        Highscore = new int[]{ 0, 0, 0 };
+        //Highscore = new int[] { 0, 0, 0 };
         unlockedLevels = 0;
         Save save = CreateSaveGameObject();
         BinaryFormatter bf = new BinaryFormatter();
@@ -237,7 +272,6 @@ public class ManagementSystem : MonoBehaviour
     */
     public void LoadGame()
     {
-
         if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
         {
 
@@ -245,17 +279,17 @@ public class ManagementSystem : MonoBehaviour
             FileStream file = File.Open(Application.persistentDataPath + "/gamesave.save", FileMode.Open);
             Save save = (Save)bf.Deserialize(file);
             file.Close();
-           // List<int> collectiblesGatheredDEBUG = new List<int>();
-           // collectiblesGatheredDEBUG.Add(2);
+            // List<int> collectiblesGatheredDEBUG = new List<int>();
+            // collectiblesGatheredDEBUG.Add(2);
             collectiblesGathered = save.collectiblesGathered;
-            Highscore = save.Highscore;
+            //Highscore = save.Highscore;
             unlockedLevels = save.unlockedLevels;
             currentLevel = save.currentLevel;
+            scoreList = save.scoreList;
             Debug.Log("Does it load");
         }
-        else { 
+        else {
             SaveGame();
-            }
-
+        }
     }
 }

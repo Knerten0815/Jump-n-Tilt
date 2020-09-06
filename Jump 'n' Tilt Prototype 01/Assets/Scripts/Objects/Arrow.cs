@@ -14,7 +14,7 @@ public class Arrow : Hazards
     private float cameraPos;
 
     public float destroyDistance = 10.0f;   //distance from the camera position until the arrow is destroyed
-    public int spawnDistance = 6;           //variable to multiply the distance from the camera position until the arrow is spawned
+    public int spawnDistance = 12;           //variable to multiply the distance from the camera position until the arrow is spawned
 
     //Author: Melanie Jäger
     //sets the basic values for the arrow movement
@@ -35,7 +35,7 @@ public class Arrow : Hazards
 
     //Author: Melanie Jäger
     //updates the cameraposition and calls the functions
-    void Update()
+    void FixedUpdate()
     {
         cameraPos = Camera.main.transform.position.x;
 

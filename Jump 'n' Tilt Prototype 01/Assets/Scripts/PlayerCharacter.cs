@@ -65,7 +65,7 @@ public class PlayerCharacter : Character
     private ParticleSystem groundImpact;
     private ParticleSystem.MainModule groundImpactMain;
     private bool justLanded;
-    public int slideDoubleCheckLimit;
+    public int slideDoubleCheckLimit = 30;
     private int slideDoubleCheck = 0;//used by groundImpact
 
     // attack stuff by Marvin Winkler

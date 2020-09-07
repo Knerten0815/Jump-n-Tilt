@@ -179,7 +179,6 @@ public class Character : PhysicsObject
     
     //Damages all enemies of the character within the attack radius of the attack position
     //Author: Nicole Mynarek, Marvin Winkler
-    //Minor Fix: Katja Tümmers
     protected virtual void Attack()
     {
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
@@ -190,13 +189,9 @@ public class Character : PhysicsObject
             Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
             Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
             dmgDirection2D.Normalize();
-            Enemy enemy = enemies[i].gameObject.GetComponent<Enemy>();
+            Character enemy = enemies[i].gameObject.GetComponent<Character>();
             if (enemy != null)
-                enemies[i].GetComponent<Enemy>().TakeDamage(1, dmgDirection2D);
-            else
-            {
-                Debug.Log("No damage aetsch baetsch");
-            }
+                enemies[i].GetComponent<Character>().TakeDamage(1, dmgDirection2D);
         }
     }
 

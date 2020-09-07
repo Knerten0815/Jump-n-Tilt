@@ -207,7 +207,7 @@ MonoBehaviour:
   velY: 1
   waitTime: 0
   roamPos: {x: 5, y: 0}
-  attackCooldownTime: 2
+  attackCooldownTime: 1
   movesRight: 1
   hasAttacked: 0
   onryoIdle:

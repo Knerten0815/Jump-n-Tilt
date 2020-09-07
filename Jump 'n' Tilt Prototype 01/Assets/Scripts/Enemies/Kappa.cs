@@ -6,19 +6,17 @@ using AudioControlling;
 // Author: Nicole Mynarek
 public class Kappa : GroundEnemy
 {
-
-    //private float speed; 
-    public float lastYPos = 0;
+    private float lastYPos = 0;
     public float idleTime = 0.2f;
-    public float currentIdleTime = 0;
-    public bool isIdle = true;
-    public bool isJumping = false;
-    public bool isFalling = false;
-    public bool jumpStart = false;
-    public bool slideStart = false;
+    private float currentIdleTime = 0;
+    private bool isIdle = true;
+    private bool isJumping = false;
+    private bool isFalling = false;
+    private bool jumpStart = false;
+    private bool slideStart = false;
     public float jumpDistance;
 
-    public BoxCollider2D bc2d;
+    private BoxCollider2D bc2d;
 
     public Audio kappaJump;
     public Audio kappaHit, kappaBlock;
@@ -33,21 +31,12 @@ public class Kappa : GroundEnemy
         attackRadius = 1.2f;
         anim = GetComponent<Animator>();
         bc2d = GetComponent<BoxCollider2D>();
-        //bc2d.offset.Set(0.2154121f, -0.3106189f);
         attackPos.position = new Vector3(bc2d.bounds.center.x, bc2d.bounds.center.y, 0f);
     }
 
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
-
-        /*if(anim.GetBool("isIdle") == true && isJumping == true)
-        {
-            Debug.Log("kleiner Test");
-            Debug.Log("Verhalten wird gestoppt");
-        }*/
-
-        //anim.speed = timeController.getTimeSpeed();
 
         //patrol
         if (isSliding)
@@ -142,18 +131,18 @@ public class Kappa : GroundEnemy
         isIdle = false;
         isJumping = true;
 
-            if(playerDirection().x < 0f)
-            {
-                direction = -1f;
-                CharacterFacingDirection(direction);
-            }
-            else
-            {
-                direction = 1f;
-                CharacterFacingDirection(direction);
-            }
+        if(playerDirection().x < 0f)
+        {
+            direction = -1f;
+            CharacterFacingDirection(direction);
+        }
+        else
+        {
+            direction = 1f;
+            CharacterFacingDirection(direction);
+        }
 
-            velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
+        velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
         AudioController.Instance.playFXSound(kappaJump);
         }
 
@@ -199,12 +188,5 @@ public class Kappa : GroundEnemy
         {
             AudioController.Instance.playFXSound(kappaBlock);
         }
-    }
-
-    void OnDrawGizmos()
-    {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(attackPos.position, attackRadius);
     }
 }

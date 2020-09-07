@@ -51,6 +51,7 @@ namespace AudioControlling
             source = gameObject.AddComponent<AudioSource>();
             source.clip = music.clip;
             source.volume = music.volume;
+            source.loop = true;
             source.Play();
             firstPlayInt = PlayerPrefs.GetInt(firstPlay);
 

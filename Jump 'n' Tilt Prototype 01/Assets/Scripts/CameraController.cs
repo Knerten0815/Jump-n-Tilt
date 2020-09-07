@@ -20,6 +20,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] float xOffset = 4f;                //offsets the camera in x-position
     [SerializeField] float xSmoothTime = 0.4f;          //smooths the camera following
     [SerializeField] float ySmoothTime = 0.2f;          //smooths the camera following
+    [SerializeField] float maxSpeed = 10f;                    //maximum Speed of the camera, when following the player in x-driection
 
     private Camera cam;                                 //The main camera
     private Transform parentTrans;                      //The parent of the main camera, that is following the player
@@ -58,6 +59,8 @@ public class CameraController : MonoBehaviour
         //follow the player through the level
         if(player != null)
             parentTrans.position = followTarget(player);
+
+
 
         //shake the camera
         if (startLerpPos != null && endLerpPos != null && lerpStartTime != 0)
@@ -162,6 +165,6 @@ public class CameraController : MonoBehaviour
             return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, ySmoothTime);
         }
         else
-            return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, xSmoothTime);
+            return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, xSmoothTime, maxSpeed);
     }
 }

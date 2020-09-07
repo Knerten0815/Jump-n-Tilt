@@ -166,7 +166,7 @@ public class ManagementSystem : MonoBehaviour
 
     public static void updateTime(float time)
     {
-        Debug.Log(time);
+        //Debug.Log(time);
     }
 
     public delegate void pickupHealth();

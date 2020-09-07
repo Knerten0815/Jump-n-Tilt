@@ -191,7 +191,7 @@ public class PlayerCharacter : Character
 
                 if((moveDirection > 0 && slideDirection.x > 0 ) || (moveDirection < 0 && slideDirection.x < 0))
                 {
-                    Debug.Log("SLIDE SLIDEHUH" + slideDoubleCheck);
+                    //Debug.Log("SLIDE SLIDEHUH" + slideDoubleCheck);
                     Slide();
                 }
             }
@@ -208,21 +208,21 @@ public class PlayerCharacter : Character
                 if (slideDoubleCheck<slideDoubleCheckLimit)
                 {
                     slideDoubleCheck++;
-                    Debug.Log("SLIDE STILL CHECKING" + slideDoubleCheck);
+                    //Debug.Log("SLIDE STILL CHECKING" + slideDoubleCheck);
 
                 }
                 else
                 {
                     isSliding = true;
-                    Debug.Log("SLIDE STILL CHECKING TO TRUE" + slideDoubleCheck);
+                    //Debug.Log("SLIDE STILL CHECKING TO TRUE" + slideDoubleCheck);
 
-                    Debug.Log("SLIDE " + Mathf.Abs(groundNormal.y));
+                    //Debug.Log("SLIDE " + Mathf.Abs(groundNormal.y));
                 }
             }
             else
             {
                 slideDoubleCheck = 0;
-                Debug.Log("SLIDE STILL CHECKING BACK TO ZERO" + slideDoubleCheck);
+                //Debug.Log("SLIDE STILL CHECKING BACK TO ZERO" + slideDoubleCheck);
 
             }
 
@@ -656,7 +656,7 @@ public class PlayerCharacter : Character
                     else
                     {
                         velocity = new Vector2(moveDirection * maxAirMovementSpeed, jumpHeight);
-                        Debug.Log("Jump Values + " + velocity.normalized.x + " " + velocity.normalized.y);
+                        //Debug.Log("Jump Values + " + velocity.normalized.x + " " + velocity.normalized.y);
 
                     }
 

@@ -167,6 +167,7 @@ MonoBehaviour:
   wallCheckDistance: 0.05
   idleTime: 1
   jumpDistance: 10
+  distanceToPlayer: 20
   kappaJump:
     clip: {fileID: 8300000, guid: f5df74967ddf81b4db8c87faa04a6cc7, type: 3}
     volume: 1

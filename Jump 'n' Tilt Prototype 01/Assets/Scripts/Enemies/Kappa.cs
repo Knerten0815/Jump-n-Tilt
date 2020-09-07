@@ -6,17 +6,18 @@ using AudioControlling;
 // Author: Nicole Mynarek
 public class Kappa : GroundEnemy
 {
-    private float lastYPos = 0;
+    protected float lastYPos = 0;
     public float idleTime = 0.2f;
-    private float currentIdleTime = 0;
-    private bool isIdle = true;
-    private bool isJumping = false;
-    private bool isFalling = false;
-    private bool jumpStart = false;
-    private bool slideStart = false;
+    protected float currentIdleTime = 0;
+    protected bool isIdle = true;
+    protected bool isJumping = false;
+    protected bool isFalling = false;
+    protected bool jumpStart = false;
+    protected bool slideStart = false;
     public float jumpDistance;
+    public float distanceToPlayer;
 
-    private BoxCollider2D bc2d;
+    protected BoxCollider2D bc2d;
 
     public Audio kappaJump;
     public Audio kappaHit, kappaBlock;
@@ -56,7 +57,7 @@ public class Kappa : GroundEnemy
             slideStart = true;
         }
 
-        if (isIdle && Mathf.Abs(playerDirection().x) < 20f && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
+        if (isIdle && Mathf.Abs(playerDirection().x) < distanceToPlayer && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
         {
             currentIdleTime += Time.deltaTime;
 
@@ -66,7 +67,7 @@ public class Kappa : GroundEnemy
                 Jump();
             }
         }
-        else if(isIdle && playerDirection().x < 20f && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health == 0)
+        else if(isIdle && playerDirection().x < distanceToPlayer && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health == 0)
         {
             currentIdleTime += Time.deltaTime;
 
@@ -168,7 +169,7 @@ public class Kappa : GroundEnemy
         AudioController.Instance.playFXSound(kappaJump);
     }
 
-    void airMovement()
+    protected void airMovement()
     {
         if (!grounded && direction != 0 && velocity.magnitude < maxAirMovementSpeed && !isSliding)
         {
@@ -189,4 +190,11 @@ public class Kappa : GroundEnemy
             AudioController.Instance.playFXSound(kappaBlock);
         }
     }
+
+    /*void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(attackPos.position, attackRadius);
+    }*/
 }

@@ -7933,7 +7933,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &657331793
 Transform:
   m_ObjectHideFlags: 0
@@ -15352,6 +15352,17 @@ MonoBehaviour:
   music:
     clip: {fileID: 8300000, guid: 133e8f153d9b8c746bb07930fb0f0cae, type: 3}
     volume: 1
+  timePickUp:
+    clip: {fileID: 0}
+    volume: 0
+  heartPickUp:
+    clip: {fileID: 0}
+    volume: 0
+  collectibleCardPickUp:
+    clip: {fileID: 0}
+    volume: 0
+  coins: []
+  coinVolume: 0
 --- !u!1 &1343065935
 GameObject:
   m_ObjectHideFlags: 0
@@ -71603,7 +71614,7 @@ PrefabInstance:
     - target: {fileID: 5699361465839362905, guid: 2f14b46055f68ed49aa638922514653b,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5699361465839362908, guid: 2f14b46055f68ed49aa638922514653b,
         type: 3}

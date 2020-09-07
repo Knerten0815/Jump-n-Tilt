@@ -21,7 +21,7 @@ public class Onryo : FlyingEnemy
 
         anim.speed = timeController.getTimeSpeed();
 
-        if (isAttacking)
+        if (isChasing)
         {
             anim.SetBool("hitting", true);
             AudioController.Instance.playFXSound(onryoIdle);

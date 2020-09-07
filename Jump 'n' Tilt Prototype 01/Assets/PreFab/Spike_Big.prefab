@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3578155111167679299}
   - component: {fileID: 4466463719854168694}
   - component: {fileID: 3459859252635670824}
-  - component: {fileID: 7141402075115941158}
+  - component: {fileID: 764717488748314058}
   - component: {fileID: 1347780931219715898}
   m_Layer: 16
   m_Name: Spike_Big
@@ -105,7 +105,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &7141402075115941158
+--- !u!60 &764717488748314058
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +115,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -156,24 +156,8 @@ MonoBehaviour:
   gravityModifier: 0
   dampening: 0
   maxSpeed: 0
-  moveSpeed: 0
-  jumpHeight: 0
-  jumpHeightReducer: 0
-  moveWhileJumping: 0
-  airResistance: 0
-  wallJumpTimeSpeed: 0
-  maxAirMovementSpeed: 0
-  onWall: 0
-  slideSpeed: 0
-  slideBackwardsMaxSpeed: 0
-  slideSpeedChange: 0
-  slideDirection: {x: 0, y: 0}
-  isFacingRight: 0
   attackPos: {fileID: 3578155111167679299}
-  attackRadius: 0
+  attackRadius: 0.3
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2048
-  health: 0
-  knockback: 0
-  knockup: 0

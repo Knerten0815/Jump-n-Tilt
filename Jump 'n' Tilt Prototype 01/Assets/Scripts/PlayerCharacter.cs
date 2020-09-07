@@ -64,7 +64,9 @@ public class PlayerCharacter : Character
     private float particleOffDelayTimer;        //running particles get spawned even when leaving ground for a brief moment
     private ParticleSystem groundImpact;
     private ParticleSystem.MainModule groundImpactMain;
-    private bool justLanded;                    //used by groundImpact
+    private bool justLanded;
+    public int slideDoubleCheckLimit = 30;
+    private int slideDoubleCheck = 0;//used by groundImpact
 
     // attack stuff by Marvin Winkler
     private Transform fishTrans;                //is set to attackOffeset
@@ -187,8 +189,9 @@ public class PlayerCharacter : Character
                 // character looks in the direction he is moving
                 CharacterFacingDirection(moveDirection);
 
-                if(moveDirection > 0 && slideDirection.x > 0 || moveDirection < 0 && slideDirection.x < 0)
+                if((moveDirection > 0 && slideDirection.x > 0 ) || (moveDirection < 0 && slideDirection.x < 0))
                 {
+                    Debug.Log("SLIDE SLIDEHUH" + slideDoubleCheck);
                     Slide();
                 }
             }
@@ -200,9 +203,27 @@ public class PlayerCharacter : Character
             //Is sliding?
             isSliding = false;
 
-            if (!onWall && Mathf.Abs(groundNormal.y) < 1 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0))
+            if (!onWall && Mathf.Abs(groundNormal.y) < 0.98 && Mathf.Abs(groundNormal.y) > 0.1 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0))
             {
-                isSliding = true;
+                if (slideDoubleCheck<slideDoubleCheckLimit)
+                {
+                    slideDoubleCheck++;
+                    Debug.Log("SLIDE STILL CHECKING" + slideDoubleCheck);
+
+                }
+                else
+                {
+                    isSliding = true;
+                    Debug.Log("SLIDE STILL CHECKING TO TRUE" + slideDoubleCheck);
+
+                    Debug.Log("SLIDE " + Mathf.Abs(groundNormal.y));
+                }
+            }
+            else
+            {
+                slideDoubleCheck = 0;
+                Debug.Log("SLIDE STILL CHECKING BACK TO ZERO" + slideDoubleCheck);
+
             }
 
             velocity.x -= velocity.x * airResistance;
@@ -630,10 +651,13 @@ public class PlayerCharacter : Character
                     if (isSliding)
                     {
                         velocity = new Vector2(velocity.x + slideDirection.x * slideJumpHeightX, slideJumpHeightY);
+                        Debug.Log("Slide values + " + velocity.normalized.x + " "+ velocity.normalized.y);
                     }
                     else
                     {
                         velocity = new Vector2(moveDirection * maxAirMovementSpeed, jumpHeight);
+                        Debug.Log("Jump Values + " + velocity.normalized.x + " " + velocity.normalized.y);
+
                     }
 
                     // jumpCountLeft will be reset

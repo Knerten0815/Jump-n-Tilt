@@ -8,28 +8,32 @@ using TMPro;
 public class TESTINPUT : MonoBehaviour
 {
     [SerializeField]
-    private Button[] nope;
-    [SerializeField]
-    private Button btn;
+    private Button[] btn;
     [SerializeField]
     private TMP_InputField input;
+    [SerializeField]
+    private Button backSpace;
 
     void Start()
     {
-        foreach (Button b in nope)
+        foreach (Button b in btn)
         {
             b.onClick.AddListener(() => ButtonClicked(b.name));
             Debug.Log(b.name);
         }
-        btn.onClick.AddListener(() => ButtonClicked(btn.name));
-        Debug.Log(btn.name);
 
         // Button btn = nope1.GetComponent<Button>();
-        //    btn.onClick.AddListener(() => ButtonClicked(btn.GetComponent<Text>().text));
+        backSpace.onClick.AddListener(() => backspacePressed());
     }
     void ButtonClicked(string name)
     {
         Debug.Log("HALLO A IS BEING CLICKED MAN");
-        input.text = input.text + name;
+        if (input.text.Length<6)
+            input.text = input.text + name;
+    }
+    void backspacePressed()
+    {
+        if (input.text.Length > 0)
+            input.text.Remove(input.text.Length - 1);
     }
 }

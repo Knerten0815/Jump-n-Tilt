@@ -28,6 +28,9 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        GetComponent<DialogueTrigger>().TriggerDialogue();
+        if (col.gameObject.name == "Player")
+        {
+            GetComponent<DialogueTrigger>().TriggerDialogue();
+        }
     }
 }

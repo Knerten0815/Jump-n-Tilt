@@ -202,7 +202,7 @@ public class FlyingEnemy : Enemy
                 dmgDirection2D.Normalize();
 
             
-                enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
+                enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, -dmgDirection2D);
 
                 hasAttacked = true;
                 coolroutine = StartCoroutine(attackCooldown(attackCooldownTime));

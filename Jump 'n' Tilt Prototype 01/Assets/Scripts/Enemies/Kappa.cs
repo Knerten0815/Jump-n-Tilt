@@ -59,7 +59,7 @@ public class Kappa : GroundEnemy
             slideStart = true;
         }
 
-        if (isIdle && Mathf.Abs(playerDirection().x) < distanceToPlayer && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
+        if (isIdle && Mathf.Abs(playerDirection().x) < distanceToPlayer && !isSliding)
         {
             currentIdleTime += Time.deltaTime;
 
@@ -67,16 +67,6 @@ public class Kappa : GroundEnemy
             {
                 currentIdleTime = 0;
                 Jump();
-            }
-        }
-        else if(isIdle && playerDirection().x < distanceToPlayer && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health == 0)
-        {
-            currentIdleTime += Time.deltaTime;
-
-            if (currentIdleTime >= idleTime)
-            {
-                currentIdleTime = 0;
-                JumpWin();
             }
         }
 
@@ -118,7 +108,7 @@ public class Kappa : GroundEnemy
 
         lastYPos = transform.position.y;
 
-        if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
+        if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health > 0)
         {
             airMovement();
         }
@@ -140,32 +130,15 @@ public class Kappa : GroundEnemy
             CharacterFacingDirection(direction);
         }
         AudioController.Instance.playFXSound(kappaJump);
-        velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
-        
-        }
 
-    protected void JumpWin()
-    {
-
-        isSliding = false;
-        isIdle = false;
-        isJumping = true;
-
-        if (playerDirection().x < 0f)
+        if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health == 0)
         {
-            direction = -1f;
-            CharacterFacingDirection(direction);
+            velocity = new Vector2(0f, jumpHeight);
         }
         else
         {
-            direction = 1f;
-            CharacterFacingDirection(direction);
+            velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
         }
-        
-        //AudioController.Instance.playFXSound(kappaJump);
-        velocity = new Vector2(0f, jumpHeight);
-
-        Debug.Log("Player ist tot");
     }
 
     protected void airMovement()

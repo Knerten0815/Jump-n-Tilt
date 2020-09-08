@@ -14607,7 +14607,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309397689}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.87, y: 2.34, z: 0}
+  m_LocalPosition: {x: 89.9, y: -2.9, z: 0}
   m_LocalScale: {x: 0.05066718, y: 0.05066718, z: 0.05066718}
   m_Children:
   - {fileID: 87018448}
@@ -71365,6 +71365,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: KappaNotFollowing
       objectReference: {fileID: 0}
+    - target: {fileID: 294224021923486255, guid: 8c1903ee31a33e645959b0f6873436d8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c1903ee31a33e645959b0f6873436d8, type: 3}
 --- !u!1001 &2189332560693339030
@@ -71548,5 +71553,11 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 1.6
       objectReference: {fileID: 0}
+    - target: {fileID: 5699361465839362911, guid: 2f14b46055f68ed49aa638922514653b,
+        type: 3}
+      propertyPath: dust
+      value: 
+      objectReference: {fileID: 3984341373300859896, guid: 8bd41ad9e9083a14aa2a6f7452c6d22a,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f14b46055f68ed49aa638922514653b, type: 3}

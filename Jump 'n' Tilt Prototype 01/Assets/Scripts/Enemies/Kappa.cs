@@ -22,6 +22,8 @@ public class Kappa : GroundEnemy
     public Audio kappaJump;
     public Audio kappaHit, kappaBlock;
 
+    public GameObject dust;
+
     private Animator anim;
 
     // Start is called before the first frame update
@@ -64,7 +66,7 @@ public class Kappa : GroundEnemy
             if(currentIdleTime >= idleTime)
             {
                 currentIdleTime = 0;
-                Jump();
+                //Jump();
             }
         }
         else if(isIdle && playerDirection().x < distanceToPlayer && !isSliding && GameObject.Find("Player").GetComponent<PlayerCharacter>().health == 0)
@@ -187,6 +189,7 @@ public class Kappa : GroundEnemy
         }
         else
         {
+            Instantiate(dust, transform.position, Quaternion.identity);
             AudioController.Instance.playFXSound(kappaBlock);
         }
     }

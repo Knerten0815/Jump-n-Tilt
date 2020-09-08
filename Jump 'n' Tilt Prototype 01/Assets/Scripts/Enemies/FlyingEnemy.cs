@@ -77,7 +77,7 @@ public class FlyingEnemy : Enemy
                     }
                     else
                     {*/
-                        Debug.Log("Schneller!");
+                        //Debug.Log("Schneller!");
                         velocity += toPlayer.normalized;
                     //}
                 }
@@ -95,7 +95,7 @@ public class FlyingEnemy : Enemy
                     }
                     else
                     {*/
-                        Debug.Log("Schneller!");
+                        //Debug.Log("Schneller!");
                         velocity += toPlayer.normalized;
                     //}
                 }

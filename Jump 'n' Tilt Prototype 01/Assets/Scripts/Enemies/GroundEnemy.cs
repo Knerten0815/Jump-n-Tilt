@@ -115,7 +115,7 @@ public class GroundEnemy : Enemy
 
         for (int i = 0; i < wallCheckPrecision; i++)
         {
-            Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
+            //Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
             wallAhead = Physics2D.Raycast(offset, Vector2.right * direction, wallCheckDistance, whatIsWall);
             if (wallAhead.collider)
                 return true;

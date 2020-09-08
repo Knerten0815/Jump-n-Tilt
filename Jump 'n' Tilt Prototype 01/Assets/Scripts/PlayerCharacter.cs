@@ -93,7 +93,6 @@ public class PlayerCharacter : Character
     public delegate void fishCausedEarthquakeStart(float playerInput);
     public static event fishCausedEarthquakeStart onFishCausedEarthquakeStart;
 
-
     protected override void OnEnable()
     {
         base.OnEnable();

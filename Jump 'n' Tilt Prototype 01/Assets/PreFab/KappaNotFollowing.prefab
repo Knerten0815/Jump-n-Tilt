@@ -156,6 +156,7 @@ MonoBehaviour:
   kappaBlock:
     clip: {fileID: 8300000, guid: 89ab742d5f9be0e47907de18f9f3bd23, type: 3}
     volume: 1
+  dust: {fileID: 3984341373300859896, guid: 8bd41ad9e9083a14aa2a6f7452c6d22a, type: 3}
 --- !u!50 &294224021923486248
 Rigidbody2D:
   serializedVersion: 4

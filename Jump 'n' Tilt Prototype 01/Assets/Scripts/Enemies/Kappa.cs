@@ -22,6 +22,8 @@ public class Kappa : GroundEnemy
     public Audio kappaJump;
     public Audio kappaHit, kappaBlock;
 
+    public GameObject dust;
+
     private Animator anim;
 
     // Start is called before the first frame update
@@ -107,11 +109,6 @@ public class Kappa : GroundEnemy
             anim.SetBool("isJumping", true);
             anim.SetBool("jumpStart", jumpStart);
             jumpStart = false;
-
-            if(playerDirection().y > transform.position.y)
-            {
-                Debug.Log("Player sitzt über Kappa");
-            }
         }
         else if(transform.position.y < lastYPos && grounded == false && isIdle == false)
         {
@@ -123,8 +120,8 @@ public class Kappa : GroundEnemy
 
         if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health >= 0)
         {
-        airMovement();
-    }
+            airMovement();
+        }
     }
     protected override void Jump()
     {        
@@ -142,9 +139,9 @@ public class Kappa : GroundEnemy
             direction = 1f;
             CharacterFacingDirection(direction);
         }
-
-        velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
         AudioController.Instance.playFXSound(kappaJump);
+        velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
+        
         }
 
     protected void JumpWin()
@@ -164,9 +161,11 @@ public class Kappa : GroundEnemy
             direction = 1f;
             CharacterFacingDirection(direction);
         }
-
+        
+        //AudioController.Instance.playFXSound(kappaJump);
         velocity = new Vector2(0f, jumpHeight);
-        AudioController.Instance.playFXSound(kappaJump);
+
+        Debug.Log("Player ist tot");
     }
 
     protected void airMovement()
@@ -182,13 +181,18 @@ public class Kappa : GroundEnemy
     {
         if (direction.x < 0  && !isFacingRight || direction.x > 0 && isFacingRight || isSliding)
         {
+            Debug.Log("player direction: " + playerDirection().x);
             AudioController.Instance.playFXSound(kappaHit);
-            base.TakeDamage(1, -direction);
+            base.TakeDamage(damage, -direction);
         }
         else
         {
+            Instantiate(dust, transform.position, Quaternion.identity);
             AudioController.Instance.playFXSound(kappaBlock);
         }
+
+        Debug.Log("damage direction: " + direction);
+        Debug.Log("isSliding? " + isSliding);
     }
 
     /*void OnDrawGizmos()

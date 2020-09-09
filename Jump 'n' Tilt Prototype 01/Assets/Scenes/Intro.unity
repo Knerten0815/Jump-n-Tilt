@@ -1921,10 +1921,12 @@ MonoBehaviour:
   shakeStartRate: 0.05
   shakeAmount: 0.5
   shakeRelease: 1.2
-  yOffset: 1
-  xOffset: 4
+  minOffset: 0
+  maxOffset: 4
+  slideYOffset: 18
   xSmoothTime: 0.4
   ySmoothTime: 0.2
+  maxSpeed: 10
   lvlBounds: {fileID: 0}
 --- !u!81 &716115053
 AudioListener:
@@ -3740,6 +3742,7 @@ MonoBehaviour:
     - Onamazu
     - Kashima
     - Narrator
+    - Narrator
     - Kashima
     - Onamazu
     - Kashima
@@ -3762,8 +3765,8 @@ MonoBehaviour:
     - "Of all the demons there were, they send me to take care of the immortal one\u2026"
     - You could just set me free, you know.
     - "You wish. It is my holy duty to guard\u2026"
-    - 'The ground starts shaking, rocks are falling from the ceiling. Kashima jumps
-      up in alarm. '
+    - The ground starts shaking, rocks are falling from the ceiling.
+    - 'Kashima jumps up in alarm. '
     - 'What are you doing? Stop the earthquake! '
     - "Thats not me! I\u2019m still pinned down here."
     - The rock cracks!!!

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameActions;
+using System;
 
 public class PlayerCharacter : Character
 {
@@ -43,6 +44,7 @@ public class PlayerCharacter : Character
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
     public float slideJumpHeightX;              //by Marvin Winkler, Jump force in X direction
     public float slideJumpHeightY;              //by Marvin Winkler, Jump force in Y direction
+    private bool slideJump = false;
 
     private BoxCollider2D collider;
 
@@ -191,39 +193,43 @@ public class PlayerCharacter : Character
 
                 if((moveDirection > 0 && slideDirection.x > 0 ) || (moveDirection < 0 && slideDirection.x < 0))
                 {
-                    Debug.Log("SLIDE SLIDEHUH" + slideDoubleCheck);
                     Slide();
+                    Debug.Log("Slide movement " + velocity.x + " " + velocity.y);
                 }
+              
             }
             else
             {
                 Slide();
+                Debug.Log("Slide movement 2 " + velocity.x + " " + velocity.y);
             }
 
             //Is sliding?
             isSliding = false;
+            if (!onWall && Mathf.Abs(groundNormal.y) < 0.98 && Mathf.Abs(groundNormal.y) > 0.1)
+            {
+                slideJump = true;
+            }
+            else
+            {
+                slideJump = false;
+            }
 
             if (!onWall && Mathf.Abs(groundNormal.y) < 0.98 && Mathf.Abs(groundNormal.y) > 0.1 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0))
             {
                 if (slideDoubleCheck<slideDoubleCheckLimit)
                 {
                     slideDoubleCheck++;
-                    Debug.Log("SLIDE STILL CHECKING" + slideDoubleCheck);
 
                 }
                 else
                 {
                     isSliding = true;
-                    Debug.Log("SLIDE STILL CHECKING TO TRUE" + slideDoubleCheck);
-
-                    Debug.Log("SLIDE " + Mathf.Abs(groundNormal.y));
                 }
             }
             else
             {
                 slideDoubleCheck = 0;
-                Debug.Log("SLIDE STILL CHECKING BACK TO ZERO" + slideDoubleCheck);
-
             }
 
             velocity.x -= velocity.x * airResistance;
@@ -652,6 +658,11 @@ public class PlayerCharacter : Character
                     {
                         velocity = new Vector2(velocity.x + slideDirection.x * slideJumpHeightX, slideJumpHeightY);
                         Debug.Log("Slide values + " + velocity.normalized.x + " "+ velocity.normalized.y);
+                    }
+                    else if (slideJump){
+                        velocity = new Vector2(-1*moveDirection/2, slideJumpHeightY/10);
+                        Debug.Log("Slide Jump values + " + velocity.normalized.x + " " + velocity.normalized.y);
+
                     }
                     else
                     {

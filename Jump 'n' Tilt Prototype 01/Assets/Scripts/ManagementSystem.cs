@@ -103,7 +103,7 @@ public class ManagementSystem : MonoBehaviour
     public delegate void displayHS(string name, int score, int level, int spot);
     public static event displayHS displayHighscoreSub;
 
-    public void displayHighscoreOneLevel(int level)
+    public static void displayHighscoreOneLevel(int level)
     {
         for (int i = 0; i < 5; i++)
         {
@@ -144,12 +144,6 @@ public class ManagementSystem : MonoBehaviour
 
         if (levelLoadMethod != null)
             levelLoadMethod(unlockedLevels, currentLevel);
-
-        for (int i = 0; i < 3; i++)
-        {
-            displayHighscoreOneLevel(i); 
-        }
-
     }
 
 
@@ -163,7 +157,6 @@ public class ManagementSystem : MonoBehaviour
         if (healthPassOn != null)
             healthPassOn(health);
     }
-
 
     public delegate void updateTimeSub(float time);
     public static event updateTimeSub timePassOn;
@@ -208,7 +201,7 @@ public class ManagementSystem : MonoBehaviour
     *
     *@Katja
     */
-    private static Save CreateSaveGameObject()
+    private static Save CreateNewSaveGameObject()
     {
         Save save = new Save();
         collectiblesGathered = new List<int>();
@@ -237,7 +230,37 @@ public class ManagementSystem : MonoBehaviour
         return save;
 
     }
+    private static Save updateSaveGameObject()
+    {
+        Save save = new Save();
+        save.collectiblesGathered = collectiblesGathered;
+        save.currentLevel = currentLevel;
+        save.scoreList = scoreList;
+        save.unlockedLevels = unlockedLevels;
+        return save;
 
+    }
+
+    public static void newHighScore(string name, int spot)
+    {
+        Save.ScorePair newPair = new Save.ScorePair(currentScore, name);
+        scoreList[currentLevel][spot] = newPair;
+    }
+
+
+    public static (int, int) checkForNewHighScore()
+    {
+        int spot = -1;
+        for (int i = 4; i >= 0; i++)
+        {
+            if (currentScore > scoreList[currentLevel][i].score)
+            {
+                spot = i;
+            }
+        }
+        return (spot, currentLevel);
+
+    }
     /*
      * 
      * Creates binary data from Save object and saves it in file titles /gamesave.save
@@ -247,13 +270,21 @@ public class ManagementSystem : MonoBehaviour
     public static void SaveGame()
     {
 
-        Save save = CreateSaveGameObject();
+        Save save = updateSaveGameObject();
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
         bf.Serialize(file, save);
         file.Close();
     }
 
+    private static void SaveNewGame()
+    {
+        Save save = CreateNewSaveGameObject();
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
+        bf.Serialize(file, save);
+        file.Close();
+    }
 
     public static void ResetGameSave()
     {
@@ -261,7 +292,7 @@ public class ManagementSystem : MonoBehaviour
         currentLevel = 0;
         //Highscore = new int[] { 0, 0, 0 };
         unlockedLevels = 0;
-        Save save = CreateSaveGameObject();
+        Save save = CreateNewSaveGameObject();
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
         bf.Serialize(file, save);
@@ -283,17 +314,14 @@ public class ManagementSystem : MonoBehaviour
             FileStream file = File.Open(Application.persistentDataPath + "/gamesave.save", FileMode.Open);
             Save save = (Save)bf.Deserialize(file);
             file.Close();
-            // List<int> collectiblesGatheredDEBUG = new List<int>();
-            // collectiblesGatheredDEBUG.Add(2);
             collectiblesGathered = save.collectiblesGathered;
-            //Highscore = save.Highscore;
             unlockedLevels = save.unlockedLevels;
             currentLevel = save.currentLevel;
             scoreList = save.scoreList;
             Debug.Log("Does it load");
         }
         else {
-            SaveGame();
+            SaveNewGame();
         }
     }
 }

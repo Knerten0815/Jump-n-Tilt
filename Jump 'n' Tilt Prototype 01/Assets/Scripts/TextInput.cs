@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 
-public class TESTINPUT : MonoBehaviour
+public class TextInput : MonoBehaviour
 {
     [SerializeField]
     private Button[] btn;
@@ -27,6 +27,7 @@ public class TESTINPUT : MonoBehaviour
     }
     void ButtonClicked(string name)
     {
+        Debug.Log("HALLO A IS BEING CLICKED MAN");
         if (input.text.Length<6)
             input.text = input.text + name;
     }
@@ -34,5 +35,9 @@ public class TESTINPUT : MonoBehaviour
     {
         if (input.text.Length > 0)
             input.text.Remove(input.text.Length - 1);
+    }
+    public string getInputText()
+    {
+        return input.text;
     }
 }

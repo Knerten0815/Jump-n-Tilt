@@ -61,6 +61,7 @@ namespace menuHandling
             animator.SetTrigger("CloseScroll");
             StartCoroutine(DisableMenu());
             Time.timeScale = 1f;
+            showPauseMenu = false;
         }
 
         private void pauseGame()

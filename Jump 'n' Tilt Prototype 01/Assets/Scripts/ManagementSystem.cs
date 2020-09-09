@@ -164,9 +164,13 @@ public class ManagementSystem : MonoBehaviour
             healthPassOn(health);
     }
 
+
+    public delegate void updateTimeSub(float time);
+    public static event updateTimeSub timePassOn;
     public static void updateTime(float time)
     {
-        //Debug.Log(time);
+        if(timePassOn!=null)
+            timePassOn(time);
     }
 
     public delegate void pickupHealth();

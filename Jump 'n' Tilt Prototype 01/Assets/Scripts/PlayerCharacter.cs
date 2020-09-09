@@ -195,14 +195,14 @@ public class PlayerCharacter : Character
                 if((moveDirection > 0 && slideDirection.x > 0 ) || (moveDirection < 0 && slideDirection.x < 0))
                 {
                                         Slide();
-                    Debug.Log("Slide movement " + velocity.x + " " + velocity.y);
+                  
                 }
               
             }
             else
             {
                 Slide();
-                Debug.Log("Slide movement 2 " + velocity.x + " " + velocity.y);
+               
             }
 
             //Is sliding?

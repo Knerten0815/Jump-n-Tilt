@@ -4011,7 +4011,7 @@ PrefabInstance:
     - target: {fileID: 7739481807211276192, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276204, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
@@ -5236,12 +5236,12 @@ PrefabInstance:
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 67.394
+      value: 95.6
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.42
+      value: -4.4
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
@@ -7923,6 +7923,11 @@ PrefabInstance:
       propertyPath: maxSpeed
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 8695302587430117914, guid: f349cd2f7c50b1348b251f4f70500aba,
+        type: 3}
+      propertyPath: knockback
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8695302587430117915, guid: f349cd2f7c50b1348b251f4f70500aba,
         type: 3}
       propertyPath: m_Name
@@ -7931,7 +7936,7 @@ PrefabInstance:
     - target: {fileID: 8695302587430117915, guid: f349cd2f7c50b1348b251f4f70500aba,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8695302587430117918, guid: f349cd2f7c50b1348b251f4f70500aba,
         type: 3}
@@ -14771,6 +14776,7 @@ MonoBehaviour:
     m_Bits: 32768
   wallSliding: 0
   wallSlidingSpeed: 0.333
+  wallSlideHangTime: 0
   facingDirection: 1
   wallJumpSpeed: 16
   slideJumpHeightX: 0
@@ -61492,7 +61498,7 @@ PrefabInstance:
     - target: {fileID: 2432014015719148488, guid: f5667749cd2c7624080e43232a71a247,
         type: 3}
       propertyPath: knockback
-      value: -15
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2432014015719148493, guid: f5667749cd2c7624080e43232a71a247,
         type: 3}
@@ -65603,12 +65609,12 @@ PrefabInstance:
     - target: {fileID: 6579246517331179218, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 67.79
+      value: 95.996
       objectReference: {fileID: 0}
     - target: {fileID: 6579246517331179218, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.059999704
+      value: -3.0399997
       objectReference: {fileID: 0}
     - target: {fileID: 6579246517331179218, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
@@ -65684,6 +65690,11 @@ PrefabInstance:
         type: 3}
       propertyPath: tenguAttack.volume
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6579246517331179221, guid: 58231ae8ed930854ab8f730ef3036197,
+        type: 3}
+      propertyPath: attackCooldownTime
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58231ae8ed930854ab8f730ef3036197, type: 3}
@@ -71526,7 +71537,7 @@ PrefabInstance:
     - target: {fileID: 294224021923486255, guid: 8c1903ee31a33e645959b0f6873436d8,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 294224021923486255, guid: 8c1903ee31a33e645959b0f6873436d8,
         type: 3}

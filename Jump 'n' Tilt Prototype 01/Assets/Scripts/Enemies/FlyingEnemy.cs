@@ -9,12 +9,15 @@ public class FlyingEnemy : Enemy
         Walking,
         ChaseTarget,
         Win,
+        Knockback,
     }
 
     private Vector2 startPos;
     public float gravityCounter;
     private float gravitySwitchCounter;
     public float velY;
+    public float targetRange;
+    public float attackRange;
 
     public Vector2 roamPos;
     private State state;
@@ -100,14 +103,14 @@ public class FlyingEnemy : Enemy
                     //}
                 }
 
-                float attackRange = 1.5f;
+                //float attackRange = 1.5f;
                 if (Vector3.Distance(transform.position, player.transform.position) < attackRange)
                 {
                     isAttacking = true;
                     Attack();
                 }
 
-                float targetRange = 5f;
+                //float targetRange = 5f;
                 if (Vector3.Distance(transform.position, player.transform.position) > targetRange)
                 {
                     state = State.Walking;
@@ -120,6 +123,29 @@ public class FlyingEnemy : Enemy
                 isAttacking = false;
                 isChasing = false;
                 isWalking = false;
+
+                break;
+
+            case State.Knockback:
+
+                velocity = new Vector2(moveDirection * -knockback, knockup);
+
+                if (movesRight)
+                {
+
+                    if(playerDirection().x > 0f && Mathf.Abs(playerDirection().x) > targetRange)
+                    {
+                        state = State.Walking;
+                    }
+                }
+                else
+                {
+
+                    if (playerDirection().x < 0f && Mathf.Abs(playerDirection().x) > targetRange)
+                    {
+                        state = State.Walking;
+                    }
+                }
 
                 break;
 
@@ -181,7 +207,7 @@ public class FlyingEnemy : Enemy
 
     private void FindTarget()
     {
-        float targetRange = 5f;
+        //float targetRange = 5f;
         if (Vector3.Distance(transform.position, player.transform.position) < targetRange)
         {
             state = State.ChaseTarget;
@@ -203,21 +229,25 @@ public class FlyingEnemy : Enemy
 
             
                 enemies[i].GetComponent<PlayerCharacter>().TakeDamage(1, -dmgDirection2D);
-
+                
                 hasAttacked = true;
                 coolroutine = StartCoroutine(attackCooldown(attackCooldownTime));
+
+                state = State.Knockback;
 
                 /*if (movesRight)
                 {
                     //Vector2 awayFromPlayer = new Vector2(transform.position.x - 6f - transform.position.x, transform.position.y);
-                    //velocity = new Vector2(moveDirection * 10, 0);
-                    transform.position = new Vector3(transform.position.x - 1f, transform.position.y, 0);
+                    //velocity = new Vector2(moveDirection * -10, 0);
+                    //transform.position = new Vector3(transform.position.x - 5f, transform.position.y, 0);
+                    Debug.Log("tengu fliegt nach links");
                 }
                 else
                 {
                     //Vector2 awayFromPlayer = new Vector2((transform.position.x + 5f) - transform.position.x, transform.position.y);
-                    //velocity += awayFromPlayer.normalized;
-                    transform.position = new Vector3(transform.position.x + 1f, transform.position.y, 0);
+                    //velocity = new Vector2(moveDirection * -10, 0);
+                    transform.position = new Vector3(transform.position.x + 5f, transform.position.y, 0);
+                    Debug.Log("tengu fliegt nach rechts");
                 }*/
             }
         }
@@ -225,9 +255,7 @@ public class FlyingEnemy : Enemy
 
     IEnumerator attackCooldown(float coolDownTime)
     {
-        //Debug.Log(coolDownTime + " seconds Cooldown!");
         yield return new WaitForSeconds(coolDownTime);
-        //Debug.Log("Cooldown end!");
         hasAttacked = false;
         StopCoroutine(coolroutine);
     }

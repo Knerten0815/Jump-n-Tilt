@@ -5050,6 +5050,7 @@ MonoBehaviour:
     m_Bits: 32768
   wallSliding: 0
   wallSlidingSpeed: 0.6
+  wallSlideHangTime: 0.2
   facingDirection: 1
   wallJumpSpeed: 16
   slideJumpHeightX: 60

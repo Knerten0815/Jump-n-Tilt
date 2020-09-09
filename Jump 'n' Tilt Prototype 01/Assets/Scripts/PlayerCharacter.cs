@@ -649,7 +649,21 @@ public class PlayerCharacter : Character
         }
         else if(wallSlideHangTimer > 0)
         {
+            hit = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance * 3, whatIsWall);
+            lastWallcontact = Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance * 3, whatIsWall);
+            if (hit.distance < lastWallcontact.distance)
+            {
+                hit = lastWallcontact;
+            }
             WallJump(true);
+            if ((hit.point - new Vector2(transform.position.x, transform.position.y)).x < 0)
+            {
+                CharacterFacingDirection(1);
+            }
+            else
+            {
+                CharacterFacingDirection(-1);
+            }
         }
         else
         {
@@ -710,43 +724,45 @@ public class PlayerCharacter : Character
         }
     }
 
-    //Debugged by Marvin Winkler
+    //Debugged and movified by Marvin Winkler
     private void WallJump(bool hangTimeJump)
     {
         //resets wallJumpCounter, so there is no limit for wall jumps on the same wall
-        wallJumpCounter = 5;
+        wallJumpCounter = 500;
         //Resets double jumps
         jumpCountLeft = jumpCount;
 
-        // player can jump if canJump is true and the location of the lastWallContact is different to the new contact location 'hit' 
+        // player can jump if canJump is true 
         // or if the wallJumpCounter is higher than 0
-        if (canJump && ( (wallJumpCounter > 0) && !hangTimeJump)) //Player springt ab
+        if (canJump && (wallJumpCounter > 0 && !hangTimeJump)) //Player springt ab
         { 
             wallSliding = false;
             jumpCountLeft--;
             velocity = new Vector2(hit.normal.x * wallJumpSpeed, jumpHeight);
-            CharacterFacingDirection(hit.normal.x);
+            //CharacterFacingDirection(hit.normal.x);
             jumpable = false;
-            lastWallcontact = hit;
+            //lastWallcontact = hit;
             wallJumpCounter--;
             wallJumpTimer = wallJumpTime;
         }
         //Hang time wall jump
         else if (hangTimeJump)
         {
+            wallSliding = false;
             jumpCountLeft--;
-            if(Input.GetAxis("Horizontal") < 0)
+            velocity = new Vector2(hit.normal.x * wallJumpSpeed, jumpHeight);
+            if (Input.GetAxis("Horizontal") < 0)
             {
-                CharacterFacingDirection(-hit.normal.x);
-                velocity = new Vector2(-Mathf.Abs(hit.normal.x) * wallJumpSpeed, jumpHeight);
+                //CharacterFacingDirection(-hit.normal.x);
+                //velocity = new Vector2(-Mathf.Abs(hit.normal.x) * wallJumpSpeed, jumpHeight);
             }
             else
             {
-                CharacterFacingDirection(hit.normal.x);
-                velocity = new Vector2(Mathf.Abs(hit.normal.x) * wallJumpSpeed, jumpHeight);
+                //CharacterFacingDirection(hit.normal.x);
+                //velocity = new Vector2(Mathf.Abs(hit.normal.x) * wallJumpSpeed, jumpHeight);
             }
             jumpable = false;
-            lastWallcontact = hit;
+            //lastWallcontact = hit;
             wallJumpCounter--;
             wallJumpTimer = wallJumpTime;
         }

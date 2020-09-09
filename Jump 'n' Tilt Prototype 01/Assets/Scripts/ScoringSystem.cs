@@ -15,12 +15,14 @@ public class ScoringSystem : MonoBehaviour
     public TextMeshProUGUI scoreText; //Text displayed to show the current Score
     public TextMeshProUGUI healthText; //Text displayed to show the current Score
     public TextMeshProUGUI scrollText; //Text displayed to show the current Score
+    public TextMeshProUGUI timeText;
 
 
 
     private int health;
     private int collected;
-    private int time; 
+    private int timeMin;
+    private int timeSec;
     public int Score; //Score of the player
     private string scoreString; //String to be displayed with scoreText
 
@@ -37,14 +39,37 @@ public class ScoringSystem : MonoBehaviour
         // ManagementSystem.healthPickUpHit += healthBarUp;
         ManagementSystem.healthPassOn += healthDisplay;
         ManagementSystem.collectedScroll += updateScrollCount;
+        ManagementSystem.timePassOn += displayTime;
+        displayTime(0);
         Score = 0;
         collected = 0;
-        time = 0;
+        timeMin = 0;
+        timeSec = 0;
         scoreString = "0";
         scoreText.text = scoreString;
 
     }
 
+    private void displayTime(float time)
+    {
+        Debug.Log(time);
+        timeMin = (int)time / 60;
+        Debug.Log(timeMin);
+        timeSec = (int)time - timeMin * 60;
+        Debug.Log(timeMin);
+        string timeMinText = timeMin.ToString();
+        if (timeMin < 10)
+        {
+            timeMinText = "0" + timeMin;
+        }
+        string timeSecText = timeSec.ToString();
+        if (timeSec < 10)
+        {
+            timeSecText = "0" + timeSec;
+        }
+
+        timeText.text = timeMinText + ":" + timeSecText;
+    }
     /*
      *
      * Increases Score and updates the Text Component

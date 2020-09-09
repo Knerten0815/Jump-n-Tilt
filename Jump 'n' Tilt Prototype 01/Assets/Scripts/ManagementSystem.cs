@@ -169,7 +169,8 @@ public class ManagementSystem : MonoBehaviour
     public static event updateTimeSub timePassOn;
     public static void updateTime(float time)
     {
-        timePassOn(time);
+        if(timePassOn!=null)
+            timePassOn(time);
     }
 
     public delegate void pickupHealth();

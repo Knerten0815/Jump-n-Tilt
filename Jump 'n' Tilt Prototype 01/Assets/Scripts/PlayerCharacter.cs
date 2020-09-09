@@ -117,7 +117,7 @@ public class PlayerCharacter : Character
         jumpCountLeft = jumpCount;
         justTookDamage = false;
         deadFishTimer = -101;
-        sloMoTimer = -100;
+        sloMoTimer = 0;
         animatedAttack = true;
 
         //Input
@@ -290,32 +290,29 @@ public class PlayerCharacter : Character
         if (wallSliding)
             isSliding = false;
         
-        //Not yet working ++++++++++++++++++++++++++++++++++
         //SloMoTime powerup
-        if(sloMoTimer >= 0)
+        if(sloMoTimer > 0)
         {
             sloMoTimer -= Time.deltaTime;
         }
-        else if(sloMoTimer <= -100)
+        else if(sloMoTimer <= 0 && timeController.getTimeSpeed() == timeController.slowTimeSpeed)
         {
-            //don't do anything
-        }
-        else
-        {
+            sloMoTimer = 0;
+            remainingSloMoTime = 0;
+            ManagementSystem.updateTime(sloMoTimer);
             onUseSloMoTime();
-            sloMoTimer = -100;
         }
 
         //SloMoTime to management system
-        if(sloMoTimer >= 0)
+        if(sloMoTimer > 0)
         {
+            //Updates once per second
             if(sloMoSentTimer > sloMoTimer)
             {
                 sloMoSentTimer = (int)sloMoTimer;
                 ManagementSystem.updateTime(sloMoTimer);
             }
         }
-        //++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         //Wall jump timer reduces mid air movement after wall jump
         if (grounded)
@@ -336,13 +333,13 @@ public class PlayerCharacter : Character
 
         //Just for testing:
         //+++
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Vector3 hitDirectionTest = gameObject.transform.localPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 hitDirectionTest2D = new Vector2(hitDirectionTest.x, hitDirectionTest.y);
-            hitDirectionTest2D.Normalize();
-            TakeDamage(1, hitDirectionTest2D);
-        }
+        //if (Input.GetKeyDown(KeyCode.Mouse0))
+        //{
+        //    Vector3 hitDirectionTest = gameObject.transform.localPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //    Vector2 hitDirectionTest2D = new Vector2(hitDirectionTest.x, hitDirectionTest.y);
+        //    hitDirectionTest2D.Normalize();
+        //    TakeDamage(1, hitDirectionTest2D);
+        //}
         //+++
     }
 
@@ -805,16 +802,18 @@ public class PlayerCharacter : Character
     //Slomo time gets toggled
     private void useSloMoPickup()
     {
-        if(timeController.getTimeSpeed() == timeController.slowTimeSpeed)
+        if(timeController.getTimeSpeed() == timeController.slowTimeSpeed) //Slow
         {
             remainingSloMoTime = sloMoTimer;
             sloMoSentTimer = (int)sloMoTimer;
+            sloMoTimer = 0;
             onUseSloMoTime();
             return;
         }
-        if (remainingSloMoTime > 0)
+        if (remainingSloMoTime > 0) //Fast and time left
         {
             sloMoTimer = remainingSloMoTime;
+            sloMoSentTimer = (int)sloMoTimer;
             onUseSloMoTime();
         }
     }
@@ -829,7 +828,8 @@ public class PlayerCharacter : Character
         velocity = new Vector2(direction.x * knockback, knockup);
         CharacterFacingDirection(-velocity.x);
         stunnTimer = stunnTime;
-        if(health <= 0)
+        Instantiate(bloodSpray, transform.position, Quaternion.identity);
+        if (health <= 0)
         {
             isDead = true;
             die();

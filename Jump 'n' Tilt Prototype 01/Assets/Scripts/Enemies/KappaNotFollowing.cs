@@ -34,8 +34,7 @@ public class KappaNotFollowing : Kappa
             direction = 1f;
             CharacterFacingDirection(direction);
         }
-
-        velocity = new Vector2(jumpDistance * direction, jumpHeight);
         AudioController.Instance.playFXSound(kappaJump);
+        velocity = new Vector2(jumpDistance * direction, jumpHeight);
     }
 }

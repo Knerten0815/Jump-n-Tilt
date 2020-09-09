@@ -5027,7 +5027,7 @@ MonoBehaviour:
   attackRadius: 1.5
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 65536
+    m_Bits: 66560
   health: 3
   knockback: 20
   knockup: 15
@@ -5050,6 +5050,7 @@ MonoBehaviour:
     m_Bits: 32768
   wallSliding: 0
   wallSlidingSpeed: 0.6
+  wallSlideHangTime: 0.2
   facingDirection: 1
   wallJumpSpeed: 16
   slideJumpHeightX: 60

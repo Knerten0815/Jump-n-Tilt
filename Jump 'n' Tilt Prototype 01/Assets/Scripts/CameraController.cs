@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] float minOffset = 0f;              //minimal camera offset in players move direction
     [SerializeField] float maxOffset = 4f;              //maximum offset in players move direction
-    [SerializeField] float slideYOffset;                //offsets the camera in y-position while sliding down
+    [SerializeField] float slideYOffset = 18f;          //offsets the camera in y-position while sliding down
     [SerializeField] float xSmoothTime = 0.4f;          //smooths the camera following
     [SerializeField] float ySmoothTime = 0.2f;          //smooths the camera following
     [SerializeField] float maxSpeed = 10f;              //maximum Speed of the camera, when following the player in x-driection

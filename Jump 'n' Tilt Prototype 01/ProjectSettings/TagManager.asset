@@ -50,3 +50,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: PickUpLayer
+    uniqueID: 2117022025
+    locked: 0

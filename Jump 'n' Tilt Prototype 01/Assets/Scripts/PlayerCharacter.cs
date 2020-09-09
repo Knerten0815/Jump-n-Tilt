@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameActions;
+using System;
 
 public class PlayerCharacter : Character
 {
@@ -37,12 +38,15 @@ public class PlayerCharacter : Character
     public LayerMask whatIsWall;
     public bool wallSliding;
     public float wallSlidingSpeed;              // can be adjusted in inspector for finding better setting
+    public float wallSlideHangTime;             // Time you have to still perform a wall jump after leaving the wall in seconds
+    private float wallSlideHangTimer;
     public int facingDirection;                 // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
     private RaycastHit2D hit;
     public float wallJumpSpeed;                 //by Marvin Winkler, speed given to the player when jumping of a wall
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
     public float slideJumpHeightX;              //by Marvin Winkler, Jump force in X direction
     public float slideJumpHeightY;              //by Marvin Winkler, Jump force in Y direction
+    private bool slideJump = false;
 
     private BoxCollider2D collider;
 
@@ -117,7 +121,7 @@ public class PlayerCharacter : Character
         jumpCountLeft = jumpCount;
         justTookDamage = false;
         deadFishTimer = -101;
-        sloMoTimer = -100;
+        sloMoTimer = 0;
         animatedAttack = true;
 
         //Input
@@ -190,40 +194,44 @@ public class PlayerCharacter : Character
 
                 if((moveDirection > 0 && slideDirection.x > 0 ) || (moveDirection < 0 && slideDirection.x < 0))
                 {
-                    //Debug.Log("SLIDE SLIDEHUH" + slideDoubleCheck);
-                    Slide();
+                                        Slide();
+                    Debug.Log("Slide movement " + velocity.x + " " + velocity.y);
                 }
+              
             }
             else
             {
                 Slide();
+                Debug.Log("Slide movement 2 " + velocity.x + " " + velocity.y);
             }
 
             //Is sliding?
             isSliding = false;
+            if (!onWall && Mathf.Abs(groundNormal.y) < 0.98 && Mathf.Abs(groundNormal.y) > 0.1)
+            {
+                slideJump = true;
+            }
+            else
+            {
+                slideJump = false;
+            }
 
             if (!onWall && Mathf.Abs(groundNormal.y) < 0.98 && Mathf.Abs(groundNormal.y) > 0.1 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0))
             {
                 if (slideDoubleCheck<slideDoubleCheckLimit)
                 {
                     slideDoubleCheck++;
-                    //Debug.Log("SLIDE STILL CHECKING" + slideDoubleCheck);
-
+                  
                 }
                 else
                 {
                     isSliding = true;
-                    //Debug.Log("SLIDE STILL CHECKING TO TRUE" + slideDoubleCheck);
-
-                    //Debug.Log("SLIDE " + Mathf.Abs(groundNormal.y));
-                }
+                            }
             }
             else
             {
                 slideDoubleCheck = 0;
-                //Debug.Log("SLIDE STILL CHECKING BACK TO ZERO" + slideDoubleCheck);
-
-            }
+                      }
 
             velocity.x -= velocity.x * airResistance;
         }
@@ -290,32 +298,39 @@ public class PlayerCharacter : Character
         if (wallSliding)
             isSliding = false;
         
-        //Not yet working ++++++++++++++++++++++++++++++++++
         //SloMoTime powerup
-        if(sloMoTimer >= 0)
+        if(sloMoTimer > 0)
         {
             sloMoTimer -= Time.deltaTime;
         }
-        else if(sloMoTimer <= -100)
+        else if(sloMoTimer <= 0 && timeController.getTimeSpeed() == timeController.slowTimeSpeed)
         {
-            //don't do anything
-        }
-        else
-        {
+            sloMoTimer = 0;
+            remainingSloMoTime = 0;
+            ManagementSystem.updateTime(sloMoTimer);
             onUseSloMoTime();
-            sloMoTimer = -100;
         }
 
         //SloMoTime to management system
-        if(sloMoTimer >= 0)
+        if(sloMoTimer > 0)
         {
+            //Updates once per second
             if(sloMoSentTimer > sloMoTimer)
             {
                 sloMoSentTimer = (int)sloMoTimer;
                 ManagementSystem.updateTime(sloMoTimer);
             }
         }
-        //++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        //Wall slide hang timer
+        if (touchesWall)
+        {
+            wallSlideHangTimer = wallSlideHangTime;
+        }
+        else if(wallSlideHangTimer > 0)
+        {
+            wallSlideHangTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
 
         //Wall jump timer reduces mid air movement after wall jump
         if (grounded)
@@ -336,13 +351,13 @@ public class PlayerCharacter : Character
 
         //Just for testing:
         //+++
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Vector3 hitDirectionTest = gameObject.transform.localPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 hitDirectionTest2D = new Vector2(hitDirectionTest.x, hitDirectionTest.y);
-            hitDirectionTest2D.Normalize();
-            TakeDamage(1, hitDirectionTest2D);
-        }
+        //if (Input.GetKeyDown(KeyCode.Mouse0))
+        //{
+        //    Vector3 hitDirectionTest = gameObject.transform.localPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //    Vector2 hitDirectionTest2D = new Vector2(hitDirectionTest.x, hitDirectionTest.y);
+        //    hitDirectionTest2D.Normalize();
+        //    TakeDamage(1, hitDirectionTest2D);
+        //}
         //+++
     }
 
@@ -607,7 +622,7 @@ public class PlayerCharacter : Character
         if (onWall) //only when on wall and level is tilted
             return;
 
-        if (!touchesWall && !grounded && jumpCountLeft <= 0)
+        if (!touchesWall && !grounded && jumpCountLeft <= 0 && wallSlideHangTimer <= 0)
         {
             jumpBufferTimer = jumpBuffer;
             return;
@@ -622,8 +637,26 @@ public class PlayerCharacter : Character
             {
                 hit = lastWallcontact;
             }
-            WallJump();
+            WallJump(false);
             if((hit.point - new Vector2(transform.position.x, transform.position.y)).x < 0)
+            {
+                CharacterFacingDirection(1);
+            }
+            else
+            {
+                CharacterFacingDirection(-1);
+            }
+        }
+        else if(wallSlideHangTimer > 0)
+        {
+            hit = Physics2D.Raycast((Vector2)transform.position, transform.right, wallCheckDistance * 3, whatIsWall);
+            lastWallcontact = Physics2D.Raycast((Vector2)transform.position, -transform.right, wallCheckDistance * 3, whatIsWall);
+            if (hit.distance < lastWallcontact.distance)
+            {
+                hit = lastWallcontact;
+            }
+            WallJump(true);
+            if ((hit.point - new Vector2(transform.position.x, transform.position.y)).x < 0)
             {
                 CharacterFacingDirection(1);
             }
@@ -651,6 +684,11 @@ public class PlayerCharacter : Character
                     {
                         velocity = new Vector2(velocity.x + slideDirection.x * slideJumpHeightX, slideJumpHeightY);
                         Debug.Log("Slide values + " + velocity.normalized.x + " "+ velocity.normalized.y);
+                    }
+                    else if (slideJump){
+                        velocity = new Vector2(-1*moveDirection/2, slideJumpHeightY/10);
+                        Debug.Log("Slide Jump values + " + velocity.normalized.x + " " + velocity.normalized.y);
+
                     }
                     else
                     {
@@ -686,25 +724,45 @@ public class PlayerCharacter : Character
         }
     }
 
-    //Debugged by Marvin Winkler
-    private void WallJump()
+    //Debugged and movified by Marvin Winkler
+    private void WallJump(bool hangTimeJump)
     {
         //resets wallJumpCounter, so there is no limit for wall jumps on the same wall
-        wallJumpCounter = 5;
-
+        wallJumpCounter = 500;
         //Resets double jumps
         jumpCountLeft = jumpCount;
 
-        // player can jump if canJump is true and the location of the lastWallContact is different to the new contact location 'hit' 
+        // player can jump if canJump is true 
         // or if the wallJumpCounter is higher than 0
-        if (canJump && (lastWallcontact.point.x != hit.point.x || (wallJumpCounter > 0))) //Player springt ab
+        if (canJump && (wallJumpCounter > 0 && !hangTimeJump)) //Player springt ab
         { 
             wallSliding = false;
             jumpCountLeft--;
-            velocity = new Vector2(hit.normal.x * wallJumpSpeed, jumpHeight); //moveSpeed * (moveDirection), jumpHeight);
-            CharacterFacingDirection(hit.normal.x);
+            velocity = new Vector2(hit.normal.x * wallJumpSpeed, jumpHeight);
+            //CharacterFacingDirection(hit.normal.x);
             jumpable = false;
-            lastWallcontact = hit;
+            //lastWallcontact = hit;
+            wallJumpCounter--;
+            wallJumpTimer = wallJumpTime;
+        }
+        //Hang time wall jump
+        else if (hangTimeJump)
+        {
+            wallSliding = false;
+            jumpCountLeft--;
+            velocity = new Vector2(hit.normal.x * wallJumpSpeed, jumpHeight);
+            if (Input.GetAxis("Horizontal") < 0)
+            {
+                //CharacterFacingDirection(-hit.normal.x);
+                //velocity = new Vector2(-Mathf.Abs(hit.normal.x) * wallJumpSpeed, jumpHeight);
+            }
+            else
+            {
+                //CharacterFacingDirection(hit.normal.x);
+                //velocity = new Vector2(Mathf.Abs(hit.normal.x) * wallJumpSpeed, jumpHeight);
+            }
+            jumpable = false;
+            //lastWallcontact = hit;
             wallJumpCounter--;
             wallJumpTimer = wallJumpTime;
         }
@@ -805,16 +863,18 @@ public class PlayerCharacter : Character
     //Slomo time gets toggled
     private void useSloMoPickup()
     {
-        if(timeController.getTimeSpeed() == timeController.slowTimeSpeed)
+        if(timeController.getTimeSpeed() == timeController.slowTimeSpeed) //Slow
         {
             remainingSloMoTime = sloMoTimer;
             sloMoSentTimer = (int)sloMoTimer;
+            sloMoTimer = 0;
             onUseSloMoTime();
             return;
         }
-        if (remainingSloMoTime > 0)
+        if (remainingSloMoTime > 0) //Fast and time left
         {
             sloMoTimer = remainingSloMoTime;
+            sloMoSentTimer = (int)sloMoTimer;
             onUseSloMoTime();
         }
     }
@@ -829,6 +889,7 @@ public class PlayerCharacter : Character
         velocity = new Vector2(direction.x * knockback, knockup);
         CharacterFacingDirection(-velocity.x);
         stunnTimer = stunnTime;
+        Instantiate(bloodSpray, transform.position, Quaternion.identity);
         if(health <= 0)
         {
             isDead = true;

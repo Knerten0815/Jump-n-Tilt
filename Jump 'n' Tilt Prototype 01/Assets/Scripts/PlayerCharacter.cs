@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameActions;
 using System;
+using AudioControlling;
 
 public class PlayerCharacter : Character
 {
@@ -86,6 +87,9 @@ public class PlayerCharacter : Character
     public float sloMoTime;                     //Duration of SloMoTime power up in seconds
     private int sloMoSentTimer;                 //Timer used, so the displayed string does not get constantly updated
     private float remainingSloMoTime;
+
+    //Audio stuff by Marvin Winkler
+    public Audio damageAudio, attackAudio, tiltAudio;
 
     //Subscribable events by Marvin Winkler
     public delegate void useSloMoTime();
@@ -433,6 +437,8 @@ public class PlayerCharacter : Character
             {
                 onFishCausedEarthquake(Input.GetAxis("Tilt"));
             }
+            AudioController.Instance.playFXSound(tiltAudio);
+            Debug.Log("TiltQ");
             animator.SetBool("justTilted", false);
         }
 
@@ -890,7 +896,8 @@ public class PlayerCharacter : Character
         CharacterFacingDirection(-velocity.x);
         stunnTimer = stunnTime;
         Instantiate(bloodSpray, transform.position, Quaternion.identity);
-        if(health <= 0)
+        AudioController.Instance.playFXSound(damageAudio);
+        if (health <= 0)
         {
             isDead = true;
             die();
@@ -910,8 +917,11 @@ public class PlayerCharacter : Character
     protected override void Attack()
     {
         //During slide the attack is not animated
-        if(animatedAttack)
-        attackTimer = attackDelay;
+        if (animatedAttack)
+        {
+            attackTimer = attackDelay;
+            AudioController.Instance.playFXSound(attackAudio);
+        }
 
         if (isFacingRight)
         {

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 294224021923486251}
   - component: {fileID: 294224021923486250}
   - component: {fileID: 294224021923486253}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: KappaNotFollowing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,6 +115,7 @@ MonoBehaviour:
   slideSpeed: 8
   slideBackwardsMaxSpeed: 3
   slideDirection: {x: 0, y: 0}
+  isSliding: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 0}
   attackRadius: 0

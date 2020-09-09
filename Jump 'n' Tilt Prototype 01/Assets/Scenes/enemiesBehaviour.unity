@@ -3785,8 +3785,9 @@ MonoBehaviour:
   shakeStartRate: 0.05
   shakeAmount: 0.5
   shakeRelease: 1.2
-  yOffset: 1
-  xOffset: 4
+  minOffset: 0
+  maxOffset: 4
+  slideYOffset: 0
   xSmoothTime: 0.4
   ySmoothTime: 0.2
   maxSpeed: 10
@@ -4288,6 +4289,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Kappa
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699361465839362905, guid: 2f14b46055f68ed49aa638922514653b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f14b46055f68ed49aa638922514653b, type: 3}
@@ -8159,6 +8165,7 @@ MonoBehaviour:
   slideSpeed: 8
   slideBackwardsMaxSpeed: 3
   slideDirection: {x: 0, y: 0}
+  isSliding: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 0}
   attackRadius: 1.2
@@ -14734,6 +14741,7 @@ MonoBehaviour:
   slideSpeed: 10
   slideBackwardsMaxSpeed: 3
   slideDirection: {x: 0, y: 0}
+  isSliding: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 87018448}
   attackRadius: 1.5
@@ -61494,7 +61502,7 @@ PrefabInstance:
     - target: {fileID: 2432014015719148494, guid: f5667749cd2c7624080e43232a71a247,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 42.7
+      value: 87.21
       objectReference: {fileID: 0}
     - target: {fileID: 2432014015719148494, guid: f5667749cd2c7624080e43232a71a247,
         type: 3}
@@ -71518,7 +71526,12 @@ PrefabInstance:
     - target: {fileID: 294224021923486255, guid: 8c1903ee31a33e645959b0f6873436d8,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 294224021923486255, guid: 8c1903ee31a33e645959b0f6873436d8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c1903ee31a33e645959b0f6873436d8, type: 3}

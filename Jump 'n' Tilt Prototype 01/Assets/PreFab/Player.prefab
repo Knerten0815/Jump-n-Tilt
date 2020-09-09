@@ -5020,12 +5020,13 @@ MonoBehaviour:
   slideSpeed: 2
   slideBackwardsMaxSpeed: 1
   slideDirection: {x: 0, y: 0}
+  isSliding: 0
   slideDampeningFactor: 0.9
   attackPos: {fileID: 2432014016874418852}
   attackRadius: 1.5
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 65536
+    m_Bits: 66560
   health: 3
   knockback: 15
   knockup: 10
@@ -5053,6 +5054,7 @@ MonoBehaviour:
   slideJumpHeightX: 60
   slideJumpHeightY: 100
   stunnTime: 0.6
+  slideDoubleCheckLimit: 30
   attackOffset: {x: 23, y: -4, z: 0}
   attackDelay: 0.8
   slideAttackCooldown: 0.1

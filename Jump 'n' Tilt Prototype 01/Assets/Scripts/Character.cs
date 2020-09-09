@@ -26,7 +26,7 @@ public class Character : PhysicsObject
     public float slideSpeed;                //slide accelleration, not speed
     public float slideBackwardsMaxSpeed;    //by Marvin Winkler, max speed while pressing against the tilt
     public Vector2 slideDirection;          //by Marvin Winkler, current slide direction, only acurate when sliding 
-    protected bool isSliding;               //by Marvin Winkler, true while sliding
+    public bool isSliding;               //by Marvin Winkler, true while sliding
     public float slideDampeningFactor;      //by Marvin Winkler, dampening factor used while sliding on ground
     private bool slideJump;
 

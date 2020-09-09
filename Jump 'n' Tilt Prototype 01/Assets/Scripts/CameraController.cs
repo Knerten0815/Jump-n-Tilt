@@ -16,16 +16,18 @@ public class CameraController : MonoBehaviour
     [SerializeField] float shakeAmount = 0.2f;          //how heavy the camera will shake
     [SerializeField] float shakeRelease = 1.2f;         //how much the shakeRate slows down (should be >1. Speeds up the Shake Rate if <1)
 
-    [SerializeField] float yOffset = 1f;                //offsets the camera in y-position
-    [SerializeField] float xOffset = 4f;                //offsets the camera in x-position
+    [SerializeField] float minOffset = 0f;              //minimal camera offset in players move direction
+    [SerializeField] float maxOffset = 4f;              //maximum offset in players move direction
+    [SerializeField] float slideYOffset = 18f;          //offsets the camera in y-position while sliding down
     [SerializeField] float xSmoothTime = 0.4f;          //smooths the camera following
     [SerializeField] float ySmoothTime = 0.2f;          //smooths the camera following
+    [SerializeField] float maxSpeed = 10f;              //maximum Speed of the camera, when following the player in x-driection
 
     private Camera cam;                                 //The main camera
     private Transform parentTrans;                      //The parent of the main camera, that is following the player
     private GameObject player;                          //The current position of the Player Character
     private PlayerCharacter playerCtrl;                 //Player Controller for velocity
-    private Vector2 offset;                             //current offset of the camera to the player
+    private Vector3 offset;                             //current offset of the camera to the player
     public TilemapCollider2D lvlBounds;                //The TilemapCollider of the level: Needed for getting boundaries of the level
 
     ///Once the angle of the tilt is settled, the tilemap needs to be adjusted to show enough ground and walls, so that no empty background is seen.
@@ -42,8 +44,9 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-        offset.x = xOffset;
-        offset.y = yOffset;
+        //offset.x = xOffset;
+        //offset.y = yOffset;
+        offset = Vector2.zero;
 
         player = GameObject.Find("Player");
         parentTrans = cam.transform.parent;
@@ -57,7 +60,7 @@ public class CameraController : MonoBehaviour
     {
         //follow the player through the level
         if(player != null)
-            parentTrans.position = followTarget(player);
+            parentTrans.position = followPlayer();
 
         //shake the camera
         if (startLerpPos != null && endLerpPos != null && lerpStartTime != 0)
@@ -130,6 +133,7 @@ public class CameraController : MonoBehaviour
         return new Vector3(lerp.x, lerp.y, 0);
     }
 
+    
     //follow a target through the level
     private Vector3 followTarget(GameObject target)
     {
@@ -162,6 +166,52 @@ public class CameraController : MonoBehaviour
             return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, ySmoothTime);
         }
         else
-            return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, xSmoothTime);
+            return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, xSmoothTime, maxSpeed);
     }
+    
+
+    
+    //follow a target through the level
+    private Vector3 followPlayer()
+    {
+        Vector3 camPos = new Vector3();
+        float yMin, yMax, xMin, xMax;
+
+        //stay in level boundaries
+        yMin = lvlBounds.bounds.min.y + cam.orthographicSize;
+        yMax = lvlBounds.bounds.max.y - cam.orthographicSize;
+        xMin = lvlBounds.bounds.min.x + (cam.aspect * cam.orthographicSize);
+        xMax = lvlBounds.bounds.max.x - (cam.aspect * cam.orthographicSize);
+
+        float clampedVelocity = Mathf.Clamp(playerCtrl.getVelocity().magnitude, minOffset, maxOffset);
+
+        if(playerCtrl.isSliding && playerCtrl.getVelocity().y < 0 && playerCtrl.getVelocity().y > -0.8f)
+        {
+            //Debug.Log(playerCtrl.getVelocity());
+            Vector2 slideDownOffset = new Vector2(playerCtrl.getVelocity().x, playerCtrl.getVelocity().y * slideYOffset);
+            offset = (Vector2)player.transform.position + slideDownOffset;
+        }
+        else
+            offset = (Vector2)player.transform.position + (playerCtrl.getVelocity().normalized * clampedVelocity);
+
+
+        //calculate new camera positions
+        camPos.y = Mathf.Clamp(offset.y, yMin, yMax);
+        camPos.x = Mathf.Clamp(offset.x, xMin, xMax);
+        camPos.z = -10;
+
+        return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, xSmoothTime);
+    }
+
+    /*
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.red;
+        Vector3 gizzy = offset;
+        gizzy.z = 0f;
+        Gizmos.DrawSphere(gizzy, 0.5f);
+        Debug.DrawRay(player.transform.position, playerCtrl.getVelocity());
+    }
+    */
 }

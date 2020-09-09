@@ -69,7 +69,6 @@ public class GroundEnemy : Enemy
             Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
             dmgDirection2D.Normalize();
             groundEnemyAttack(enemies[i], dmgDirection2D);
-            //Debug.Log("Player im AttackRadius!");
         }
     }
 
@@ -243,7 +242,7 @@ public class GroundEnemy : Enemy
     {
         if (!hasAttacked && !isSliding && getPlayerScript().health > 0)
         {
-            enemy.GetComponent<PlayerCharacter>().TakeDamage(1, dmgDirection2D);
+            enemy.GetComponent<PlayerCharacter>().TakeDamage(1, -dmgDirection2D);
             //Debug.Log("GroundEnemy macht Schaden!!!!!!!!!!!!!!!!!!!1");
             hasAttacked = true;
             coolroutine = StartCoroutine(attackCooldown(attackCooldownTime));

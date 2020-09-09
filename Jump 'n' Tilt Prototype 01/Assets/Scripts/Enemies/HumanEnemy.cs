@@ -43,15 +43,15 @@ public class HumanEnemy : GroundEnemy
         //follows the player, when he is in humans eyesight
         else if (Mathf.Abs(playerDirection().x) < eyeSightDistance && getPlayerScript().health > 0)
         {
-            if (playerDirection().x < -2f)
+            if (playerDirection().x < -0.5f)
                 direction = -1;
-            else if (playerDirection().x > 2f)
+            else if (playerDirection().x > 0.5f)
                 direction = 1;
-            //else
-            //    direction = 0;
+            else
+                direction = 0;
 
             //try to get on the player platform
-            if ((playerDirection().y > 2 && grounded && Mathf.Abs(playerDirection().x) > 0.1f) || IsWallAhead())
+            if ((playerDirection().y > 2 && grounded && Mathf.Abs(playerDirection().x) > 0.1f) || (IsWallAhead() && grounded))
             {
                 Jump();
                 anim.SetBool("isJumping", true);

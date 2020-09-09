@@ -26,7 +26,7 @@ public class Enemy : Character
     public override void TakeDamage(int damage, Vector2 direction)
     {
         base.TakeDamage(damage, direction);
-        Debug.Log("takeDamege von Enemy!!!!!!!!!");
+        //Debug.Log("takeDamege von Enemy!!!!!!!!!");
     }
 
     /// <summary>

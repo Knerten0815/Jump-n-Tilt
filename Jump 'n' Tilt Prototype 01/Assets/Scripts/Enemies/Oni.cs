@@ -49,6 +49,8 @@ public class Oni : GroundEnemy
 
             moveSpeed = attackSpeed;
 
+            Debug.Log("Oni Charggggeeeee!");
+
             if (!anim.GetBool("isAttacking"))                
                 AudioController.Instance.playFXSound(oniAttack);
             

@@ -5025,7 +5025,7 @@ MonoBehaviour:
   isSliding: 0
   slideDampeningFactor: 0.9
   attackPos: {fileID: 2432014016874418852}
-  attackRadius: 2
+  attackRadius: 3
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 66560
@@ -5062,6 +5062,15 @@ MonoBehaviour:
   attackDelay: 0.8
   slideAttackCooldown: 0.1
   sloMoTime: 8
+  damageAudio:
+    clip: {fileID: 8300000, guid: 088362d2052b3cb48b017484e39ac0d4, type: 3}
+    volume: 0.7
+  attackAudio:
+    clip: {fileID: 8300000, guid: 31f29508b73d14749be3337ea7681938, type: 3}
+    volume: 0.7
+  tiltAudio:
+    clip: {fileID: 8300000, guid: 6b46770ba8785a84da1d4b7eeef06040, type: 3}
+    volume: 0.7
 --- !u!95 &2432014015719148495
 Animator:
   serializedVersion: 3

@@ -5059,7 +5059,7 @@ MonoBehaviour:
   stunnTime: 0.3
   slideDoubleCheckLimit: 30
   attackOffset: {x: 23, y: -4, z: 0}
-  attackDelay: 0.8
+  attackDelay: 0.4
   slideAttackCooldown: 0.1
   sloMoTime: 8
   damageAudio:

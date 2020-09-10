@@ -81,6 +81,8 @@ public class PlayerCharacter : Character
     private bool isAttacking;
     private float slideAttackCooldownTimer; 
     public float slideAttackCooldown;           //Cooldown between attacks during sliding
+    private bool posUpdated;                    //Used to fix sprite jumping during standing attack animation
+    private bool facingDirectionBuffer;        //Used to fix sprite jumping during standing attack animation
 
     //pickup stuff by Marvin Winkler
     private float sloMoTimer;
@@ -127,6 +129,8 @@ public class PlayerCharacter : Character
         deadFishTimer = -101;
         sloMoTimer = 0;
         animatedAttack = true;
+        posUpdated = false;
+        isFacingRight = true;
 
         //Input
         PlayerInput.onTiltDown += smashFishToTilt;
@@ -432,13 +436,14 @@ public class PlayerCharacter : Character
                 onFishCausedEarthquake(playerInputBuffer);
                 onFishCausedEarthquakeStart(0);
                 fishTimer = -101;
+                AudioController.Instance.playFXSound(tiltAudio);
+                Debug.Log("TiltQ");
             }
             else
             {
                 onFishCausedEarthquake(Input.GetAxis("Tilt"));
             }
-            //AudioController.Instance.playFXSound(tiltAudio);
-            //Debug.Log("TiltQ");
+
             animator.SetBool("justTilted", false);
         }
 
@@ -468,9 +473,40 @@ public class PlayerCharacter : Character
             isAttacking = true;
             animator.SetBool("isAttacking", true);
             attackTimer -= timeController.getSpeedAdjustedDeltaTime();
+
+            //Fixing standing attack glitch
+            //++++++++
+            if (!posUpdated)// && grounded) bug does not only happen while grounded
+            {
+                facingDirectionBuffer = isFacingRight;
+                posUpdated = true;
+                if(facingDirectionBuffer)
+                { 
+                    transform.localPosition = new Vector3(transform.localPosition.x + 0.8f, transform.localPosition.y, transform.localPosition.z);
         }
         else
         {
+                    transform.localPosition = new Vector3(transform.localPosition.x - 0.8f, transform.localPosition.y, transform.localPosition.z);
+                }
+                Debug.Log(facingDirectionBuffer);
+            }
+        }
+        else
+        {
+            if (posUpdated)
+            {
+                posUpdated = false;
+                if (facingDirectionBuffer)
+                {
+                    transform.localPosition = new Vector3(transform.localPosition.x - 0.8f, transform.localPosition.y, transform.localPosition.z);
+                }
+                else
+                {
+                    transform.localPosition = new Vector3(transform.localPosition.x + 0.8f, transform.localPosition.y, transform.localPosition.z);
+                }
+            }
+            //++++++++++
+
             isAttacking = false;
             animator.SetBool("isAttacking", false);
         }
@@ -862,6 +898,10 @@ public class PlayerCharacter : Character
     private void addTimePickup()
     {
         remainingSloMoTime += sloMoTime;
+
+        if (timeController.getTimeSpeed() == timeController.slowTimeSpeed)
+            sloMoTimer += sloMoTime;
+
         ManagementSystem.updateTime(remainingSloMoTime);
     }
 
@@ -917,9 +957,13 @@ public class PlayerCharacter : Character
     protected override void Attack()
     {
         //During slide the attack is not animated
-        if (animatedAttack)
+        if (animatedAttack && attackTimer <= 0)
         {
             attackTimer = attackDelay;
+        }
+
+        if (!isAttacking && animatedAttack)
+        {
             AudioController.Instance.playFXSound(attackAudio);
         }
 

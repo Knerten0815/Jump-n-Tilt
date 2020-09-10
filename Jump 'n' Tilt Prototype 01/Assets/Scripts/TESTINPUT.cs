@@ -27,7 +27,6 @@ public class TESTINPUT : MonoBehaviour
     }
     void ButtonClicked(string name)
     {
-        Debug.Log("HALLO A IS BEING CLICKED MAN");
         if (input.text.Length<6)
             input.text = input.text + name;
     }

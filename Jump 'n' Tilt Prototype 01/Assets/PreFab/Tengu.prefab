@@ -189,12 +189,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   health: 1
-  knockback: -10
+  knockback: 10
   knockup: 5
   bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
     type: 3}
   gravityCounter: 4
   velY: 1
+  targetRange: 5
+  attackRange: 1.5
   roamPos: {x: 5, y: 0}
   attackCooldownTime: 1
   tenguHit:

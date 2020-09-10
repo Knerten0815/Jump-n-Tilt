@@ -5231,17 +5231,17 @@ PrefabInstance:
     - target: {fileID: 7739481807211276192, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 67.394
+      value: 78.88
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.42
+      value: 0.62
       objectReference: {fileID: 0}
     - target: {fileID: 7739481807211276207, guid: d8f15bf515461e243b98a51eed55c709,
         type: 3}
@@ -7922,6 +7922,11 @@ PrefabInstance:
         type: 3}
       propertyPath: maxSpeed
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8695302587430117914, guid: f349cd2f7c50b1348b251f4f70500aba,
+        type: 3}
+      propertyPath: knockback
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8695302587430117915, guid: f349cd2f7c50b1348b251f4f70500aba,
         type: 3}
@@ -14771,6 +14776,7 @@ MonoBehaviour:
     m_Bits: 32768
   wallSliding: 0
   wallSlidingSpeed: 0.333
+  wallSlideHangTime: 0
   facingDirection: 1
   wallJumpSpeed: 16
   slideJumpHeightX: 0
@@ -14781,6 +14787,15 @@ MonoBehaviour:
   attackDelay: 0.8
   slideAttackCooldown: 0.1
   sloMoTime: 8
+  damageAudio:
+    clip: {fileID: 0}
+    volume: 0
+  attackAudio:
+    clip: {fileID: 0}
+    volume: 0
+  tiltAudio:
+    clip: {fileID: 0}
+    volume: 0
 --- !u!61 &1309397693
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -61492,7 +61507,7 @@ PrefabInstance:
     - target: {fileID: 2432014015719148488, guid: f5667749cd2c7624080e43232a71a247,
         type: 3}
       propertyPath: knockback
-      value: -15
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2432014015719148493, guid: f5667749cd2c7624080e43232a71a247,
         type: 3}
@@ -65603,12 +65618,12 @@ PrefabInstance:
     - target: {fileID: 6579246517331179218, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 67.79
+      value: 79.276
       objectReference: {fileID: 0}
     - target: {fileID: 6579246517331179218, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.059999704
+      value: 1.9800005
       objectReference: {fileID: 0}
     - target: {fileID: 6579246517331179218, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
@@ -65663,7 +65678,7 @@ PrefabInstance:
     - target: {fileID: 6579246517331179219, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6579246517331179221, guid: 58231ae8ed930854ab8f730ef3036197,
         type: 3}
@@ -65684,6 +65699,16 @@ PrefabInstance:
         type: 3}
       propertyPath: tenguAttack.volume
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6579246517331179221, guid: 58231ae8ed930854ab8f730ef3036197,
+        type: 3}
+      propertyPath: attackCooldownTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6579246517331179221, guid: 58231ae8ed930854ab8f730ef3036197,
+        type: 3}
+      propertyPath: knockup
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58231ae8ed930854ab8f730ef3036197, type: 3}
@@ -71526,7 +71551,7 @@ PrefabInstance:
     - target: {fileID: 294224021923486255, guid: 8c1903ee31a33e645959b0f6873436d8,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 294224021923486255, guid: 8c1903ee31a33e645959b0f6873436d8,
         type: 3}

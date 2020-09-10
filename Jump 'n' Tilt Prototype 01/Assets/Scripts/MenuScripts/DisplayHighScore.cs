@@ -20,7 +20,7 @@ public class DisplayHighScore : MonoBehaviour
     void Awake()
     {
         ManagementSystem.displayHighscoreSub += displayScore;
-        Debug.Log("AAHHHHHH");
+        Debug.Log("Are you subscribing");
     }
 
     private void displayScore(string name, int score, int level, int spot)

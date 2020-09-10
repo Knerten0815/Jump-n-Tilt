@@ -8,7 +8,10 @@ public class HighScoreScene : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI newHighscore;
     [SerializeField]
+    private TextMeshProUGUI score;
+    [SerializeField]
     private Button continueButton;
+
     [SerializeField]
     private Button[] nextLevelButton;
 
@@ -24,22 +27,31 @@ public class HighScoreScene : MonoBehaviour
 
     private int newSpot;
     private int currentLevel;
+    private int currentScore;
 
     // Start is called before the first frame update
     void Start()
     {
-         var temp = ManagementSystem.checkForNewHighScore();
+        var temp = ManagementSystem.checkForNewHighScore();
         newSpot = temp.Item1;
         currentLevel = temp.Item2;
+        currentScore = temp.Item3;
+        score.text = currentScore.ToString();
+        Debug.Log("waht currentScore " + currentScore);
+
         if (newSpot == -1)
         {
             continueButton.onClick.AddListener(() => nextPage(displayPage[currentLevel]));
-            setName.onClick.AddListener(() => setNewHighscore());
+            newHighscore.text = "";
         }
         else
         {
+            
             continueButton.onClick.AddListener(() => nextPage(enterNamePage));
+            setName.onClick.AddListener(() => setNewHighscore());
+
         }
+        Debug.Log("waht currentLevel " + currentLevel);
         nextLevelButton[currentLevel].onClick.AddListener(() => nextLevel());
     }
 
@@ -58,6 +70,9 @@ public class HighScoreScene : MonoBehaviour
     {
         TextInput tInput = enterNamePage.GetComponent<TextInput>();
         ManagementSystem.newHighScore(tInput.getInputText(), newSpot);
+        Debug.Log("waht currentScore HALLO HALLO BITTE DANKE" + currentScore);
+        displayPage[currentLevel].SetActive(true);
+
 
     }
     private void nextLevel()

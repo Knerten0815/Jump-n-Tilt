@@ -40,7 +40,6 @@ namespace menuHandling
         public void restartGame()
         {
             ManagementSystem.ResetGameSave();
-            SceneManager.LoadScene("Level 1 (Tutorial)");
         }
         //This method closes the whole Application
         //Used by Button_ExitGame

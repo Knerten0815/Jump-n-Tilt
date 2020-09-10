@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6451122332281391845}
   - component: {fileID: 2936353159163372681}
   - component: {fileID: 5494173798884336070}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: TimePickUp
   m_TagString: PickUp
   m_Icon: {fileID: 0}

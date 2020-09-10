@@ -76,6 +76,7 @@ public class ManagementSystem : MonoBehaviour
     */
     public static void pickUp(int scoreValue)
     {
+        currentScore += scoreValue;
         if (pickUpHit != null)
             pickUpHit(scoreValue);
     }
@@ -107,8 +108,11 @@ public class ManagementSystem : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            if(displayHighscoreSub != null)
+            if (displayHighscoreSub != null)
+            {
                 displayHighscoreSub(scoreList[level][i].name, scoreList[level][i].score, level, i);
+                Debug.Log("are you displaying " + i);
+            }
         }
     }
 
@@ -194,7 +198,11 @@ public class ManagementSystem : MonoBehaviour
         timePickUpHit();
     }
 
-
+    public static void endLevel()
+    {
+        SaveGame();
+        UnityEngine.SceneManagement.SceneManager.LoadScene(4);
+    }
     /*
     * CreateSaveGameObject creates an empty Save object and overrides it's collectiblesGathered attribute with the current
     * ManagementSystem version
@@ -243,23 +251,59 @@ public class ManagementSystem : MonoBehaviour
 
     public static void newHighScore(string name, int spot)
     {
+       
         Save.ScorePair newPair = new Save.ScorePair(currentScore, name);
-        scoreList[currentLevel][spot] = newPair;
+        Save.ScorePair oldPair;
+        for (int i = spot; i>= 0; i--)
+        {
+            Debug.Log(i);
+            oldPair = scoreList[currentLevel][i];
+            scoreList[currentLevel][i] = newPair;
+            newPair = oldPair;
+        }
+
+    
     }
 
 
-    public static (int, int) checkForNewHighScore()
+    public static (int, int, int) checkForNewHighScore()
     {
         int spot = -1;
-        for (int i = 4; i >= 0; i++)
+        for (int i = 4; i >= 0; i--)
         {
             if (currentScore > scoreList[currentLevel][i].score)
             {
                 spot = i;
             }
+            else
+                break;
         }
-        return (spot, currentLevel);
+        return (spot, currentLevel, currentScore);
 
+    }
+
+    public static void nextLevel()
+    {
+        currentLevel++;
+            
+        if (currentLevel >= 3)
+        {
+            currentLevel = 0;
+        }
+        if (unlockedLevels < currentLevel)
+        {
+            unlockedLevels++;
+        }
+        currentScore = 0;
+        SaveGame();
+        if (currentLevel == 0)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(currentLevel + 1);
+        }
     }
     /*
      * 
@@ -267,23 +311,32 @@ public class ManagementSystem : MonoBehaviour
      * 
      * @Katja
      */
-    public static void SaveGame()
+    private static void saveFile(Save save)
     {
-
-        Save save = updateSaveGameObject();
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
         bf.Serialize(file, save);
         file.Close();
     }
+    public static void SaveGame()
+    {
+
+        Save save = updateSaveGameObject();
+        saveFile(save);
+    }
 
     private static void SaveNewGame()
     {
         Save save = CreateNewSaveGameObject();
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
-        bf.Serialize(file, save);
-        file.Close();
+        saveFile(save);
+    }
+
+ 
+    public static void loadLevel(int level)
+    {
+        currentLevel = level;
+        currentScore = 0;
+        SaveGame();
     }
 
     public static void ResetGameSave()
@@ -291,12 +344,11 @@ public class ManagementSystem : MonoBehaviour
         collectiblesGathered = new List<int>();
         currentLevel = 0;
         //Highscore = new int[] { 0, 0, 0 };
-        unlockedLevels = 0;
+        unlockedLevels = 2;
+        currentScore = 0;
         Save save = CreateNewSaveGameObject();
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
-        bf.Serialize(file, save);
-        file.Close();
+        saveFile(save);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
     /*
      * 

@@ -19,7 +19,6 @@ public class TextInput : MonoBehaviour
         foreach (Button b in btn)
         {
             b.onClick.AddListener(() => ButtonClicked(b.name));
-            Debug.Log(b.name);
         }
 
         // Button btn = nope1.GetComponent<Button>();
@@ -27,7 +26,6 @@ public class TextInput : MonoBehaviour
     }
     void ButtonClicked(string name)
     {
-        Debug.Log("HALLO A IS BEING CLICKED MAN");
         if (input.text.Length<6)
             input.text = input.text + name;
     }

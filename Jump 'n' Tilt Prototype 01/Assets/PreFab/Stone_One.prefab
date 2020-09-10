@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8437096730872562975}
   - component: {fileID: -7913017469159456748}
   - component: {fileID: 7636723192640699042}
-  m_Layer: 0
-  m_Name: Stein2_resized
+  m_Layer: 18
+  m_Name: Stone_One
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

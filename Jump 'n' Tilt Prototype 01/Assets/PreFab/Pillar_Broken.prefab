@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6141452073267075380}
   - component: {fileID: 1415994269878064444}
   - component: {fileID: 5168898218388704881}
-  m_Layer: 0
-  m_Name: interactiveBrokenPillar_resized
+  m_Layer: 18
+  m_Name: Pillar_Broken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

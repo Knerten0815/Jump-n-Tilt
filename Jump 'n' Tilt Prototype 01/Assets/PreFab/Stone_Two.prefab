@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1540755026651132289}
   - component: {fileID: 8299476087863226145}
   - component: {fileID: 1348055839444941515}
-  m_Layer: 0
-  m_Name: Stein3_resized (1)
+  m_Layer: 18
+  m_Name: Stone_Two
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

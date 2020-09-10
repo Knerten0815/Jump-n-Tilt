@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 4301416604962590965}
   - component: {fileID: 4301416604962590952}
   - component: {fileID: 4301416604962590964}
-  m_Layer: 0
-  m_Name: Fass_resized
+  m_Layer: 18
+  m_Name: Barrel_Standing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

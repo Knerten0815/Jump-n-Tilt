@@ -5025,7 +5025,7 @@ MonoBehaviour:
   isSliding: 0
   slideDampeningFactor: 0.9
   attackPos: {fileID: 2432014016874418852}
-  attackRadius: 3
+  attackRadius: 2
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 66560
@@ -5056,7 +5056,7 @@ MonoBehaviour:
   wallJumpSpeed: 16
   slideJumpHeightX: 60
   slideJumpHeightY: 100
-  stunnTime: 0.6
+  stunnTime: 0.3
   slideDoubleCheckLimit: 30
   attackOffset: {x: 23, y: -4, z: 0}
   attackDelay: 0.8

@@ -862,6 +862,10 @@ public class PlayerCharacter : Character
     private void addTimePickup()
     {
         remainingSloMoTime += sloMoTime;
+
+        if (timeController.getTimeSpeed() == timeController.slowTimeSpeed)
+            sloMoTimer += sloMoTime;
+
         ManagementSystem.updateTime(remainingSloMoTime);
     }
 

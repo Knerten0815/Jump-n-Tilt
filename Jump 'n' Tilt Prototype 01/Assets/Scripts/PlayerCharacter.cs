@@ -437,8 +437,8 @@ public class PlayerCharacter : Character
             {
                 onFishCausedEarthquake(Input.GetAxis("Tilt"));
             }
-            AudioController.Instance.playFXSound(tiltAudio);
-            Debug.Log("TiltQ");
+            //AudioController.Instance.playFXSound(tiltAudio);
+            //Debug.Log("TiltQ");
             animator.SetBool("justTilted", false);
         }
 

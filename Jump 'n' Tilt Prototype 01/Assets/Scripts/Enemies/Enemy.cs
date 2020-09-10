@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : Character
 {
     private GameObject player;
+    public Animator anim;
 
     protected override void OnEnable()
     {
@@ -22,6 +23,11 @@ public class Enemy : Character
             Instantiate(bloodSpray, transform.position, Quaternion.identity);
             gameObject.SetActive(false);
         }
+    }
+
+    protected override void updateAnimations()
+    {
+        anim.speed = timeController.getTimeSpeed();
     }
     public override void TakeDamage(int damage, Vector2 direction)
     {

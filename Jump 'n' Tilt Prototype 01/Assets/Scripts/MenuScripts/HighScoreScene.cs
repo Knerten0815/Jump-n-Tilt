@@ -76,7 +76,7 @@ public class HighScoreScene : MonoBehaviour
     }
     private void nextLevel()
     {
-        ManagementSystem.nextLevel();
+        //ManagementSystem.nextLevel();
     }
     
 }

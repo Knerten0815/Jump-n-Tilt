@@ -7,7 +7,7 @@ using AudioControlling;
 // testkommentar
 public class Onryo : FlyingEnemy
 {
-    private Animator anim;
+    //private Animator anim;
     public Audio onryoIdle, onryoHit, onryoDeath;
 
     protected override void OnEnable()
@@ -19,12 +19,14 @@ public class Onryo : FlyingEnemy
     {
         base.ComputeVelocity();
 
-        anim.speed = timeController.getTimeSpeed();
+        //anim.speed = timeController.getTimeSpeed();
 
         if (isChasing)
         {
-            anim.SetBool("hitting", true);
-            AudioController.Instance.playFXSound(onryoIdle);
+            if(!anim.GetBool("hitting"))
+                AudioController.Instance.playFXSound(onryoIdle);
+
+            anim.SetBool("hitting", true);            
         }
         else
         {

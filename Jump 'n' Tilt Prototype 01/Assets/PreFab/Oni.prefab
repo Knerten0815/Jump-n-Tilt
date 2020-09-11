@@ -166,24 +166,26 @@ MonoBehaviour:
   knockup: 1
   bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
     type: 3}
+  anim: {fileID: 0}
   startDirection: -1
   wallCheckPrecision: 5
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 24576
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 49152
   touchAttackDamage: 1
   attackCooldownTime: 2
   platformCheckPrecision: 5
   whatIsPlatform:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16384
   hasAttacked: 0
   direction: 0
   cc2d: {fileID: 0}
   wallCheckDistance: 0.05
+  groundCheckDistance: 2.5
   oniAttack:
     clip: {fileID: 8300000, guid: cc0b31f8043b6854dbcba03f9e9f3ae8, type: 3}
     volume: 0.48
@@ -204,6 +206,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.16}
-  m_Size: {x: 2.02, y: 2.55}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 2.02, y: 1.93}
   m_Direction: 0

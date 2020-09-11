@@ -24,7 +24,7 @@ public class Kappa : GroundEnemy
 
     public GameObject dust;
 
-    private Animator anim;
+    //private Animator anim;
 
     // Start is called before the first frame update
     protected override void Start()

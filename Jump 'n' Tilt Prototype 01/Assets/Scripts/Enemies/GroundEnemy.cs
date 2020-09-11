@@ -22,7 +22,7 @@ public class GroundEnemy : Enemy
     private GameObject attackCircle;
     private Coroutine coolroutine;
     public float wallCheckDistance = 0.05f;
-    private float groundCheckDistance = 0.3f;
+    public float groundCheckDistance = 2.5f;
     private float platformCheckDistance = 1f;
 
     protected override void OnEnable()
@@ -43,8 +43,8 @@ public class GroundEnemy : Enemy
     {
         base.Start();        
         whatIsEnemy = LayerMask.GetMask("Player");
-        whatIsGround = LayerMask.GetMask("Platform") | LayerMask.GetMask("Ground");
-        whatIsWall = LayerMask.GetMask("Wall");
+        whatIsGround = LayerMask.GetMask("Ground") | LayerMask.GetMask("Platform");
+        whatIsWall = LayerMask.GetMask("Wall") | LayerMask.GetMask("Platform") | LayerMask.GetMask("StaticObstacle");
         whatIsPlatform = LayerMask.GetMask("Platform");
 
         attackCircle = new GameObject();
@@ -129,30 +129,28 @@ public class GroundEnemy : Enemy
     /// </summary>
     public bool isGroundAhead()
     {
-        Vector2 offsetAhead, offsetBehind;
+        Vector2 offsetBehind;
+        Vector2 offsetAhead = transform.position;
         Vector3 slopeOffset = cc2d.bounds.extents;
-
-        slopeOffset.x = cc2d.bounds.extents.x / 2;
-        groundCheckDistance = 1.1f;
 
         if (isFacingRight)
         {
-            offsetAhead = new Vector2(transform.position.x + slopeOffset.x, transform.position.y - slopeOffset.y);
+            offsetAhead.x += cc2d.bounds.extents.x;
             offsetBehind = transform.position - slopeOffset;
         }
         else
         {
-            offsetAhead = transform.position - slopeOffset;
+            offsetAhead.x -= cc2d.bounds.extents.x;
             offsetBehind = new Vector2(transform.position.x + slopeOffset.x, transform.position.y - slopeOffset.y);
         }
 
         RaycastHit2D groundAhead, slopeBehind;
 
         groundAhead = Physics2D.Raycast(offsetAhead, Vector2.down, groundCheckDistance, whatIsGround);
-        Debug.DrawRay(offsetAhead, Vector2.down * groundCheckDistance);
+        //Debug.DrawRay(offsetAhead, Vector2.down * groundCheckDistance);
 
         slopeBehind = Physics2D.Raycast(offsetBehind, Vector2.right * -direction, 0.3f , whatIsGround);
-        Debug.DrawRay(offsetBehind, Vector2.right * -direction * groundCheckDistance);
+        //Debug.DrawRay(offsetBehind, Vector2.right * -direction * groundCheckDistance);
 
         return groundAhead.collider || (!groundAhead.collider && slopeBehind.collider);
     }

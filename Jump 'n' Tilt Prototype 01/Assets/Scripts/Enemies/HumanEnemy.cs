@@ -7,7 +7,7 @@ public class HumanEnemy : GroundEnemy
     [SerializeField] Audio humanHit;
     [SerializeField] float eyeSightDistance;
 
-    private Animator anim;
+    //private Animator anim;
 
     protected override void Start()
     {
@@ -34,35 +34,56 @@ public class HumanEnemy : GroundEnemy
     {
         base.ComputeVelocity();
 
+        if (grounded)
+            anim.SetBool("isJumping", false);
+
         //slide when you should slide!
         if (isSliding)
         {
             anim.SetBool("isJumping", false);
+            anim.SetBool("isRunning", false);
+            anim.SetBool("isAttacking", false);
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isSliding", true);
             Slide();
         }
         //follows the player, when he is in humans eyesight
         else if (Mathf.Abs(playerDirection().x) < eyeSightDistance && getPlayerScript().health > 0)
         {
+            anim.SetBool("isSliding", false);
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isRunning", true);
+
             if (playerDirection().x < -0.5f)
                 direction = -1;
             else if (playerDirection().x > 0.5f)
                 direction = 1;
             else
+            {
                 direction = 0;
-
+                anim.SetBool("isRunning", false);
+                anim.SetBool("isSliding", false);
+                anim.SetBool("isIdle", true);
+            }
+             
             //try to get on the player platform
-            if ((playerDirection().y > 2 && grounded && Mathf.Abs(playerDirection().x) > 0.1f) || (IsWallAhead() && grounded))
+            if ((playerDirection().y > 2 && grounded && Mathf.Abs(playerDirection().x) > 0.5f) || (IsWallAhead() && grounded))
             {
                 Jump();
+                anim.SetBool("isIdle", false);
                 anim.SetBool("isJumping", true);
             }
             
             Movement(direction);            
         }
+        //be idle on player death
         else
         {
-            //idle
-        }        
+            anim.SetBool("isRunning", false);
+            anim.SetBool("isSliding", false);
+            anim.SetBool("isIdle", true);
+        }
+    
     }
     protected override void Jump()
     {

@@ -7,7 +7,7 @@ using AudioControlling;
 public class Tengu : FlyingEnemy
 {
 
-    private Animator anim;
+    //private Animator anim;
     private bool hitWall;
     private bool hitPlatform;
     private LayerMask wall;
@@ -26,12 +26,14 @@ public class Tengu : FlyingEnemy
     {
         base.ComputeVelocity();
 
-        anim.speed = timeController.getTimeSpeed();
+        //anim.speed = timeController.getTimeSpeed();
 
         if (isChasing)
         {
+            if (!anim.GetBool("isAttacking"))
+                AudioController.Instance.playFXSound(tenguAttack);
+
             anim.SetBool("isAttacking", true);
-            AudioController.Instance.playFXSound(tenguAttack);
         }
         else
         {

@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8623540090618375754}
   - component: {fileID: 7024670814960544658}
   - component: {fileID: 6753815043417914556}
-  m_Layer: 0
-  m_Name: Fass_liegend_resized
+  m_Layer: 18
+  m_Name: Barrel_Lying
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

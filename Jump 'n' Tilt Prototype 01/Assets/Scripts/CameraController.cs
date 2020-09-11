@@ -1,8 +1,8 @@
 ﻿//Author: Kevin Zielke
 
 using System.Collections;
+using TimeControlls;
 using UnityEngine;
-using GameActions;
 using UnityEngine.Tilemaps;
 
 /// <summary>
@@ -28,6 +28,7 @@ public class CameraController : MonoBehaviour
     private GameObject player;                          //The current position of the Player Character
     private PlayerCharacter playerCtrl;                 //Player Controller for velocity
     private Vector3 offset;                             //current offset of the camera to the player
+    private TimeController timeCtrl;                    //Time Speed is used for fixing the camera offset during sliding
     public TilemapCollider2D lvlBounds;                //The TilemapCollider of the level: Needed for getting boundaries of the level
 
     ///Once the angle of the tilt is settled, the tilemap needs to be adjusted to show enough ground and walls, so that no empty background is seen.
@@ -49,6 +50,7 @@ public class CameraController : MonoBehaviour
         offset = Vector2.zero;
 
         player = GameObject.Find("Player");
+        timeCtrl = GameObject.Find("TimeController").GetComponent<TimeController>();
         parentTrans = cam.transform.parent;
         playerCtrl = player.GetComponent<PlayerCharacter>();
         //lvlBounds = GameObject.Find("Bounds").GetComponent<TilemapCollider2D>();
@@ -188,7 +190,7 @@ public class CameraController : MonoBehaviour
         if(playerCtrl.isSliding && playerCtrl.getVelocity().y < 0 && playerCtrl.getVelocity().y > -0.8f)
         {
             //Debug.Log(playerCtrl.getVelocity());
-            Vector2 slideDownOffset = new Vector2(playerCtrl.getVelocity().x, playerCtrl.getVelocity().y * slideYOffset);
+            Vector2 slideDownOffset = new Vector2(playerCtrl.getVelocity().x * timeCtrl.getTimeSpeed(), playerCtrl.getVelocity().y * slideYOffset);
             offset = (Vector2)player.transform.position + slideDownOffset;
         }
         else

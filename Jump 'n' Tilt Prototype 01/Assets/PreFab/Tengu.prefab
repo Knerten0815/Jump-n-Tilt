@@ -193,9 +193,10 @@ MonoBehaviour:
   knockup: 5
   bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
     type: 3}
+  anim: {fileID: 0}
   gravityCounter: 4
   velY: 1
-  targetRange: 5
+  targetRange: 10
   attackRange: 1.5
   roamPos: {x: 5, y: 0}
   attackCooldownTime: 1

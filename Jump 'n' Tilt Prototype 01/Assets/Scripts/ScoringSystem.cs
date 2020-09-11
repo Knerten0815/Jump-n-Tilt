@@ -35,11 +35,11 @@ public class ScoringSystem : MonoBehaviour
     */
     public void Awake()
     {
-        ManagementSystem.pickUpHit += scoreUp;
+        ManagementSystem.Instance.pickUpHit += scoreUp;
         // ManagementSystem.healthPickUpHit += healthBarUp;
-        ManagementSystem.healthPassOn += healthDisplay;
-        ManagementSystem.collectedScroll += updateScrollCount;
-        ManagementSystem.timePassOn += displayTime;
+        ManagementSystem.Instance.healthPassOn += healthDisplay;
+        ManagementSystem.Instance.collectedScroll += updateScrollCount;
+        ManagementSystem.Instance.timePassOn += displayTime;
         displayTime(0);
         Score = 0;
         collected = 0;

@@ -6,7 +6,7 @@ public class EndLevelScript : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        ManagementSystem.endLevel();
+        ManagementSystem.Instance.endLevel();
     }
 
 }

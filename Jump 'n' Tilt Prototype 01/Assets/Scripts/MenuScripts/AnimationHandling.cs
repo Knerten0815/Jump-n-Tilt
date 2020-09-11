@@ -25,7 +25,7 @@ namespace menuHandling
             animator = menuBackground.GetComponent<Animator>();
 
 
-            if (SceneManager.GetActiveScene().name == "NewMenu" || SceneManager.GetActiveScene().name == "KatjaMenue2" || SceneManager.GetActiveScene().name == "HighScore")
+            if (SceneManager.GetActiveScene().name == "NewMenu" || SceneManager.GetActiveScene().name == "StartMenu" || SceneManager.GetActiveScene().name == "HighScore")
             {
                 firstMenuPage.SetActive(false);
                 animator.SetTrigger("OpenScroll");
@@ -45,14 +45,14 @@ namespace menuHandling
         IEnumerator ShowMenu()
         {
             yield return new WaitForSecondsRealtime(0.5f);
-            Debug.Log("did you wait?");
+  
             firstMenuPage.SetActive(true);
         }
 
         IEnumerator DisableMenu()
         {
             yield return new WaitForSecondsRealtime(1f);
-            Debug.Log("did you wait before disabling?");
+      
             menuBackground.SetActive(false);
 
         }
@@ -69,22 +69,21 @@ namespace menuHandling
 
         private void pauseGame()
         {
-            Debug.Log("is pauseGame happening");
+         
             if (!showPauseMenu)
             {
-                Debug.Log("Are you opening?");
-
+              
                 DialogueManager.Instance.EndDialogue();
                 Time.timeScale = 0f;
                 menuBackground.SetActive(true);
                 animator.SetTrigger("OpenScroll");
                 StartCoroutine(ShowMenu());
                 showPauseMenu = true;
-                Debug.Log("Are you finished opening?");
+    
             }
             else
             {
-                Debug.Log("Are you closing?");
+             
                 foreach (Transform child in transform)
                 {
                     if (child.gameObject.activeSelf && child.transform.name != "Schriftrolle") {

@@ -23,13 +23,14 @@ public class DisplayCollectible : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-       ManagementSystem.collectibleOnLoad += overwrite;
-       ManagementSystem.levelLoadMethod += levelInteractable;
+       ManagementSystem.Instance.collectibleOnLoad += overwrite;
+       ManagementSystem.Instance.levelLoadMethod += levelInteractable;
 
     }
     public void levelInteractable(int unlockedLevels, int currentLevel)
     {   if (levelButtons.Length != 0)
         {
+            Debug.Log("what levels are unlocked " + unlockedLevels);
             for (int i = 0; i <= unlockedLevels; i++)
             {
                 Debug.Log("whats on level button " + i);
@@ -45,7 +46,7 @@ public class DisplayCollectible : MonoBehaviour
     private void setLoadLevel(int level)  
     {
         Debug.Log("what level when clicked + " + level);
-        ManagementSystem.loadLevel(level);
+        ManagementSystem.Instance.loadLevel(level);
     }
     public void overwrite(int ID)
     {
@@ -60,7 +61,7 @@ public class DisplayCollectible : MonoBehaviour
     }
     private void OnDisable()
     {
-        ManagementSystem.collectibleOnLoad -= overwrite;
-        ManagementSystem.levelLoadMethod -= levelInteractable;
+        ManagementSystem.Instance.collectibleOnLoad -= overwrite;
+        ManagementSystem.Instance.levelLoadMethod -= levelInteractable;
     }
 }

@@ -11,7 +11,7 @@ public class HealthPick : MonoBehaviour, PickUpDescriptor
     }
     public void hit()
     {
-        ManagementSystem.hUp();
+        ManagementSystem.Instance.hUp();
     }
 
  

@@ -21,42 +21,41 @@ using UnityEngine.SocialPlatforms.Impl;
 public class ManagementSystem : MonoBehaviour
 {
 
-    private static List<int> collectiblesGathered = new List<int>();
-    private static int currentLevel = 0;
-    private static Save.ScorePair[][] scoreList = new Save.ScorePair[3][];
-    private static int unlockedLevels = 0;
-    private static int currentScore;
-
+    private List<int> collectiblesGathered = new List<int>();
+    private int currentLevel = 0;
+    private Save.ScorePair[][] scoreList = new Save.ScorePair[3][];
+    private int unlockedLevels = 0;
+    private int currentScore;
+    public GameObject loadscreen;
+    public static ManagementSystem Instance { get; private set; }
     /*
     * Cheap and not perfect Singleton initialization. 
     *
     *
     *@Katja
     */
-    private static ManagementSystem _instance;
-    public static ManagementSystem Instance
 
-
+    void Awake()
     {
-        get
+        if (Instance == null)
         {
-            if (_instance == null)
-            {
-                GameObject sSystem = new GameObject("ManagementSystem");
-                sSystem.AddComponent<ManagementSystem>();
-            }
-            return _instance;
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
+        else
+        {
+            Destroy(gameObject);
+        }
+        SceneManager.sceneLoaded += startLevel;
     }
 
-
-    /*
-    *
-    * Static function that when called adds the ID of the collectible to the currently gathered Collectibles
-    *
-    *@Katja
-    */
-    public static void AddCollectible(int n)
+        /*
+        *
+        * Static function that when called adds the ID of the collectible to the currently gathered Collectibles
+        *
+        *@Katja
+        */
+        public void AddCollectible(int n)
     {
         collectiblesGathered.Add(n);
     }
@@ -68,14 +67,14 @@ public class ManagementSystem : MonoBehaviour
     */
 
     public delegate void scoreUp(int score);
-    public static event scoreUp pickUpHit;
+    public event scoreUp pickUpHit;
     /*
     *
     * Static function that when called triggers the event for scoreUp. 
     *
     * @Katja
     */
-    public static void pickUp(int scoreValue)
+    public void pickUp(int scoreValue)
     {
         currentScore += scoreValue;
         if (pickUpHit != null)
@@ -85,7 +84,7 @@ public class ManagementSystem : MonoBehaviour
 
     public delegate void levelLoad(int unlockedLevels, int currentLevel);
 
-    public static event levelLoad levelLoadMethod;
+    public event levelLoad levelLoadMethod;
     /*
     *
     *   CollectibleLoad Event that currently is just there to notify rare what collectibles have already been Loaded could be expanded to other things
@@ -94,7 +93,7 @@ public class ManagementSystem : MonoBehaviour
     * @Katja
     */
     public delegate void pickupLoad(int collectibleID);
-    public static event pickupLoad collectibleOnLoad;
+    public event pickupLoad collectibleOnLoad;
 
     /*
     *
@@ -103,16 +102,15 @@ public class ManagementSystem : MonoBehaviour
     * @Katja    
     */
     public delegate void displayHS(string name, int score, int level, int spot);
-    public static event displayHS displayHighscoreSub;
+    public event displayHS displayHighscoreSub;
 
-    public static void displayHighscoreOneLevel(int level)
+    public void displayHighscoreOneLevel(int level)
     {
         for (int i = 0; i < 5; i++)
         {
             if (displayHighscoreSub != null)
             {
                 displayHighscoreSub(scoreList[level][i].name, scoreList[level][i].score, level, i);
-                Debug.Log("are you displaying " + i);
             }
         }
     }
@@ -128,9 +126,9 @@ public class ManagementSystem : MonoBehaviour
     * @Katja
     */
 
-    public void Start()
+    private void startLevel(Scene scene, LoadSceneMode mode)
     {
-
+        
         LoadGame();
         // collectiblesGathered.Clear();
         //collectiblesGathered.Add(1);
@@ -138,7 +136,7 @@ public class ManagementSystem : MonoBehaviour
         //collectiblesGathered.Add(0);
         //unlockedLevels = 2;
         //currentLevel = 2;
-
+        Time.timeScale = 1f;
         if (collectibleOnLoad != null)
         {
             foreach (int ID in collectiblesGathered)
@@ -149,14 +147,15 @@ public class ManagementSystem : MonoBehaviour
 
         if (levelLoadMethod != null)
             levelLoadMethod(unlockedLevels, currentLevel);
+        loadscreen.SetActive(false);
     }
 
 
 
     public delegate void healthCurrent(int health);
-    public static event healthCurrent healthPassOn;
+    public event healthCurrent healthPassOn;
 
-    public static void updatePlayerHealth(int health)
+    public void updatePlayerHealth(int health)
     {
         Debug.Log("TEST hPuP");
         if (healthPassOn != null)
@@ -164,25 +163,25 @@ public class ManagementSystem : MonoBehaviour
     }
 
     public delegate void updateTimeSub(float time);
-    public static event updateTimeSub timePassOn;
-    public static void updateTime(float time)
+    public event updateTimeSub timePassOn;
+    public void updateTime(float time)
     {
         if(timePassOn!=null)
             timePassOn(time);
     }
 
     public delegate void pickupHealth();
-    public static event pickupHealth healthPickUpHit;
-    public static void hUp()
+    public event pickupHealth healthPickUpHit;
+    public void hUp()
     {
         //Debug.Log("TEST hUp");
         healthPickUpHit();
     }
 
     public delegate void collected();
-    public static event collected collectedScroll;
+    public event collected collectedScroll;
 
-    public static void collectedUpdate()
+    public void collectedUpdate()
     {
         Debug.Log("TEST cUp");
         if (collectedScroll != null)
@@ -191,17 +190,17 @@ public class ManagementSystem : MonoBehaviour
 
 
     public delegate void pickupTime();
-    public static event pickupTime timePickUpHit;
+    public event pickupTime timePickUpHit;
 
-    public static void tUp()
+    public void tUp()
     {
         //Debug.Log("TEST tUp");
         timePickUpHit();
     }
 
-    public static void endLevel()
+    public void endLevel()
     {
-        SaveGame();
+        loadscreen.SetActive(true);
         UnityEngine.SceneManagement.SceneManager.LoadScene(4);
     }
     /*
@@ -210,7 +209,7 @@ public class ManagementSystem : MonoBehaviour
     *
     *@Katja
     */
-    private static Save CreateNewSaveGameObject()
+    private Save CreateNewSaveGameObject()
     {
         Save save = new Save();
         collectiblesGathered = new List<int>();
@@ -243,7 +242,7 @@ public class ManagementSystem : MonoBehaviour
         return save;
 
     }
-    private static Save updateSaveGameObject()
+    private Save updateSaveGameObject()
     {
         Save save = new Save();
         save.currentScore = currentScore;
@@ -256,7 +255,7 @@ public class ManagementSystem : MonoBehaviour
 
     }
 
-    public static bool newHighScore(string name, int spot)
+    public bool newHighScore(string name, int spot)
     {
        
         Save.ScorePair newPair = new Save.ScorePair(currentScore, name);
@@ -276,7 +275,7 @@ public class ManagementSystem : MonoBehaviour
     }
 
 
-    public static (int, int, int) checkForNewHighScore()
+    public (int, int, int) checkForNewHighScore()
     {
         int spot = -1;
         for (int i = 4; i >= 0; i--)
@@ -292,27 +291,32 @@ public class ManagementSystem : MonoBehaviour
 
     }
 
-    public static void nextLevel()
+    public void nextLevel()
     {
-       
+        loadscreen.SetActive(true);
+
         currentLevel++;
-        if (unlockedLevels < currentLevel)
-        {
-            unlockedLevels++;
-        }
         if (currentLevel >= 3)
         {
             currentLevel = 0;
         }
+        if (unlockedLevels < currentLevel && unlockedLevels<3)
+        {
+            unlockedLevels++;
+        }
+     
    
         currentScore = 0;
         SaveGame();
         if (currentLevel == 0)
         {
+            //loadscreen.SetActive(true);
             UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            
         }
         else
         {
+            //loadscreen.SetActive(true);
             UnityEngine.SceneManagement.SceneManager.LoadScene(currentLevel + 1);
         }
     }
@@ -322,29 +326,30 @@ public class ManagementSystem : MonoBehaviour
      * 
      * @Katja
      */
-    private static void saveFile(Save save)
+    private void saveFile(Save save)
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
         bf.Serialize(file, save);
         file.Close();
     }
-    public static void SaveGame()
+    public void SaveGame()
     {
 
         Save save = updateSaveGameObject();
         saveFile(save);
     }
 
-    private static void SaveNewGame()
+    private void SaveNewGame()
     {
         Save save = CreateNewSaveGameObject();
         saveFile(save);
     }
 
  
-    public static void loadLevel(int level)
+    public void loadLevel(int level)
     {
+        loadscreen.SetActive(true);
         Debug.Log("okay what s going on" + level);
         currentLevel = level;
         currentScore = 0;
@@ -352,8 +357,9 @@ public class ManagementSystem : MonoBehaviour
         SceneManager.LoadScene(level+1);
     }
 
-    public static void ResetGameSave()
+    public void ResetGameSave()
     {
+        loadscreen.SetActive(true);
         collectiblesGathered = new List<int>();
         currentLevel = 0;
         //Highscore = new int[] { 0, 0, 0 };
@@ -361,6 +367,7 @@ public class ManagementSystem : MonoBehaviour
         currentScore = 0;
         Save save = CreateNewSaveGameObject();
         saveFile(save);
+    
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
     /*

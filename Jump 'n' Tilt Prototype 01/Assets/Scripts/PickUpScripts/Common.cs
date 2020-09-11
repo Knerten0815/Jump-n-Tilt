@@ -21,7 +21,7 @@ public class Common : MonoBehaviour, PickUpDescriptor
 
     public void hit()
     {
-        ManagementSystem.pickUp(Value);
+        ManagementSystem.Instance.pickUp(Value);
     }
 
 }

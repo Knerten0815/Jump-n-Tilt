@@ -32,7 +32,7 @@ public class HighScoreScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var temp = ManagementSystem.checkForNewHighScore();
+        var temp = ManagementSystem.Instance.checkForNewHighScore();
         newSpot = temp.Item1;
         currentLevel = temp.Item2;
         currentScore = temp.Item3;
@@ -69,14 +69,14 @@ public class HighScoreScene : MonoBehaviour
     private void setNewHighscore() 
     {
         TextInput tInput = enterNamePage.GetComponent<TextInput>();
-        bool didItHappen = ManagementSystem.newHighScore(tInput.getInputText(), newSpot);
+        bool didItHappen = ManagementSystem.Instance.newHighScore(tInput.getInputText(), newSpot);
         displayPage[currentLevel].SetActive(true);
 
 
     }
     private void nextLevel()
     {
-        //ManagementSystem.nextLevel();
+        ManagementSystem.Instance.nextLevel();
     }
     
 }

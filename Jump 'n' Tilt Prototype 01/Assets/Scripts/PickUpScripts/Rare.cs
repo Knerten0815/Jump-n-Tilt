@@ -28,9 +28,9 @@ public class Rare: MonoBehaviour, PickUpDescriptor
     */
     public void hit()
     {
-        ManagementSystem.AddCollectible(numberID);
-        ManagementSystem.collectedUpdate();
-        ManagementSystem.SaveGame();
+        ManagementSystem.Instance.AddCollectible(numberID);
+        ManagementSystem.Instance.collectedUpdate();
+        ManagementSystem.Instance.SaveGame();
     }
 
     /*
@@ -48,7 +48,7 @@ public class Rare: MonoBehaviour, PickUpDescriptor
                 Common common = gameObject.AddComponent(typeof(Common)) as Common;
                 common.Value=40;
                 SpriteRenderer sp = gameObject.GetComponent<SpriteRenderer>();
-                ManagementSystem.collectedUpdate();
+                ManagementSystem.Instance.collectedUpdate();
                 sp.sprite = Resources.Load<Sprite>("PickUp Sprites/GoldCoinWithRuby_64x64");
                 Rare r = gameObject.GetComponent<Rare>();
                 Object.Destroy(r);
@@ -64,12 +64,12 @@ public class Rare: MonoBehaviour, PickUpDescriptor
     */
     void Awake()
     {
-        ManagementSystem.collectibleOnLoad += checkForCollected;
+        ManagementSystem.Instance.collectibleOnLoad += checkForCollected;
     }
 
     private void OnDisable()
     {
-        ManagementSystem.collectibleOnLoad -= checkForCollected;
+        ManagementSystem.Instance.collectibleOnLoad -= checkForCollected;
 
     }
 

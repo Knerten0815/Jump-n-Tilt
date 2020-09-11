@@ -138,12 +138,12 @@ public class PlayerCharacter : Character
         PlayerInput.onSlowMoDown += useSloMoPickup;
 
         //Management pickup
-        ManagementSystem.healthPickUpHit += addHealth;
-        ManagementSystem.timePickUpHit += addTimePickup;
+        ManagementSystem.Instance.healthPickUpHit += addHealth;
+        ManagementSystem.Instance.timePickUpHit += addTimePickup;
 
         //Management update
-        ManagementSystem.updateTime(remainingSloMoTime);
-        ManagementSystem.updatePlayerHealth(health);
+        ManagementSystem.Instance.updateTime(remainingSloMoTime);
+        ManagementSystem.Instance.updatePlayerHealth(health);
         //+++++
 
         // by Nicole 
@@ -181,8 +181,8 @@ public class PlayerCharacter : Character
         PlayerInput.onVerticalUp -= CrouchUp;
 
         //Marvin Winkler
-        ManagementSystem.healthPickUpHit -= addHealth;
-        ManagementSystem.timePickUpHit -= addTimePickup;
+        ManagementSystem.Instance.healthPickUpHit -= addHealth;
+        ManagementSystem.Instance.timePickUpHit -= addTimePickup;
         PlayerInput.onTiltDown -= smashFishToTilt;
         PlayerInput.onTiltDown -= disableSliding;
         PlayerInput.onSlowMoDown -= useSloMoPickup;
@@ -315,7 +315,7 @@ public class PlayerCharacter : Character
         {
             sloMoTimer = 0;
             remainingSloMoTime = 0;
-            ManagementSystem.updateTime(sloMoTimer);
+            ManagementSystem.Instance.updateTime(sloMoTimer);
             onUseSloMoTime();
         }
 
@@ -326,7 +326,7 @@ public class PlayerCharacter : Character
             if(sloMoSentTimer > sloMoTimer)
             {
                 sloMoSentTimer = (int)sloMoTimer;
-                ManagementSystem.updateTime(sloMoTimer);
+                ManagementSystem.Instance.updateTime(sloMoTimer);
             }
         }
 
@@ -891,7 +891,7 @@ public class PlayerCharacter : Character
     private void addHealth()
     {
         health++;
-        ManagementSystem.updatePlayerHealth(health);
+        ManagementSystem.Instance.updatePlayerHealth(health);
     }
 
     //Author: Marvin Winkler
@@ -902,7 +902,7 @@ public class PlayerCharacter : Character
         if (timeController.getTimeSpeed() == timeController.slowTimeSpeed)
             sloMoTimer += sloMoTime;
 
-        ManagementSystem.updateTime(remainingSloMoTime);
+        ManagementSystem.Instance.updateTime(remainingSloMoTime);
     }
 
     //Author: Marvin Winkler
@@ -930,7 +930,7 @@ public class PlayerCharacter : Character
     public override void TakeDamage(int damage, Vector2 direction)
     {
         health -= damage;
-        ManagementSystem.updatePlayerHealth(health);
+        ManagementSystem.Instance.updatePlayerHealth(health);
         justTookDamage = true;
         velocity = new Vector2(direction.x * knockback, knockup);
         CharacterFacingDirection(-velocity.x);

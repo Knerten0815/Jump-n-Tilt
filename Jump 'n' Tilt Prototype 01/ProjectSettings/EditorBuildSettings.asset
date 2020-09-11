@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/KatjaMenue2.unity
+    path: Assets/Scenes/StartMenu.unity
     guid: b6e168c742188a84bae3bf622942914a
   - enabled: 0
     path: Assets/Scenes/NewMenu.unity

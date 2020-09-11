@@ -19,7 +19,7 @@ public class DisplayHighScore : MonoBehaviour
 
     void Awake()
     {
-        ManagementSystem.displayHighscoreSub += displayScore;
+        ManagementSystem.Instance.displayHighscoreSub += displayScore;
         Debug.Log("Are you subscribing");
     }
 

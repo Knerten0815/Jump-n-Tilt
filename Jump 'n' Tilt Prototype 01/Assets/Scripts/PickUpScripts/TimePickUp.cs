@@ -12,7 +12,7 @@ public class TimePickUp : MonoBehaviour, PickUpDescriptor
 
     public void hit()
     {
-      ManagementSystem.tUp();
+      ManagementSystem.Instance.tUp();
     }
 
 }

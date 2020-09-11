@@ -8,6 +8,6 @@ public class HighscorePage : MonoBehaviour
     private int level;
     private void Start()
     {
-        ManagementSystem.displayHighscoreOneLevel(level);
+        ManagementSystem.Instance.displayHighscoreOneLevel(level);
     }
 }

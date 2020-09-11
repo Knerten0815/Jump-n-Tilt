@@ -39,7 +39,7 @@ namespace menuHandling
 
         public void restartGame()
         {
-            ManagementSystem.ResetGameSave();
+            ManagementSystem.Instance.ResetGameSave();
         }
         //This method closes the whole Application
         //Used by Button_ExitGame

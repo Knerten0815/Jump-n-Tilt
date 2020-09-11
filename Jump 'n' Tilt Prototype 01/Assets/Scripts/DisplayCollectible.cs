@@ -32,17 +32,17 @@ public class DisplayCollectible : MonoBehaviour
         {
             for (int i = 0; i <= unlockedLevels; i++)
             {
-                Debug.Log("whats on level button " + currentLevel);
-
+                Debug.Log("whats on level button " + i);
+                int temp = i;
                 levelButtons[i].interactable = true;
-                levelButtons[i].onClick.AddListener(() => setLoadLevel(i));
+                levelButtons[i].onClick.AddListener(() => setLoadLevel(temp));
             }
         }
         Debug.Log("whats on current button+ " + currentLevel);
 
         continueButton.onClick.AddListener(() => setLoadLevel(currentLevel));
     }
-    public void setLoadLevel(int level)  
+    private void setLoadLevel(int level)  
     {
         Debug.Log("what level when clicked + " + level);
         ManagementSystem.loadLevel(level);

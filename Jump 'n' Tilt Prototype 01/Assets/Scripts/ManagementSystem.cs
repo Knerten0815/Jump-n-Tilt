@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 /*
 *
@@ -232,7 +233,7 @@ public class ManagementSystem : MonoBehaviour
             }
         }
         save.collectiblesGathered = collectiblesGathered;
-        save.currentLevel = 1;
+        save.currentLevel = 0;
         save.scoreList = scoreList;
         save.unlockedLevels = 2;
         return save;
@@ -241,28 +242,33 @@ public class ManagementSystem : MonoBehaviour
     private static Save updateSaveGameObject()
     {
         Save save = new Save();
+        save.currentScore = currentScore;
         save.collectiblesGathered = collectiblesGathered;
         save.currentLevel = currentLevel;
         save.scoreList = scoreList;
+       // Debug.Log(save.scoreList[currentLevel - 1][0].name);
         save.unlockedLevels = unlockedLevels;
         return save;
 
     }
 
-    public static void newHighScore(string name, int spot)
+    public static bool newHighScore(string name, int spot)
     {
        
         Save.ScorePair newPair = new Save.ScorePair(currentScore, name);
         Save.ScorePair oldPair;
-        for (int i = spot; i>= 0; i--)
+        for (int i = spot; i<scoreList[currentLevel].Length; i++)
         {
-            Debug.Log(i);
+            Debug.Log("Old and new score");
             oldPair = scoreList[currentLevel][i];
+            Debug.Log(oldPair.name + " und " + oldPair.score);
+            Debug.Log(newPair.name + " und " + newPair.score);
+
             scoreList[currentLevel][i] = newPair;
             newPair = oldPair;
         }
 
-    
+        return true;
     }
 
 
@@ -285,7 +291,7 @@ public class ManagementSystem : MonoBehaviour
     public static void nextLevel()
     {
         currentLevel++;
-            
+        Debug.Log("EX FUCKING CUSE ME " +currentLevel);    
         if (currentLevel >= 3)
         {
             currentLevel = 0;
@@ -334,9 +340,11 @@ public class ManagementSystem : MonoBehaviour
  
     public static void loadLevel(int level)
     {
+        Debug.Log("okay what s going on" + level);
         currentLevel = level;
         currentScore = 0;
         SaveGame();
+        SceneManager.LoadScene(level+1);
     }
 
     public static void ResetGameSave()

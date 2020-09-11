@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DisplayCollectible : MonoBehaviour
 {
@@ -32,13 +33,18 @@ public class DisplayCollectible : MonoBehaviour
             for (int i = 0; i <= unlockedLevels; i++)
             {
                 levelButtons[i].interactable = true;
+                levelButtons[i].onClick.AddListener(() => setLoadLevel(i));
             }
         }
-        continueButton.onClick.AddListener(() => ButtonClicked(currentLevel));
+        Debug.Log("WHATS ON THOSE FUCKING BUTTONS + " + currentLevel);
+
+        continueButton.onClick.AddListener(() => setLoadLevel(currentLevel));
     }
-    public void ButtonClicked(int currentLevel)
+    public void setLoadLevel(int level)
+        
     {
-        Debug.Log("AHHHH" + currentLevel);
+        Debug.Log("HWAT THE FUCK + " + level);
+        ManagementSystem.loadLevel(level-1);
     }
     public void overwrite(int ID)
     {
@@ -50,5 +56,10 @@ public class DisplayCollectible : MonoBehaviour
         title.text = collectible.title;
         description.text = collectible.description;
         image.texture = collectible.artwork.texture;
+    }
+    private void OnDisable()
+    {
+        ManagementSystem.collectibleOnLoad -= overwrite;
+        ManagementSystem.levelLoadMethod -= levelInteractable;
     }
 }

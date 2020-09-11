@@ -42,7 +42,7 @@ public class Rare: MonoBehaviour, PickUpDescriptor
     public void checkForCollected(int collectibleID)
     {
         
-            if (collectibleID == numberID)
+            if (collectibleID == numberID && this != null)
                 {
                 //gameObject.SetActive(false);
                 Common common = gameObject.AddComponent(typeof(Common)) as Common;
@@ -51,7 +51,6 @@ public class Rare: MonoBehaviour, PickUpDescriptor
                 ManagementSystem.collectedUpdate();
                 sp.sprite = Resources.Load<Sprite>("PickUp Sprites/GoldCoinWithRuby_64x64");
                 Rare r = gameObject.GetComponent<Rare>();
-
                 Object.Destroy(r);
     
                 }
@@ -68,6 +67,14 @@ public class Rare: MonoBehaviour, PickUpDescriptor
         ManagementSystem.collectibleOnLoad += checkForCollected;
     }
 
+    private void OnDisable()
+    {
+        ManagementSystem.collectibleOnLoad -= checkForCollected;
 
+    }
 
 }
+
+
+
+

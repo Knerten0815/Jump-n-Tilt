@@ -69,8 +69,7 @@ public class HighScoreScene : MonoBehaviour
     private void setNewHighscore() 
     {
         TextInput tInput = enterNamePage.GetComponent<TextInput>();
-        ManagementSystem.newHighScore(tInput.getInputText(), newSpot);
-        Debug.Log("waht currentScore HALLO HALLO BITTE DANKE" + currentScore);
+        bool didItHappen = ManagementSystem.newHighScore(tInput.getInputText(), newSpot);
         displayPage[currentLevel].SetActive(true);
 
 

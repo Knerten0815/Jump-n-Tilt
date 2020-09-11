@@ -52,11 +52,11 @@ public class ScoringSystem : MonoBehaviour
 
     private void displayTime(float time)
     {
-        Debug.Log(time);
+
         timeMin = (int)time / 60;
-        Debug.Log(timeMin);
+
         timeSec = (int)time - timeMin * 60;
-        Debug.Log(timeMin);
+
         string timeMinText = timeMin.ToString();
         if (timeMin < 10)
         {

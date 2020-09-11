@@ -13,10 +13,15 @@ public class DialogueTrigger : MonoBehaviour
     EventSystem m_EventSystem;
     private bool notTriggeredYet = true;
 
+    private void OnEnable()
+    {
+        continueButton = DialogueManager.Instance.button;
+    }
     public void TriggerDialogue()
     {
         if (notTriggeredYet)
         {
+
             DialogueManager.Instance.StartDialogue(dialogue);
             m_EventSystem = EventSystem.current;
             m_EventSystem.SetSelectedGameObject(continueButton);

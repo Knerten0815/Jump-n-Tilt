@@ -236,6 +236,10 @@ public class ManagementSystem : MonoBehaviour
         save.currentLevel = 0;
         save.scoreList = scoreList;
         save.unlockedLevels = 2;
+        unlockedLevels = save.unlockedLevels;
+        currentLevel = 0;
+        collectiblesGathered = save.collectiblesGathered;
+
         return save;
 
     }
@@ -290,16 +294,17 @@ public class ManagementSystem : MonoBehaviour
 
     public static void nextLevel()
     {
+       
         currentLevel++;
-        Debug.Log("EX FUCKING CUSE ME " +currentLevel);    
-        if (currentLevel >= 3)
-        {
-            currentLevel = 0;
-        }
         if (unlockedLevels < currentLevel)
         {
             unlockedLevels++;
         }
+        if (currentLevel >= 3)
+        {
+            currentLevel = 0;
+        }
+   
         currentScore = 0;
         SaveGame();
         if (currentLevel == 0)

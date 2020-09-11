@@ -11,6 +11,8 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager Instance { get; private set; }
     private Queue<string> sentences;
     private Queue<string> names;
+    public GameObject button;
+
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI dialogueText;
     private GameObject[] dialogueImages;

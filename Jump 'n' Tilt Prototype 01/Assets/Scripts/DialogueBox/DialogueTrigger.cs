@@ -9,19 +9,20 @@ using TMPro;
 public class DialogueTrigger : MonoBehaviour
 {
     public Dialogue dialogue;
-    public GameObject continueButton;
     EventSystem m_EventSystem;
     private bool notTriggeredYet = true;
 
+   
     public void TriggerDialogue()
     {
         if (notTriggeredYet)
         {
+
             DialogueManager.Instance.StartDialogue(dialogue);
             m_EventSystem = EventSystem.current;
-            m_EventSystem.SetSelectedGameObject(continueButton);
-            continueButton.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline | FontStyles.Bold;
-            continueButton.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0.6470f, 0.0627f, 0.0627f);
+            m_EventSystem.SetSelectedGameObject(DialogueManager.Instance.button);
+            DialogueManager.Instance.button.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline | FontStyles.Bold;
+            DialogueManager.Instance.button.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0.6470f, 0.0627f, 0.0627f);
             notTriggeredYet = false;
         }
     }

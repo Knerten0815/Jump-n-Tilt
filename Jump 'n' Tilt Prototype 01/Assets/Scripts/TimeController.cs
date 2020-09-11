@@ -48,11 +48,13 @@ namespace TimeControlls //To access the TimeController add: "using TimeControlls
             {
                 timeSpeed = 1;
                 isSlow = false;
+                onTimeSpeedChange?.Invoke();
             }
             else
             {
                 timeSpeed = slowTimeSpeed;
                 isSlow = true;
+                onTimeSpeedChange?.Invoke();
             }
         }
 

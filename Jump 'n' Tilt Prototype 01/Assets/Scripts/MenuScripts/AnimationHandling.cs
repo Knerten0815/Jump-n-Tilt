@@ -21,6 +21,7 @@ namespace menuHandling
             PlayerInput.onMenuDown += pauseGame;
             menuBackground = GameObject.Find("Schriftrolle");
             firstMenuPage = GameObject.Find("Main Menu");
+            Debug.Log(showPauseMenu);
             animator = menuBackground.GetComponent<Animator>();
 
 
@@ -44,12 +45,14 @@ namespace menuHandling
         IEnumerator ShowMenu()
         {
             yield return new WaitForSecondsRealtime(0.5f);
+            Debug.Log("did you wait?");
             firstMenuPage.SetActive(true);
         }
 
         IEnumerator DisableMenu()
         {
             yield return new WaitForSecondsRealtime(1f);
+            Debug.Log("did you wait before disabling?");
             menuBackground.SetActive(false);
 
         }
@@ -66,17 +69,22 @@ namespace menuHandling
 
         private void pauseGame()
         {
+            Debug.Log("is pauseGame happening");
             if (!showPauseMenu)
             {
+                Debug.Log("Are you opening?");
+
                 DialogueManager.Instance.EndDialogue();
                 Time.timeScale = 0f;
                 menuBackground.SetActive(true);
                 animator.SetTrigger("OpenScroll");
                 StartCoroutine(ShowMenu());
                 showPauseMenu = true;
+                Debug.Log("Are you finished opening?");
             }
             else
             {
+                Debug.Log("Are you closing?");
                 foreach (Transform child in transform)
                 {
                     if (child.gameObject.activeSelf && child.transform.name != "Schriftrolle") {

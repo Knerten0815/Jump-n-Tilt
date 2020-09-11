@@ -932,7 +932,15 @@ public class PlayerCharacter : Character
         health -= damage;
         ManagementSystem.updatePlayerHealth(health);
         justTookDamage = true;
-        velocity = new Vector2(direction.x * knockback, knockup);
+        if(direction.x >= 0)
+        {
+            velocity = new Vector2(knockback, knockup);
+        }
+        else
+        {
+            velocity = new Vector2(-knockback, knockup);
+        }
+
         CharacterFacingDirection(-velocity.x);
         stunnTimer = stunnTime;
         Instantiate(bloodSpray, transform.position, Quaternion.identity);

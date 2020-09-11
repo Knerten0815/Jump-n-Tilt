@@ -10,6 +10,4 @@ public class Dialogue
     public string[] name;
     [TextArea(3, 30)]
     public string[] sentences;
-    [Tooltip("Max Array length 5!")]
-    public GameObject[] images = new GameObject[5];
 }

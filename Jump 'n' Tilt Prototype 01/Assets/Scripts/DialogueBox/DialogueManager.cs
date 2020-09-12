@@ -18,6 +18,9 @@ public class DialogueManager : MonoBehaviour
     public GameObject dialogueImage;
     private Sprite[] dialogueImages;
     public Animator animator;
+    private RuntimeAnimatorController introController;
+    private RuntimeAnimatorController animatorController;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -35,17 +38,23 @@ public class DialogueManager : MonoBehaviour
         sentences = new Queue<string>();
         names = new Queue<string>();
         dialogueImages = new Sprite[5];
-        dialogueImages[0] = Resources.Load<Sprite>("DialougeImages/Player_64x64_ver2");
-        dialogueImages[1] = Resources.Load<Sprite>("DialougeImages/onamazu64x64"); 
-        dialogueImages[2] = Resources.Load<Sprite>("DialougeImages/kitsune64x64"); 
-        dialogueImages[3] = Resources.Load<Sprite>("DialougeImages/Fragezeichen"); 
-        dialogueImages[4] = Resources.Load<Sprite>("DialougeImages/Fragezeichen");
+        dialogueImages[0] = Resources.Load<Sprite>("DialogueImages/Player_64x64_ver2");
+        dialogueImages[1] = Resources.Load<Sprite>("DialogueImages/onamazu64x64"); 
+        dialogueImages[2] = Resources.Load<Sprite>("DialogueImages/kitsune64x64"); 
+        dialogueImages[3] = Resources.Load<Sprite>("DialogueImages/Fragezeichen"); 
+        dialogueImages[4] = Resources.Load<Sprite>("DialogueImages/Fragezeichen");
+
+        introController = Resources.Load("AnimatorForDialogue/DialogueBoxIntro") as RuntimeAnimatorController;
+        animatorController = Resources.Load("AnimatorForDialogue/DialogueBox") as RuntimeAnimatorController;
+
         SceneManager.sceneLoaded += findNewCamera;
+        SceneManager.sceneLoaded += setAnimator;
 
     }
     private void OnDisabled()
     {
         SceneManager.sceneLoaded -= findNewCamera;
+        SceneManager.sceneLoaded -= setAnimator;
     }
 
     private void findNewCamera(Scene aScene, LoadSceneMode aMode)
@@ -53,6 +62,22 @@ public class DialogueManager : MonoBehaviour
     {
         this.GetComponentInChildren<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
         this.GetComponentInChildren<Canvas>().worldCamera = Camera.main;
+    }
+    private void setAnimator(Scene aScene, LoadSceneMode aMode)
+    {
+        if(SceneManager.GetActiveScene().name == "Intro")
+        {
+            GameObject dialogueBox = this.GetComponentInChildren<Animator>().gameObject;
+            dialogueBox.transform.position = new Vector3(0f, dialogueBox.transform.position.y, dialogueBox.transform.position.z);
+            this.GetComponentInChildren<Animator>().runtimeAnimatorController = introController;
+            
+        }
+        else
+        {
+            this.GetComponentInChildren<Animator>().runtimeAnimatorController = animatorController;
+        }
+        
+        
     }
 
     public void StartDialogue(Dialogue dialogue)
@@ -89,7 +114,7 @@ public class DialogueManager : MonoBehaviour
         }
         else if(sentences.Count == 0 && SceneManager.GetActiveScene().name == "Intro")
         {
-            SceneManager.LoadScene("Level 1");
+            Debug.Log("Load Level 1");
             return;
         }
 

@@ -30,6 +30,7 @@ public class EndBoss : MonoBehaviour
     private Coroutine[] heartAppearRoutine = new Coroutine[8];
     private void OnEnable()
     {
+        triggerStart = this.GetComponent<BoxCollider2D>();
         HealthBar.SetActive(false);
         foreach (GameObject heart in hearts)
         {
@@ -81,6 +82,7 @@ public class EndBoss : MonoBehaviour
         if (i == 7)
         {
             startUpEndboss();
+            Object.Destroy(triggerStart);
 
         }
 

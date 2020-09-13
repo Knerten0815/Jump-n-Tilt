@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TimeControlls;
+using AudioControlling;
+
 
 //Author: Melanie Jäger
 public class SpawnArrows : MonoBehaviour
@@ -13,6 +15,7 @@ public class SpawnArrows : MonoBehaviour
     private TimeController timeController;
     public GameObject arrow;
     public bool shoot = true;
+    public Audio arrowSound;
 
     //Author: Melanie Jäger
     private void OnEnable()
@@ -34,6 +37,7 @@ public class SpawnArrows : MonoBehaviour
     {
         if (shoot)
         {
+            AudioController.Instance.playFXSound(arrowSound);
             arrow = Instantiate(arrowPrefab) as GameObject;
             arrow.transform.position = transform.position;
         }

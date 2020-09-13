@@ -46,7 +46,7 @@ public class Kitsune : GroundEnemy
         base.ComputeVelocity();
 
 
-        if (isIdle && Mathf.Abs(playerDirection().x) < distanceToPlayer && !isSliding)
+        if (isIdle && Mathf.Abs(playerDirection().x) < distanceToPlayer)
         {
             currentIdleTime += Time.deltaTime;
 
@@ -148,7 +148,7 @@ public class Kitsune : GroundEnemy
             AudioController.Instance.playFXSound(kappaHit);
             base.TakeDamage(damage, direction);
             endBoss.damageTaken();
-            coolDamageRoutine = StartCoroutine(damageCooldown(0.7f));
+            coolDamageRoutine = StartCoroutine(damageCooldown(1.2f));
         }
     }
     public override void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)

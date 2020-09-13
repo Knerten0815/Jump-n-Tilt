@@ -541,6 +541,7 @@ public class PlayerCharacter : Character
             }
 
             deadFish.GetComponent<Animator>().speed = timeController.getTimeSpeed();
+        
         }
         //+++   SEE ABOVE! ^^
     }

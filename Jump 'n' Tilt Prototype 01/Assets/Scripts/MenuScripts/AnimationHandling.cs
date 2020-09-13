@@ -13,6 +13,7 @@ namespace menuHandling
     {
         private GameObject menuBackground;
         private GameObject firstMenuPage;
+        
         private Animator animator;
         private bool showPauseMenu = false;
 

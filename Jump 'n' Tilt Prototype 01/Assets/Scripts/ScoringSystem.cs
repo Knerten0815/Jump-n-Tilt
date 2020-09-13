@@ -94,6 +94,7 @@ public class ScoringSystem : MonoBehaviour
 
     private void healthDisplay(int health)
     {
+        Debug.Log("whats the health " + health);
         this.health = health;
         healthText.text = this.health.ToString();
     }

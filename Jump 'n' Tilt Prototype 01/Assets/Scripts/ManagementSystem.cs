@@ -115,7 +115,10 @@ public class ManagementSystem : MonoBehaviour
         }
     }
 
-
+    public void restartLevel()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(currentLevel+1);
+    }
     /*
     *
     *   LoadGame is called before start and then rare pick ups are notified whether they were already gathered and have to be set inactive
@@ -141,7 +144,9 @@ public class ManagementSystem : MonoBehaviour
         {
             foreach (int ID in collectiblesGathered)
             {
-                collectibleOnLoad(ID);
+                Debug.Log(ID);
+                if (collectibleOnLoad != null)
+                    collectibleOnLoad(ID);
             }
         }
 
@@ -157,9 +162,12 @@ public class ManagementSystem : MonoBehaviour
 
     public void updatePlayerHealth(int health)
     {
-        Debug.Log("TEST hPuP");
+        Debug.Log("is health being updated?");
         if (healthPassOn != null)
+        {
+            Debug.Log("is health being updated?");
             healthPassOn(health);
+        }
     }
 
     public delegate void updateTimeSub(float time);

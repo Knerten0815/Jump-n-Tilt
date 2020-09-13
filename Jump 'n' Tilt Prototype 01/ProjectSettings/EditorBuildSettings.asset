@@ -29,10 +29,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Level 2 (Marvin) neu.unity
     guid: 41edb9526363c024a9db8b999fd321b8
+  - enabled: 1
+    path: Assets/Scenes/Level 1 (Tutorial).unity
+    guid: 381113d7c5016d54db4ab4a35422b618
   - enabled: 0
     path: Assets/Scenes/Menu.unity
     guid: 3862af1601b204e479b3c182aca40455
-  - enabled: 1
+  - enabled: 0
     path: Assets/Level2withEnd - Copy - Copy (2).unity
     guid: 7f42e240fb10348459f196a5cc496f9b
   - enabled: 1

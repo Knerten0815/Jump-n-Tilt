@@ -65,15 +65,17 @@ public class DialogueManager : MonoBehaviour
     }
     private void setAnimator(Scene aScene, LoadSceneMode aMode)
     {
-        if(SceneManager.GetActiveScene().name == "Intro")
+        GameObject dialogueBox = this.GetComponentInChildren<Animator>().gameObject;
+        if (SceneManager.GetActiveScene().name == "Intro")
         {
-            GameObject dialogueBox = this.GetComponentInChildren<Animator>().gameObject;
+            
             dialogueBox.transform.position = new Vector3(0f, dialogueBox.transform.position.y, dialogueBox.transform.position.z);
             this.GetComponentInChildren<Animator>().runtimeAnimatorController = introController;
             
         }
         else
         {
+            dialogueBox.transform.position = new Vector3(-305f, dialogueBox.transform.position.y, dialogueBox.transform.position.z);
             this.GetComponentInChildren<Animator>().runtimeAnimatorController = animatorController;
         }
         

@@ -47,11 +47,15 @@ public class Rare: MonoBehaviour, PickUpDescriptor
                 //gameObject.SetActive(false);
                 Common common = gameObject.AddComponent(typeof(Common)) as Common;
                 common.Value=40;
+                ScoreSound scoreSound = gameObject.AddComponent(typeof(ScoreSound)) as ScoreSound;
                 SpriteRenderer sp = gameObject.GetComponent<SpriteRenderer>();
                 ManagementSystem.Instance.collectedUpdate();
+
                 sp.sprite = Resources.Load<Sprite>("PickUp Sprites/GoldCoinWithRuby_64x64");
-                Rare r = gameObject.GetComponent<Rare>();
-                Object.Destroy(r);
+                Rare rare = gameObject.GetComponent<Rare>();
+                CollectibleSound collectibelSound= gameObject.GetComponent<CollectibleSound>();
+                Object.Destroy(collectibelSound);
+                Object.Destroy(rare);
     
                 }
         

@@ -117,6 +117,7 @@ public class ManagementSystem : MonoBehaviour
 
     public void restartLevel()
     {
+        currentScore = 0;
         UnityEngine.SceneManagement.SceneManager.LoadScene(currentLevel+1);
     }
     /*

@@ -20,7 +20,7 @@ public class Enemy : Character
 
         if (isDead)
         {
-            Instantiate(bloodSpray, transform.position, Quaternion.identity);
+           
             gameObject.SetActive(false);
         }
     }
@@ -31,6 +31,7 @@ public class Enemy : Character
     }
     public override void TakeDamage(int damage, Vector2 direction)
     {
+        Instantiate(bloodSpray, transform.position, Quaternion.identity);
         base.TakeDamage(damage, -direction);
         //Debug.Log("takeDamege von Enemy!!!!!!!!!");
     }

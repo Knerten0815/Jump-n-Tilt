@@ -142,8 +142,11 @@ public class PlayerCharacter : Character
         ManagementSystem.Instance.timePickUpHit += addTimePickup;
 
         //Management update
+        
         ManagementSystem.Instance.updateTime(remainingSloMoTime);
+        
         ManagementSystem.Instance.updatePlayerHealth(health);
+        
         //+++++
 
         // by Nicole 
@@ -156,6 +159,8 @@ public class PlayerCharacter : Character
         PlayerInput.onVerticalDown += CrouchDown;
         PlayerInput.onVerticalUp += CrouchUp;
     }
+ 
+
     //Author: Marvin Winkler
     //Used to fix several bugs
     private void disableSliding(float a)

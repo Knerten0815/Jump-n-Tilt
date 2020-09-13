@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Security.Cryptography;
 
 public class TextInput : MonoBehaviour
 {
@@ -32,7 +32,10 @@ public class TextInput : MonoBehaviour
     void backspacePressed()
     {
         if (input.text.Length > 0)
-            input.text.Remove(input.text.Length - 1);
+        {
+            string sub = input.text.Remove(input.text.Length - 1);
+            input.text = sub;
+        }
     }
     public string getInputText()
     {

@@ -11,11 +11,13 @@ public class SpawnArrows : MonoBehaviour
     public float deltaTimeAdjust = 200.0f;  //varialbe, that calculates a rational result for the time between the spawns, with and withou the TimeController activated
 
     private TimeController timeController;
-    private GameObject arrow; 
+    public GameObject arrow;
+    public bool shoot = true;
 
     //Author: Melanie Jäger
     private void OnEnable()
     {
+        shoot = true;
         timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
     }
 
@@ -30,8 +32,11 @@ public class SpawnArrows : MonoBehaviour
     //Spawns the arrow prefab at the position of this gameobject, normally it would be the dispenser for the arrows
     private void SpawnArrow()
     {
-        arrow = Instantiate(arrowPrefab) as GameObject;
-        arrow.transform.position = transform.position;
+        if (shoot)
+        {
+            arrow = Instantiate(arrowPrefab) as GameObject;
+            arrow.transform.position = transform.position;
+        }
     }
 
     //Author: Melanie Jäger

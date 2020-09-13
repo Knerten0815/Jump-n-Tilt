@@ -69,13 +69,13 @@ public class DialogueManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Intro")
         {
             
-            dialogueBox.transform.position = new Vector3(0f, dialogueBox.transform.position.y, dialogueBox.transform.position.z);
+            dialogueBox.transform.localPosition = new Vector3(0f, dialogueBox.transform.position.y, dialogueBox.transform.position.z);
             this.GetComponentInChildren<Animator>().runtimeAnimatorController = introController;
             
         }
         else
         {
-            dialogueBox.transform.position = new Vector3(-8f, dialogueBox.transform.position.y, dialogueBox.transform.position.z);
+            dialogueBox.transform.localPosition = new Vector3(-305f, dialogueBox.transform.position.y, dialogueBox.transform.position.z);
             this.GetComponentInChildren<Animator>().runtimeAnimatorController = animatorController;
         }
         

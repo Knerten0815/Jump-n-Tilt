@@ -148,7 +148,7 @@ public class Kitsune : GroundEnemy
             AudioController.Instance.playFXSound(kappaHit);
             base.TakeDamage(damage, direction);
             endBoss.damageTaken();
-            coolDamageRoutine = StartCoroutine(damageCooldown(1));
+            coolDamageRoutine = StartCoroutine(damageCooldown(0.7f));
         }
     }
     public override void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)

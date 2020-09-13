@@ -146,7 +146,7 @@ public class Kitsune : GroundEnemy
             
             Debug.Log("player direction: " + playerDirection().x);
             AudioController.Instance.playFXSound(kappaHit);
-            base.TakeDamage(damage, -direction);
+            base.TakeDamage(damage, direction);
             endBoss.damageTaken();
             coolDamageRoutine = StartCoroutine(damageCooldown(1));
         }

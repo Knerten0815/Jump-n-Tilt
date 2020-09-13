@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 //Author: Michelle Limbach
 public class OpeningManager : MonoBehaviour
 {
-    public static OpeningManager Instance { get; private set; }
+
     private Queue<string> sentences;
     public TextMeshProUGUI openingText;
     public Opening opening;
@@ -16,16 +16,7 @@ public class OpeningManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
+   
         sentences = new Queue<string>();
     }
 
@@ -74,6 +65,6 @@ public class OpeningManager : MonoBehaviour
     public void EndOpening()
     {
         //Load new scene
-        SceneManager.LoadScene("Intro");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(5);
     }
 }

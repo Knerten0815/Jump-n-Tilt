@@ -75,7 +75,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            dialogueBox.transform.position = new Vector3(-305f, dialogueBox.transform.position.y, dialogueBox.transform.position.z);
+            dialogueBox.transform.position = new Vector3(-8f, dialogueBox.transform.position.y, dialogueBox.transform.position.z);
             this.GetComponentInChildren<Animator>().runtimeAnimatorController = animatorController;
         }
         
@@ -116,7 +116,9 @@ public class DialogueManager : MonoBehaviour
         }
         else if(sentences.Count == 0 && SceneManager.GetActiveScene().name == "Intro")
         {
-            Debug.Log("Load Level 1");
+
+            Time.timeScale = 1f;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(6);
             return;
         }
 

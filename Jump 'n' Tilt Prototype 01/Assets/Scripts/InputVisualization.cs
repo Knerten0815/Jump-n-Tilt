@@ -68,7 +68,7 @@ public class InputVisualization : MonoBehaviour
         PlayerInput.onPlayerAttackDown -= B_ButtonDown;
         PlayerInput.onSlowMoDown -= Y_ButtonDown;
         PlayerInput.onTiltDown -= SchultertastenDown;
-        PlayerInput.onVerticalDown += VerticalArrowsDown;
+        PlayerInput.onVerticalDown -= VerticalArrowsDown;
 
 
         PlayerInput.onJumpButtonUp -= A_ButtonUp;

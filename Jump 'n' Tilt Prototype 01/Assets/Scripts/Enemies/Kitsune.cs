@@ -131,7 +131,7 @@ public class Kitsune : GroundEnemy
 
     protected void airMovement()
     {
-        if (!grounded && direction != 0 && velocity.magnitude < maxAirMovementSpeed && !isSliding)
+        if (!grounded && direction != 0 && velocity.magnitude < maxAirMovementSpeed)
         {
             velocity += (direction * moveWhileJumping) * Vector2.right * (1 - wallJumpTime) * (1 / ((0.1f + Mathf.Abs(velocity.x) * 0.5f))); //velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude) * (1 - wallJumpTime), velocity.y);
             isSliding = false;
@@ -153,7 +153,7 @@ public class Kitsune : GroundEnemy
     }
     public override void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
     {
-        if (!hasAttacked && !isSliding && getPlayerScript().health > 0 && !hasDamaged)
+        if (!hasAttacked && getPlayerScript().health > 0 && !hasDamaged)
         {
             base.groundEnemyAttack(enemy, dmgDirection2D);
         }

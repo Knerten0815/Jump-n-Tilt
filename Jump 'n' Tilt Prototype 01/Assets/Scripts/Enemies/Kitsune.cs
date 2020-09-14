@@ -21,7 +21,8 @@ public class Kitsune : GroundEnemy
     public float distanceToPlayer;
     private Coroutine coolDamageRoutine;
     private bool hasDamaged;
-
+    [SerializeField]
+    private GameObject sparkle;
 
     protected BoxCollider2D bc2d;
 
@@ -32,6 +33,8 @@ public class Kitsune : GroundEnemy
 
     void Start()
     {
+        Instantiate(sparkle, transform.position, Quaternion.identity);
+
         base.Start();
         health = 8;
         lastYPos = transform.position.y;
@@ -46,7 +49,7 @@ public class Kitsune : GroundEnemy
         base.ComputeVelocity();
 
 
-        if (isIdle && Mathf.Abs(playerDirection().x) < distanceToPlayer && !isSliding)
+        if (isIdle && Mathf.Abs(playerDirection().x) < distanceToPlayer)
         {
             currentIdleTime += Time.deltaTime;
 
@@ -66,6 +69,7 @@ public class Kitsune : GroundEnemy
             attackPos.position = new Vector3(bc2d.bounds.center.x, bc2d.bounds.center.y, 0f);
 
             anim.SetBool("isJumping", false);
+            anim.SetBool("isJumpingDown", false);
             anim.SetBool("isIdle", true);
             jumpStart = true;
         }
@@ -91,6 +95,8 @@ public class Kitsune : GroundEnemy
         {
             isJumping = false;
             isFalling = true;
+
+            anim.SetBool("isJumpingDown", true);
         }
 
         lastYPos = transform.position.y;
@@ -109,19 +115,19 @@ public class Kitsune : GroundEnemy
 
         if (playerDirection().x < 0f)
         {
-            direction = -1f;
+            direction = 1f;
             CharacterFacingDirection(direction);
         }
         else
         {
-            direction = 1f;
+            direction = -1f;
             CharacterFacingDirection(direction);
         }
         AudioController.Instance.playFXSound(kappaJump);
 
         if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health == 0)
         {
-            velocity = new Vector2(0f, jumpHeight);
+            velocity = new Vector2(0f, 0f);
         }
         else
         {
@@ -131,7 +137,7 @@ public class Kitsune : GroundEnemy
 
     protected void airMovement()
     {
-        if (!grounded && direction != 0 && velocity.magnitude < maxAirMovementSpeed && !isSliding)
+        if (!grounded && direction != 0 && velocity.magnitude < maxAirMovementSpeed)
         {
             velocity += (direction * moveWhileJumping) * Vector2.right * (1 - wallJumpTime) * (1 / ((0.1f + Mathf.Abs(velocity.x) * 0.5f))); //velocity = new Vector2((velocity.x + (moveWhileJumping * moveDirection)) * Mathf.Pow(airResistance, velocity.magnitude) * (1 - wallJumpTime), velocity.y);
             isSliding = false;
@@ -146,14 +152,14 @@ public class Kitsune : GroundEnemy
             
             Debug.Log("player direction: " + playerDirection().x);
             AudioController.Instance.playFXSound(kappaHit);
-            base.TakeDamage(damage, -direction);
+            base.TakeDamage(damage, direction);
             endBoss.damageTaken();
-            coolDamageRoutine = StartCoroutine(damageCooldown(1));
+            coolDamageRoutine = StartCoroutine(damageCooldown(1.0f));
         }
     }
     public override void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
     {
-        if (!hasAttacked && !isSliding && getPlayerScript().health > 0 && !hasDamaged)
+        if (!hasAttacked && getPlayerScript().health > 0 && !hasDamaged)
         {
             base.groundEnemyAttack(enemy, dmgDirection2D);
         }

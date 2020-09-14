@@ -152,3 +152,8 @@ MonoBehaviour:
     type: 3}
   spawnTime: 7
   deltaTimeAdjust: 200
+  arrow: {fileID: 0}
+  shoot: 1
+  arrowSound:
+    clip: {fileID: 8300000, guid: 96659571d4227444fb8705e4f37ffd37, type: 3}
+    volume: 0.546

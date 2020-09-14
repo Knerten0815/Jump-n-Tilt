@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TimeControlls;
 using LevelControlls;
+using AudioControlling;
 
 //Author: Melanie Jäger
 public class Arrow : Hazards
@@ -15,6 +16,7 @@ public class Arrow : Hazards
 
     public float destroyDistance = 10.0f;   //distance from the camera position until the arrow is destroyed
     public int spawnDistance = 12;           //variable to multiply the distance from the camera position until the arrow is spawned
+   
 
     //Author: Melanie Jäger
     //sets the basic values for the arrow movement

@@ -62,6 +62,7 @@ public class Kitsune : GroundEnemy
         if (grounded == true && isJumping == false)
         {
             isIdle = true;
+            Debug.Log("isidle " + isIdle);
             isJumping = false;
             isFalling = false;
 
@@ -70,7 +71,7 @@ public class Kitsune : GroundEnemy
             anim.SetBool("isJumping", false);
             anim.SetBool("isJumpingDown", false);
             anim.SetBool("isIdle", true);
-            jumpStart = true;
+            //jumpStart = true;
         }
         else if (transform.position.y > lastYPos && grounded == false && isIdle == false)
         {
@@ -87,8 +88,9 @@ public class Kitsune : GroundEnemy
             }
 
             anim.SetBool("isJumping", true);
-            anim.SetBool("jumpStart", jumpStart);
-            jumpStart = false;
+            anim.SetBool("isIdle", false);
+            //anim.SetBool("jumpStart", jumpStart);
+            //jumpStart = false;
         }
         else if (transform.position.y < lastYPos && grounded == false && isIdle == false)
         {

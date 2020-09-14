@@ -12,13 +12,13 @@ public class SpawnArrows : MonoBehaviour
     public float spawnTime = 7.0f;          //amount of time that passes until a new arrow is spawned (in seconds)
     public float deltaTimeAdjust = 200.0f;  //varialbe, that calculates a rational result for the time between the spawns, with and withou the TimeController activated
 
-    private TimeController timeController;
+    public TimeController timeController;
     public GameObject arrow;
     public bool shoot = true;
     public Audio arrowSound;
 
     //Author: Melanie Jäger
-    private void OnEnable()
+    public virtual void OnEnable()
     {
         shoot = true;
         timeController = GameObject.Find("TimeController").GetComponent<TimeController>();

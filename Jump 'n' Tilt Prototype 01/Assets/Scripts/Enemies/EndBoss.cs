@@ -38,16 +38,20 @@ public class EndBoss : MonoBehaviour
         }
         foreach (GameObject spawnObject in ArrowWave1)
         {
+            spawnObject.SetActive(false);
             SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
             spawnArrow.shoot = false;
+
         }
         foreach (GameObject spawnObject in ArrowWave2)
         {
+            spawnObject.SetActive(false);
             SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
             spawnArrow.shoot = false;
         }
         foreach (GameObject spawnObject in ArrowWave3)
         {
+            spawnObject.SetActive(false);
             SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
             spawnArrow.shoot = false;
         }
@@ -97,6 +101,7 @@ public class EndBoss : MonoBehaviour
         {
             foreach (GameObject spawnObject in ArrowWave1)
             {
+                spawnObject.SetActive(true);
                 SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
                 spawnArrow.shoot = true;
 
@@ -107,6 +112,7 @@ public class EndBoss : MonoBehaviour
         {
             foreach (GameObject spawnObject in ArrowWave2)
             {
+                spawnObject.SetActive(true);
                 SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
                 spawnArrow.shoot = true;
             }
@@ -116,6 +122,7 @@ public class EndBoss : MonoBehaviour
         {
             foreach (GameObject spawnObject in ArrowWave3)
             {
+                spawnObject.SetActive(true);
                 SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
                 spawnArrow.shoot = true;
             }

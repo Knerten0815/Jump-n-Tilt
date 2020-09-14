@@ -30,6 +30,7 @@ public class EndBoss : MonoBehaviour
     private Coroutine[] heartAppearRoutine = new Coroutine[8];
     private void OnEnable()
     {
+        triggerStart = this.GetComponent<BoxCollider2D>();
         HealthBar.SetActive(false);
         foreach (GameObject heart in hearts)
         {
@@ -37,16 +38,20 @@ public class EndBoss : MonoBehaviour
         }
         foreach (GameObject spawnObject in ArrowWave1)
         {
+            spawnObject.SetActive(false);
             SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
             spawnArrow.shoot = false;
+
         }
         foreach (GameObject spawnObject in ArrowWave2)
         {
+            spawnObject.SetActive(false);
             SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
             spawnArrow.shoot = false;
         }
         foreach (GameObject spawnObject in ArrowWave3)
         {
+            spawnObject.SetActive(false);
             SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
             spawnArrow.shoot = false;
         }
@@ -81,6 +86,7 @@ public class EndBoss : MonoBehaviour
         if (i == 7)
         {
             startUpEndboss();
+            Object.Destroy(triggerStart);
 
         }
 
@@ -95,6 +101,7 @@ public class EndBoss : MonoBehaviour
         {
             foreach (GameObject spawnObject in ArrowWave1)
             {
+                spawnObject.SetActive(true);
                 SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
                 spawnArrow.shoot = true;
 
@@ -105,6 +112,7 @@ public class EndBoss : MonoBehaviour
         {
             foreach (GameObject spawnObject in ArrowWave2)
             {
+                spawnObject.SetActive(true);
                 SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
                 spawnArrow.shoot = true;
             }
@@ -114,6 +122,7 @@ public class EndBoss : MonoBehaviour
         {
             foreach (GameObject spawnObject in ArrowWave3)
             {
+                spawnObject.SetActive(true);
                 SpawnArrows spawnArrow = spawnObject.GetComponent<SpawnArrows>();
                 spawnArrow.shoot = true;
             }

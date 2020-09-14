@@ -69,7 +69,8 @@ public class Oni : GroundEnemy
             anim.SetBool("isSliding", false);
         }
 
-        Movement(direction);
+        if (!hasAttacked)
+            Movement(direction);
     }
 
     public override void TakeDamage(int damage, Vector2 direction)

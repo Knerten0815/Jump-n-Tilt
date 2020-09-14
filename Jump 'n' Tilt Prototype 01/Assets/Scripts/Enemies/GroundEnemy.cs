@@ -19,6 +19,7 @@ public class GroundEnemy : Enemy
     public bool hasAttacked = false;
     public float direction;
     public CapsuleCollider2D cc2d;
+    public bool knockbackStun = false;
     private GameObject attackCircle;
     private Coroutine coolroutine;
     public float wallCheckDistance = 0.05f;
@@ -241,8 +242,8 @@ public class GroundEnemy : Enemy
         if (!hasAttacked && !isSliding && getPlayerScript().health > 0)
         {
             enemy.GetComponent<PlayerCharacter>().TakeDamage(1, -dmgDirection2D);
-            //Debug.Log("GroundEnemy macht Schaden!!!!!!!!!!!!!!!!!!!1");
             hasAttacked = true;
+            velocity = new Vector2(-dmgDirection2D.x * knockback, knockup);
             coolroutine = StartCoroutine(attackCooldown(attackCooldownTime));
         }
     }

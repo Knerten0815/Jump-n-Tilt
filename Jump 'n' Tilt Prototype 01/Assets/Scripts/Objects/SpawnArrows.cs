@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TimeControlls;
+using AudioControlling;
+
 
 //Author: Melanie Jäger
 //Class for shooting arrows at regular intervals
@@ -11,12 +13,13 @@ public class SpawnArrows : MonoBehaviour
     public float spawnTime = 7.0f;          //amount of time that passes until a new arrow is spawned (in seconds)
     public float deltaTimeAdjust = 200.0f;  //varialbe, that calculates a rational result for the time between the spawns, with and without the TimeController activated
 
-    private TimeController timeController;
+    public TimeController timeController;
     public GameObject arrow;
     public bool shoot = true;
+    public Audio arrowSound;
 
     //Author: Melanie Jäger
-    private void OnEnable()
+    public virtual void OnEnable()
     {
         shoot = true;
         timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
@@ -35,6 +38,7 @@ public class SpawnArrows : MonoBehaviour
     {
         if (shoot)      //Devices at boss fight are supposed to shoot their arrows after the kitsune is hit several times
         {
+            AudioController.Instance.playFXSound(arrowSound);
             arrow = Instantiate(arrowPrefab) as GameObject;
             arrow.transform.position = transform.position;
         }

@@ -9,11 +9,12 @@ public class PhysicsObject : MonoBehaviour
 
     //The values can be changed for every item indivdually in the editor. The value set in the editor will override the public variables in this script!
 
-    public float minGroundNormalY;   //Considered grounded and dampening accours. 0 vertical, 1 horizontal
-    public float minJumpNormalY;     //Maximum incline for jumps. 0 vertical, 1 horizontal
-    public float gravityModifier;      //Gravity multiplication factor: Only change it for kinematic objects. Gravity of dynamic objects should be changed in Rigitbody 2D.
-    public float dampening;         //Accours while grounded, slows down objects
-    public float maxSpeed;             //Maximum movement speed
+    public float minGroundNormalY;      //Considered grounded and dampening occurs. 0 vertical, 1 horizontal
+    public float minJumpNormalY;        //Maximum incline for jumps. 0 vertical, 1 horizontal
+    public float gravityModifier;       //Gravity multiplication factor: Only change it for kinematic objects.
+                                        //Gravity of dynamic objects should be changed in Rigitbody 2D.
+    public float dampening;             //Accours while grounded, slows down objects
+    public float maxSpeed;              //Maximum movement speed
 
     protected bool grounded;                //Dampening accours
     protected bool jumpable;                //true if surface is jumpable

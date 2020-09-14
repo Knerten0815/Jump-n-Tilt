@@ -947,6 +947,11 @@ public class PlayerCharacter : Character
     //Takes damage and gets knocked back, overrides the charackter takeDamage() funktion
     public override void TakeDamage(int damage, Vector2 direction)
     {
+        if (isDead)
+        {
+            return;
+        }
+
         health -= damage;
         ManagementSystem.Instance.updatePlayerHealth(health);
         justTookDamage = true;

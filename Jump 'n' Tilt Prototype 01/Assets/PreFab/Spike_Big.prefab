@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3578155111167679299}
   - component: {fileID: 4466463719854168694}
   - component: {fileID: 3459859252635670824}
-  - component: {fileID: 764717488748314058}
   - component: {fileID: 1347780931219715898}
+  - component: {fileID: 4861690437975631419}
   m_Layer: 16
   m_Name: Spike_Big
   m_TagString: Untagged
@@ -105,7 +105,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &764717488748314058
+--- !u!114 &1347780931219715898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581359302864193169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea9c41feec643384889adb4c7ff7d9c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minGroundNormalY: 0
+  minJumpNormalY: 0
+  gravityModifier: 0
+  dampening: 0
+  maxSpeed: 0
+  attackPos: {fileID: 3578155111167679299}
+  attackRadius: 0.6
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 2048
+--- !u!60 &4861690437975631419
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,35 +152,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.054504395, y: 0.40223312}
-      - {x: -0.009109497, y: 0.5}
-      - {x: -0.07044983, y: 0.3455336}
-      - {x: -0.39317322, y: -0.2794919}
-      - {x: -0.44544983, y: -0.3476901}
+    - - {x: 0.35346985, y: -0.14524674}
+      - {x: 0.14440918, y: 0.27345514}
+      - {x: 0.007369995, y: 0.5324917}
+      - {x: -0.10118103, y: 0.40880466}
+      - {x: -0.45907593, y: -0.32609272}
       - {x: -0.5, y: -0.5}
-      - {x: 0.5, y: -0.5}
-      - {x: 0.29995728, y: -0.10690451}
-      - {x: 0.27268982, y: -0.038757324}
-      - {x: 0.09312439, y: 0.32928705}
---- !u!114 &1347780931219715898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4581359302864193169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea9c41feec643384889adb4c7ff7d9c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minGroundNormalY: 0
-  minJumpNormalY: 0
-  gravityModifier: 0
-  dampening: 0
-  maxSpeed: 0
-  attackPos: {fileID: 3578155111167679299}
-  attackRadius: 0.3
-  whatIsEnemy:
-    serializedVersion: 2
-    m_Bits: 2048
+      - {x: 0.5319824, y: -0.5}
+      - {x: 0.45236206, y: -0.33844018}

@@ -372,7 +372,7 @@ public class ManagementSystem : MonoBehaviour
         collectiblesGathered = new List<int>();
         currentLevel = 0;
         //Highscore = new int[] { 0, 0, 0 };
-        unlockedLevels = 2;
+        unlockedLevels = 0;
         currentScore = 0;
         Save save = CreateNewSaveGameObject();
         saveFile(save);

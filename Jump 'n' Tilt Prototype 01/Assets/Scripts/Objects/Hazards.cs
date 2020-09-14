@@ -20,7 +20,7 @@ public class Hazards : PhysicsObject
             Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
             dmgDirection2D.Normalize();
             Character enemy = enemies[i].gameObject.GetComponent<Character>();
-            if (enemy != null)
+            if (enemy != null && enemy.health > 0)
                 enemies[i].GetComponent<Character>().TakeDamage(1, dmgDirection2D);
          
         }

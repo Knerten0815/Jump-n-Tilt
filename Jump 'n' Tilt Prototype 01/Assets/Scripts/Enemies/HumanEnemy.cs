@@ -73,8 +73,9 @@ public class HumanEnemy : GroundEnemy
                 anim.SetBool("isIdle", false);
                 anim.SetBool("isJumping", true);
             }
-            
-            Movement(direction);            
+
+            if (!hasAttacked)
+                Movement(direction);
         }
         //be idle on player death
         else

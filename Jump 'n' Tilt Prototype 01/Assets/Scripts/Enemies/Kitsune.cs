@@ -69,6 +69,7 @@ public class Kitsune : GroundEnemy
             attackPos.position = new Vector3(bc2d.bounds.center.x, bc2d.bounds.center.y, 0f);
 
             anim.SetBool("isJumping", false);
+            anim.SetBool("isJumpingDown", false);
             anim.SetBool("isIdle", true);
             jumpStart = true;
         }
@@ -94,6 +95,8 @@ public class Kitsune : GroundEnemy
         {
             isJumping = false;
             isFalling = true;
+
+            anim.SetBool("isJumpingDown", true);
         }
 
         lastYPos = transform.position.y;
@@ -112,19 +115,19 @@ public class Kitsune : GroundEnemy
 
         if (playerDirection().x < 0f)
         {
-            direction = -1f;
+            direction = 1f;
             CharacterFacingDirection(direction);
         }
         else
         {
-            direction = 1f;
+            direction = -1f;
             CharacterFacingDirection(direction);
         }
         AudioController.Instance.playFXSound(kappaJump);
 
         if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health == 0)
         {
-            velocity = new Vector2(0f, jumpHeight);
+            velocity = new Vector2(0f, 0f);
         }
         else
         {

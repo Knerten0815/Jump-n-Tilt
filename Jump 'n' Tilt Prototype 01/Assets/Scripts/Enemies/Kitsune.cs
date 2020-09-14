@@ -26,8 +26,8 @@ public class Kitsune : GroundEnemy
 
     protected BoxCollider2D bc2d;
 
-    public Audio kappaJump;
-    public Audio kappaHit, kappaBlock;
+    public Audio kitsuneAttack;
+    public Audio kitsuneHit, kitsuneDeath;
 
     public GameObject dust;
 
@@ -47,7 +47,6 @@ public class Kitsune : GroundEnemy
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
-
 
         if (isIdle && Mathf.Abs(playerDirection().x) < distanceToPlayer)
         {
@@ -123,7 +122,6 @@ public class Kitsune : GroundEnemy
             direction = -1f;
             CharacterFacingDirection(direction);
         }
-        AudioController.Instance.playFXSound(kappaJump);
 
         if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health == 0)
         {
@@ -151,7 +149,15 @@ public class Kitsune : GroundEnemy
             hasDamaged = true;
             
             Debug.Log("player direction: " + playerDirection().x);
-            AudioController.Instance.playFXSound(kappaHit);
+            if(health <= 1)
+            {
+                AudioController.Instance.playFXSound(kitsuneDeath);
+            }
+            else
+            {
+                AudioController.Instance.playFXSound(kitsuneHit);
+            }
+            
             base.TakeDamage(damage, direction);
             endBoss.damageTaken();
             coolDamageRoutine = StartCoroutine(damageCooldown(1.0f));
@@ -161,6 +167,7 @@ public class Kitsune : GroundEnemy
     {
         if (!hasAttacked && getPlayerScript().health > 0 && !hasDamaged)
         {
+            AudioController.Instance.playFXSound(kitsuneAttack);
             base.groundEnemyAttack(enemy, dmgDirection2D);
         }
     }

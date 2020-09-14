@@ -61,6 +61,7 @@ public class PlayerCharacter : Character
     private float stunnTimer;
     private float deadFishTimer;                //used to spawn the fish object during the death animation
     private bool animatedAttack;
+    private float restartTimer;                 //Timer used to restart Level after death
 
     // particle stuff by Marvin Winkler
     private ParticleSystem footsteps;
@@ -132,6 +133,8 @@ public class PlayerCharacter : Character
         posUpdated = false;
         isFacingRight = true;
 
+        restartTimer = 0;
+
         //Input
         PlayerInput.onTiltDown += smashFishToTilt;
         PlayerInput.onTiltDown += disableSliding;
@@ -197,6 +200,16 @@ public class PlayerCharacter : Character
     protected override void ComputeVelocity()
     {
         moveDirection = Input.GetAxis("Horizontal");
+
+        if(restartTimer < 0)
+        {
+            ManagementSystem.Instance.restartLevel();
+        }
+        else if(restartTimer > 0)
+        {
+            restartTimer -= timeController.getSpeedAdjustedDeltaTime();
+        }
+
         if (!isDead)
         {
             // Player only slides when there is no input
@@ -207,8 +220,7 @@ public class PlayerCharacter : Character
 
                 if((moveDirection > 0 && slideDirection.x > 0 ) || (moveDirection < 0 && slideDirection.x < 0))
                 {
-                                        Slide();
-                  
+                    Slide();
                 }
               
             }
@@ -964,6 +976,7 @@ public class PlayerCharacter : Character
     private void die()
     {
         deadFishTimer = 1.3f;
+        restartTimer = 5f;
     }
 
     //Author: Marvin Winkler

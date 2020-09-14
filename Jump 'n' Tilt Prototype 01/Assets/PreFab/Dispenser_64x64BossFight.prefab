@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5058012736927666543}
   - component: {fileID: 5058012736927666540}
   - component: {fileID: 5058012736927666546}
-  - component: {fileID: 5058012736927666541}
+  - component: {fileID: -1927972797518216720}
   m_Layer: 0
-  m_Name: Dispenser_64x64
+  m_Name: Dispenser_64x64BossFight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.64, y: 0.19441307}
   m_EdgeRadius: 0
---- !u!114 &5058012736927666541
+--- !u!114 &-1927972797518216720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,15 +145,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5058012736927666537}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 070e58f926bc57a4186cb14b91ba968c, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d53a1418f2cea445a2e099e75f27f5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   arrowPrefab: {fileID: 6549967435999221565, guid: cd5790881da82e0428531dc707968eba,
     type: 3}
   spawnTime: 7
   deltaTimeAdjust: 200
+  timeController: {fileID: 0}
   arrow: {fileID: 0}
   shoot: 1
   arrowSound:
     clip: {fileID: 8300000, guid: 96659571d4227444fb8705e4f37ffd37, type: 3}
-    volume: 0.546
+    volume: 0.62
+  sparkle: {fileID: 6783100816141611513, guid: d8e9457671be71d4587329839ab33c5a, type: 3}

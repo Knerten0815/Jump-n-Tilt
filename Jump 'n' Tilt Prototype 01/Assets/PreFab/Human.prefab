@@ -162,10 +162,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   health: 1
-  knockback: 1
-  knockup: 1
+  knockback: -8
+  knockup: 8
   bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
     type: 3}
+  anim: {fileID: 0}
   startDirection: 1
   wallCheckPrecision: 5
   whatIsGround:
@@ -183,7 +184,9 @@ MonoBehaviour:
   hasAttacked: 0
   direction: 0
   cc2d: {fileID: 0}
+  knockbackStun: 0
   wallCheckDistance: 0.05
+  groundCheckDistance: 2.5
   humanAttack:
     clip: {fileID: 8300000, guid: dc00790a4cdf1874fbdc3b71a6ce8543, type: 3}
     volume: 1

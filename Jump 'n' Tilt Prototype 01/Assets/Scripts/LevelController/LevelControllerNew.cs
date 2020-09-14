@@ -5,43 +5,40 @@ using GameActions;
 using TimeControlls;
 
 //Author: Melanie Jäger
+//Minor changes by Marvin Winkler
+//Class for tilting the level
 namespace LevelControlls
 {
     public class LevelControllerNew : MonoBehaviour
     {
         //public variables can be changed in the editor
         public float tiltAngle = 22.5f;     //angle that the world rotates in one step
-        public float numTiltStep = 1f;      //max number of tilts in each direction
-        public int defaultTilt = 0;
         public float tiltSpeed = 10f;       //speed of the playertilt
         public float tiltBackSpeed = 5f;    //speed of the automatic backtilt
-        public float delayTime = 0.5f;      //time before the automatic backtilt starts
 
+        //Variables for the gameobjects
         private Transform player;
         private Transform level;
-
-        private int tiltStep;               //counter variable for the tilt in each direction
-
-        //private float playerInput;
-        private float tiltTime;
-        private float tiltBackTime;
-        //private float delay;
-
         private TimeController timeController;
 
+        //Variables that control the tilt
+        public float numTiltStep = 1f;      //max number of tilts in each direction
+        public int defaultTilt = 0;         //default value for the tilt direction; 0 = no rotation
+        private int tiltStep;               //Variable to prove the current tilt direction, 0 = default position
+        private float tiltTime;             //time the tilt takes until the end position is reached
+        private float tiltBackTime;         //time the backtilt takes until the end position is reached
         private bool isAxisInUse = false;   //becomes true when a button for tilting is pressed; coordinates which tilting options are currently available
         private bool tiltRight = false;     //becomes true when E-Button/RB is pressed
         private bool tiltLeft = false;      //becomes true when Q-Button/LB is pressed
         private bool tiltBack = false;      //becomes true when no button is pressed
         private bool canTilt = true;        //becomes false when BackTilt() is active; prevents from tilting during the backtilt
 
-        private float playerPos;
-
+        //Start and end points for the tilt
         private float targetRight;
         private float startRight;
-
         private float targetLeft;
         private float startLeft;
+        private float playerPos;
 
         public delegate void worldWasTilted(float tiltDirection);
         public static event worldWasTilted onWorldWasTilted;
@@ -49,7 +46,6 @@ namespace LevelControlls
         public delegate void worldWasUntilted();
         public static event worldWasUntilted onWorldWasUntilted;
 
-        //Author: Melanie Jäger
         //gets all the needed objects from scene and other scripts
         private void OnEnable()
         {
@@ -58,29 +54,17 @@ namespace LevelControlls
             timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
         }
 
-        //Author: Melanie Jäger
         private void Start()
         {
-            tiltStep = defaultTilt;                           //sets the default rotation as step = 0
-            //PlayerInput.onTiltDown += TiltMechanic;
+            tiltStep = defaultTilt;                                 //sets the default rotation as step = 0
             PlayerCharacter.onFishCausedEarthquake += TiltMechanic; //Changed by Marvin Winkler
         }
 
-        //Author: Melanie Jäger
         private void OnDisable()
         {
-            //PlayerInput.onTiltDown -= TiltMechanic;
             PlayerCharacter.onFishCausedEarthquake -= TiltMechanic; //Changed by Marvin Winkler
         }
 
-        //Author: Melanie Jäger
-        private void Update()
-        {
-            //playerInput = Input.GetAxisRaw("Tilt");   //Disabled by Marvin Winkler (get's called in PlayerCharakter instead)
-            //TiltMechanic(playerInput);                //Disabled by Marvin Winkler
-        }
-
-        //Author: Melanie Jäger
         //method is called when the tilt event is triggered
         private void TiltMechanic(float playerInput)
         {
@@ -88,33 +72,33 @@ namespace LevelControlls
             if (playerInput == 0 && isAxisInUse == true)
             {
                 tiltBackTime = 0f;
-                //delay = 0f;
                 tiltBack = true;
                 isAxisInUse = false;
 
+                //Start point for the back tilt
                 playerPos = transform.eulerAngles.z;
             }
 
-            //called when E/RB is pressed, max step to the right is not reached, not tilt is currently activ and BackTilt() not activ
+            //called when E/RB is pressed, world is not tilted to the right, no tilt is currently activ and BackTilt() is not activ
             if (playerInput == -1 && tiltStep != -numTiltStep && isAxisInUse == false && canTilt == true)
             {
                 tiltTime = 0;
                 tiltRight = true;
-                //isAxisInUse = true;
                 tiltStep--;
 
+                //Start and end point for the right tilt
                 targetRight = transform.eulerAngles.z + tiltAngle;
                 startRight = transform.eulerAngles.z;
             }
 
-            //called when Q/LB is pressed, max step to the right is not reached, not tilt is currently activ and BackTilt() not activ
+            //called when Q/LB is pressed, world is not tilted to the left, not tilt is currently activ and BackTilt() is not activ
             if (playerInput == 1 && tiltStep != numTiltStep && isAxisInUse == false && canTilt == true)
             {
                 tiltTime = 0;
                 tiltLeft = true;
-                //isAxisInUse = true;
                 tiltStep++;
 
+                //Start and end point for the left tilt
                 targetLeft = transform.eulerAngles.z + (-tiltAngle);
                 startLeft = transform.eulerAngles.z;
             }
@@ -122,22 +106,15 @@ namespace LevelControlls
             //called when the conditions for a backtilt are met
             if (tiltBack == true)
             {
-                //delay += delayTime * timeController.getSpeedAdjustedDeltaTime();
-                //--> decicion against a delay, player needs to hold the buttons for tilting otherwise the level tilts back
+                BackTilt();
+                canTilt = false;            //prevents player from tilting when BackTilt() is currently processing
 
-                //starts tilting back when the delay has reached 0
-                //if (delay > 0f)
-                    //{
-                    BackTilt();
-                    canTilt = false;    //prevents player from tilting when BackTilt() is currently processing
-
-                    if (tiltBackTime > 1)
-                    {
-                        tiltBack = false;       //becomes false when BackTilt() is finished; prevents from calling the method continuously
-                        tiltStep = defaultTilt; //tiltStep goes back to the default rotation
-                        canTilt = true;         //after tilting back the player should be able to tilt again normally
-                    }
-                //}
+                if (tiltBackTime > 1)
+                {
+                    tiltBack = false;       //becomes false when BackTilt() is finished; prevents from calling the method continuously
+                    tiltStep = defaultTilt; //tiltStep goes back to the default rotation
+                    canTilt = true;         //after tilting back the player should be able to tilt again normally
+                }
             }
 
             //called when the conditions for a righttilt are met
@@ -165,11 +142,10 @@ namespace LevelControlls
             }
         }
 
-        //Author: Melanie Jäger
-        //tilts the world back to the default rotation when the delay counter runs out
+        //tilts the world back to the default position
         private void BackTilt()
         {
-            setWorldPosition();  //tilt goes always around the player
+            setWorldPosition();  
             setWorldParent();
 
             tiltBackTime += tiltBackSpeed * timeController.getSpeedAdjustedDeltaTime();
@@ -180,14 +156,13 @@ namespace LevelControlls
 
             onWorldWasUntilted?.Invoke();
 
-            unsetWorldParent(); //prevents whole world from changing the position as well
+            unsetWorldParent();
         }
 
-        //Author: Melanie Jäger
         //tilts the world to the right
         private void RightTilt()
         {
-            setWorldPosition();     //tilt goes always around the player
+            setWorldPosition();     
             setWorldParent();
 
             tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
@@ -198,14 +173,13 @@ namespace LevelControlls
 
             onWorldWasTilted?.Invoke(1f);
 
-            unsetWorldParent();     //prevents whole world from changing the position as well
+            unsetWorldParent();     
         }
 
-        //Author: Melanie Jäger
         //tilts the world to the left
         private void LeftTilt()
         {
-            setWorldPosition();     //tilt goes always around the player
+            setWorldPosition();     
             setWorldParent();
 
             tiltTime += tiltSpeed * timeController.getSpeedAdjustedDeltaTime();
@@ -216,36 +190,30 @@ namespace LevelControlls
 
             onWorldWasTilted?.Invoke(-1f);
 
-            unsetWorldParent();     //prevents whole world from changing the position as well
+            unsetWorldParent();
         }
 
-        //Author: Melanie Jäger
-        //sets the position for the rotation so that the rotation always goes aroung the player
+        //Sets the position for the rotation, so that the rotation always goes aroung the player
         private void setWorldPosition()
         {
             transform.position = player.transform.position;
-            //transform.position = new Vector3(player.transform.position.x, -5f, player.transform.position.z);
         }
 
-
-        //Author: Melanie Jäger
-        //sets LevelController as parent for Level
+        //Sets LevelController as parent for Level, so that the level is tilted with the empty gameobject
         private void setWorldParent()
         {
             level.transform.SetParent(transform);
         }
 
-    //Author: Marvin Winkler
-    //Needed to fix wall climbing bug in player Character
-    //Also needed for the arrows
-    public int getTiltStep()
-    {
-        return tiltStep;
-    }
+        //Author: Marvin Winkler
+        //Needed to fix wall climbing bug in player Character
+        //Needed for the right movement for the arrows
+        public int getTiltStep()
+        {
+            return tiltStep;
+        }
 
-
-        //Author: Melanie Jäger
-        //unsets LevelController as parent for Level
+        //unsets LevelController as parent for Level, so that the level does not move with the empty gameobject
         private void unsetWorldParent()
         {
             level.transform.SetParent(null);

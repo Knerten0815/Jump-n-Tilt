@@ -4,11 +4,12 @@ using UnityEngine;
 using TimeControlls;
 
 //Author: Melanie Jäger
+//Class for shooting arrows at regular intervals
 public class SpawnArrows : MonoBehaviour
 {
     public GameObject arrowPrefab;          //arrowprefab needs to be assigned in the inspector
     public float spawnTime = 7.0f;          //amount of time that passes until a new arrow is spawned (in seconds)
-    public float deltaTimeAdjust = 200.0f;  //varialbe, that calculates a rational result for the time between the spawns, with and withou the TimeController activated
+    public float deltaTimeAdjust = 200.0f;  //varialbe, that calculates a rational result for the time between the spawns, with and without the TimeController activated
 
     private TimeController timeController;
     public GameObject arrow;
@@ -29,10 +30,10 @@ public class SpawnArrows : MonoBehaviour
     }
 
     //Author: Melanie Jäger
-    //Spawns the arrow prefab at the position of this gameobject, normally it would be the dispenser for the arrows
+    //Spawns the arrow prefab at the position of this gameobject, normally it would be the device that shoots the arrows
     private void SpawnArrow()
     {
-        if (shoot)
+        if (shoot)      //Devices at boss fight are supposed to shoot their arrows after the kitsune is hit several times
         {
             arrow = Instantiate(arrowPrefab) as GameObject;
             arrow.transform.position = transform.position;

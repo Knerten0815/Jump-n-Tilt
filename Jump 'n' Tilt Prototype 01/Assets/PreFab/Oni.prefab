@@ -162,8 +162,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   health: 1
-  knockback: 1
-  knockup: 1
+  knockback: -4
+  knockup: 5
   bloodSpray: {fileID: 6783100816141611513, guid: 6f1c4156a613be446bf145ba70d6228f,
     type: 3}
   anim: {fileID: 0}
@@ -176,7 +176,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 49152
   touchAttackDamage: 1
-  attackCooldownTime: 2
+  attackCooldownTime: 1
   platformCheckPrecision: 5
   whatIsPlatform:
     serializedVersion: 2
@@ -184,6 +184,7 @@ MonoBehaviour:
   hasAttacked: 0
   direction: 0
   cc2d: {fileID: 0}
+  knockbackStun: 0
   wallCheckDistance: 0.05
   groundCheckDistance: 2.5
   oniAttack:

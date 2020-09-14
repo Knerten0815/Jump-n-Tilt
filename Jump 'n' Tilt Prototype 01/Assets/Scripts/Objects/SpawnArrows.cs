@@ -17,11 +17,15 @@ public class SpawnArrows : MonoBehaviour
     public GameObject arrow;
     public bool shoot = true;
     public Audio arrowSound;
+    public Rigidbody2D player;
+    public Vector3 ownPosition;
 
     //Author: Melanie Jäger
     public virtual void OnEnable()
     {
         shoot = true;
+        ownPosition = this.GetComponent<BoxCollider2D>().transform.position;
+        player = GameObject.Find("Player").GetComponent<Rigidbody2D>();
         timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
     }
 
@@ -36,7 +40,8 @@ public class SpawnArrows : MonoBehaviour
     //Spawns the arrow prefab at the position of this gameobject, normally it would be the device that shoots the arrows
     private void SpawnArrow()
     {
-        if (shoot)      //Devices at boss fight are supposed to shoot their arrows after the kitsune is hit several times
+        float distance = Vector2.Distance(ownPosition, player.position);
+        if (shoot && distance < 50)
         {
             AudioController.Instance.playFXSound(arrowSound);
             arrow = Instantiate(arrowPrefab) as GameObject;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TimeControlls;
 using LevelControlls;
-using AudioControlling;
 
 //Author: Melanie Jäger
 //Class for arrow enemy

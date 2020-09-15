@@ -167,11 +167,4 @@ public class Kappa : GroundEnemy
         Debug.Log("damage direction: " + direction);
         Debug.Log("isSliding? " + isSliding);
     }
-
-    /*void OnDrawGizmos()
-    {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(attackPos.position, attackRadius);
-    }*/
 }

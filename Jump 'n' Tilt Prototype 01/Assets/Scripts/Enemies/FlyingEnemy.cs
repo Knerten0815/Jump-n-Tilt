@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Author: Nicole Mynarek
 public class FlyingEnemy : Enemy
 {
     private enum State

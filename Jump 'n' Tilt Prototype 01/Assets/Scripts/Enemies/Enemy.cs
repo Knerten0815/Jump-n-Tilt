@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    private GameObject player;
+    protected GameObject player;
     public Animator anim;
 
     protected override void OnEnable()

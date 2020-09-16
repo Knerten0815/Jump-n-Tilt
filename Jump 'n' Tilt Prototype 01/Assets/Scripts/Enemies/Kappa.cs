@@ -108,7 +108,7 @@ public class Kappa : GroundEnemy
 
         lastYPos = transform.position.y;
 
-        if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health > 0)
+        if (player.GetComponent<PlayerCharacter>().health > 0)
         {
             airMovement();
         }
@@ -131,7 +131,7 @@ public class Kappa : GroundEnemy
         }
         AudioController.Instance.playFXSound(kappaJump);
 
-        if (GameObject.Find("Player").GetComponent<PlayerCharacter>().health == 0)
+        if (player.GetComponent<PlayerCharacter>().health == 0)
         {
             velocity = new Vector2(0f, jumpHeight);
         }

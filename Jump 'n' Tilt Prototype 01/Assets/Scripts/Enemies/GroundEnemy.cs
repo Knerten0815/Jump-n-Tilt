@@ -250,9 +250,7 @@ public class GroundEnemy : Enemy
 
     IEnumerator attackCooldown(float coolDownTime)
     {
-        //Debug.Log(coolDownTime + " seconds Cooldown!");
         yield return new WaitForSeconds(coolDownTime);
-        //Debug.Log("Cooldown end!");
         hasAttacked = false;
         StopCoroutine(coolroutine);
     }

@@ -49,13 +49,17 @@ public class ManagementSystem : MonoBehaviour
         SceneManager.sceneLoaded += startLevel;
     }
 
-        /*
-        *
-        * Static function that when called adds the ID of the collectible to the currently gathered Collectibles
-        *
-        *@Katja
-        */
-        public void AddCollectible(int n)
+    private void OnEnable()
+    {
+        LoadGame();
+    }
+    /*
+    *
+    * Static function that when called adds the ID of the collectible to the currently gathered Collectibles
+    *
+    *@Katja
+    */
+    public void AddCollectible(int n)
     {
         collectiblesGathered.Add(n);
     }
@@ -133,19 +137,12 @@ public class ManagementSystem : MonoBehaviour
     private void startLevel(Scene scene, LoadSceneMode mode)
     {
         
-        LoadGame();
-        // collectiblesGathered.Clear();
-        //collectiblesGathered.Add(1);
-        //collectiblesGathered.Add(2);
-        //collectiblesGathered.Add(0);
-        //unlockedLevels = 2;
-        //currentLevel = 2;
+        
         Time.timeScale = 1f;
         if (collectibleOnLoad != null)
         {
             foreach (int ID in collectiblesGathered)
             {
-                Debug.Log(ID);
                 if (collectibleOnLoad != null)
                     collectibleOnLoad(ID);
             }
@@ -163,10 +160,8 @@ public class ManagementSystem : MonoBehaviour
 
     public void updatePlayerHealth(int health)
     {
-        Debug.Log("is health being updated?");
         if (healthPassOn != null)
         {
-            Debug.Log("is health being updated?");
             healthPassOn(health);
         }
     }
@@ -183,8 +178,10 @@ public class ManagementSystem : MonoBehaviour
     public event pickupHealth healthPickUpHit;
     public void hUp()
     {
-        //Debug.Log("TEST hUp");
-        healthPickUpHit();
+        if (collectedScroll != null)
+        {
+            healthPickUpHit();
+        }
     }
 
     public delegate void collected();
@@ -192,7 +189,6 @@ public class ManagementSystem : MonoBehaviour
 
     public void collectedUpdate()
     {
-        Debug.Log("TEST cUp");
         if (collectedScroll != null)
             collectedScroll();
     }
@@ -203,15 +199,19 @@ public class ManagementSystem : MonoBehaviour
 
     public void tUp()
     {
-        //Debug.Log("TEST tUp");
-        timePickUpHit();
+        if (timePickUpHit != null)
+        {
+            timePickUpHit();
+        }
     }
 
     public void endLevel()
     {
-        loadscreen.SetActive(true);
+        //loadscreen.SetActive(true);
         UnityEngine.SceneManagement.SceneManager.LoadScene(4);
     }
+
+
     /*
     * CreateSaveGameObject creates an empty Save object and overrides it's collectiblesGathered attribute with the current
     * ManagementSystem version
@@ -222,16 +222,6 @@ public class ManagementSystem : MonoBehaviour
     {
         Save save = new Save();
         collectiblesGathered = new List<int>();
-
-        collectiblesGathered.Add(0);
-        collectiblesGathered.Add(1);
-        collectiblesGathered.Add(2);
-        collectiblesGathered.Add(3);
-        collectiblesGathered.Add(4);
-        collectiblesGathered.Add(5);
-        collectiblesGathered.Add(6);
-        collectiblesGathered.Add(7);
-        collectiblesGathered.Add(8);
         for (int i = 0; i < scoreList.Length; i++)
         {
             scoreList[i] = new Save.ScorePair[5];
@@ -243,10 +233,9 @@ public class ManagementSystem : MonoBehaviour
         save.collectiblesGathered = collectiblesGathered;
         save.currentLevel = 0;
         save.scoreList = scoreList;
-        save.unlockedLevels = 2;
+        save.unlockedLevels = 0;
         unlockedLevels = save.unlockedLevels;
         currentLevel = 0;
-        collectiblesGathered = save.collectiblesGathered;
 
         return save;
 
@@ -258,7 +247,6 @@ public class ManagementSystem : MonoBehaviour
         save.collectiblesGathered = collectiblesGathered;
         save.currentLevel = currentLevel;
         save.scoreList = scoreList;
-       // Debug.Log(save.scoreList[currentLevel - 1][0].name);
         save.unlockedLevels = unlockedLevels;
         return save;
 
@@ -271,10 +259,10 @@ public class ManagementSystem : MonoBehaviour
         Save.ScorePair oldPair;
         for (int i = spot; i<scoreList[currentLevel].Length; i++)
         {
-            Debug.Log("Old and new score");
+            //Debug.Log("Old and new score");
             oldPair = scoreList[currentLevel][i];
-            Debug.Log(oldPair.name + " und " + oldPair.score);
-            Debug.Log(newPair.name + " und " + newPair.score);
+            //Debug.Log(oldPair.name + " und " + oldPair.score);
+            //Debug.Log(newPair.name + " und " + newPair.score);
 
             scoreList[currentLevel][i] = newPair;
             newPair = oldPair;
@@ -320,7 +308,7 @@ public class ManagementSystem : MonoBehaviour
         if (currentLevel == 0)
         {
             //loadscreen.SetActive(true);
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(7);
             
         }
         else
@@ -359,7 +347,6 @@ public class ManagementSystem : MonoBehaviour
     public void loadLevel(int level)
     {
         loadscreen.SetActive(true);
-        Debug.Log("okay what s going on" + level);
         currentLevel = level;
         currentScore = 0;
         SaveGame();
@@ -369,14 +356,7 @@ public class ManagementSystem : MonoBehaviour
     public void ResetGameSave()
     {
         loadscreen.SetActive(true);
-        collectiblesGathered = new List<int>();
-        currentLevel = 0;
-        //Highscore = new int[] { 0, 0, 0 };
-        unlockedLevels = 0;
-        currentScore = 0;
-        Save save = CreateNewSaveGameObject();
-        saveFile(save);
-    
+        SaveNewGame();
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
     /*

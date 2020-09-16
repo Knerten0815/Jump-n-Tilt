@@ -2,7 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
+using UnityEngine.EventSystems;
+
+using TMPro;
+
 
 public class EndBoss : MonoBehaviour
 {
@@ -26,6 +30,11 @@ public class EndBoss : MonoBehaviour
 
     [SerializeField]
     private Audio heartAppear;
+
+    private Coroutine deathWaitRoutine;
+    [SerializeField]
+    private Dialogue dialogue;
+    private EventSystem m_EventSystem;
 
     private Coroutine[] heartAppearRoutine = new Coroutine[8];
     private void OnEnable()
@@ -63,7 +72,6 @@ public class EndBoss : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         HealthBar.SetActive(true);
-        Debug.Log("hallo how");
         int i = 0;
         AudioController.Instance.playFXSound(heartAppear);
 
@@ -76,11 +84,10 @@ public class EndBoss : MonoBehaviour
 
     IEnumerator displayHealth(int i)
     {
-        Debug.Log("hallo");      
-        Debug.Log("cooler effect");
+   
         yield return new WaitForSeconds(0.27f*i);
         hearts[7-i].SetActive(true);
-        Debug.Log("cool effect");
+
         AudioController.Instance.playFXSound(heartAppear);
         heartAppear.volume = heartAppear.volume * 1.3f;
         if (i == 7)
@@ -94,9 +101,27 @@ public class EndBoss : MonoBehaviour
         StopCoroutine(heartAppearRoutine[i]);
    
     }
-    public void passOnHealth()
+    public void passOnHealth(int health)
     {
         hearts[healthLost].SetActive(false);
+        if (health == 0)
+        {
+            HealthBar.SetActive(false);
+            foreach (GameObject spawnObject in ArrowWave1)
+            {
+                spawnObject.SetActive(false);
+            }
+            foreach (GameObject spawnObject in ArrowWave2)
+            {
+                spawnObject.SetActive(false);
+            }
+            foreach (GameObject spawnObject in ArrowWave3)
+            {
+                spawnObject.SetActive(false);
+            }
+            deathWaitRoutine = StartCoroutine(waitForDeath(2.0f));
+
+        }
         if (healthLost > 1 && !wave1On)
         {
             foreach (GameObject spawnObject in ArrowWave1)
@@ -131,5 +156,22 @@ public class EndBoss : MonoBehaviour
 
         healthLost++;
         
+    }
+    private void finalDialogue()
+    {
+        DialogueManager.Instance.setLastDialogue(true);
+        DialogueManager.Instance.StartDialogue(dialogue);
+        m_EventSystem = EventSystem.current;
+        m_EventSystem.SetSelectedGameObject(DialogueManager.Instance.button);
+        DialogueManager.Instance.button.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline | FontStyles.Bold;
+        DialogueManager.Instance.button.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0.6470f, 0.0627f, 0.0627f);
+
+    }
+    IEnumerator waitForDeath(float coolDownTime)
+    {
+        yield return new WaitForSeconds(coolDownTime);
+        //Debug.Log("Cooldown end!");
+        finalDialogue();
+        StopCoroutine(deathWaitRoutine);
     }
 }

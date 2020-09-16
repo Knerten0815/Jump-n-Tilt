@@ -13,6 +13,7 @@ public class EndBossContainer : MonoBehaviour
     [SerializeField]
     private EndBoss endBoss;
 
+
     private void OnEnable()
     {
         KitsuneReal.SetActive(false);
@@ -24,9 +25,10 @@ public class EndBossContainer : MonoBehaviour
         KitsuneFake.SetActive(false);
         KitsuneReal.SetActive(true);
     }
-    public void damageTaken()
+    public void passOnHealth(int health)
     {
-        endBoss.passOnHealth();
+        endBoss.passOnHealth(health);
     }
+   
 
 }

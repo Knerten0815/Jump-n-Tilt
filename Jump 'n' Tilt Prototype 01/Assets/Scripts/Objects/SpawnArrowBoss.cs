@@ -15,4 +15,9 @@ public class SpawnArrowBoss : SpawnArrows
         shoot = true;
         timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
     }
+    private void OnDisable()
+    {
+        Instantiate(sparkle, transform.position, Quaternion.identity);
+        
+    }
 }

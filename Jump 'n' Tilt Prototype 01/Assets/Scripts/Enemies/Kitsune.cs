@@ -20,6 +20,7 @@ public class Kitsune : GroundEnemy
     public float jumpDistance;
     public float distanceToPlayer;
     private Coroutine coolDamageRoutine;
+
     private bool hasDamaged;
     [SerializeField]
     private GameObject sparkle;
@@ -36,7 +37,6 @@ public class Kitsune : GroundEnemy
         Instantiate(sparkle, transform.position, Quaternion.identity);
 
         base.Start();
-        health = 8;
         lastYPos = transform.position.y;
         attackRadius = 1.2f;
         anim = GetComponent<Animator>();
@@ -149,9 +149,9 @@ public class Kitsune : GroundEnemy
         if (!hasDamaged)
         {
             hasDamaged = true;
-            
+
             Debug.Log("player direction: " + playerDirection().x);
-            if(health <= 1)
+            if (health <= 1)
             {
                 AudioController.Instance.playFXSound(kitsuneDeath);
             }
@@ -159,10 +159,11 @@ public class Kitsune : GroundEnemy
             {
                 AudioController.Instance.playFXSound(kitsuneHit);
             }
-            
+         
             base.TakeDamage(damage, direction);
-            endBoss.damageTaken();
+            endBoss.passOnHealth(health);
             coolDamageRoutine = StartCoroutine(damageCooldown(1.0f));
+       
         }
     }
     public override void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
@@ -181,4 +182,5 @@ public class Kitsune : GroundEnemy
         hasDamaged = false;
         StopCoroutine(coolDamageRoutine);
     }
+
 }

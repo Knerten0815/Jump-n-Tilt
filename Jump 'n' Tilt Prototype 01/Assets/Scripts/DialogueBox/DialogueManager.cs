@@ -20,7 +20,7 @@ public class DialogueManager : MonoBehaviour
     public Animator animator;
     private RuntimeAnimatorController introController;
     private RuntimeAnimatorController animatorController;
-
+    private bool lastDialogue;
 
     // Start is called before the first frame update
     void Awake()
@@ -111,18 +111,27 @@ public class DialogueManager : MonoBehaviour
     public void DisplayNextSectence()
     {
         dialogueImage.SetActive(true);
-        if (sentences.Count == 0 && SceneManager.GetActiveScene().name != "Intro")
+        if (sentences.Count  == 0 && lastDialogue)
+        {
+            lastDialogue = false;
+            Time.timeScale = 1f;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(4);
+            EndDialogue();
+            return;
+        }
+        else if (sentences.Count == 0 && SceneManager.GetActiveScene().name != "Intro" && !lastDialogue)
         {
             EndDialogue();
             return;
         }
-        else if(sentences.Count == 0 && SceneManager.GetActiveScene().name == "Intro")
+        else if(sentences.Count == 0 && SceneManager.GetActiveScene().name == "Intro" && !lastDialogue)
         {
 
             Time.timeScale = 1f;
             UnityEngine.SceneManagement.SceneManager.LoadScene(6);
             return;
         }
+        
 
         string sentence = sentences.Dequeue();
         string name = names.Dequeue();
@@ -165,6 +174,10 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    public void setLastDialogue(bool lastDialogue)
+    {
+        this.lastDialogue = lastDialogue;
+    }
     public void EndDialogue()
     {
         Time.timeScale = 1f;

@@ -31,10 +31,10 @@ namespace menuHandling
 
         }
         //This method loads a scene (later: a level) by a given name
-        //Used by Button_StartGame
-        public void startGame(string scene_name)
+        //Used to return to menu
+        public void startGame()
         {
-            SceneManager.LoadScene(scene_name);
+            SceneManager.LoadScene(0);
         }
 
         public void restartGame()

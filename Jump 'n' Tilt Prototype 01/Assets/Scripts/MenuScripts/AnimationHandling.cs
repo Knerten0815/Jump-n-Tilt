@@ -55,6 +55,7 @@ namespace menuHandling
             yield return new WaitForSecondsRealtime(1f);
       
             menuBackground.SetActive(false);
+            Time.timeScale = 1f;
 
         }
 
@@ -64,7 +65,6 @@ namespace menuHandling
             firstMenuPage.SetActive(false);
             animator.SetTrigger("CloseScroll");
             StartCoroutine(DisableMenu());
-            Time.timeScale = 1f;
             showPauseMenu = false;
         }
 
@@ -91,7 +91,6 @@ namespace menuHandling
                         child.gameObject.SetActive(false);
                         animator.SetTrigger("CloseScroll");
                         StartCoroutine(DisableMenu());
-                        Time.timeScale = 1f;
                         showPauseMenu = false;
                     }
                 }

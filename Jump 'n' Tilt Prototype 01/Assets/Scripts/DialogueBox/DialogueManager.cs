@@ -62,6 +62,8 @@ public class DialogueManager : MonoBehaviour
     {
         this.GetComponentInChildren<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
         this.GetComponentInChildren<Canvas>().worldCamera = Camera.main;
+        this.GetComponentInChildren<Canvas>().sortingLayerName = "PickUpLayer";
+        this.GetComponentInChildren<Canvas>().sortingOrder = 5;
     }
     private void setAnimator(Scene aScene, LoadSceneMode aMode)
     {

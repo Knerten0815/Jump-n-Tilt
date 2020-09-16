@@ -115,8 +115,9 @@ public class DialogueManager : MonoBehaviour
         {
             lastDialogue = false;
             Time.timeScale = 1f;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(4);
             EndDialogue();
+            ManagementSystem.Instance.endLevel();
+
             return;
         }
         else if (sentences.Count == 0 && SceneManager.GetActiveScene().name != "Intro" && !lastDialogue)

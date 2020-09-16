@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3651,10 +3651,12 @@ MonoBehaviour:
   shakeStartRate: 0.05
   shakeAmount: 0.5
   shakeRelease: 1.2
-  yOffset: 1
-  xOffset: 4
+  minOffset: 0
+  maxOffset: 4
+  slideYOffset: 18
   xSmoothTime: 0.4
   ySmoothTime: 0.2
+  maxSpeed: 10
   lvlBounds: {fileID: 1528374169}
 --- !u!81 &268262753
 AudioListener:
@@ -6671,8 +6673,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecf749b1df5984540b3dd2211549f6df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
   nameText: {fileID: 811693252}
   dialogueText: {fileID: 624195305}
+  dialogueImage: {fileID: 0}
   animator: {fileID: 795490147}
 --- !u!4 &530513344
 Transform:
@@ -9208,11 +9212,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiltAngle: 22.5
-  numTiltStep: 1
-  defaultTilt: 0
   tiltSpeed: 10
   tiltBackSpeed: 5
-  delayTime: 0.5
+  numTiltStep: 1
+  defaultTilt: 0
 --- !u!1 &718553337
 GameObject:
   m_ObjectHideFlags: 0
@@ -13287,12 +13290,6 @@ MonoBehaviour:
     - Tutorial
     sentences:
     - Use A and D / left joystick to move around.
-    images:
-    - {fileID: 250823752}
-    - {fileID: 1039562089}
-    - {fileID: 812834976}
-    - {fileID: 1028400130}
-  continueButton: {fileID: 524927754}
 --- !u!23 &1037106624
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14786,12 +14783,6 @@ MonoBehaviour:
     sentences:
     - Collect Coins to score points. Try to get as much as possoble to get the highest
       score.
-    images:
-    - {fileID: 250823752}
-    - {fileID: 1039562089}
-    - {fileID: 812834976}
-    - {fileID: 1028400130}
-  continueButton: {fileID: 524927754}
 --- !u!23 &1175865593
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15840,7 +15831,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1112653752}
-        m_MethodName: exitGame
+        m_MethodName: startGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16181,13 +16172,13 @@ MonoBehaviour:
   moveWhileJumping: 1.3
   airResistance: 0.002
   wallJumpTime: 0.22
-  wallJumpTimeSpeed: 1
   maxAirMovementSpeed: 11
   onWall: 0
+  isFacingRight: 0
   slideSpeed: 10
   slideBackwardsMaxSpeed: 3
   slideDirection: {x: 0, y: 0}
-  isFacingRight: 0
+  isSliding: 0
   slideDampeningFactor: 0
   attackPos: {fileID: 87018448}
   attackRadius: 1.5
@@ -16197,6 +16188,7 @@ MonoBehaviour:
   health: 3
   knockback: 15
   knockup: 10
+  bloodSpray: {fileID: 0}
   jumpCount: 2
   jumpCountLeft: 0
   jumpCooldownTime: 0.5
@@ -16215,15 +16207,26 @@ MonoBehaviour:
     m_Bits: 0
   wallSliding: 0
   wallSlidingSpeed: 0.333
+  wallSlideHangTime: 0
   facingDirection: 1
   wallJumpSpeed: 16
   slideJumpHeightX: 0
   slideJumpHeightY: 0
   stunnTime: 0.6
+  slideDoubleCheckLimit: 30
   attackOffset: {x: 23, y: -4, z: 0}
   attackDelay: 0.8
   slideAttackCooldown: 0.1
   sloMoTime: 8
+  damageAudio:
+    clip: {fileID: 0}
+    volume: 0
+  attackAudio:
+    clip: {fileID: 0}
+    volume: 0
+  tiltAudio:
+    clip: {fileID: 0}
+    volume: 0
 --- !u!61 &1309397693
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16701,6 +16704,17 @@ MonoBehaviour:
   music:
     clip: {fileID: 8300000, guid: 133e8f153d9b8c746bb07930fb0f0cae, type: 3}
     volume: 1
+  timePickUp:
+    clip: {fileID: 0}
+    volume: 0
+  heartPickUp:
+    clip: {fileID: 0}
+    volume: 0
+  collectibleCardPickUp:
+    clip: {fileID: 0}
+    volume: 0
+  coins: []
+  coinVolume: 0
 --- !u!1 &1343065935
 GameObject:
   m_ObjectHideFlags: 0
@@ -21959,12 +21973,6 @@ MonoBehaviour:
     sentences:
     - Press space / A to jump.
     - Press space / A again in the air to do a double jump.
-    images:
-    - {fileID: 250823752}
-    - {fileID: 1039562089}
-    - {fileID: 812834976}
-    - {fileID: 1028400130}
-  continueButton: {fileID: 524927754}
 --- !u!23 &1370928896
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -59438,6 +59446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4236f9ae56a64e544a89bdbeadcbd742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadscreen: {fileID: 0}
 --- !u!1 &1574090888
 GameObject:
   m_ObjectHideFlags: 0
@@ -59515,12 +59524,6 @@ MonoBehaviour:
     - Tutorial
     sentences:
     - To duck underneath obstacles press S / left joystick down.
-    images:
-    - {fileID: 250823752}
-    - {fileID: 1039562089}
-    - {fileID: 812834976}
-    - {fileID: 1028400130}
-  continueButton: {fileID: 524927754}
 --- !u!23 &1574090892
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -30,7 +30,7 @@ public class Kitsune : GroundEnemy
     public Audio kitsuneAttack;
     public Audio kitsuneHit, kitsuneDeath;
 
-    public GameObject dust;
+    public GameObject deathSparkle;
 
     void Start()
     {
@@ -153,6 +153,7 @@ public class Kitsune : GroundEnemy
             Debug.Log("player direction: " + playerDirection().x);
             if (health <= 1)
             {
+                Instantiate(deathSparkle, transform.position, Quaternion.identity);
                 AudioController.Instance.playFXSound(kitsuneDeath);
             }
             else

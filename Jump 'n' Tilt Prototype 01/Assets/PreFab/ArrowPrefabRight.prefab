@@ -51,11 +51,29 @@ MonoBehaviour:
   gravityModifier: 0
   dampening: 0
   maxSpeed: 12
+  moveSpeed: 0
+  jumpHeight: 0
+  jumpHeightReducer: 0
+  moveWhileJumping: 0
+  airResistance: 0
+  wallJumpTime: 0
+  maxAirMovementSpeed: 0
+  onWall: 0
+  isFacingRight: 0
+  slideSpeed: 0
+  slideBackwardsMaxSpeed: 0
+  slideDirection: {x: 0, y: 0}
+  isSliding: 0
+  slideDampeningFactor: 0
   attackPos: {fileID: 6549967435999221564}
-  attackRadius: 0.3
+  attackRadius: 0.6
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2048
+  health: 0
+  knockback: 0
+  knockup: 0
+  bloodSpray: {fileID: 0}
   destroyDistance: 25
   spawnDistance: 5
 --- !u!212 &6549967435999221561

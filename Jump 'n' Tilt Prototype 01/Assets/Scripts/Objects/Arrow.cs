@@ -6,7 +6,7 @@ using LevelControlls;
 
 //Author: Melanie Jäger
 //Class for arrow enemy
-public class Arrow : Hazards
+public class Arrow : Character
 {
     private Transform level;
     private float moveDirection;                //Variable for correct moving direction; positive is up and negative is down

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hazards : PhysicsObject
+public class Hazards : MonoBehaviour
 {    // for Attack method
     public Transform attackPos;                 // is set in Unity window
     public float attackRadius;

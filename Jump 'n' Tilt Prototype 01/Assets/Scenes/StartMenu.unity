@@ -3050,7 +3050,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 16.474, y: 38.8}
+  m_AnchoredPosition: {x: 16.473999, y: 38.8}
   m_SizeDelta: {x: 225.82751, y: -64.662964}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &222834013
@@ -11496,7 +11496,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1019233697}
   - component: {fileID: 1019233696}
-  - component: {fileID: 1019233695}
   m_Layer: 0
   m_Name: backgroundTile
   m_TagString: Untagged
@@ -11504,19 +11503,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1019233695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019233694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 050d730e33a67ce4d95c0b42070b2c2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parallaxEffect: 1
 --- !u!212 &1019233696
 SpriteRenderer:
   m_ObjectHideFlags: 0

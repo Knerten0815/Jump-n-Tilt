@@ -7230,7 +7230,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1952398537}
   - component: {fileID: 1952398536}
-  - component: {fileID: 1952398535}
   m_Layer: 0
   m_Name: backgroundTile
   m_TagString: Untagged
@@ -7238,19 +7237,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1952398535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1952398534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 050d730e33a67ce4d95c0b42070b2c2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parallaxEffect: 1
 --- !u!212 &1952398536
 SpriteRenderer:
   m_ObjectHideFlags: 0

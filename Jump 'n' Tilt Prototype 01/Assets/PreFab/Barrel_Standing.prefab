@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4301416604962590955}
   - component: {fileID: 4301416604962590954}
-  - component: {fileID: 4301416604962590964}
   m_Layer: 18
   m_Name: Barrel_Standing
   m_TagString: Untagged
@@ -82,29 +81,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &4301416604962590964
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4301416604962590967}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.006614566, y: 0.033080935}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2.65}
-    newSize: {x: 2, y: 2.65}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.8544798, y: 2.5044453}
-  m_EdgeRadius: 0

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1540755026651132289}
   - component: {fileID: 8299476087863226145}
   - component: {fileID: 1348055839444941515}
+  - component: {fileID: 6848145342577787058}
   m_Layer: 18
   m_Name: Stone_Two
   m_TagString: Untagged
@@ -97,7 +98,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.019256592, y: -0.08667052}
+  m_Offset: {x: -0.048461914, y: -0.08667052}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -108,7 +109,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.7446594, y: 1.6340578}
+  m_Size: {x: 1.6862488, y: 1.6340578}
   m_EdgeRadius: 0
 --- !u!58 &8299476087863226145
 CircleCollider2D:
@@ -117,7 +118,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3790428721393128771}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -133,7 +134,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3790428721393128771}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -142,3 +143,45 @@ CircleCollider2D:
   m_Offset: {x: -0.98, y: -0.4}
   serializedVersion: 2
   m_Radius: 0.48240733
+--- !u!60 &6848145342577787058
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3790428721393128771}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.9, y: 2}
+    newSize: {x: 2.9, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.4250001, y: -0.32500002}
+      - {x: 1.125, y: 0.175}
+      - {x: 0.875, y: 0.675}
+      - {x: 0.52500004, y: 0.975}
+      - {x: 0.3, y: 1}
+      - {x: -0.625, y: 1}
+      - {x: -0.77500004, y: 0.975}
+      - {x: -1.15, y: 0.575}
+      - {x: -1.45, y: -0.1}
+      - {x: -1.45, y: -0.6}
+      - {x: -1.4, y: -0.725}
+      - {x: -1.325, y: -0.875}
+      - {x: -1.0500001, y: -1}
+      - {x: 1.25, y: -1}
+      - {x: 1.375, y: -0.975}
+      - {x: 1.45, y: -0.875}
+      - {x: 1.45, y: -0.45000002}

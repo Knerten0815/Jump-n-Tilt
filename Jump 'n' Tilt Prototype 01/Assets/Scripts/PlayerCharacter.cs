@@ -16,10 +16,10 @@ public class PlayerCharacter : Character
     public float jumpCooldownTime;              //Minimum time between jumps
     private bool canJump = true;                //Is Player allowed to jump
 
-    public float hangTime;                      //by Marvin Winkler, how late can the player jump after walking of a platform in seconds
+    public float hangTime;                      //how late can the player jump after walking of a platform in seconds
     private float hangTimer;
 
-    public float jumpBuffer;                    //by Marvin Winkler, how early can the player hit the jump button before hitting the ground and still jump in seconds
+    public float jumpBuffer;                    //how early can the player hit the jump button before hitting the ground and still jump in seconds
     private float jumpBufferTimer;
 
     // variables for crouching
@@ -33,7 +33,7 @@ public class PlayerCharacter : Character
     // variables for wall jump, wall sliding and detection
     private RaycastHit2D lastWallcontact;
     public int wallJumpCounter;
-    public bool touchesWall;                    // for wall detection
+    public bool touchesWall;                    //for wall detection
     public float wallCheckDistance;             //public Vector2 offsetRight = new Vector2(0.5f, 0);
     public LayerMask whatIsLevel;               //public Transform test;
     public LayerMask whatIsWall;

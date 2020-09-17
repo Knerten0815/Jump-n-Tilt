@@ -4,34 +4,41 @@ using UnityEngine;
 
 public class SpikeSafety : MonoBehaviour
 {
-    public static SpikeSafety instance; //the instance of our class that will do the work
-    private static bool hasDamaged = false;
-    private static Coroutine coolDamageRoutine;
+    public static SpikeSafety _instance;
+    private bool hasDamaged = false;
+    private Coroutine coolDamageRoutine;
     void Awake()
-    { //called when an instance awakes in the game
-        instance = this; //set our static reference to our newly initialized instance
+    { 
+
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+
     }
 
-    public static void SetOnSafety()
+    public void SetOnSafety()
     {
         hasDamaged = true;
-        coolDamageRoutine = instance.StartCoroutine(damageCooldown(1.0f));
+        coolDamageRoutine = StartCoroutine(damageCooldown(1.0f));
     }
   
     
-    public static bool checkForSafety()
+    public bool checkForSafety()
     {
         return hasDamaged;
     }
 
 
 
-    static IEnumerator damageCooldown(float coolDownTime)
+    IEnumerator damageCooldown(float coolDownTime)
     {
-        //Debug.Log(coolDownTime + " seconds Cooldown!");
         yield return new WaitForSeconds(coolDownTime);
-        //Debug.Log("Cooldown end!");
         hasDamaged = false;
-        instance.StopCoroutine(coolDamageRoutine);
+        StopCoroutine(coolDamageRoutine);
     }
 }

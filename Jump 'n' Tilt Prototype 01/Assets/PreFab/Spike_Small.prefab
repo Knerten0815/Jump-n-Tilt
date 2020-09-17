@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7487847197766623493}
   - component: {fileID: 6179890113448542843}
-  - component: {fileID: 7294395148599566486}
   - component: {fileID: 5556061316406527190}
   - component: {fileID: 5194428489686335540}
   - component: {fileID: 1545158741336744315}
@@ -85,28 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7294395148599566486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9111065263956572211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea9c41feec643384889adb4c7ff7d9c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minGroundNormalY: 0
-  minJumpNormalY: 0
-  gravityModifier: 0
-  dampening: 0
-  maxSpeed: 0
-  attackPos: {fileID: 7487847197766623493}
-  attackRadius: 0.54
-  whatIsEnemy:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!50 &5556061316406527190
 Rigidbody2D:
   serializedVersion: 4
@@ -177,7 +154,7 @@ MonoBehaviour:
   dampening: 0
   maxSpeed: 0
   attackPos: {fileID: 7487847197766623493}
-  attackRadius: 0.3
+  attackRadius: 0.4
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048

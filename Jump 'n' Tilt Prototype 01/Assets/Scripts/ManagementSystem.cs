@@ -59,9 +59,11 @@ public class ManagementSystem : MonoBehaviour
     *
     *@Katja
     */
-    public void AddCollectible(int n)
+    public void addCollectible(int ID)
     {
-        collectiblesGathered.Add(n);
+        collectiblesGathered.Add(ID);
+        if (collectibleOnLoad != null)
+            collectibleOnLoad(ID);
     }
 
     /*

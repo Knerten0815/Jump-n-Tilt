@@ -3050,7 +3050,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 17.3, y: 38.8}
+  m_AnchoredPosition: {x: 16.474, y: 38.8}
   m_SizeDelta: {x: 225.82751, y: -64.662964}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &222834013
@@ -3071,7 +3071,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: KASHIMA
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f9f740b9e5509af44a3d0d380237d7de, type: 2}
   m_sharedMaterial: {fileID: 6564808940311557781, guid: f9f740b9e5509af44a3d0d380237d7de,
@@ -3100,8 +3100,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3141,13 +3141,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 222834013}
-    characterCount: 0
+    characterCount: 7
     spriteCount: 0
     spaceCount: 0
-    wordCount: 0
+    wordCount: 1
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0

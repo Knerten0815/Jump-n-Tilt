@@ -28,7 +28,7 @@ public class Rare: MonoBehaviour, PickUpDescriptor
     */
     public void hit()
     {
-        ManagementSystem.Instance.AddCollectible(numberID);
+        ManagementSystem.Instance.addCollectible(numberID);
         ManagementSystem.Instance.collectedUpdate();
         ManagementSystem.Instance.SaveGame();
     }

@@ -44,9 +44,6 @@ public class Rare: MonoBehaviour, PickUpDescriptor
         
             if (collectibleID == numberID && this != null)
                 {
-                //gameObject.SetActive(false);
-                Common common = gameObject.AddComponent(typeof(Common)) as Common;
-                common.Value=40;
                 ScoreSound scoreSound = gameObject.AddComponent(typeof(ScoreSound)) as ScoreSound;
                 SpriteRenderer sp = gameObject.GetComponent<SpriteRenderer>();
                 ManagementSystem.Instance.collectedUpdate();
@@ -56,17 +53,16 @@ public class Rare: MonoBehaviour, PickUpDescriptor
                 CollectibleSound collectibelSound= gameObject.GetComponent<CollectibleSound>();
                 Object.Destroy(collectibelSound);
                 Object.Destroy(rare);
-    
                 }
         
     }
 
     /*
-    * Subcribes to checkForCollected upon waking
+    * Subcribes to checkForCollected upon OnEnabling
     * 
     * @Katja
     */
-    void Awake()
+    void OnEnable()
     {
         ManagementSystem.Instance.collectibleOnLoad += checkForCollected;
     }

@@ -12,8 +12,7 @@ public class SpawnArrowBoss : SpawnArrows
     public override void OnEnable()
     {
         Instantiate(sparkle, transform.position, Quaternion.identity);
-        shoot = true;
-        timeController = GameObject.Find("TimeController").GetComponent<TimeController>();
+        base.OnEnable();
     }
     private void OnDisable()
     {

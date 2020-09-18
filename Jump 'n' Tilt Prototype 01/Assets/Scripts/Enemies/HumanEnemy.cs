@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using AudioControlling;
 
+/// <summary>
+/// The human enemies of level 3, that follow the player as soon as they spot him. If the player is at higher
+/// ground level as them, they try to reach the player by jumping. If the player is directly above them, they
+/// stand still and await the next move.
+/// </summary>
 public class HumanEnemy : GroundEnemy
 {
-    [SerializeField] Audio humanAttack;
-    [SerializeField] Audio humanHit;
-    [SerializeField] float eyeSightDistance;
-
-    //private Animator anim;
+    [SerializeField] Audio humanAttack;             // sound when the human attacks
+    [SerializeField] Audio humanHit;                // sound when the human gets hit
+    [SerializeField] float eyeSightDistance;        // when the player is within this vertical distance, humans attack
 
     protected override void Start()
     {
@@ -47,7 +50,7 @@ public class HumanEnemy : GroundEnemy
             anim.SetBool("isSliding", true);
             Slide();
         }
-        //follows the player, when he is in humans eyesight
+        //follows the player, when he is in sight
         else if (Mathf.Abs(playerDirection().x) < eyeSightDistance && getPlayerScript().health > 0)
         {
             anim.SetBool("isSliding", false);

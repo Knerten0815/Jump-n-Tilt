@@ -20,8 +20,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] float maxOffset = 4f;              //maximum offset in players move direction
     [SerializeField] float slideYOffset = 18f;          //offsets the camera in y-position while sliding down
     [SerializeField] float xSmoothTime = 0.4f;          //smooths the camera following
-    [SerializeField] float ySmoothTime = 0.2f;          //smooths the camera following
-    [SerializeField] float maxSpeed = 10f;              //maximum Speed of the camera, when following the player in x-driection
 
     private Camera cam;                                 //The main camera
     private Transform parentTrans;                      //The parent of the main camera, that is following the player
@@ -29,13 +27,9 @@ public class CameraController : MonoBehaviour
     private PlayerCharacter playerCtrl;                 //Player Controller for velocity
     private Vector3 offset;                             //current offset of the camera to the player
     private TimeController timeCtrl;                    //Time Speed is used for fixing the camera offset during sliding
-    public TilemapCollider2D lvlBounds;                //The TilemapCollider of the level: Needed for getting boundaries of the level
+    public TilemapCollider2D lvlBounds;                 //The TilemapCollider of the level: Needed for getting boundaries of the level
 
-    ///Once the angle of the tilt is settled, the tilemap needs to be adjusted to show enough ground and walls, so that no empty background is seen.
-    ///Once the tilemap is adjusted, these lvlBounds need to be scaled down accordingly, so that the camera won't clamp to the outer bounds of the
-    ///tilemap, but some reasonable section of it.
-
-    private Vector2 startLerpPos, endLerpPos;            //help variables for interpolating between shake positions
+    private Vector2 startLerpPos, endLerpPos;           //help variables for interpolating between shake positions
     private float lerpStartTime, currentShakeRate;
 
     private Vector3 velo = Vector3.zero;                //help variable for camera follow
@@ -45,15 +39,12 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-        //offset.x = xOffset;
-        //offset.y = yOffset;
         offset = Vector2.zero;
 
         player = GameObject.Find("Player");
         timeCtrl = GameObject.Find("TimeController").GetComponent<TimeController>();
         parentTrans = cam.transform.parent;
         playerCtrl = player.GetComponent<PlayerCharacter>();
-        //lvlBounds = GameObject.Find("Bounds").GetComponent<TilemapCollider2D>();
 
         PlayerCharacter.onFishCausedEarthquakeStart += CameraShake; //Changed by Marvin Winkler
     }
@@ -75,21 +66,18 @@ public class CameraController : MonoBehaviour
         PlayerCharacter.onFishCausedEarthquakeStart -= CameraShake;
     }
 
-    //general CameraShake
-    private void CameraShake()
+    /// <summary>
+    /// general CameraShake. Starts a Coroutine in which the camera positions are lerped.
+    /// </summary>
+    /// <param name="notUsed"> Needs a float argument to be properly subscribed to the Tilt-Event, but doesn't actually use it.</param> 
+    private void CameraShake(float notUsed)
     {
         StartCoroutine(DoShake(shakeDuration));
     }
-
-    ///does anybody know how to make this cleaner? PlayerInput.onTilt übergibt ein float Argument direction, was es auch muss um zu
-    ///wissen in welche Richtung man tiltet, aber das ist unrelevant für CameraShake. Finde es irgendwie dumm eine extra-Überladung
-    ///dafür schreiben zu müssen
-    private void CameraShake(float notUsed)
-    {
-        CameraShake();
-    }
-
-    //iterates the CameraShake for duration seconds and resets the camera afterwards
+    /// <summary>
+    /// iterates the CameraShake for duration seconds and resets the camera afterwards
+    /// </summary>
+    /// <param name="duration">The absolute time length of the camera shake</param>
     IEnumerator DoShake(float duration)
     {
         //start shaking
@@ -100,10 +88,12 @@ public class CameraController : MonoBehaviour
         StopCoroutine(setShakePos);
 
         //reset camera
-        endLerpPos = new Vector3(0, 0, -10);  //only works with static camera for now, will need followPlayer function to work properly
+        endLerpPos = new Vector3(0, 0, -10);
     }
 
-    //sets random positions for camera shaking and slows down the shake rate over time
+    /// <summary>
+    /// sets random positions for camera shaking and slows down the shake rate over time
+    /// </summary>
     IEnumerator Shake()
     {
         currentShakeRate = shakeStartRate;
@@ -126,7 +116,9 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    //interpolates between the shake positions for smoother shaking
+    /// <summary>
+    /// Interpolates between the shake positions for smoother shaking
+    /// </summary>
     private Vector3 smoothShake()
     {
         float t = ((Time.time - lerpStartTime) / currentShakeRate);
@@ -134,46 +126,11 @@ public class CameraController : MonoBehaviour
 
         return new Vector3(lerp.x, lerp.y, 0);
     }
-
     
-    //follow a target through the level
-    private Vector3 followTarget(GameObject target)
-    {
-        Vector3 camPos = new Vector3();
-        float yMin, yMax, xMin, xMax;
-
-        //stay in level boundaries
-        yMin = lvlBounds.bounds.min.y + cam.orthographicSize;
-        yMax = lvlBounds.bounds.max.y - cam.orthographicSize;
-        xMin = lvlBounds.bounds.min.x + (cam.aspect * cam.orthographicSize);
-        xMax = lvlBounds.bounds.max.x - (cam.aspect * cam.orthographicSize);
-
-        //calculate new camera positions
-        camPos.y = Mathf.Clamp(target.transform.position.y + offset.y, yMin, yMax);
-        camPos.z = -10;
-        //xOffset depends on movement direction
-        if (player.GetComponent<PlayerCharacter>().getVelocity().x < 0)
-            camPos.x = Mathf.Clamp(target.transform.position.x - offset.x, xMin, xMax);
-        else
-            camPos.x = Mathf.Clamp(target.transform.position.x + offset.x, xMin, xMax);
-
-        //smooth following, dependent on x and y velocity of the player
-        if (Mathf.Abs(playerCtrl.getVelocity().y) > playerCtrl.jumpHeight)
-        {
-            if (Mathf.Abs(playerCtrl.getVelocity().y) > 23)
-            {
-                return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, 0.05f);
-            }
-
-            return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, ySmoothTime);
-        }
-        else
-            return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, xSmoothTime, maxSpeed);
-    }
-    
-
-    
-    //follow a target through the level
+    /// <summary>
+    /// follow the Player trough the level.
+    /// </summary>
+    /// <returns>Vector3 for Camera Position</returns>
     private Vector3 followPlayer()
     {
         Vector3 camPos = new Vector3();
@@ -187,12 +144,13 @@ public class CameraController : MonoBehaviour
 
         float clampedVelocity = Mathf.Clamp(playerCtrl.getVelocity().magnitude, minOffset, maxOffset);
 
+        //apply extra y-Offset, if the player is sliding downwards
         if(playerCtrl.isSliding && playerCtrl.getVelocity().y < 0 && playerCtrl.getVelocity().y > -0.8f)
         {
-            //Debug.Log(playerCtrl.getVelocity());
             Vector2 slideDownOffset = new Vector2(playerCtrl.getVelocity().x * timeCtrl.getTimeSpeed(), playerCtrl.getVelocity().y * slideYOffset);
             offset = (Vector2)player.transform.position + slideDownOffset;
         }
+        //follow the player
         else
             offset = (Vector2)player.transform.position + (playerCtrl.getVelocity().normalized * clampedVelocity);
 
@@ -204,16 +162,4 @@ public class CameraController : MonoBehaviour
 
         return Vector3.SmoothDamp(parentTrans.position, camPos, ref velo, xSmoothTime);
     }
-
-    /*
-    void OnDrawGizmos()
-    {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.red;
-        Vector3 gizzy = offset;
-        gizzy.z = 0f;
-        Gizmos.DrawSphere(gizzy, 0.5f);
-        Debug.DrawRay(player.transform.position, playerCtrl.getVelocity());
-    }
-    */
 }

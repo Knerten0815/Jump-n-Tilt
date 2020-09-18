@@ -1,15 +1,18 @@
-﻿using AudioControlling;
-using System.Collections;
+﻿//Author: Kevin Zielke
+using AudioControlling;
 using UnityEngine;
 
+/// <summary>
+/// The blue enemies of Level 2, that patrol left and right on the ground. If the player is at the same height level as them,
+/// they charge towards him.
+/// </summary>
 public class Oni : GroundEnemy
 {
-    [SerializeField] Audio oniAttack;
-    [SerializeField] Audio oniHit;
-    [SerializeField] float attackSpeed;
+    [SerializeField] Audio oniAttack;       // sound when Oni attacks
+    [SerializeField] Audio oniHit;          // sound when Oni gets hit
+    [SerializeField] float attackSpeed;     // speed with which the Oni attacks
 
-    //private Animator anim;
-    private float speed;
+    private float speed;                    // help variable to set back walking speed
 
     protected override void Start()
     {

@@ -2,30 +2,32 @@
 
 using UnityEngine;
 using LevelControlls;
-using System;
 using System.Collections;
+
+/// <summary>
+/// Base class for all ground enemies (Oni, Kappa, HumanEnemy, Kitsune).
+/// </summary>
 
 public class GroundEnemy : Enemy
 {
-    [SerializeField] float startDirection = 1;      //The direction the ground enemy will start to walk in. -1 = left, 1 = right
-    [SerializeField] int wallCheckPrecision = 5;        //read isWallAhead() comment for more information. 0 turns wall checks off.
-    [SerializeField] LayerMask whatIsGround, whatIsWall;
-    [SerializeField] public int touchAttackDamage = 1;             //amount of damage, that is distributed on touching the player
-    [SerializeField] float attackCooldownTime;
+    [SerializeField] float startDirection = 1;                  //The direction the ground enemy will start to walk in upon awake. -1 = left, 1 = right
+    [SerializeField] int wallCheckPrecision = 5;                //read isWallAhead() comment for more information. 0 turns wall checks off.
+    [SerializeField] LayerMask whatIsGround, whatIsWall;        //information about the level structure. Used for AI
+    [SerializeField] public int touchAttackDamage = 1;          //amount of damage, that is distributed on touching the player
+    [SerializeField] float attackCooldownTime;                  //time between attacks
     [SerializeField] int platformCheckPrecision = 5;
-
     [SerializeField] LayerMask whatIsPlatform;
 
-    public bool hasAttacked = false;
-    public float direction;
-    public CapsuleCollider2D cc2d;
-    public bool knockbackStun = false;
+    public bool hasAttacked = false;                            //has this enemy just attacked?
+    public float direction;                                     //movement direction of the ground enemy
+    public CapsuleCollider2D cc2d;                              //the collider of the ground enemy
     private GameObject attackCircle;
-    private Coroutine coolroutine;
-    public float wallCheckDistance = 0.05f;
-    public float groundCheckDistance = 2.5f;
+    private Coroutine coolroutine;                              //takes the award for greatest variable name of all time and is used for cooldowns
+    public float wallCheckDistance = 0.05f;                     //distance for wall checks
+    public float groundCheckDistance = 2.5f;                    //distance for ground checks. Needs correct adjustment, especially for slopes.
     private float platformCheckDistance = 1f;
 
+    //subscribe to events
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -33,6 +35,7 @@ public class GroundEnemy : Enemy
         LevelControllerNew.onWorldWasUntilted += stopSlide;
     }
 
+    //unsubscribe from events
     protected override void OnDisable()
     {
         base.OnDisable();
@@ -40,6 +43,7 @@ public class GroundEnemy : Enemy
         LevelControllerNew.onWorldWasUntilted -= stopSlide;
     }
 
+    //initializing variables
     protected override void Start()
     {
         base.Start();        
@@ -62,6 +66,8 @@ public class GroundEnemy : Enemy
     protected override void Update()
     {
         base.Update();
+
+        //check if the ground enemy touches the player and distribute damage if so
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
 
         for (int i = 0; i < enemies.Length; i++)
@@ -90,21 +96,19 @@ public class GroundEnemy : Enemy
         slideDirection = new Vector2(tiltDirection, 0);
     }
 
-
+    //Author: Kevin Zielke
     /// <summary>
     /// Detects walls in front of the GroundEnemy.
     /// wallCheckPrecision determines how many checks are done at evenly distributed heights in front of the enemy.
-    /// If wallCheckPrecision is set to high, slopes will be detected, too.
-    /// If it is to low, hovering obstacles might not be detected.
+    /// If it is to low, hovering obstacles such as platforms might not be detected.
     /// Correct precision depends on the height of the BoxCollider2D: Un-comment Debug.DrawRay() inside the for-loop for testing.
     /// </summary>
-    /// <param name="slopesAreWalls">Upward slopes are detected as walls if set true</param>
-    /// <returns></returns>
     public bool IsWallAhead()
     {
         RaycastHit2D wallAhead;
         Vector2 offset = transform.position;
 
+        //set the right offset, dependent on the direction the enemy is facing
         if (isFacingRight)
             offset.x += cc2d.bounds.extents.x;
         else
@@ -113,6 +117,7 @@ public class GroundEnemy : Enemy
         offset.y -= cc2d.bounds.extents.y;
         offset.y += cc2d.bounds.size.y / (wallCheckPrecision);
 
+        //check for walls on multiple height levels in front of the enemy
         for (int i = 0; i < wallCheckPrecision; i++)
         {
             //Debug.DrawRay(offset, Vector2.right * direction * wallCheckDistance);
@@ -125,8 +130,10 @@ public class GroundEnemy : Enemy
         return false;
     }
 
+    //Author: Kevin Zielke
     /// <summary>
     /// Returns true if there is ground in front of the GroundEnemy. Returns false if it approaches a chasm.
+    /// Un-comment the Debug.DrawRay calls for testing.
     /// </summary>
     public bool isGroundAhead()
     {
@@ -134,6 +141,7 @@ public class GroundEnemy : Enemy
         Vector2 offsetAhead = transform.position;
         Vector3 slopeOffset = cc2d.bounds.extents;
 
+        //set the right offset, dependent on the direction the enemy is facing
         if (isFacingRight)
         {
             offsetAhead.x += cc2d.bounds.extents.x;
@@ -237,6 +245,13 @@ public class GroundEnemy : Enemy
         return Vector2.zero;
     }
 
+    //Author: Kevin Zielke
+    /// <summary>
+    /// This method is called, when the ground enemy touches the player.
+    /// It will hurt the player, apply a knockback to the enemy and start the attack cooldown
+    /// </summary>
+    /// <param name="enemy">The collider of the enemy. In this case most definitly the player</param>
+    /// <param name="dmgDirection2D">The direction from which the collision came</param>
     public virtual void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
     {
         if (!hasAttacked && !isSliding && getPlayerScript().health > 0)
@@ -248,6 +263,11 @@ public class GroundEnemy : Enemy
         }
     }
 
+    //Author: Kevin Zielke
+    /// <summary>
+    /// Waits for the coolDownTime and the resets the cooldown
+    /// </summary>
+    /// <param name="coolDownTime">the amount of time between attacks</param>
     IEnumerator attackCooldown(float coolDownTime)
     {
         yield return new WaitForSeconds(coolDownTime);

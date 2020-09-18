@@ -1,6 +1,4 @@
 ﻿using AudioControlling;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //Author: Kevin Zielke, Michelle Limbach

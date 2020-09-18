@@ -1,6 +1,5 @@
 ﻿//Author: Kevin Zielke
 
-using GameActions;  //will be deleted, once TimeControls is fixed
 using UnityEngine;
 using TimeControlls;
 using UnityEngine.UI;
@@ -8,12 +7,11 @@ using UnityEngine.UI;
 namespace AudioControlling
 {
     /// <summary>
-    /// Singleton class, that plays audio and alters audio playback speed.
+    /// Singleton class, that plays audio, alters audio playback speed and saves audio settings.
     /// If your class needs to play FX Sound, add the namespace AudioControlling and an Audio object as a SerializeField to your variables
     /// and assign it a sound in the inspector. Then play the sound with "AudioController.Instance.playFXSound(Audio sound);"
     /// If you think that the FX Sound is to loud (relative to other FX Sounds) you can turn down the volume in the inspector.
     /// You should not adjust FX volume relative to music volume. That is done in the menu.
-    /// See PlayerInput class for example of implementation.
     /// </summary>
     public class AudioController : MonoBehaviour
     {
@@ -37,7 +35,7 @@ namespace AudioControlling
 
         void Awake()
         {
-
+            //Singleton implementation
             if (_instance != null && _instance != this)
             {
                 Destroy(this.gameObject);
@@ -85,9 +83,11 @@ namespace AudioControlling
 
             //subscribing to events
             TimeController.onTimeSpeedChange += slowDownAudio;
-            //PlayerInput.onSlowMoDown += slowDownAudio;
         }
 
+        /// <summary>
+        /// Saves the sound settings in the save file.
+        /// </summary>
         public void SaveSoundSettings()
         {
             Debug.Log("saved sound settings");
@@ -110,7 +110,9 @@ namespace AudioControlling
             //PlayerInput.onSlowMoDown -= slowDownAudio;
         }
 
-        //Audio slow down for bullet time
+        /// <summary>
+        /// Audio slow down effect for bullet time.
+        /// </summary>
         void slowDownAudio()
         {
             if (source.pitch == 1f)
@@ -119,22 +121,32 @@ namespace AudioControlling
                 source.pitch = 1f;
         }
 
-        //set-methods for menu-sliders
+        /// <summary>
+        /// The music slider in the sound menu subscribes to this class, so that the music volume is updated.
+        /// </summary>
         public void updateMusicVolume()
         {
             musicVol = musicSlider.value;
             source.volume = music.volume * musicVol;
         }
+        /// <summary>
+        /// The effects slider in the sound menu subscribes to this class, so that the effect volume is updated.
+        /// </summary>
         public void setFXVolume()
         {
             fxVol = fxSlider.value;
         }
-
-        //classes can call this method, to play a sound effect
+        /// <summary>
+        /// This method can be called to play an effect sound.
+        /// </summary>
+        /// <param name="sound">This sound will be played</param>
         public void playFXSound(Audio sound)
         {
             source.PlayOneShot(sound.clip, sound.volume * fxVol);
         }
+
+        //Collectibles don't call playFXSound(Audio sound). Instead they call the corresponding method in the AudioController.
+        //This way we can avoid having lots of links between the many collectibles in the levels and audio files and save performance
 
         public void playTimePickUpFX()
         {
@@ -150,7 +162,9 @@ namespace AudioControlling
         {
             source.PlayOneShot(collectibleCardPickUp.clip, collectibleCardPickUp.volume * fxVol);
         }
-
+        /// <summary>
+        /// Plays a random coin sound out of 8 possible sounds.
+        /// </summary>
         public void playCoinPickUpFX()
         {
             source.PlayOneShot(coins[Random.Range(0, 8)], coinVolume * fxVol);

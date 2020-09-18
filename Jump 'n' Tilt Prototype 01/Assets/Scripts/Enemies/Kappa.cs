@@ -156,7 +156,7 @@ public class Kappa : GroundEnemy
         {
             Debug.Log("player direction: " + playerDirection().x);
             AudioController.Instance.playFXSound(kappaHit);
-            base.TakeDamage(damage, -direction);
+            base.TakeDamage(damage, direction);
         }
         else
         {

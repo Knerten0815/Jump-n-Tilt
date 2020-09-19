@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using AudioControlling;
 
-
+//Author: Nicole Mynarek
 public class Tengu : FlyingEnemy
 {
-
-    //private Animator anim;
-    private bool hitWall;
-    private bool hitPlatform;
-    private LayerMask wall;
-    private LayerMask platform;
+    private bool hitWall;               //true if wall is hit
+    private bool hitPlatform;           //true if platform is hit
+    private LayerMask wall;             // layer for detecting what a wall is
+    private LayerMask platform;         // layer for detecting what a platform is
 
     public Audio tenguHit, tenguAttack;
 
@@ -26,8 +24,7 @@ public class Tengu : FlyingEnemy
     {
         base.ComputeVelocity();
 
-        //anim.speed = timeController.getTimeSpeed();
-
+        //animations change regarding of FlyingEnemy's state
         if (isChasing)
         {
             if (!anim.GetBool("isAttacking"))
@@ -40,6 +37,7 @@ public class Tengu : FlyingEnemy
             anim.SetBool("isAttacking", false);
         }
 
+        //checking for collision with walls or platforms to change the moving direction
         hitWall = Physics2D.Raycast(transform.position, transform.forward, 0.5f, wall);
         hitPlatform = Physics2D.Raycast(transform.position, transform.forward, 0.5f, platform);
 
@@ -56,6 +54,7 @@ public class Tengu : FlyingEnemy
         }
     }
 
+    //overridden TakeDamage funciton to set sound effects
     public override void TakeDamage(int damage, Vector2 direction)
     {
         AudioController.Instance.playFXSound(tenguHit);

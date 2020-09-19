@@ -6,16 +6,16 @@ using AudioControlling;
 // Author: Nicole Mynarek
 public class Kappa : GroundEnemy
 {
-    protected float lastYPos = 0;
-    public float idleTime = 0.2f;
-    protected float currentIdleTime = 0;
-    protected bool isIdle = true;
-    protected bool isJumping = false;
-    protected bool isFalling = false;
-    protected bool jumpStart = false;
+    protected float lastYPos = 0;               //last y position of Kappa
+    public float idleTime = 0.2f;               //time in which the Kappa does not jump
+    protected float currentIdleTime = 0;        //current time, when the kappa does not jump yet
+    protected bool isIdle = true;               //true if Kappa sits on ground
+    protected bool isJumping = false;           //true if Kappa jumps
+    protected bool isFalling = false;           //true if Kappa falls down
+    protected bool jumpStart = false;           
     protected bool slideStart = false;
-    public float jumpDistance;
-    public float distanceToPlayer;
+    public float jumpDistance;                  //length of Kappa's jump
+    public float distanceToPlayer;              //distance between Kappa and player
 
     protected BoxCollider2D bc2d;
 
@@ -24,9 +24,6 @@ public class Kappa : GroundEnemy
 
     public GameObject dust;
 
-    //private Animator anim;
-
-    // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
@@ -41,7 +38,7 @@ public class Kappa : GroundEnemy
     {
         base.ComputeVelocity();
 
-        //patrol
+        //Kappa slides if isSliding is true
         if (isSliding)
         {
             isIdle = false;
@@ -59,10 +56,12 @@ public class Kappa : GroundEnemy
             slideStart = true;
         }
 
+        //Kappa starts jumping if he sits on ground and the level is not tilted and player falls below a spedific distance
         if (isIdle && Mathf.Abs(playerDirection().x) < distanceToPlayer && !isSliding)
         {
             currentIdleTime += Time.deltaTime;
 
+            //Kappa jumps only after a specific time
             if(currentIdleTime >= idleTime)
             {
                 currentIdleTime = 0;
@@ -70,6 +69,7 @@ public class Kappa : GroundEnemy
             }
         }
 
+        //Animation handling
         if(grounded == true && isJumping == false)
         {
             isIdle = true;

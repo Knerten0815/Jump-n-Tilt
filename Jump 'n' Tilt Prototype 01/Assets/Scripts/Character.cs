@@ -7,33 +7,33 @@ using System;
 public class Character : PhysicsObject
 {
 
-    protected float moveDirection;              // Gets value between -1 and 1 for direction left or right if Input.GetAxisRaw is used
+    protected float moveDirection;          //Gets value between -1 and 1 for direction left or right if Input. GetAxisRaw is used
 
     // Values can be adjusted in inspector
-    public float moveSpeed;                 //Movement Speed
-    public float jumpHeight;                //Height of normal jumps
-    public float jumpHeightReducer;         //Reduces jump height, when letting go of the jump button
-    public float moveWhileJumping;          //Movement speed while in air
+    public float moveSpeed;                 //by Nicole Mynarek, Movement Speed
+    public float jumpHeight;                //by Nicole Mynarek, Height of normal jumps
+    public float jumpHeightReducer;         //by Nicole Mynarek, Reduces jump height, when letting go of the jump button
+    public float moveWhileJumping;          //by Nicole Mynarek, Movement speed while in air
     public float airResistance;             //by Marvin Winkler, 1 no resistance, 0 no movement possible (x-axis dampening wile in the air)
     public float wallJumpTime;              //by Marvin Winkler, used so that midAir movement does not overreide the wall jump
     protected float wallJumpTimer;          //by Marvin Winkler, used so that midAir movement does not overreide the wall jump
     public float maxAirMovementSpeed;       //by Marvin Winkler, maximum horizontal air movement speed
 
     public bool onWall;                     //by Marvin Winkler, used to fix wall climbing while level is tilted, is true if level is tilted and player is touching the wall
-    public bool isFacingRight;
+    public bool isFacingRight;              // by Nicole Mynarek, true if character faces the right direction
 
     //Slide
     public float slideSpeed;                //slide accelleration, not speed
     public float slideBackwardsMaxSpeed;    //by Marvin Winkler, max speed while pressing against the tilt
     public Vector2 slideDirection;          //by Marvin Winkler, current slide direction, only acurate when sliding 
-    public bool isSliding;               //by Marvin Winkler, true while sliding
+    public bool isSliding;                  //by Marvin Winkler, true while sliding
     public float slideDampeningFactor;      //by Marvin Winkler, dampening factor used while sliding on ground
     private bool slideJump;
 
     // for Attack method
-    public Transform attackPos;             // is set in Unity window
-    public float attackRadius;
-    public LayerMask whatIsEnemy;
+    public Transform attackPos;             //by Nicole Mynarek, is set in Unity window, center of attack area
+    public float attackRadius;              //by Nicole Mynarek, radius of attack area
+    public LayerMask whatIsEnemy;           //by Nicole Mynarek, LayerMask to distinguish the enemies
 
     // taking Damage, getting knocked back
     public int health;
@@ -41,7 +41,7 @@ public class Character : PhysicsObject
     public float knockup;                   //by Marvin Winkler, upwards velocity given to character when hit
     protected bool isDead;                  //by Marvin Winkler, true when character is dead
 
-    public GameObject bloodSpray;
+    public GameObject bloodSpray;           
 
     // inherited from PhysicsObject.cs
     protected override void OnEnable()
@@ -54,7 +54,6 @@ public class Character : PhysicsObject
     //gets called onece per update
     protected override void ComputeVelocity()
     {
-        // Player only slides when there is no input
         if (moveDirection != 0)
         {
             // character looks in the direction he is moving
@@ -92,6 +91,7 @@ public class Character : PhysicsObject
     // Method for basic jump
     protected virtual void Jump()
     {
+        //if ground is jumpable, player can jump
         if (jumpable)
         {
             isSliding = false;
@@ -119,13 +119,14 @@ public class Character : PhysicsObject
 
     // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
     // Method for sliding. Player always looks in direction of the tilt. 
-    // Sliding speed still has to be adjusted
     protected virtual void Slide()
     {
          Vector2 normal;
 
+        //player has to stand on the ground
         if (grounded)
         {
+            //if isSliding is true
             if (isSliding)
             {
 
@@ -133,7 +134,7 @@ public class Character : PhysicsObject
                 {
                     normal = hitBufferList[i].normal;
                    
-                    // left tilt direction
+                    //left tilt direction
                     if (normal.x < 0)
                     {
                         slideDirection.x = -1;
@@ -142,7 +143,7 @@ public class Character : PhysicsObject
                     // right tilt direction
                     else
                     {
-                         slideDirection.x = 1;
+                        slideDirection.x = 1;
                         CharacterFacingDirection(slideDirection.x);
                     }
                 }
@@ -189,7 +190,7 @@ public class Character : PhysicsObject
 
         for (int i = 0; i < enemies.Length; i++)
         {
-
+            
             Vector3 dmgDirection = gameObject.transform.localPosition - enemies[i].GetComponent<Transform>().localPosition;
             Vector2 dmgDirection2D = new Vector2(dmgDirection.x, dmgDirection.y);
             dmgDirection2D.Normalize();

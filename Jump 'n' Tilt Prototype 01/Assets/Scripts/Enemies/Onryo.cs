@@ -4,10 +4,8 @@ using UnityEngine;
 using AudioControlling;
 
 //Author: Nicole Mynarek
-// testkommentar
 public class Onryo : FlyingEnemy
 {
-    //private Animator anim;
     public Audio onryoIdle, onryoHit, onryoDeath;
 
     protected override void OnEnable()
@@ -19,8 +17,7 @@ public class Onryo : FlyingEnemy
     {
         base.ComputeVelocity();
 
-        //anim.speed = timeController.getTimeSpeed();
-
+        //Animations change regarding to FlyingEnemy's state
         if (isChasing)
         {
             if(!anim.GetBool("hitting"))
@@ -34,6 +31,7 @@ public class Onryo : FlyingEnemy
         }
     }
 
+    //overridden TakeDamage function to set sound effects
     public override void TakeDamage(int damage, Vector2 direction)
     {
         AudioController.Instance.playFXSound(onryoDeath);

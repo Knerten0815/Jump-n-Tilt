@@ -102,8 +102,8 @@ public class CameraController : MonoBehaviour
             Vector2 camPos = new Vector3(0, 0);
 
             //some random quotation for random position
-            camPos.x += UnityEngine.Random.value * shakeAmount * 2 - shakeAmount;
-            camPos.y += UnityEngine.Random.value * shakeAmount * 2 - shakeAmount;
+            camPos.x += Random.value * shakeAmount * 2 - shakeAmount;
+            camPos.y += Random.value * shakeAmount * 2 - shakeAmount;
 
             //set new camera position
             lerpStartTime = Time.time;
@@ -143,6 +143,8 @@ public class CameraController : MonoBehaviour
         xMax = lvlBounds.bounds.max.x - (cam.aspect * cam.orthographicSize);
 
         float clampedVelocity = Mathf.Clamp(playerCtrl.getVelocity().magnitude, minOffset, maxOffset);
+
+        Debug.DrawRay(player.transform.position, playerCtrl.getVelocity());
 
         //apply extra y-Offset, if the player is sliding downwards
         if(playerCtrl.isSliding && playerCtrl.getVelocity().y < 0 && playerCtrl.getVelocity().y > -0.8f)

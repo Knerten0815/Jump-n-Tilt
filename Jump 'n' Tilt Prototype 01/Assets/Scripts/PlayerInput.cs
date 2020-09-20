@@ -1,5 +1,4 @@
-﻿using AudioControlling;
-using UnityEngine;
+﻿using UnityEngine;
 
 //Author: Kevin Zielke, Michelle Limbach
 namespace GameActions //To access the PlayerInput add: "using GameActions;" at the top
@@ -11,62 +10,61 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
     /// </summary>
     public class PlayerInput : MonoBehaviour
     {
-        [SerializeField] Audio earthquake;                           //example how to use AudioController. Add a soundclip in the inspector and adjust the volume. See onTiltDown for implementation.
 
         ////////////////////////////////////////////////Navigation Input for Game and Menus\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public delegate void horizontalDown(float horizontal);  //Player wants to navigate or navigate horizontally: negative float for left or
+        public delegate void horizontalDown(float horizontal);      //Player wants to navigate or navigate horizontally: negative float for left or
         public static event horizontalDown onHorizontalDown;        //positive float for right. Uses "Horizontal" axis
 
         public delegate void horizontalUp(float horizontal);  
         public static event horizontalUp onHorizontalUp;        
 
-        public delegate void verticalDown (float vertical);   //Player wants to navigate or navigate vertically: negative float for left or 
+        public delegate void verticalDown (float vertical);         //Player wants to navigate or navigate vertically: negative float for left or 
         public static event verticalDown onVerticalDown;            //positive float for right. Uses "Vertical" axis
 
-        public delegate void verticalUp(float vertical);   //Player wants to navigate or navigate vertically: negative float for left or 
-        public static event verticalUp onVerticalUp;            //positive float for right. Uses "Vertical" axis
+        public delegate void verticalUp(float vertical);            //Player wants to navigate or navigate vertically: negative float for left or 
+        public static event verticalUp onVerticalUp;                //positive float for right. Uses "Vertical" axis
 
         ///////////////////////////////////////////////////////////Game Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public delegate void jumpButtonDown();              //Player presses jump Button
-        public static event jumpButtonDown onJumpButtonDown;//uses "Jump" button
+        public delegate void jumpButtonDown();                      //Player presses jump Button
+        public static event jumpButtonDown onJumpButtonDown;        //uses "Jump" button
 
-        public delegate void jumpButtonUp();                //Player releases jump Button
-        public static event jumpButtonUp onJumpButtonUp;    //uses "Jump" button
+        public delegate void jumpButtonUp();                        //Player releases jump Button
+        public static event jumpButtonUp onJumpButtonUp;            //uses "Jump" button
 
-        public delegate void playerAttackDown();                //Player wants to perform a basic attack
+        public delegate void playerAttackDown();                    //Player wants to perform a basic attack
         public static event playerAttackDown onPlayerAttackDown;    //uses "Attack" button
 
-        public delegate void playerAttackUp();                //Player releases basic attack button
-        public static event playerAttackUp onPlayerAttackUp;    //uses "Attack" button
+        public delegate void playerAttackUp();                      //Player releases basic attack button
+        public static event playerAttackUp onPlayerAttackUp;        //uses "Attack" button
 
-        public delegate void tiltDown(float direction);         //Player wants to tilt the wolrd: -1 for left or 1 for right
+        public delegate void tiltDown(float direction);             //Player wants to tilt the wolrd: -1 for left or 1 for right
         public static event tiltDown onTiltDown;                    //uses "Tilt" axis
 
-        public delegate void tiltUp(float direction);         //Player releases "Tilt" Button
-        public static event tiltUp onTiltUp;                    //uses "Tilt" axis
+        public delegate void tiltUp(float direction);               //Player releases "Tilt" Button
+        public static event tiltUp onTiltUp;                        //uses "Tilt" axis
 
-        public delegate void slowMoDown();                      //Player wants to slow down Time
+        public delegate void slowMoDown();                          //Player wants to slow down Time
         public static event slowMoDown onSlowMoDown;                //uses "SlowMo" button
 
-        public delegate void slowMoUp();                      //Player releases "SlowMo" button
-        public static event slowMoUp onSlowMoUp;                //uses "SlowMo" button
+        public delegate void slowMoUp();                            //Player releases "SlowMo" button
+        public static event slowMoUp onSlowMoUp;                    //uses "SlowMo" button
 
-        public delegate void stomp();                       //Player wants to perform a stomp-attack
-        public static event stomp onStomp;                  //uses "Vertical" axis and "Attack" or "Tilt" buttons
+        public delegate void stomp();                               //Player wants to perform a stomp-attack
+        public static event stomp onStomp;                          //uses "Vertical" axis and "Attack" or "Tilt" buttons
 
     
 
         //////////////////////////////////////////////////////////Menu Input\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public delegate void submitDown();                      //Player wants to submit a selection
+        public delegate void submitDown();                          //Player wants to submit a selection
         public static event submitDown onSubmitDown;                //uses "Submit" button
 
-        public delegate void cancelDown();                      //Player wants to cancel
+        public delegate void cancelDown();                          //Player wants to cancel
         public static event cancelDown onCancelDown;                //uses "Cancel" button
 
-        public delegate void menuDown();                        //Player wants to open the Menu or get one step higher in Menu Hierarchy
+        public delegate void menuDown();                            //Player wants to open the Menu or get one step higher in Menu Hierarchy
         public static event menuDown onMenuDown;                    //uses "Menu" button
 
 
@@ -129,7 +127,6 @@ namespace GameActions //To access the PlayerInput add: "using GameActions;" at t
                 if (Input.GetButtonDown("Tilt"))
                 {
                     onTiltDown?.Invoke(Input.GetAxisRaw("Tilt"));
-                    //AudioController.Instance.playFXSound(earthquake);           //example of playing a sound with, the AudioController
                 }
                 else if (Input.GetButtonUp("Tilt"))
                 {

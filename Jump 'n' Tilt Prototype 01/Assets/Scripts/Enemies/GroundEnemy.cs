@@ -15,8 +15,6 @@ public class GroundEnemy : Enemy
     [SerializeField] LayerMask whatIsGround, whatIsWall;        //information about the level structure. Used for AI
     [SerializeField] public int touchAttackDamage = 1;          //amount of damage, that is distributed on touching the player
     [SerializeField] float attackCooldownTime;                  //time between attacks
-    [SerializeField] int platformCheckPrecision = 5;
-    [SerializeField] LayerMask whatIsPlatform;
 
     public bool hasAttacked = false;                            //has this enemy just attacked?
     public float direction;                                     //movement direction of the ground enemy
@@ -25,7 +23,6 @@ public class GroundEnemy : Enemy
     private Coroutine coolroutine;                              //takes the award for greatest variable name of all time and is used for cooldowns
     public float wallCheckDistance = 0.05f;                     //distance for wall checks
     public float groundCheckDistance = 2.5f;                    //distance for ground checks. Needs correct adjustment, especially for slopes.
-    private float platformCheckDistance = 1f;
 
     //subscribe to events
     protected override void OnEnable()
@@ -162,87 +159,6 @@ public class GroundEnemy : Enemy
         //Debug.DrawRay(offsetBehind, Vector2.right * -direction * groundCheckDistance);
 
         return groundAhead.collider || (!groundAhead.collider && slopeBehind.collider);
-    }
-
-    public bool IsPlatformAhead()
-    {
-        RaycastHit2D platformAhead;
-        Vector2 offset = transform.position;
-
-        if (isFacingRight)
-            offset.x += cc2d.bounds.extents.x;
-        else
-            offset.x -= cc2d.bounds.extents.x;
-
-        offset.y -= cc2d.bounds.extents.y;
-        offset.y += cc2d.bounds.size.y / (platformCheckPrecision);
-
-        for (int i = 0; i < platformCheckPrecision; i++)
-        {
-            Debug.DrawRay(offset, Vector2.right * direction * platformCheckDistance);
-            platformAhead = Physics2D.Raycast(offset, Vector2.right * direction, platformCheckDistance, whatIsGround);
-            if (platformAhead.collider)
-                return true;
-            offset.y += cc2d.bounds.size.y / (platformCheckPrecision);
-        }
-
-        return false;
-    }
-
-    public Vector2 platformAhead()
-    {
-        RaycastHit2D platformAhead;
-        Debug.DrawRay(new Vector2(transform.position.x + 2f, transform.position.y), Vector2.up * 5f);
-        platformAhead = Physics2D.Raycast(new Vector2(transform.position.x + 2f, transform.position.y), Vector2.up, 5f, whatIsPlatform);
-
-        if (platformAhead.collider)
-        {
-            return platformAhead.point;
-        }
-
-        return Vector2.zero;
-    }
-
-    public Vector2 platformAheadDirect()
-    {
-        RaycastHit2D platformAhead;
-        Debug.DrawRay(new Vector2(transform.position.x + 1f, transform.position.y), -Vector2.up * 5f);
-        platformAhead = Physics2D.Raycast(new Vector2(transform.position.x + 1f, transform.position.y), -Vector2.up, 5f, whatIsPlatform);
-
-        if (platformAhead.collider)
-        {
-            return platformAhead.point;
-        }
-
-        return Vector2.zero;
-    }
-
-    public Vector2 platformBehind()
-    {
-        RaycastHit2D platformBehind;
-        Debug.DrawRay(new Vector2(transform.position.x - 5f, transform.position.y), Vector2.up * 5f);
-        platformBehind = Physics2D.Raycast(new Vector2(transform.position.x - 5f, transform.position.y), Vector2.up, 5f, whatIsPlatform);
-
-        if (platformBehind.collider)
-        {
-            return platformBehind.point;
-        }
-
-        return Vector2.zero;
-    }
-
-    public Vector2 platformBehindDirect()
-    {
-        RaycastHit2D platformBehind;
-        Debug.DrawRay(new Vector2(transform.position.x - 1f, transform.position.y), -Vector2.up * 5f);
-        platformBehind = Physics2D.Raycast(new Vector2(transform.position.x - 1f, transform.position.y), Vector2.up, 5f, whatIsPlatform);
-
-        if (platformBehind.collider)
-        {
-            return platformBehind.point;
-        }
-
-        return Vector2.zero;
     }
 
     //Author: Kevin Zielke

@@ -46,6 +46,7 @@ public class Kappa : GroundEnemy
             isFalling = false;
             Slide();
 
+            //slide animation
             anim.SetBool("isSliding", true);
             anim.SetBool("slideStart", slideStart);
             slideStart = false;
@@ -78,12 +79,14 @@ public class Kappa : GroundEnemy
 
             attackPos.position = new Vector3(bc2d.bounds.center.x, bc2d.bounds.center.y, 0f);
 
+            //start to jump animation
             anim.SetBool("isJumping", false);
             anim.SetBool("isIdle", true);
             jumpStart = true;
         }
         else if(transform.position.y > lastYPos && grounded == false && isIdle == false)
         {
+            //jump animation
             isJumping = true;
             isFalling = false;
 
@@ -95,7 +98,7 @@ public class Kappa : GroundEnemy
             {
                 attackPos.position = new Vector3(bc2d.bounds.center.x - 0.6f, bc2d.bounds.center.y + 1.1f, 0f);
             }
-
+             //fall animation
             anim.SetBool("isJumping", true);
             anim.SetBool("jumpStart", jumpStart);
             jumpStart = false;
@@ -108,11 +111,14 @@ public class Kappa : GroundEnemy
 
         lastYPos = transform.position.y;
 
+        //to stop Kappas movement in the air, the airMovement function is called only if player is alive
         if (player.GetComponent<PlayerCharacter>().health > 0)
         {
             airMovement();
         }
     }
+
+    //overridden jump function
     protected override void Jump()
     {        
         isSliding = false;
@@ -131,16 +137,19 @@ public class Kappa : GroundEnemy
         }
         AudioController.Instance.playFXSound(kappaJump);
 
+        //jumping at one position when player s dead
         if (player.GetComponent<PlayerCharacter>().health == 0)
         {
             velocity = new Vector2(0f, jumpHeight);
         }
+        //jumping in players direction
         else
         {
             velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
         }
     }
 
+    //method to be sure that Kappa continues to move in air in front of a platform, so he can land on it
     protected void airMovement()
     {
         if (!grounded && direction != 0 && velocity.magnitude < maxAirMovementSpeed && !isSliding)
@@ -150,21 +159,21 @@ public class Kappa : GroundEnemy
         }
     }
 
+    //overridden method to block damage if Kappa does not face the player
+    //not working correctly
     public override void TakeDamage(int damage, Vector2 direction)
     {
+        //Kappa gets hit when facing player
         if (direction.x < 0  && !isFacingRight || direction.x > 0 && isFacingRight || isSliding)
         {
-            Debug.Log("player direction: " + playerDirection().x);
             AudioController.Instance.playFXSound(kappaHit);
             base.TakeDamage(damage, direction);
         }
+        //Kappa blocks when not facing the player
         else
         {
             Instantiate(dust, transform.position, Quaternion.identity);
             AudioController.Instance.playFXSound(kappaBlock);
         }
-
-        Debug.Log("damage direction: " + direction);
-        Debug.Log("isSliding? " + isSliding);
     }
 }

@@ -6,8 +6,6 @@ using AudioControlling;
 // Author: Nicole Mynarek
 public class KappaNotFollowing : Kappa
 {
-
-    // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
@@ -18,6 +16,8 @@ public class KappaNotFollowing : Kappa
         base.ComputeVelocity();
 
     }
+
+    //overridden method to get the Kappa to jump only from left to right, not following the player
     protected override void Jump()
     {
         isSliding = false;

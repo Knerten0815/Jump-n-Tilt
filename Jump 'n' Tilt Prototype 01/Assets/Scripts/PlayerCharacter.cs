@@ -10,8 +10,8 @@ public class PlayerCharacter : Character
     // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
 
     // variables for jumping
-    public int jumpCount;                       // Possible amount of jumps
-    public int jumpCountLeft;                   // Amount of jumps that are left
+    public int jumpCount;                       //Possible amount of jumps
+    public int jumpCountLeft;                   //Amount of jumps that are left
     private float cooldown;
     public float jumpCooldownTime;              //Minimum time between jumps
     private bool canJump = true;                //Is Player allowed to jump
@@ -38,7 +38,7 @@ public class PlayerCharacter : Character
     public LayerMask whatIsLevel;               //public Transform test;
     public LayerMask whatIsWall;
     public bool wallSliding;
-    public float wallSlidingSpeed;              // can be adjusted in inspector for finding better setting
+    public float wallSlidingSpeed;              //by Nicole Mynarek, can be adjusted in inspector for finding better setting
     public float wallSlideHangTime;             // Time you have to still perform a wall jump after leaving the wall in seconds
     private float wallSlideHangTimer;
     public int facingDirection;                 // has to be set to 1 because isFacingRight is set to true. Maybe needs to be in CharacterClass?
@@ -743,17 +743,14 @@ public class PlayerCharacter : Character
                     if (isSliding)
                     {
                         velocity = new Vector2(velocity.x + slideDirection.x * slideJumpHeightX, slideJumpHeightY);
-                        Debug.Log("Slide values + " + velocity.normalized.x + " "+ velocity.normalized.y);
                     }
                     else if (slideJump){
                         velocity = new Vector2(-1*moveDirection/2, slideJumpHeightY/10);
-                        Debug.Log("Slide Jump values + " + velocity.normalized.x + " " + velocity.normalized.y);
 
                     }
                     else
                     {
                         velocity = new Vector2(moveDirection * maxAirMovementSpeed, jumpHeight);
-                        //Debug.Log("Jump Values + " + velocity.normalized.x + " " + velocity.normalized.y);
 
                     }
 
@@ -834,6 +831,7 @@ public class PlayerCharacter : Character
     }
 
     // Author: Nicole Mynarek
+    //reduces the jump height if jump button is only pressed shortly
     private void ShortJump()
     {
         // Michelle added: if condition

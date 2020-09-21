@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Author:Katja Tuemmers
+//Based on Character attack() function 
+//Aditional SpikeSafety that prevents Spikes from harming the player for a short while after taking damage
+//Before attacking its checked if the SpikeSafety is on or not, if not the attack goes through and the spike safety prevents
+//any further attacks until its set to true again in a coroutine in SpikeSafety
 public class Hazards : MonoBehaviour
 {    // for Attack method
     public Transform attackPos;                 // is set in Unity window
@@ -34,7 +39,6 @@ public class Hazards : MonoBehaviour
         PlayerCharacter isPlayer = collision.gameObject.GetComponent<PlayerCharacter>();
         if (isPlayer != null)
         {
-            Debug.Log("hit");
             Attack();
         }
     }

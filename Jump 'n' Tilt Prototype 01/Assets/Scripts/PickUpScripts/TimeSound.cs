@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//class for component to play the time pickup fx
+//author: Katja Tuemmers
 public class TimeSound: MonoBehaviour, PickUpDescriptor
 {
 

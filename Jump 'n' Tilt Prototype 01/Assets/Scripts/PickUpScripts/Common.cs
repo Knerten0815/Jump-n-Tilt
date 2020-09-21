@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 *
-* Component class for common PickUps, like Points/Coins etc.
+* Component class for coin PickUps 
 *
-* @Katja
+* Author:Katja Tuemmers
 */
 public class Common : MonoBehaviour, PickUpDescriptor
 {
-    /*
-    *
-    * triggers Event in ManagementSystem
-    *
-    * @Katja
-    */
-
-    public int Value;
-
+  
+    public int Value; //Point value of the pick up
+  /*
+  *
+  * triggers Event in ManagementSystem
+  *
+  * @Katja
+  */
 
     public void hit()
     {

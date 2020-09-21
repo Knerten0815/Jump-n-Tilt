@@ -28,7 +28,6 @@ public class Character : PhysicsObject
     public Vector2 slideDirection;          //by Marvin Winkler, current slide direction, only acurate when sliding 
     public bool isSliding;                  //by Marvin Winkler, true while sliding
     public float slideDampeningFactor;      //by Marvin Winkler, dampening factor used while sliding on ground
-    private bool slideJump;
 
     // for Attack method
     public Transform attackPos;             //by Nicole Mynarek, is set in Unity window, center of attack area

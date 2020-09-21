@@ -15,7 +15,7 @@ public class SpawnArrows : MonoBehaviour
 
     public TimeController timeController;
     public GameObject arrow;
-    public bool shoot = true;
+    public bool shoot = true;  //added by Katja Tuemmers to prevent constant spawning of arrows when the player is far away
     public Audio arrowSound;
     public Rigidbody2D player;
     public Vector3 ownPosition;
@@ -41,7 +41,7 @@ public class SpawnArrows : MonoBehaviour
     private void SpawnArrow()
     {
         float distance = Vector2.Distance(ownPosition, player.position);
-        if (shoot && distance < 50)
+        if (shoot && distance < 50) //if statement added by Katja Tuemmers to check whether the player is near enough before spawning arrow and playing sound
         {
             AudioController.Instance.playFXSound(arrowSound);
             arrow = Instantiate(arrowPrefab) as GameObject;

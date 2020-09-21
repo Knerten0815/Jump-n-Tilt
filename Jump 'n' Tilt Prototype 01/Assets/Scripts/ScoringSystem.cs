@@ -5,20 +5,22 @@ using TMPro;
 using System;
 /*
 *
-* Hanldes the Score. Remembers current score, increases it when an applicable event happens and also displays it
+* Author: Katja Tuemmers
+* Handles the Score. Remembers current score, increases it when an applicable event happens and also displays it, displays health,
+* displays amount of time for slow down, displays collected scrolls in level
 *       
 *
-* @Katja
+* 
 */
 public class ScoringSystem : MonoBehaviour
 {
     public TextMeshProUGUI scoreText; //Text displayed to show the current Score
-    public TextMeshProUGUI healthText; //Text displayed to show the current Score
-    public TextMeshProUGUI scrollText; //Text displayed to show the current Score
-    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI healthText; //Text displayed to show the current health
+    public TextMeshProUGUI scrollText; //Text displayed to show the currently collected collectibles in a given level
+    public TextMeshProUGUI timeText;//Text displayed to show the currently collected collectibles in a given level
 
 
-
+    //ScoreSystem own tracking of values
     private int health;
     private int collected;
     private int timeMin;
@@ -28,10 +30,10 @@ public class ScoringSystem : MonoBehaviour
 
 
     /*
-    * With Start scoreUp is subscribed to pickUpHit. It initializes the Score with 0 points, inserts it into the scoreString and sets the Text for the Text Component 
-    * to the scoreString
+    * With Start scoreUp is subscribes to the necessary ManagementSystem events. It initializes the Score with 0 points, inserts it into the scoreString and sets the Text for the Text Component 
+    * to the scoreString. Also initializes the current time with zero.
     * 
-    * @Katja
+    *
     */
     public void Awake()
     {
@@ -49,7 +51,9 @@ public class ScoringSystem : MonoBehaviour
         scoreText.text = scoreString;
 
     }
-
+    /*
+    * Turns a float value representing seconds into the appropriate form to be displayed
+    */
     private void displayTime(float time)
     {
 
@@ -74,30 +78,26 @@ public class ScoringSystem : MonoBehaviour
      *
      * Increases Score and updates the Text Component
      * 
-     *@Katja
+     *
      */
     private void scoreUp(int value)
     {
         Score += value;
         string scoreTempString = Score.ToString();
-       /* int scoreLength = scoreTempString.Length;
-        string scoreString = "";
-        int howManyZeros = 9 - scoreLength;
-        while (howManyZeros > 0)
-        {
-            scoreString = scoreString + "0";
-
-        }*/
         string scoreString = scoreTempString;
         scoreText.text = scoreString;
     }
-
+    /*
+    * Updates the health value and display
+    */
     private void healthDisplay(int health)
     {
-        Debug.Log("whats the health " + health);
         this.health = health;
         healthText.text = this.health.ToString();
     }
+    /*
+    * Updates the collectible count value and display
+    */
     private void updateScrollCount()
     {
         collected++;

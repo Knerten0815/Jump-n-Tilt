@@ -8,15 +8,17 @@ using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
+/*
 /*
 *
-* Class that overs Events to subscribe too. Can be accessed by other classes to trigger certain events that are subscribed too by all 
-* needed parties. Also handles loading and saving game currently. Temporary, probably needs a better architecture and save options should 
-* only be accessed by limited other classes and not everyone for example.
+* Author: Katja Tuemmers 
+* Loads and Creates the Save Game. It lives through the complete runtime of the game.
+* Class that offers Events to subscribe too to pass information between objects or information from the Save file on. 
+* Can be accessed by other classes to trigger certain events that are subscribed too by other objects like when a pickUp is picked up
+* Handles the progress and switches of the game between different scenes
+* Has a load screen that can be temporarly activated when a scene change is initiated
 * 
 *
-*@Katja
 */
 public class ManagementSystem : MonoBehaviour
 {
@@ -25,14 +27,18 @@ public class ManagementSystem : MonoBehaviour
     private int currentLevel = 0;
     private Save.ScorePair[][] scoreList = new Save.ScorePair[3][];
     private int unlockedLevels = 0;
+
     private int currentScore;
+
     public GameObject loadscreen;
     public static ManagementSystem Instance { get; private set; }
+    
+    
     /*
-    * Cheap and not perfect Singleton initialization. 
+     * 
+    * Quick Singleton initialization and subscription to sceneLoaded. ManagementSystem is not destroyed between scenes!
     *
     *
-    *@Katja
     */
 
     void Awake()
@@ -46,66 +52,43 @@ public class ManagementSystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        SceneManager.sceneLoaded += startLevel;
+        SceneManager.sceneLoaded += startLevel; //Subscribes to sceneLoaded to pass on information via startLevel once a scene is loaded
     }
-
+    /*
+    * When the ManagementSystem is first enabled in the first scene it loads the game
+    *
+    */
     private void OnEnable()
     {
         LoadGame();
     }
-    /*
-    *
-    * Static function that when called adds the ID of the collectible to the currently gathered Collectibles
-    *
-    *@Katja
-    */
-    public void addCollectible(int ID)
-    {
-        collectiblesGathered.Add(ID);
-        if (collectibleOnLoad != null)
-            collectibleOnLoad(ID);
-    }
+
 
     /*
-    * ScoreUp Event, can trigger the score going up but also things like Audio tracks for the pickUp
-    *
-    * @Katja
+    * Events and public functions that trigger events
+    * 
     */
 
-    public delegate void scoreUp(int score);
-    public event scoreUp pickUpHit;
-    /*
-    *
-    * Static function that when called triggers the event for scoreUp. 
-    *
-    * @Katja
-    */
-    public void pickUp(int scoreValue)
-    {
-        currentScore += scoreValue;
-        if (pickUpHit != null)
-            pickUpHit(scoreValue);
-    }
 
 
+     //event passes on which levels are currently unlocked and which level has been played last or is currently played
     public delegate void levelLoad(int unlockedLevels, int currentLevel);
-
     public event levelLoad levelLoadMethod;
+    
     /*
     *
     *   CollectibleLoad Event that currently is just there to notify rare what collectibles have already been Loaded could be expanded to other things
     *   that are loaded at the start
     *
-    * @Katja
+    * 
     */
     public delegate void pickupLoad(int collectibleID);
     public event pickupLoad collectibleOnLoad;
 
     /*
-    *
-    *
-    *
-    * @Katja    
+    * Event that tells a DisplayHighscore objects with the same level and spot to update itself with the passed on information
+    * is currently done for five rankings at a time
+    *  
     */
     public delegate void displayHS(string name, int score, int level, int spot);
     public event displayHS displayHighscoreSub;
@@ -121,45 +104,11 @@ public class ManagementSystem : MonoBehaviour
         }
     }
 
-    public void restartLevel()
-    {
-        currentScore = 0;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(currentLevel+1);
-    }
-    /*
-    *
-    *   LoadGame is called before start and then rare pick ups are notified whether they were already gathered and have to be set inactive
-    *   Does not work in htis prototype version currently:
-    *   NullReferenceException: Object reference not set to an instance of an object
-    *   ManagementSystem.Awake () (at Assets/Scripts/ManagementSystem.cs:100)
-    *   No fucking clue why honestly. 
-    * @Katja
-    */
-
-    private void startLevel(Scene scene, LoadSceneMode mode)
-    {
-        
-        
-        Time.timeScale = 1f;
-        if (collectibleOnLoad != null)
-        {
-            foreach (int ID in collectiblesGathered)
-            {
-                if (collectibleOnLoad != null)
-                    collectibleOnLoad(ID);
-            }
-        }
-
-        if (levelLoadMethod != null)
-            levelLoadMethod(unlockedLevels, currentLevel);
-        loadscreen.SetActive(false);
-    }
-
-
-
+    //When the playercharacter calls updatePlayerHealth and passes on its current health the information is passed onto all subscribers
+    //like the scoring system which displays the current health
     public delegate void healthCurrent(int health);
     public event healthCurrent healthPassOn;
-
+    
     public void updatePlayerHealth(int health)
     {
         if (healthPassOn != null)
@@ -168,6 +117,8 @@ public class ManagementSystem : MonoBehaviour
         }
     }
 
+    //When the playercharacter calls updateTime and passes on its current time that it can slow down and the information is passed onto all subscribers
+    //like the scoring system which displays the current time available to be slowed down
     public delegate void updateTimeSub(float time);
     public event updateTimeSub timePassOn;
     public void updateTime(float time)
@@ -175,17 +126,55 @@ public class ManagementSystem : MonoBehaviour
         if(timePassOn!=null)
             timePassOn(time);
     }
+      /*
+    *
+    * Function that when called adds the ID of the collectible to the currently gathered Collectibles, also trigges the collectibleOnLoad event
+    * that would inform listeners that this specific pickUp has been collected. In this case its the buttons in menu that now grant access to display
+    * the newly found collectible and its information and images.
+    *
+    *
+    */
+    public void addCollectible(int ID)
+    {
+        collectiblesGathered.Add(ID);
+        if (collectibleOnLoad != null)
+            collectibleOnLoad(ID);
+    }
 
+    /*
+    * ScoreUp Event notifies listeners when the score increases
+    *
+    */
+
+    public delegate void scoreUp(int score);
+    public event scoreUp pickUpHit;
+
+    /*
+    *
+    * Function that when called triggers the event for scoreUp and passes on which value of points should be added to the score, is usually
+    * called by the pickUpDescriptor once the Player triggers the hit function
+    *
+    * 
+    */
+    public void pickUp(int scoreValue)
+    {
+        currentScore += scoreValue;
+        if (pickUpHit != null)
+            pickUpHit(scoreValue);
+    }
+
+    //A health pick up has been picked up 
     public delegate void pickupHealth();
     public event pickupHealth healthPickUpHit;
     public void hUp()
     {
-        if (collectedScroll != null)
+        if (healthPickUpHit != null)
         {
             healthPickUpHit();
         }
     }
 
+    //A collectible has been picked up
     public delegate void collected();
     public event collected collectedScroll;
 
@@ -195,7 +184,7 @@ public class ManagementSystem : MonoBehaviour
             collectedScroll();
     }
 
-
+    //A time pickup has been picked up
     public delegate void pickupTime();
     public event pickupTime timePickUpHit;
 
@@ -207,53 +196,7 @@ public class ManagementSystem : MonoBehaviour
         }
     }
 
-    public void endLevel()
-    {
-        //loadscreen.SetActive(true);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(4);
-    }
-
-
-    /*
-    * CreateSaveGameObject creates an empty Save object and overrides it's collectiblesGathered attribute with the current
-    * ManagementSystem version
-    *
-    *@Katja
-    */
-    private Save CreateNewSaveGameObject()
-    {
-        Save save = new Save();
-        collectiblesGathered = new List<int>();
-        for (int i = 0; i < scoreList.Length; i++)
-        {
-            scoreList[i] = new Save.ScorePair[5];
-            for (int j = 0; j < scoreList[i].Length; j++)
-            {
-                scoreList[i][j] = new Save.ScorePair(1000, "Player");
-            }
-        }
-        save.collectiblesGathered = collectiblesGathered;
-        save.currentLevel = 0;
-        save.scoreList = scoreList;
-        save.unlockedLevels = 0;
-        unlockedLevels = save.unlockedLevels;
-        currentLevel = 0;
-
-        return save;
-
-    }
-    private Save updateSaveGameObject()
-    {
-        Save save = new Save();
-        save.currentScore = currentScore;
-        save.collectiblesGathered = collectiblesGathered;
-        save.currentLevel = currentLevel;
-        save.scoreList = scoreList;
-        save.unlockedLevels = unlockedLevels;
-        return save;
-
-    }
-
+    //Inserts a new highscore that has been reached in the ranking list
     public bool newHighScore(string name, int spot)
     {
        
@@ -261,11 +204,7 @@ public class ManagementSystem : MonoBehaviour
         Save.ScorePair oldPair;
         for (int i = spot; i<scoreList[currentLevel].Length; i++)
         {
-            //Debug.Log("Old and new score");
             oldPair = scoreList[currentLevel][i];
-            //Debug.Log(oldPair.name + " und " + oldPair.score);
-            //Debug.Log(newPair.name + " und " + newPair.score);
-
             scoreList[currentLevel][i] = newPair;
             newPair = oldPair;
         }
@@ -273,7 +212,7 @@ public class ManagementSystem : MonoBehaviour
         return true;
     }
 
-
+    //checks if a new highscore has been achieved
     public (int, int, int) checkForNewHighScore()
     {
         int spot = -1;
@@ -290,6 +229,59 @@ public class ManagementSystem : MonoBehaviour
 
     }
 
+
+
+    /*
+     * LEVEL AND SCENE LOADING FUNCTIONS
+     * 
+     */
+
+
+
+
+    /*
+    *
+    *  startLevel is called whenever a new scene is loaded by subscribing to Management.sceneLoaded
+    *  it resets the time scale to unfreeze a level
+    *  it then loops through all the collectible that have been collected by the player and throws the collectibleOnLoad event
+    *  the collectibles in the scene listen to that and if they were collected before modify themselves to a normal coin pick up
+    *  the levelLoadMethod informs all its subscribers which levels have been unlocked and which level is currently playing or has been played last    
+    */
+
+    private void startLevel(Scene scene, LoadSceneMode mode)
+    {
+
+
+        Time.timeScale = 1f;
+        if (collectibleOnLoad != null)
+        {
+            foreach (int ID in collectiblesGathered)
+            {
+                if (collectibleOnLoad != null)
+                    collectibleOnLoad(ID);
+            }
+        }
+
+        if (levelLoadMethod != null)
+            levelLoadMethod(unlockedLevels, currentLevel);
+        loadscreen.SetActive(false);
+    }
+
+    //ends a level and opens the highscore scene
+    public void endLevel()
+    {
+        //loadscreen.SetActive(true);
+        SceneManager.LoadScene(4);
+    }
+    //restarts the currently played level
+    public void restartLevel()
+    {
+        currentScore = 0;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(currentLevel + 1);
+    }
+    //From the highscore scene the next level is loaded. If a new level has been unlocked the unlockedLevels are increased
+    //the currentLevel is increased unless the maximum is reached, if so its set to 0 and the credits scene is loaded
+    //the game is saved
     public void nextLevel()
     {
         loadscreen.SetActive(true);
@@ -319,11 +311,29 @@ public class ManagementSystem : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.LoadScene(currentLevel + 1);
         }
     }
+    //specific level is loaded
+    public void loadLevel(int level)
+    {
+        loadscreen.SetActive(true);
+        currentLevel = level;
+        currentScore = 0;
+        SaveGame();
+        SceneManager.LoadScene(level + 1);
+    }
+
+
+    /*
+    *
+    * Save File manipulation and creation
+    * 
+    */
+
+
+
     /*
      * 
      * Creates binary data from Save object and saves it in file titles /gamesave.save
      * 
-     * @Katja
      */
     private void saveFile(Save save)
     {
@@ -332,29 +342,64 @@ public class ManagementSystem : MonoBehaviour
         bf.Serialize(file, save);
         file.Close();
     }
+
+    /*
+    * CreateSaveGameObject creates a fresh Save object and also overrides the ManagementSystem versions of collectiblesGathered and other variables describing the save state
+    * with the new fresh values
+    * place holder highscore rankings are created
+    * 
+    *
+    */
+    private Save CreateNewSaveGameObject()
+    {
+        Save save = new Save();
+        collectiblesGathered = new List<int>();
+        for (int i = 0; i < scoreList.Length; i++)
+        {
+            scoreList[i] = new Save.ScorePair[5];
+            for (int j = 0; j < scoreList[i].Length; j++)
+            {
+                scoreList[i][j] = new Save.ScorePair(1000, "Player");
+            }
+        }
+        save.collectiblesGathered = collectiblesGathered;
+        save.currentLevel = 0;
+        save.scoreList = scoreList;
+        save.unlockedLevels = 0;
+        unlockedLevels = save.unlockedLevels;
+        currentLevel = 0;
+
+        return save;
+
+    }
+    //creates a save oject with the current data
+    private Save updateSaveGameObject()
+    {
+        Save save = new Save();
+        save.currentScore = currentScore;
+        save.collectiblesGathered = collectiblesGathered;
+        save.currentLevel = currentLevel;
+        save.scoreList = scoreList;
+        save.unlockedLevels = unlockedLevels;
+        return save;
+
+    }
+    //saves the same
     public void SaveGame()
     {
 
         Save save = updateSaveGameObject();
         saveFile(save);
     }
-
+    //creates a fresh save game
     private void SaveNewGame()
     {
         Save save = CreateNewSaveGameObject();
         saveFile(save);
     }
 
- 
-    public void loadLevel(int level)
-    {
-        loadscreen.SetActive(true);
-        currentLevel = level;
-        currentScore = 0;
-        SaveGame();
-        SceneManager.LoadScene(level+1);
-    }
 
+    //game save is reset and level 1 is started
     public void ResetGameSave()
     {
         loadscreen.SetActive(true);
@@ -364,9 +409,8 @@ public class ManagementSystem : MonoBehaviour
     /*
      * 
      * Checks first if save File exists. If it exists it translates the binary format back to a Save object instance which
-     * is then saved in the management systems attribute of collectiblesGathered
+     * is then passed on to respective the ManagementSystems attributes 
      * 
-     * @Katja
     */
     public void LoadGame()
     {
@@ -381,7 +425,6 @@ public class ManagementSystem : MonoBehaviour
             unlockedLevels = save.unlockedLevels;
             currentLevel = save.currentLevel;
             scoreList = save.scoreList;
-            Debug.Log("Does it load");
         }
         else {
             SaveNewGame();

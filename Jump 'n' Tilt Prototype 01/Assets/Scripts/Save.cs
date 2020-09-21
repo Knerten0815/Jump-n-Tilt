@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 /*
+ * 
+ * Author: Katja Tuemmers
 * Structure for the Saves. Can be serialized and turned into binary files. Attributes represent the saved data. Currently just a list
 * of IDs of gathered Collectibles
 *
-* @Katja
+* 
 */
 [System.Serializable]
 public class Save

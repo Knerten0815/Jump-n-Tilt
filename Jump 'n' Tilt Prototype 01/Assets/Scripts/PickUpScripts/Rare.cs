@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 /*
-*
-* Component class for rare PickUps like collectibles
-*
-* @Katja
+* Author: Katja Tuemmers
+* Component class for collectible PickUps
+* 
 */
 public class Rare: MonoBehaviour, PickUpDescriptor
 {
     /*
      * Unique ID for a Collectibel to identify it for save and loading purposes
      *
-     * @Katja
+     * 
      */
 
     [SerializeField]
@@ -21,10 +20,10 @@ public class Rare: MonoBehaviour, PickUpDescriptor
 
 
     /*
-    * Calls for the Collectible ID to be added to the current List of Collectibles and also to save that current List by calling
+    * Calls for the Collectible ID to be added to the current List of Collectibles, to update the scroll Display in the GUI and also to save that current List by calling
     * SaveGame()
     *
-    *@Katja
+    *
     */
     public void hit()
     {
@@ -34,10 +33,11 @@ public class Rare: MonoBehaviour, PickUpDescriptor
     }
 
     /*
-    * Subscribed to the checkForCollected Event called during loading of a save File. It sets all Collectibles whose ID has already been
-    * saved to inactive
+    * Subscribed to the checkForCollected Event called during loading of a save File. All collectibles listen and if their ID is passed on 
+    * in the event they start modifying themselves by adding the ScoreSound component changing their spire and then deleting their 
+    * collectible exclusive components
     *
-    *@Katja
+    *
     */
     public void checkForCollected(int collectibleID)
     {
@@ -60,7 +60,7 @@ public class Rare: MonoBehaviour, PickUpDescriptor
     /*
     * Subcribes to checkForCollected upon OnEnabling
     * 
-    * @Katja
+    *
     */
     void OnEnable()
     {

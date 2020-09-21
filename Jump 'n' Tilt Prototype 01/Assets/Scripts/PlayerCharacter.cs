@@ -7,7 +7,7 @@ using AudioControlling;
 
 public class PlayerCharacter : Character
 {
-    // Author: Nicole Mynarek, Michelle Limbach, Marvin Winkler
+    // Author: Nicole Mynarek, Michelle Limbach, Katja Tuemmers, Marvin Winkler
 
     // variables for jumping
     public int jumpCount;                       //Possible amount of jumps
@@ -47,7 +47,7 @@ public class PlayerCharacter : Character
     private LevelControlls.LevelControllerNew levelController; //by Marvin Winkler, used to fix wall climbing bug while level is tilted
     public float slideJumpHeightX;              //by Marvin Winkler, Jump force in X direction
     public float slideJumpHeightY;              //by Marvin Winkler, Jump force in Y direction
-    private bool slideJump = false;
+    
 
     private BoxCollider2D collider;
 
@@ -71,8 +71,13 @@ public class PlayerCharacter : Character
     private ParticleSystem groundImpact;
     private ParticleSystem.MainModule groundImpactMain;
     private bool justLanded;
-    public int slideDoubleCheckLimit = 30;
-    private int slideDoubleCheck = 0;//used by groundImpact
+
+    //Bug fixes by Katja Tuemmers, adds a variable to check jump behaviour and also limits sliding behaviour to only happen
+    //after a certain amount of time was spend on uneven ground. This is to prevent the slide to be immediately activated with just one 
+    //momentarily uneven bit of ground or when the raycast hits corners of the tile map colliders 
+    public int slideDoubleCheckLimit = 30;        //By Katja Tuemmers, limit for times contact with a slope has to be confirmed before slide begins
+    private int slideDoubleCheck = 0;            //By Katja Tuemmers, counts to the limit before slide begins
+    private bool slideJump = false;             //by Katja Tuemmer, checks for the kind of jump that has to be executed
 
     // attack stuff by Marvin Winkler
     private Transform fishTrans;                //is set to attackOffeset
@@ -196,7 +201,7 @@ public class PlayerCharacter : Character
         PlayerInput.onSlowMoDown -= useSloMoPickup;
     }
 
-    // Author: Nicole Mynarek, Marvin Winkler
+    // Author: Nicole Mynarek, Marvin Winkler, Katja Tuemmers
     protected override void ComputeVelocity()
     {
         moveDirection = Input.GetAxis("Horizontal");
@@ -232,6 +237,13 @@ public class PlayerCharacter : Character
 
             //Is sliding?
             isSliding = false;
+
+            
+            /*
+             *Author: Katja Tuemmers
+            * activates or deactivates slideJump so all jumps on slopes do not behave the same way normal jumps do, is the character on a slope
+            * a slide jump will be executed even if they arent sliding but running up against it
+            */
             if (!onWall && Mathf.Abs(groundNormal.y) < 0.98 && Mathf.Abs(groundNormal.y) > 0.1)
             {
                 slideJump = true;
@@ -241,22 +253,33 @@ public class PlayerCharacter : Character
                 slideJump = false;
             }
 
+            //if statement slidely modified by Katja Tuemmers, including checking for ground that is just barely uneven and not sliding when that is the case
             if (!onWall && Mathf.Abs(groundNormal.y) < 0.98 && Mathf.Abs(groundNormal.y) > 0.1 && (moveDirection == 0 || moveDirection < 0 && slideDirection.x < 0 || moveDirection > 0 && slideDirection.x > 0))
             {
+                /*
+                * Author: Katja Tuemmers
+                * the slideDoubleCheck is increased until the limit and then the character starts sliding
+                */
                 if (slideDoubleCheck<slideDoubleCheckLimit)
                 {
                     slideDoubleCheck++;
                   
                 }
+                /*
+                *
+                */
                 else
                 {
                     isSliding = true;
-                            }
+                }
             }
+
+            //Author: Katja Tuemmers
+            //the slideDoubleCheck is reset whenever the player is in the air or reaches even ground
             else
             {
                 slideDoubleCheck = 0;
-                      }
+            }
 
             velocity.x -= velocity.x * airResistance;
         }
@@ -675,7 +698,7 @@ public class PlayerCharacter : Character
         }
     }
 
-    // Author: Nicole Mynarek, Michelle Limbach; Marvin Winkler fixed bugges and removed hardcoded values and replaced them with variables and added hang time
+    // Author: Nicole Mynarek, Michelle Limbach; Marvin Winkler fixed bugs and removed hardcoded values and replaced them with variables and added hang time
     // Method overridden, double jump is possible now
     protected override void Jump()
     {
@@ -744,6 +767,9 @@ public class PlayerCharacter : Character
                     {
                         velocity = new Vector2(velocity.x + slideDirection.x * slideJumpHeightX, slideJumpHeightY);
                     }
+                    //By Katja Tuemmers, checks whether the jump is happenening on a slope even though the character isnt sliding
+                    //like when the character runs uphill. Different values for the velocity will be used to prevent odd jump
+                    //behavious
                     else if (slideJump){
                         velocity = new Vector2(-1*moveDirection/2, slideJumpHeightY/10);
 
@@ -1033,15 +1059,14 @@ public class PlayerCharacter : Character
 
     /*
     *
-    * Checks for collision with a pickup object.
+    * Author: Katja Tuemmers
+    * Checks for collision with a pickup object. And actiavtes its hit function while deactivating the whole pick up making it disappear.
     * 
-    * @Katja
+    * 
     *
     */
     protected void OnTriggerEnter2D(Collider2D other)
     {
-        //Check the provided Collider2D parameter other to see if it is tagged "PickUp", if it is...
-        //Doing it like this can be costly if the function returns null, if we ever have trouble performance here it could be optimized
         PickUp pickUpComponent = other.gameObject.GetComponent<PickUp>();
         if (pickUpComponent != null)
         {

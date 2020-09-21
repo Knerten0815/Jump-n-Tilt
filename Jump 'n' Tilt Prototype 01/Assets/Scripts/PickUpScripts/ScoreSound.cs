@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+//class for component to play the coin pickup fx
+//author: Katja Tuemmers
 public class ScoreSound : MonoBehaviour, PickUpDescriptor
 {
 

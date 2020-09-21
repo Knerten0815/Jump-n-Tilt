@@ -3,9 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Author: Katja Tuemmers
+//Based on Kappa written by Nicole Mynarek, it adds a cooldown to prevent the Kitsune from damaging 
+//the player immediately after being hit and also passes on information to the EndbossContainer
+//It removes sliding and lets the kitsune be damaged from any direction
 public class Kitsune : GroundEnemy
 {
-    // Start is called before the first frame update
+    //EndBoss container is a object that passes information back and forth between EndBoss and Kitsune
     [SerializeField]
     private EndBossContainer endBoss;
 
@@ -43,7 +47,9 @@ public class Kitsune : GroundEnemy
         bc2d = GetComponent<BoxCollider2D>();
         attackPos.position = new Vector3(bc2d.bounds.center.x, bc2d.bounds.center.y, 0f);
     }
-
+    /*
+    * ComputeVelocity is basically the same as in the Kappa but removes Sliding
+    */
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
@@ -107,7 +113,7 @@ public class Kitsune : GroundEnemy
             airMovement();
         }
     }
-
+    //Same as in Kappa by Nicole Mynarek
     protected override void Jump()
     {
         isSliding = false;
@@ -134,7 +140,7 @@ public class Kitsune : GroundEnemy
             velocity = new Vector2(playerDirection().normalized.x * jumpDistance, jumpHeight);
         }
     }
-
+    //Same as in Kappa by Nicole Mynarek
     protected void airMovement()
     {
         if (!grounded && direction != 0 && velocity.magnitude < maxAirMovementSpeed)
@@ -143,14 +149,16 @@ public class Kitsune : GroundEnemy
             isSliding = false;
         }
     }
-
+    //TakeDamage was modifed to pass on health to EndBossContainer
+    //Kitsune can be damaged from any direction
+    //It sets the new bool hasDamage to true and blocks any further damage or attack by Kitsune until its set to true again
+    //TakeDamage starts a Coroutine that waits a certain amount of time until it sets hasDamage to true and making new damage or attacks possible
     public override void TakeDamage(int damage, Vector2 direction)
     {
         if (!hasDamaged)
         {
             hasDamaged = true;
 
-            Debug.Log("player direction: " + playerDirection().x);
             if (health <= 1)
             {
                 Instantiate(deathSparkle, transform.position, Quaternion.identity);
@@ -167,6 +175,7 @@ public class Kitsune : GroundEnemy
        
         }
     }
+    //adds hasDamage condition
     public override void groundEnemyAttack(Collider2D enemy, Vector2 dmgDirection2D)
     {
         if (!hasAttacked && getPlayerScript().health > 0 && !hasDamaged)
@@ -175,11 +184,11 @@ public class Kitsune : GroundEnemy
             base.groundEnemyAttack(enemy, dmgDirection2D);
         }
     }
+
+    //The damageCooldown routine that set hasDamaged back to true after awhile
     IEnumerator damageCooldown(float coolDownTime)
     {
-        //Debug.Log(coolDownTime + " seconds Cooldown!");
         yield return new WaitForSeconds(coolDownTime);
-        //Debug.Log("Cooldown end!");
         hasDamaged = false;
         StopCoroutine(coolDamageRoutine);
     }

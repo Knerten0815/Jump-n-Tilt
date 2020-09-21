@@ -1,14 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//class for component to trigger the event in ManagementSystem to notify objects a time pickup has been picked up 
+//author: Katja Tuemmers
 public class TimePickUp : MonoBehaviour, PickUpDescriptor
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     public void hit()
     {

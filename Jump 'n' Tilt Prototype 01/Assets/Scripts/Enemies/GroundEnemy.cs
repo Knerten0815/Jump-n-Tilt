@@ -47,7 +47,6 @@ public class GroundEnemy : Enemy
         whatIsEnemy = LayerMask.GetMask("Player");
         whatIsGround = LayerMask.GetMask("Ground") | LayerMask.GetMask("Platform");
         whatIsWall = LayerMask.GetMask("Wall") | LayerMask.GetMask("Platform") | LayerMask.GetMask("StaticObstacle");
-        whatIsPlatform = LayerMask.GetMask("Platform");
 
         attackCircle = new GameObject();
         attackCircle.transform.SetParent(transform);

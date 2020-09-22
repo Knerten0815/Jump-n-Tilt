@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-//Author: Michelle Limbach
+//Author: Michelle Limbach, minor addition Katja Tuemmers
 //This class handels the display of the Dialogue Boxes
 public class DialogueManager : MonoBehaviour
 {
@@ -34,7 +34,7 @@ public class DialogueManager : MonoBehaviour
     private RuntimeAnimatorController animatorController;
 
    
-    private bool lastDialogue;
+    private bool lastDialogue; //by Katja Tuemmers, checks whether the last Dialogue is being displayed
 
     // Start is called before the first frame update
     void Awake()
@@ -144,10 +144,13 @@ public class DialogueManager : MonoBehaviour
     public void DisplayNextSectence()
     {
         dialogueImage.SetActive(true);
-
+        /*
+        * By Katja Tuemmers
+        *
+        */
         //Check if the sentences queue is empty and lastDialogue is true
         //Called after boss fight
-        if (sentences.Count  == 0 && lastDialogue)
+        if (sentences.Count == 0 && lastDialogue)
         {
             lastDialogue = false;
             Time.timeScale = 1f; //Enable player control
@@ -156,6 +159,9 @@ public class DialogueManager : MonoBehaviour
 
             return;
         }
+        /*
+        *
+        */
         //Check if sentences queue is empty, not currently in Intro scene and lastDialogue false
         else if (sentences.Count == 0 && SceneManager.GetActiveScene().name != "Intro" && !lastDialogue)
         {

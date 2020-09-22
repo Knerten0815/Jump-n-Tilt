@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+//Author: Michelle Limbach
 //This class is responsible for the slider hovering, so that the user gets visual feedback which slider is currently selected
 public class MenuSliderHover : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler
 {

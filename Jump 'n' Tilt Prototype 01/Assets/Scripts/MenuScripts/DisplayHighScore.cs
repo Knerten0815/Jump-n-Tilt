@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //Author: Katja Tuemmers
+//Displays and listens for updates for highscore rankings
 //The DisplayHighScore component contains references to two text objects to display name and score. It also has a level and spot variable
 //which serve to identify itself. The DisplayHighScore checks for its own data by listening to the displayHighscoreSub event in the management system
 //If its not the spot and level it ignores the data being passed

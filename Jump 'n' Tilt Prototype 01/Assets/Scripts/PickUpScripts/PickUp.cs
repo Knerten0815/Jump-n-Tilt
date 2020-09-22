@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//Author: Katja Tuemmers
 /*
 * Basic Class for all PickUp Objects. To define what kind of PickUp it is additional Componentents like Rare, Common or PowerUps are added 
 * to the game Object
